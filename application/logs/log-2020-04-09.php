@@ -1,0 +1,55 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+ERROR - 2020-04-09 07:47:34 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 126
+ERROR - 2020-04-09 07:47:34 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 143
+ERROR - 2020-04-09 07:47:34 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 159
+ERROR - 2020-04-09 07:47:34 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 304
+ERROR - 2020-04-09 08:01:59 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 126
+ERROR - 2020-04-09 08:01:59 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 143
+ERROR - 2020-04-09 08:01:59 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 159
+ERROR - 2020-04-09 08:01:59 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 304
+ERROR - 2020-04-09 08:02:31 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 126
+ERROR - 2020-04-09 08:02:31 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 143
+ERROR - 2020-04-09 08:02:31 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 159
+ERROR - 2020-04-09 08:02:31 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 304
+ERROR - 2020-04-09 08:03:58 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 126
+ERROR - 2020-04-09 08:03:58 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 143
+ERROR - 2020-04-09 08:03:58 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 159
+ERROR - 2020-04-09 08:03:58 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 304
+ERROR - 2020-04-09 08:08:17 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 126
+ERROR - 2020-04-09 08:08:17 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 143
+ERROR - 2020-04-09 08:08:17 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 159
+ERROR - 2020-04-09 08:08:17 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 304
+ERROR - 2020-04-09 08:16:22 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 126
+ERROR - 2020-04-09 08:16:22 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 143
+ERROR - 2020-04-09 08:16:22 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 159
+ERROR - 2020-04-09 08:16:22 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 304
+ERROR - 2020-04-09 03:31:02 --> Severity: Compile Error --> Cannot redeclare Pendaftaran_model::pilih_jadwal() D:\xampp1\htdocs\medika\application\modules\pendaftaran\models\Pendaftaran_model.php 157
+ERROR - 2020-04-09 08:31:30 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 126
+ERROR - 2020-04-09 08:31:30 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 143
+ERROR - 2020-04-09 08:31:30 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 159
+ERROR - 2020-04-09 08:31:30 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 321
+ERROR - 2020-04-09 08:33:49 --> Severity: error --> Exception: Too few arguments to function Pendaftaran_model::pilih_deptdokter(), 2 passed in D:\xampp1\htdocs\medika\application\modules\pendaftaran\controllers\Pendaftaran.php on line 112 and exactly 3 expected D:\xampp1\htdocs\medika\application\modules\pendaftaran\models\Pendaftaran_model.php 179
+ERROR - 2020-04-09 08:37:32 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 126
+ERROR - 2020-04-09 08:37:32 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 143
+ERROR - 2020-04-09 08:37:32 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 159
+ERROR - 2020-04-09 08:37:32 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 321
+ERROR - 2020-04-09 08:39:15 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 126
+ERROR - 2020-04-09 08:39:15 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 143
+ERROR - 2020-04-09 08:39:15 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 159
+ERROR - 2020-04-09 08:39:15 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 321
+ERROR - 2020-04-09 08:46:15 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 126
+ERROR - 2020-04-09 08:46:15 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 143
+ERROR - 2020-04-09 08:46:15 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 159
+ERROR - 2020-04-09 08:46:15 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 321
+ERROR - 2020-04-09 08:49:28 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 126
+ERROR - 2020-04-09 08:49:28 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 143
+ERROR - 2020-04-09 08:49:28 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 159
+ERROR - 2020-04-09 08:49:28 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 299
+ERROR - 2020-04-09 08:50:30 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 126
+ERROR - 2020-04-09 08:50:30 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 143
+ERROR - 2020-04-09 08:50:30 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 159
+ERROR - 2020-04-09 08:50:30 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 311
+ERROR - 2020-04-09 08:52:51 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 126
+ERROR - 2020-04-09 08:52:51 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 143
+ERROR - 2020-04-09 08:52:51 --> Severity: Warning --> Invalid argument supplied for foreach() D:\xampp1\htdocs\medika\application\modules\pendaftaran\views\form_add_pendaftaran.php 159
