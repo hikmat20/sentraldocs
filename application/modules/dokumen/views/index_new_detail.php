@@ -173,7 +173,7 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
         var id = $(this).data('id');
         var table = $(this).data('table');
         var file = $(this).data('file');
-        alert(id + ", " + table + ", " + file)
+        // alert(id + ", " + table + ", " + file)
         $.ajax({
             type: "post",
             url: siteurl + active_controller + 'history_revisi',
