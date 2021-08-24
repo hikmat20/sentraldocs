@@ -21,3 +21,6 @@ WHERE `status_approve` = 1 OR `status_approve` = 3
 ERROR - 2021-08-24 11:00:42 --> Query error: Table 'sentraldocs_db.sgambar' doesn't exist - Invalid query: SELECT *
 FROM `sgambar`
 WHERE `status_approve` = 1 OR `status_approve` = 3
+ERROR - 2021-08-24 11:37:54 --> Query error: Unknown column 'id_detail' in 'where clause' - Invalid query: SELECT *
+FROM `gambar`
+WHERE `id_detail` = '7'

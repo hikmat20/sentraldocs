@@ -8,29 +8,32 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <div class="d-flex flex-column-fluid">
         <div class="container">
-
-            <button type="button" onclick="history.go(-1)" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary" title="Kembali">
-                <i class="fa fa-arrow-left"></i>
-            </button>
-            <!-- <button type="button" id="btn-rename" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary" title="Rename">
+            <div class="card card-stretch shadow card-custom">
+                <div class="card-body">
+                    <button type="button" onclick="history.go(-1)" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary" title="Kembali">
+                        <i class="fa fa-arrow-left"></i>
+                    </button>
+                    <!-- <button type="button" id="btn-rename" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary" title="Rename">
                 <i class="fa fa-pen"></i>
             </button>
             <button type="button" id="btn-delete" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary" title="Delete">
                 <i class="fa fa-trash"></i>
             </button> -->
-            <hr>
-            <div class="row">
-                <?php if ($list == false) :
-                    foreach ($row as $data) :
-                ?>
-                        <div class="col-lg-3 col-xl-2 col-md-3 col-sm-6 col-xs-6 m-0 px-2">
-                            <button type="button" ondblclick="location.href = base_url+active_controller+'subfolder/<?= $data->id_master . '/' . $data->id; ?>'" data-id="<?= $data->id_master; ?>" class="h-99px p-0 btn btn-block btn-text-dark-50 btn-icon-primary btn-bg-transparent font-weight-bold btn-hover-bg-secondary my-2 button-master">
-                                <i class="fa fa-folder" style="font-size:7rem;"></i><br>
-                                <?= $data->deskripsi; ?>
-                            </button>
-                        </div>
-                    <?php endforeach; ?>
-                <?php endif; ?>
+                    <hr>
+                    <div class="row">
+                        <?php if ($list == false) :
+                            foreach ($row as $data) :
+                        ?>
+                                <div class="col-lg-3 col-xl-2 col-md-3 col-sm-6 col-xs-6 m-0 px-2">
+                                    <button type="button" ondblclick="location.href = base_url+active_controller+'subfolder/<?= $data->id_master . '/' . $data->id; ?>'" data-id="<?= $data->id_master; ?>" class="h-99px p-0 btn btn-block btn-text-dark-50 btn-icon-primary btn-bg-transparent font-weight-bold btn-hover-bg-secondary my-2 button-master">
+                                        <i class="fa fa-folder" style="font-size:7rem;"></i><br>
+                                        <?= $data->deskripsi; ?>
+                                    </button>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
