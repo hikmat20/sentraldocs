@@ -56,7 +56,7 @@
 							</div>
 						</div>
 						<div class="card-body d-flex align-items-center justify-content-center p-1 flex-wrap">
-							<span class="font-weight-bolder display5 text-info">2</span>
+							<span class="font-weight-bolder display5 text-info"><?= $doc; ?></span>
 						</div>
 						<div class="card-footer text-center border-0 justify-content-center p-0">
 							<h3 class="card-title p-5 m-0">
@@ -112,7 +112,7 @@
 							</div>
 						</div>
 						<div class="card-body d-flex align-items-center justify-content-center p-1 flex-wrap">
-							<span class="font-weight-bolder display5 text-danger">9</span>
+							<span class="font-weight-bolder display5 text-danger"><?= $docCor; ?></span>
 						</div>
 						<div class="card-footer text-center border-0 justify-content-center p-0">
 							<h3 class="card-title p-5 m-0">
@@ -170,7 +170,7 @@
 							</div>
 						</div>
 						<div class="card-body d-flex align-items-center justify-content-center p-1 flex-wrap">
-							<span class="font-weight-bolder display5 text-warning">3</span>
+							<span class="font-weight-bolder display5 text-warning"><?= $docApv; ?></span>
 						</div>
 						<div class="card-footer text-center border-0 p-0 justify-content-center">
 							<h3 class="card-title p-5 m-0">
@@ -228,7 +228,7 @@
 							</div>
 						</div>
 						<div class="card-body d-flex align-items-center justify-content-center p-1 flex-wrap">
-							<span class="font-weight-bolder display5 text-primary">2</span>
+							<span class="font-weight-bolder display5 text-primary"><?= $docApv; ?></span>
 						</div>
 						<div class="card-footer border-0 text-center justify-content-center p-0">
 							<h3 class="card-title p-5 m-0">

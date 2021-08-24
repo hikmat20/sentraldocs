@@ -41,8 +41,20 @@ class Dashboard extends Admin_Controller
 	public function create_documents()
 	{
 		$this->template->set('title', 'Create Document');
+		$doc = $this->db->get('master_gambar')->num_rows();
+		$cor1 = $this->db->get_where('gambar', ['status_approve' => 0])->num_rows();
+		$cor2 = $this->db->get_where('gambar1', ['status_approve' => 0])->num_rows();
+		$cor3 = $this->db->get_where('gambar2', ['status_approve' => 0])->num_rows();
+		$apv1 = $this->db->get_where('gambar', ['status_approve' => 1])->num_rows();
+		$apv2 = $this->db->get_where('gambar1', ['status_approve' => 1])->num_rows();
+		$apv3 = $this->db->get_where('gambar2', ['status_approve' => 1])->num_rows();
+		$allCorr = $cor1 + $cor2 + $cor3;
+		$allApv = $apv1 + $apv2 + $apv3;
 		$pictures = $this->db->get('pictures')->result();
 		$this->template->set('pictures', $pictures);
+		$this->template->set('doc', $doc);
+		$this->template->set('docCor', $allCorr);
+		$this->template->set('docApv', $allApv);
 		$this->template->render('create-document');
 	}
 
