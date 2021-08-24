@@ -18,3 +18,6 @@ ERROR - 2021-08-24 10:53:47 --> Severity: Notice --> Undefined variable: approve
 ERROR - 2021-08-24 10:56:45 --> Query error: Table 'sentraldocs_db.sgambar' doesn't exist - Invalid query: SELECT *
 FROM `sgambar`
 WHERE `status_approve` = 1 OR `status_approve` = 3
+ERROR - 2021-08-24 11:00:42 --> Query error: Table 'sentraldocs_db.sgambar' doesn't exist - Invalid query: SELECT *
+FROM `sgambar`
+WHERE `status_approve` = 1 OR `status_approve` = 3
