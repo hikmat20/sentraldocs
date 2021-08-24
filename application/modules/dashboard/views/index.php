@@ -2,99 +2,35 @@
 	<div class="d-flex flex-column-fluid">
 		<div class="container">
 			<div class="row">
-				<!-- <div class="col-xl-3">
-					<div class="card card-custom card-stretch gutter-b bg-transparent shadow-none">
-						<button type="button" class="btn btn-light-primary">Create Documnets</button>
-					</div>
-				</div> -->
-			</div>
-			<div class="row">
-				<div class="col-xl-4">
-					<div class="card card-custom card-stretch gutter-b">
-						<div class="row">
-							<div class="col-xl-6 offset-xl-3">
-								<div class="card shadow-none card-custom card-stretch gutter-b">
-									<div class="card-header border-0 p-5 text-xl-center">
-										<img src="<?= base_url('assets/img/icon-plus-01.png'); ?>" alt="" class="m-auto img-fluid">
-									</div>
-									<div class="card-body p-5">
-										<a href="<?= base_url('folders') ?>" class="btn btn-primary btn-md btn-block font-size-sm"><i class="fa fa-plus"></i>Create Document</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+				<div class="col-xl-6 col-sm-6 col-xs-12">
+					<a href="<?= base_url('dashboard/create_documents') ?>" class="text-left btn btn-danger btn-md btn-block font-size-h2 py-5 mb-5 btn-shadow">
+						<span class="svg-icon svg-icon-3x">
+							<!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/keen/releases/2021-04-21-040700/theme/demo6/dist/../src/media/svg/icons/Navigation/Plus.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+								<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+									<rect fill="#000000" x="4" y="11" width="16" height="2" rx="1" />
+									<rect fill="#000000" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1" />
+								</g>
+							</svg>
+							<!--end::Svg Icon-->
+						</span>
+						Create Document</a>
 				</div>
-				<div class="col-xl-2">
-					<a href="<?= base_url('dokumen'); ?>" class="text-hover-primary" title="Documents List">
-						<div class="card  card-custom card-stretch gutter-b">
-							<div class="card-header border-0 p-0">
-								<img src="<?= base_url('assets/img/list-documents.jpg'); ?>" alt="" style=" max-height:130px" class="m-auto px-3 img-fluid">
-							</div>
-							<div class="card-body d-flex align-items-center justify-content-center p-1 flex-wrap">
-								<span class="font-weight-bolder display5 text-info">2</span>
-							</div>
-							<div class="card-header justify-content-center p-0">
-								<h3 class="card-title p-5 m-0">
-									<span class="card-label text-center text-info m-0 font-weight-bolder font-size-h4">Documents List</span>
-								</h3>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="col-xl-2">
-					<a href="<?= base_url('dokumen/koreksi'); ?>" class="text-hover-primary" title="Documents Correction">
-						<div class="card card-custom card-stretch gutter-b text-primary">
-							<div class="card-header border-0 p-0">
-								<img src="<?= base_url('assets/img/document-correction.jpg'); ?>" alt="" style=" max-height:130px" class="m-auto px-3 img-fluid">
-							</div>
-							<div class="card-body d-flex align-items-center justify-content-center p-1 flex-wrap">
-								<span class="font-weight-bolder display5 text-danger">9</span>
-							</div>
-							<div class="card-header justify-content-center p-0">
-								<h3 class="card-title p-5 m-0">
-									<span class="card-label m-0 text-danger text-center font-weight-bolder font-size-h4">Documents Correction</span>
-								</h3>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="col-xl-2">
-					<a href="<?= base_url('dokumen/approve'); ?>" class="text-hover-primary" title="Review Documents">
-						<div class="card card-custom card-stretch gutter-b">
-							<div class="card-header border-0 p-0">
-								<img src="<?= base_url('assets/img/review-document.jpg'); ?>" alt="" style=" max-height:130px" class="m-auto px-3 img-fluid">
-							</div>
-							<div class="card-body d-flex align-items-center justify-content-center p-1 flex-wrap">
-								<span class="font-weight-bolder display5 text-warning">3</span>
-							</div>
-							<div class="card-header p-0 justify-content-center">
-								<h3 class="card-title p-5 m-0">
-									<span class="card-label text-center text-warning m-0 font-weight-bolder font-size-h4">Review Documents</span>
-								</h3>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="col-xl-2">
-					<a href="<?= base_url('dokumen/approve'); ?>" class="text-hover-primary" title="Approvel Documents">
-						<div class="card  card-custom card-stretch gutter-b">
-							<div class="card-header border-0 p-0">
-								<img src="<?= base_url('assets/img/approval-document.jpg'); ?>" alt="" style=" max-height:130px" class="m-auto px-3 img-fluid">
-							</div>
-							<div class="card-body d-flex align-items-center justify-content-center p-1 flex-wrap">
-								<span class="font-weight-bolder display5 text-primary">2</span>
-							</div>
-							<div class="card-header justify-content-center p-0">
-								<h3 class="card-title p-5 m-0">
-									<span class="card-label text-center text-primary m-0 font-weight-bolder font-size-h45">Approval Documents</span>
-								</h3>
-							</div>
-						</div>
-					</a>
+				<div class="col-xl-6 col-sm-6 col-xs-12">
+					<a href="<?= base_url('dokumen') ?>" class="text-left btn btn-success btn-md btn-block font-size-h2 py-5 btn-shadow">
+						<span class="svg-icon svg-icon-3x">
+							<!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/keen/releases/2021-04-21-040700/theme/demo6/dist/../src/media/svg/icons/Files/Selected-file.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+								<g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+									<polygon points="0 0 24 0 24 24 0 24" />
+									<path d="M4.85714286,1 L11.7364114,1 C12.0910962,1 12.4343066,1.12568431 12.7051108,1.35473959 L17.4686994,5.3839416 C17.8056532,5.66894833 18,6.08787823 18,6.52920201 L18,19.0833333 C18,20.8738751 17.9795521,21 16.1428571,21 L4.85714286,21 C3.02044787,21 3,20.8738751 3,19.0833333 L3,2.91666667 C3,1.12612489 3.02044787,1 4.85714286,1 Z M8,12 C7.44771525,12 7,12.4477153 7,13 C7,13.5522847 7.44771525,14 8,14 L15,14 C15.5522847,14 16,13.5522847 16,13 C16,12.4477153 15.5522847,12 15,12 L8,12 Z M8,16 C7.44771525,16 7,16.4477153 7,17 C7,17.5522847 7.44771525,18 8,18 L11,18 C11.5522847,18 12,17.5522847 12,17 C12,16.4477153 11.5522847,16 11,16 L8,16 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+									<path d="M6.85714286,3 L14.7364114,3 C15.0910962,3 15.4343066,3.12568431 15.7051108,3.35473959 L20.4686994,7.3839416 C20.8056532,7.66894833 21,8.08787823 21,8.52920201 L21,21.0833333 C21,22.8738751 20.9795521,23 19.1428571,23 L6.85714286,23 C5.02044787,23 5,22.8738751 5,21.0833333 L5,4.91666667 C5,3.12612489 5.02044787,3 6.85714286,3 Z M8,12 C7.44771525,12 7,12.4477153 7,13 C7,13.5522847 7.44771525,14 8,14 L15,14 C15.5522847,14 16,13.5522847 16,13 C16,12.4477153 15.5522847,12 15,12 L8,12 Z M8,16 C7.44771525,16 7,16.4477153 7,17 C7,17.5522847 7.44771525,18 8,18 L11,18 C11.5522847,18 12,17.5522847 12,17 C12,16.4477153 11.5522847,16 11,16 L8,16 Z" fill="#000000" fill-rule="nonzero" />
+								</g>
+							</svg>
+							<!--end::Svg Icon-->
+						</span>
+						Document List</a>
 				</div>
 			</div>
-			<div class="card card-custom">
+			<div class="card card-custom mt-5">
 				<div class="card-header border-0 pt-7">
 					<h3 class="card-title align-items-start flex-column">
 						<span class="card-label font-weight-bolder font-size-h4 text-dark-75">Lead Categories</span>

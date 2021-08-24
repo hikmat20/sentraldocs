@@ -31,16 +31,11 @@
   </script>
 </head>
 
-<body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled aside-enabled aside-static page-loading">
-  <!--begin::Main-->
-  <!--begin::Header Mobile-->
+<body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled aside-enabled aside-static page-loading" style="background-color: #0c18a9;">
   <div id="kt_header_mobile" class="header-mobile header-mobile-fixed">
-    <!--begin::Logo-->
     <a href="<?= base_url('/'); ?>">
       <img alt="Logo" src="<?= base_url('assets/img/logo.png'); ?>" class="max-h-30px" />
     </a>
-    <!--end::Logo-->
-    <!--begin::Toolbar-->
     <div class="d-flex align-items-center">
       <button class=" btn btn-icon" onclick="$('#kt_aside_toggle').click()">
         <span class="svg-icon svg-icon-xl">
@@ -86,9 +81,7 @@
       </div>
       <!--end::User-->
     </div>
-    <!--end::Toolbar-->
   </div>
-  <!--end::Header Mobile-->
   <!--begin::Aside-->
   <div class="aside aside-left d-flex flex-column flex-row-auto" id="kt_aside">
     <!--begin::Aside Menu-->

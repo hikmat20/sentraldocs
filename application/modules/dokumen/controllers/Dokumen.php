@@ -1307,7 +1307,6 @@ class Dokumen extends Admin_Controller
 	}
 
 
-
 	//APPROVE
 	public function koreksi()
 	{

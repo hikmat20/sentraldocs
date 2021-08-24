@@ -8,6 +8,7 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <div class="d-flex flex-column-fluid">
         <div class="container">
+
             <button type="button" onclick="history.go(-1)" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary" title="Kembali">
                 <i class="fa fa-arrow-left"></i>
             </button>

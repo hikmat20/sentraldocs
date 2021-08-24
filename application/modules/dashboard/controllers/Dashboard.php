@@ -37,4 +37,76 @@ class Dashboard extends Admin_Controller
 		//$this->template->set('sum_penacc', $sum_penacc);
 		$this->template->render('index');
 	}
+
+	public function create_documents()
+	{
+		$this->template->set('title', 'Create Document');
+		$pictures = $this->db->get('pictures')->result();
+		$this->template->set('pictures', $pictures);
+		$this->template->render('create-document');
+	}
+
+	public function picture()
+	{
+		$id 		= $this->input->post('id');
+		$picture 	= $this->db->get_where('pictures', ['id' => $id])->row();
+
+		$this->template->set('picture', $picture);
+		$this->template->render('change-picture');
+	}
+
+	public function upload()
+	{
+
+		$old_picture 	= $this->input->post('old_picture');
+		$id 			= $this->input->post('id');
+
+		$config['upload_path']          = './assets/img/';
+		$config['allowed_types']        = 'gif|jpg|png';
+		$config['max_size']             = 500;
+		$config['max_width']            = 1000;
+		$config['max_height']           = 1000;
+		$this->load->library('upload', $config);
+		$this->upload->initialize($config);
+
+		if (!$this->upload->do_upload('picture')) {
+			$error = $this->upload->display_errors();
+
+			$collback = [
+				'msg' => $error,
+				'status' => 0
+			];
+			echo json_encode($collback);
+			return FALSE;
+		} else {
+			if ($old_picture) {
+				unlink('./assets/img/' . $old_picture);
+			}
+			$dataPicture = $this->upload->data();
+			$picture = $dataPicture['file_name'];
+		}
+
+		$Arr_data = [
+			'pictures' => $picture,
+		];
+		$this->db->trans_begin();
+		$this->db->update('pictures', $Arr_data, ['id' => $id]);
+
+		if ($this->db->trans_status() == false) {
+			$this->db->trans_rollback();
+			$collback = [
+				'msg' => 'Upload Faild, Please ty again!',
+				'status' => 0
+			];
+		} else {
+			$this->db->trans_commit();
+		}
+		$collback = [
+			'msg' => 'Upload Success!',
+			'status' => 1,
+			'picture' => $picture
+		];
+
+		echo json_encode($collback);
+	}
 }

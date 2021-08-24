@@ -177,7 +177,6 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
         $.ajax({
             type: "post",
             url: siteurl + active_controller + 'history_revisi',
-
             data: "id=" + id + "&table=" + table + "&file=" + file,
             success: function(result) {
                 // $(".modal-dialog").css('max-width', '1360px !important');
