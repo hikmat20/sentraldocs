@@ -34,7 +34,7 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
 
 
 				$where1    = 'status_approve=1 OR status_approve=3';
-				$row1		= $this->Folders_model->getDataApprove('sgambar', $where1);
+				$row1		= $this->Folders_model->getDataApprove('gambar', $where1);
 				echo '<pre>';
 				print_r($row1);
 				echo '<pre>';
