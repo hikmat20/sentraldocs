@@ -57,7 +57,6 @@ class Dashboard extends Admin_Controller
 
 	public function upload()
 	{
-
 		$old_picture 	= $this->input->post('old_picture');
 		$id 			= $this->input->post('id');
 

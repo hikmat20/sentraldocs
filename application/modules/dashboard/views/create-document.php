@@ -271,11 +271,61 @@
 			var output = document.getElementById('preview');
 			output.src = reader.result;
 			console.log(reader);
+			let dataUpload = new FormData($('#dataUpload')[0]);
+			$.ajax({
+				url: baseurl + active_controller + 'upload',
+				type: 'POST',
+				data: dataUpload,
+				dataType: 'JSON',
+				cache: false,
+				processData: false,
+				contentType: false,
+				success: function(result) {
+					console.log(result.msg);
+					if (result.status == 1) {
+						$('#msg-upload').fadeIn('ease').html(`
+							<div class="alert alert-custom py-3 alert-light-primary fade show mb-5" role="alert">
+								<div class="alert-icon"><i class="fa fa-info-circle"></i></div>
+								<div class="alert-text">` + result.msg + `</div>
+								<div class="alert-close">
+									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+										<span aria-hidden="true"><i class="ki ki-close"></i></span>
+									</button>
+								</div>
+							</div>`)
+						$('#old_picture').val(result.photo);
+						setTimeout(function() {
+							$('#msg-upload').fadeOut('ease')
+						}, 5000)
+					} else {
+						$('#msg-upload').fadeIn('ease').html(`\
+							<div class="alert alert-danger">
+								<div class="alert alert-custom py-3 alert-light-danger fade show mb-5" role="alert">
+									<div class="alert-icon"><i class="fas fa-exclamation-triangle"></i></div>
+									<div class="alert-text">` + result.msg + `</div>
+									<div class="alert-close">
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+											<span aria-hidden="true"><i class="ki ki-close"></i></span>
+										</button>
+									</div>
+								</div>`)
+						// return false;
+						setTimeout(function() {
+							$('#msg-upload').fadeOut('ease')
+							$('#preview').attr('src', './assets/img/' + old_picture);
+						}, 5000)
+					}
+				},
+				error: function(result) {
+					alert('Internal Error!');
+					console.log(result);
+				}
+			})
 		}
 		reader.readAsDataURL(event.target.files[0]);
 	})
 
-	$(document).on('click', '.save-cover', function() {
+	$(document).on('click', '#upload', function() {
 		let id = $(this).data('id')
 		let dataUpload = new FormData($('#dataUpload')[0]);
 		$.ajax({
@@ -320,6 +370,30 @@
 						$('#msg-upload').fadeOut('ease')
 						$('#preview').attr('src', './assets/img/' + old_picture);
 					}, 5000)
+				}
+			},
+			error: function(result) {
+				alert('Internal Error!');
+				console.log(result);
+			}
+		})
+	})
+
+	$(document).on('click', '.change-picture', function() {
+		let id = $(this).data('id')
+		$.ajax({
+			url: baseurl + active_controller + 'picture',
+			type: 'POST',
+			data: {
+				id
+			},
+			success: function(result) {
+				if (result) {
+					$('#exampleModal').modal('show');
+					$('#viewData').html(result);
+				} else {
+					$('#exampleModal').modal('show');
+					$('#viewData').html('-- No Data --');
 				}
 			},
 			error: function(result) {
