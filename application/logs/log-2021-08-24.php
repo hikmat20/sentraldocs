@@ -12,3 +12,9 @@ ERROR - 2021-08-24 03:36:14 --> Query error: Unknown column 'status_approval' in
 FROM `gambar`
 WHERE `status_approval` = 0
 ERROR - 2021-08-24 03:43:06 --> Severity: Notice --> Undefined variable: allApv D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dashboard\views\create-document.php 231
+ERROR - 2021-08-24 10:53:32 --> Severity: Notice --> Undefined variable: approve1 D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 74
+ERROR - 2021-08-24 10:53:40 --> Severity: Notice --> Undefined variable: approve1 D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 74
+ERROR - 2021-08-24 10:53:47 --> Severity: Notice --> Undefined variable: approve1 D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 74
+ERROR - 2021-08-24 10:56:45 --> Query error: Table 'sentraldocs_db.sgambar' doesn't exist - Invalid query: SELECT *
+FROM `sgambar`
+WHERE `status_approve` = 1 OR `status_approve` = 3

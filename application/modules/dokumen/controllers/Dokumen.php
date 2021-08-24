@@ -23,7 +23,7 @@ class Dokumen extends Admin_Controller
 		$this->load->helper('download');
 		$this->load->library(array('upload', 'Image_lib'));
 		$this->load->model(array(
-			'Folders/Folders_model',
+			'folders/Folders_model',
 			'Aktifitas/aktifitas_model'
 		));
 
