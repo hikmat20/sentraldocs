@@ -31,14 +31,9 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
 				<?php
 				$idjabatan = $jabatan;
 
-
-
 				$where1    = 'status_approve=1 OR status_approve=3';
 				$row1		= $this->Folders_model->getDataApprove('gambar', $where1);
-				echo '<pre>';
-				print_r($row1);
-				echo '<pre>';
-				exit;
+
 				if ($row1) {
 					$int1	= 0;
 					foreach ($row1 as $datas1) {
@@ -72,7 +67,7 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
 						// else{
 						// echo "<td></td>";	
 						// }						
-						echo "<td>" . $approve1 . "</td>";
+						echo "<td> asdas" . $approve1 . "</td>";
 						echo "<td>" . $datas1->created . "</td>";
 						echo "<td align='left'>";
 						if ($ENABLE_VIEW) {
