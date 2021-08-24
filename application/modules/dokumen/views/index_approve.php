@@ -67,7 +67,7 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
 						// else{
 						// echo "<td></td>";	
 						// }						
-						echo "<td> asdas" . $approve1 . "</td>";
+						echo "<td>" . @$approve1 . "</td>";
 						echo "<td>" . $datas1->created . "</td>";
 						echo "<td align='left'>";
 						if ($ENABLE_VIEW) {
