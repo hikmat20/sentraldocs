@@ -20,6 +20,7 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
             <button type="button" id="btn-delete" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary" title="Delete">
                 <i class="fa fa-trash"></i>
             </button> -->
+            
                     <h4 for="">Master Dokumen</h4>
                     <div class="row">
                         <?php if ($masDoc) :
