@@ -27,7 +27,7 @@ class Auth
 
     public function user_id()
     {
-        return isset($this->user['id_user']);
+        return (isset($this->user['id_user'])) ? $this->user['id_user'] : '';
     }
 
     public function user_name()
@@ -49,6 +49,7 @@ class Auth
     {
         $userdata =  $this->ci->users_model->select(array("users.*"))
             ->find($this->user_id());
+
         $user_groups = "";
 
         if ($this->is_admin()) {

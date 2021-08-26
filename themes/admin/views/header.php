@@ -112,10 +112,7 @@
                   <?php echo isset($userData->nm_lengkap) ? ucwords($userData->nm_lengkap) : $userData->username;
                   $kdprsh    = $userData->id_perusahaan;
                   $perusahaan = $this->db->query("SELECT nm_perusahaan FROM perusahaan WHERE id_perusahaan='$kdprsh'")->row();
-                  echo '<pre>';
-                  print_r($userData);
-                  echo '<pre>';
-                  exit;
+
                   ?></span><span>&nbsp;-</span>
                 <span class="logo-lg"><b><?= isset($perusahaan->nm_perusahaan) ? $perusahaan->nm_perusahaan : 'not-set'; ?></b></span>
               </a>

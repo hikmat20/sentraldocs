@@ -214,3 +214,14 @@ ERROR - 2021-08-26 09:48:26 --> 404 Page Not Found: /index
 ERROR - 2021-08-26 10:24:19 --> 404 Page Not Found: /index
 ERROR - 2021-08-26 10:24:20 --> 404 Page Not Found: /index
 ERROR - 2021-08-26 17:24:39 --> Severity: Notice --> Trying to get property 'nm_lengkap' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 67
+ERROR - 2021-08-26 11:13:30 --> Severity: Notice --> Trying to access array offset on value of type null D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\users\libraries\Auth.php 30
+ERROR - 2021-08-26 11:13:30 --> Severity: Notice --> Trying to access array offset on value of type null D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\users\libraries\Auth.php 30
+ERROR - 2021-08-26 11:13:31 --> 404 Page Not Found: /index
+ERROR - 2021-08-26 11:13:42 --> 404 Page Not Found: /index
+ERROR - 2021-08-26 11:14:23 --> Severity: Notice --> Trying to access array offset on value of type null D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\users\libraries\Auth.php 30
+ERROR - 2021-08-26 11:14:23 --> Severity: Notice --> Trying to access array offset on value of type null D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\users\libraries\Auth.php 30
+ERROR - 2021-08-26 11:14:24 --> 404 Page Not Found: /index
+ERROR - 2021-08-26 11:14:28 --> 404 Page Not Found: /index
+ERROR - 2021-08-26 11:14:50 --> 404 Page Not Found: /index
+ERROR - 2021-08-26 11:14:55 --> 404 Page Not Found: /index
+ERROR - 2021-08-26 18:15:23 --> Severity: Notice --> Trying to get property 'nm_lengkap' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 67
