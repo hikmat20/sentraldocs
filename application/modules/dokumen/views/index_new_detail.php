@@ -47,7 +47,7 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
                         <?php endif; ?>
                     </div>
                     <hr class="my-8">
-                    <h4 for="">Detail Dokumen</h4>
+                    <h4 for="">Lampiran Dokumen</h4>
                     <div class="row">
                         <?php if ($row) :
                             foreach ($row as $data) :
