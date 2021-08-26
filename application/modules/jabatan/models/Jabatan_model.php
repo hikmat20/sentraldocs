@@ -66,9 +66,17 @@ class Jabatan_model extends BF_Model
 	
 	// Fungsi untuk menampilkan semua data gambar
  	public function getData($table,$where_field='',$where_value=''){
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+		
 		if($where_field !='' && $where_value!=''){
+			$this->db->where('id_perusahaan', $prsh); 
+			$this->db->where('id_cabang', $cbg); 
 			$query = $this->db->get_where($table, array($where_field=>$where_value));
 		}else{
+			$this->db->where('id_perusahaan', $prsh); 
+			$this->db->where('id_cabang', $cbg); 
 			$query = $this->db->get($table);
 		}
 		

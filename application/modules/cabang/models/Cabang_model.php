@@ -1,10 +1,10 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /*
- * @author Yunas Handra
- * @copyright Copyright (c) 2018, Yunas Handra
+ * @author Syamsudin
+ * @copyright Copyright (c) 2021, Syamsudin
  *
- * This is model class for table "Cabang"
+ * This is model class for table "Perusahaan"
  */
 
 class Cabang_model extends BF_Model
@@ -13,8 +13,8 @@ class Cabang_model extends BF_Model
     /**
      * @var string  User Table Name
      */
-    protected $table_name = 'cabang';
-    protected $key        = 'id';
+    protected $table_name = 'perusahaan_cbg';
+    protected $key        = 'id_cabang';
 
     /**
      * @var string Field name to use for the created time column in the DB table
@@ -46,7 +46,7 @@ class Cabang_model extends BF_Model
      * If false, the delete() method will perform a delete of that row.
      * If true, the value in $deleted_field will be set to 1.
      */
-    protected $soft_deletes = true;
+    protected $soft_deletes = false;
 
     protected $date_format = 'datetime';
 
@@ -62,6 +62,21 @@ class Cabang_model extends BF_Model
     public function __construct()
     {
         parent::__construct();
+    }
+	
+	  function get_data($table)
+    {
+       return $this->db->get($table)->result();
+    }
+	
+	 function get_data_where($table,$where)
+    {
+       return $this->db->get_where($table,$where)->result();
+    }
+
+    function getById($id)
+    {
+       return $this->db->get_where('perusahaan',array('id' => $id))->row_array();
     }
 
     public function pilih_kota(){

@@ -4,6 +4,10 @@
     $ENABLE_VIEW    = has_permission('Folders.View');
     $ENABLE_DELETE  = has_permission('Folders.Delete');
 	$ENABLE_DOWNLOAD  = has_permission('Folders.Download');
+	
+	$session = $this->session->userdata('app_session');
+	$prsh    = $session['id_perusahaan'];
+	$cbg     = $session['id_cabang'];
 ?>
 <link rel="stylesheet" href="<?= base_url('assets/plugins/datatables/dataTables.bootstrap.css')?>">     
 <div class="box box-primary">
@@ -22,6 +26,7 @@
 				  <th>DESKRIPSI</th>
 				  <th>NAMA FILE</th>
 				  <th>Rev</th>
+				  <th>Approve By</th>
 				  <th>Status Approval</th>
 				  <th>Created On</th>
 				  <th align="center">Option</th>
@@ -30,6 +35,7 @@
 			<tbody>
 			  <?php 
 			  $idjabatan = $jabatan;
+			  $iduser    = $user;
 			
 			  
 					
@@ -41,19 +47,37 @@
 					 if($row1){
 					 $int1	=0;
 					 foreach($row1 as $datas1){
+						
+						 
+						$jabreview1 = $datas1->id_review;
+						$jabapprove1 = $datas1->id_approval;
+						
 						 if($datas1->status_approve=='0'){
 						 $approve1 = 'Revisi';
 						 }
 						 else if($datas1->status_approve=='1'){
 						 $approve1 = 'Waiting Approval';
 						 }
+						 
+						  else if($datas1->status_approve=='3'){
+						 $approve1 = 'Waiting Review';
+						 }
+						
 						$int1++;
 						echo"<tr>";	
 						    echo "<td>".$datas1->deskripsi."</td>";
                             echo "<td>".$datas1->nama_file."</td>";
 							echo "<td>".$datas1->revisi."</td>";
+							
+							$approve_by = $datas1->id_approval;
+							
 							 $dtid = $datas1->id;
-							  $appr = $this->db->query("SELECT approval_on as tgl_dt, keterangan as ket_dt FROM tbl_approval WHERE id_dokumen ='$dtid' AND nm_table='gambar'")->result_array();		  
+							  $carireview1 = $this->db->query("SELECT * FROM tbl_pejabat WHERE id_user ='$iduser' AND id_jabatan='$jabreview1' AND id_perusahaan='$prsh' AND id_cabang='$cbg'")->num_rows();	
+
+							  $cariapproval1 = $this->db->query("SELECT * FROM tbl_pejabat WHERE id_user ='$iduser' AND id_jabatan='$jabapprove1' AND id_perusahaan='$prsh' AND id_cabang='$cbg'")->num_rows();
+
+
+							$approveby = $this->db->query("SELECT * FROM users WHERE id_user ='$approve_by'")->row();							  
 							  							 
 							// if(!empty($appr)) {
 								// $approval = array();
@@ -71,19 +95,20 @@
 								
 								// else{
 							    // echo "<td></td>";	
-				             	// }						
+				             	// }	
+                            echo "<td>".$approveby->nm_lengkap."</td>";								
 							echo "<td>".$approve1."</td>";
 							echo "<td>".$datas1->created."</td>";
 							echo"<td align='left'>";
 							if($ENABLE_VIEW){	
-							if($datas1->status_approve=='3' && $datas1->id_review==$idjabatan ){	?>
+							if($datas1->status_approve=='3' && $carireview1 > 0 ){	?>
                             <a href="#" class="btn btn-sm btn-primary review"title="Review Data" data-id="<?php echo $datas1->id ?>" data-file="<?php echo $datas1->nama_file ?>" data-table="gambar"> <i class="fa fa-eye"></i><a/>							
 							
 							
 							<?php
 							}
 							
-							else if($datas1->status_approve=='1' && $datas1->id_approval==$idjabatan ){	?>
+							else if($datas1->status_approve=='1' && $cariapproval1 > 0 ){	?>
                             <a href="#" class="btn btn-sm btn-warning approve"title="Approve Data" data-id="<?php echo $datas1->id ?>" data-file="<?php echo $datas1->nama_file ?>" data-table="gambar"> <i class="fa fa-check"></i><a/>							
 							
 							
@@ -102,12 +127,20 @@
 					 
 					 }
 							    
-								$where2    = array('status_approve'=>1);			
+								
+								$where2    = 'status_approve=1 OR status_approve=3';		
 								$row2		= $this->Folders_model->getDataApprove('gambar1',$where2);
 								 
 								 if($row2){
 								 $int1	=0;
 								 foreach($row2 as $datas2){
+									 
+									 $jabreview2 =  $datas2->id_review;
+									 $jabapprove2 = $datas2->id_approval;
+									 
+									 $carireview2 = $this->db->query("SELECT * FROM tbl_pejabat WHERE id_user ='$user' AND id_jabatan='$jabreview2' AND id_perusahaan='$prsh' AND id_cabang='$cbg' ")->result_array();	
+
+									$cariapproval2 = $this->db->query("SELECT * FROM tbl_pejabat WHERE id_user ='$user' AND id_jabatan='$jabapprove2' AND id_perusahaan='$prsh' AND id_cabang='$cbg'")->result_array();					
 									 
 									 if($datas2->status_approve=='0'){
 									 $approve2 = 'Revisi';
@@ -145,10 +178,17 @@
 							            echo "<td>".$approve2."</td>";
 										echo "<td>".$datas2->created."</td>";
 										echo"<td align='left'>";
-										if($ENABLE_VIEW){
-
-										if($datas2->status_approve=='1' && $datas2->id_approval==$idjabatan){?>
-										<a href="#"  class="btn btn-sm btn-warning approve" title="Approve Data" data-id="<?php echo $datas2->id ?>" data-file="<?php echo $datas2->nama_file ?>" data-table="gambar1"><i class="fa fa-check"></i><a/>							
+										if($ENABLE_VIEW){	
+										if($datas2->status_approve=='3' && !empty($carireview2) ){	?>
+										<a href="#" class="btn btn-sm btn-primary review"title="Review Data" data-id="<?php echo $datas2->id ?>" data-file="<?php echo $datas2->nama_file ?>" data-table="gambar1"> <i class="fa fa-eye"></i><a/>							
+										
+										
+										<?php
+										}
+										
+										else if($datas2->status_approve=='1' && !empty($cariapproval2) ){	?>
+										<a href="#" class="btn btn-sm btn-warning approve"title="Approve Data" data-id="<?php echo $datas2->id ?>" data-file="<?php echo $datas2->nama_file ?>" data-table="gambar1"> <i class="fa fa-check"></i><a/>							
+										
 										
 										<?php
 										}
@@ -166,12 +206,20 @@
 								 
 								 }
 					  
-										$where3     =array('status_approve'=>1);		
+										$where3 = 'status_approve=1 OR status_approve=3';		
 										$row3		= $this->Folders_model->getDataApprove('gambar2',$where3);
 										 
 										 if($row3){
 										 $int1	=0;
 										 foreach($row3 as $datas3){
+											 
+											  $jabreview3 =  $datas3->id_review;
+											 $jabapprove3 = $datas3->id_approval;
+											 
+											 $carireview3 = $this->db->query("SELECT * FROM tbl_pejabat WHERE id_user ='$user' AND id_jabatan='$jabreview3' AND id_perusahaan='$prsh' AND id_cabang='$cbg'")->result_array();	
+
+											$cariapproval3 = $this->db->query("SELECT * FROM tbl_pejabat WHERE id_user ='$user' AND id_jabatan='$jabapprove3' AND id_perusahaan='$prsh' AND id_cabang='$cbg' ")->result_array();
+									
 											 if($datas3->status_approve=='0'){
 											 $approve3 = 'Revisi';
 											 }
@@ -184,11 +232,36 @@
 												echo "<td>".$datas3->nama_file."</td>";
 												echo "<td>".$datas3->revisi."</td>";
 							  
-												echo"</td>";
-												echo"</tr>";
-										  }
-										 
-										 }
+												 echo "<td>".$approve3."</td>";
+										echo "<td>".$datas3->created."</td>";
+										echo"<td align='left'>";
+										if($ENABLE_VIEW){	
+										if($datas3->status_approve=='3' && !empty($carireview3) ){	?>
+										<a href="#" class="btn btn-sm btn-primary review"title="Review Data" data-id="<?php echo $datas3->id ?>" data-file="<?php echo $datas3->nama_file ?>" data-table="gambar2"> <i class="fa fa-eye"></i><a/>							
+										
+										
+										<?php
+										}
+										
+										else if($datas2->status_approve=='1' && !empty($cariapproval3) ){	?>
+										<a href="#" class="btn btn-sm btn-warning approve"title="Approve Data" data-id="<?php echo $datas3->id ?>" data-file="<?php echo $datas3->nama_file ?>" data-table="gambar2"> <i class="fa fa-check"></i><a/>							
+										
+										
+										<?php
+										}
+										}
+							            // if($ENABLE_DOWNLOAD){
+										// echo"<a href='".site_url('dokumen/download_detail1/'.$datas2->id)."' class='btn btn-sm btn-primary' title='Download Data' data-role='qtip'><i class='fa fa-download'></i></a>";
+										
+										// }
+										
+										echo"</td>";
+										echo"</tr>";
+										
+										
+											  }
+								 
+								 }
 						
 					 
 					

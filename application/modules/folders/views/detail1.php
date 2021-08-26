@@ -56,7 +56,9 @@
 						 else if($datas->status_approve=='2'){
 						 $approve1 = 'Approval';
 						 }
-						 
+						  else if($datas->status_approve=='3'){
+						 $approve1 = 'Waiting Review';
+						 }
 						 
 							
 							

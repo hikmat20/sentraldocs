@@ -1115,11 +1115,13 @@ class Dokumen extends Admin_Controller {
         $this->auth->restrict($this->viewPermission);
         $session = $this->session->userdata('app_session');
 		$jabatan = $session['id_jabatan'];
+		$user    = $session['id_user'];
 		$this->template->page_icon('fa fa-folder-open');
         $get_Data		= $this->Folders_model->getData('master_gambar');
 		$this->template->set('row', $get_Data);
         $this->template->title('Index Of Dokumen');
 		$this->template->set('jabatan',$jabatan);
+		$this->template->set('user',$user);
         $this->template->render('index_approve');
 		
     }
@@ -1473,6 +1475,14 @@ class Dokumen extends Admin_Controller {
 		// echo"<pre>";print_r($this->input->post());exit;
 		    $insert = $this->db->query("SELECT * FROM $table WHERE id='$id_detail' ")->row();
 			$norev  = $insert->revisi;
+			
+			if($insert->id_review !='0'){
+			$approve	= '3';	
+			}
+			else{
+			$approve	= '1';
+			}
+
 
             $Arr_Kembali			= array();			
 	 
@@ -1493,13 +1503,8 @@ class Dokumen extends Admin_Controller {
 			$data_session			= $this->session->userdata;
 			$data['created_by']		= $this->auth->user_id(); 
 			$data['created']		= date('Y-m-d H:i:s');
+			$data['status_approve']	= $approve;	
 			
-			if($insert->id_review !=''){
-			$data['status_approve']	= 3;	
-			}
-			else{
-			$data['status_approve']	= 1;
-			}
 			
 			
 			$data_insert = array(
@@ -1513,7 +1518,7 @@ class Dokumen extends Admin_Controller {
 							'created'	    	=> $insert->created,
 							'id_master'	    	=> $insert->id_master,
 							'id_approval'	    => $insert->id_approval,
-							'status_approve'	=> $insert->status_approve,
+							'status_approve'	=> $approve,
 							'revisi'	        => $norev,
 							'id_dokumen'	    => $insert->id,
 							'nm_table'	        => $table
@@ -1533,7 +1538,7 @@ class Dokumen extends Admin_Controller {
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['id_master']		= $id_master;
 			$data['id']		        = $id_detail;
-			if($insert->id_review !=''){
+			if($insert->id_review !='0'){
 			$data['status_approve']	= 3;	
 			}
 			else{
@@ -1615,6 +1620,13 @@ class Dokumen extends Admin_Controller {
 		
 		    $insert = $this->db->query("SELECT * FROM $table  WHERE id='$id_detail'")->row();
 			$norev  = $insert->revisi;
+			if($insert->id_review !='0'){
+			$approve	= '3';	
+			}
+			else{
+			$approve	= '1';
+			}
+
 
             $Arr_Kembali			= array();			
 	 
@@ -1635,12 +1647,8 @@ class Dokumen extends Admin_Controller {
 			$data_session			= $this->session->userdata;
 			$data['created_by']		= $this->auth->user_id(); 
 			$data['created']		= date('Y-m-d H:i:s');
-			if($insert->id_review !=''){
-			$data['status_approve']	= 3;	
-			}
-			else{
-			$data['status_approve']	= 1;
-			}
+			
+			$data['status_approve']	= $approve;	
 			
 			
 			
@@ -1676,12 +1684,8 @@ class Dokumen extends Admin_Controller {
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['id_master']		= $id_master;
 			$data['id_detail']		= $id_detail;
-			if($insert->id_review !=''){
-			$data['status_approve']	= 3;	
-			}
-			else{
-			$data['status_approve']	= 1;
-			}
+			$data['status_approve']	= $approve;	
+			
 			$update = $this->Folders_model->getUpdate('gambar1',$data,'id',$this->input->post('id'));
 			}
 			
@@ -1755,6 +1759,12 @@ class Dokumen extends Admin_Controller {
 		
 		    $insert = $this->db->query("SELECT * FROM $table WHERE id='$id_detail' ")->row();
 			$norev  = $insert->revisi;
+			if($insert->id_review !='0'){
+			$approve	= '3';	
+			}
+			else{
+			$approve	= '1';
+			}
 
             $Arr_Kembali			= array();			
 	 
@@ -1775,12 +1785,7 @@ class Dokumen extends Admin_Controller {
 			$data_session			= $this->session->userdata;
 			$data['created_by']		= $this->auth->user_id(); 
 			$data['created']		= date('Y-m-d H:i:s');
-			if($insert->id_review !=''){
-			$data['status_approve']	= 3;	
-			}
-			else{
-			$data['status_approve']	= 1;
-			}
+			
 			
 			$data_insert = array(
 							
@@ -1795,7 +1800,7 @@ class Dokumen extends Admin_Controller {
 							'id_detail'	    	=> $insert->id_detail,
 							'id_detail1'	    => $insert->id_detail1,
 							'id_approval'	    => $insert->id_approval,
-							'status_approve'	=> $insert->status_approve,
+							'status_approve'	=> $approve,
 							'revisi'	        => $norev,
 							'id_dokumen'	    => $insert->id,
 							'nm_table'	        => $table
@@ -1815,12 +1820,7 @@ class Dokumen extends Admin_Controller {
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['id_master']		= $id_master;
 			$data['id_detail']		= $id_detail;
-			if($insert->id_review !=''){
-			$data['status_approve']	= 3;	
-			}
-			else{
-			$data['status_approve']	= 1;
-			}
+			$data['status_approve']	= $approve;	
 			$update = $this->Folders_model->getUpdate('gambar2',$data,'id',$this->input->post('id'));
 			}
 			

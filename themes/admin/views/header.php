@@ -111,8 +111,13 @@
               <!-- The user image in the navbar-->
               <img src="<?= (isset($userData->photo) && file_exists('assets/images/users/'.$userData->photo)) ? base_url('assets/images/users/'.$userData->photo) : base_url('assets/images/male-def.png'); ?>" class="user-image" alt="User Image">
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">
-              <?php echo isset($userData->nm_lengkap) ? ucwords($userData->nm_lengkap) : $userData->username; ?></span>
+             <span class="hidden-xs">
+				<?php echo isset($userData->nm_lengkap) ? ucwords($userData->nm_lengkap) : $userData->username;
+				$kdprsh    = $userData->id_perusahaan;
+				$perusahaan = $this->db->query("SELECT nm_perusahaan FROM perusahaan WHERE id_perusahaan='$kdprsh'")->row();
+
+				?></span><span>&nbsp;-</span>
+			<span class="logo-lg"><b><?= isset($perusahaan->nm_perusahaan) ? $perusahaan->nm_perusahaan : 'not-set'; ?></b></span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->

@@ -35,6 +35,9 @@ class Folders extends Admin_Controller {
     {
         $this->auth->restrict($this->viewPermission);
         $session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+		
 		$this->template->page_icon('fa fa-folder-open');
         $get_Data		= $this->Folders_model->getData('master_gambar');
 		$this->template->set('row', $get_Data);
@@ -46,6 +49,8 @@ class Folders extends Admin_Controller {
 	public function add(){
 		$this->auth->restrict($this->viewPermission);
         $session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
 		
 		
 		if($this->input->post()){
@@ -55,6 +60,8 @@ class Folders extends Admin_Controller {
 			$data['created_by']		= $data_session['User']['username']; 
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['nama_master']	= $this->input->post('nama_master');
+			$data['id_perusahaan']  = $prsh;
+			$data['id_cabang']		= $cbg;
 			
 			if($this->Folders_model->simpan('master_gambar',$data)){
 				$Arr_Kembali		= array(
@@ -108,6 +115,8 @@ class Folders extends Admin_Controller {
 	public function detail(){
 		$this->auth->restrict($this->viewPermission);
         $session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
 		
 		$id_master 			= $this->input->get('id_master');
 		$get_Data		= $this->Folders_model->getData('gambar','id_master',$id_master);
@@ -128,6 +137,10 @@ class Folders extends Admin_Controller {
 		$config['upload_path'] = './assets/files/'; //path folder
 	    $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip|vsd'; //type yang dapat diakses bisa anda sesuaikan
 	    $config['encrypt_name'] = false; //Enkripsi nama yang terupload
+		
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
 		
 
 	    $this->upload->initialize($config);
@@ -155,7 +168,9 @@ class Folders extends Admin_Controller {
 			}
 		if($this->input->post()){
 		$id_master 	= $this->input->post('id_master');	
-		// echo"<pre>";print_r($id_master);exit;	        
+		// echo"<pre>";
+		// print_r($this->input->post());
+		// exit;	        
 	 
 			
 			$Arr_Kembali			= array();			
@@ -169,6 +184,8 @@ class Folders extends Admin_Controller {
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['id_master']		= $id_master;
 			$data['id_approval']	= $this->input->post('id_approval');	
+			$data['id_perusahaan']  = $prsh;
+			$data['id_cabang']		= $cbg;
             
 			if( $this->input->post('id_review')!=''){
 			$data['status_approve']	= 3;
@@ -204,6 +221,17 @@ class Folders extends Admin_Controller {
 		}else{		
 		$id_master 	= $this->input->get('id_master');		
 		$this->template->page_icon('fa fa-folder');
+		$users	= $this->db->query("SELECT * FROM users WHERE nm_lengkap != 'Administrator' AND id_perusahaan='$prsh' AND id_cabang='$cbg' ORDER BY nm_lengkap ASC")->result_array();  
+		
+		$option = '';
+		foreach ($users as $key => $value) {
+			$option .= "<option value='".$value['id_user']."'>".$value['nm_lengkap']."</option>";
+		}
+
+		$data = [
+			'users' => $option
+		];
+        $this->template->set('results', $data);
        	$this->template->set('idmaster',$id_master);
 		$this->template->set('action', 'add');
         $this->template->title('Add Documents');
@@ -213,9 +241,13 @@ class Folders extends Admin_Controller {
 	
 	public function edit($id=''){
 		
-	$config['upload_path'] = './assets/files/'; //path folder
+		$config['upload_path'] = './assets/files/'; //path folder
 	    $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
 	    $config['encrypt_name'] = false; //Enkripsi nama yang terupload
+		
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
 		
 
 	    $this->upload->initialize($config);
@@ -311,6 +343,10 @@ class Folders extends Admin_Controller {
 	
 	public function download($id){
 		//echo"<pre>";print_r($id);exit;
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+		
 	    $id_master = $this->db->query("SELECT id_master FROM gambar WHERE id='$id'")->row();
 		$idmaster = $id_master->id_master;
 		$pth    =   file_get_contents(base_url()."./assets/files/".$id);
@@ -323,6 +359,11 @@ class Folders extends Admin_Controller {
     	
 	
 	function delete_detail($id){
+		
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+		
 		$id_master = $this->db->query("SELECT id_master FROM gambar WHERE id='$id'")->row();
 		$idmaster  = $id_master->id_master;
 		// print_r($idmaster);
@@ -350,7 +391,9 @@ class Folders extends Admin_Controller {
 		$config['upload_path'] = './assets/files/'; //path folder
 	    $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
 	    $config['encrypt_name'] = false; //Enkripsi nama yang terupload
-		
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
 
 	    $this->upload->initialize($config);
 	        if ($this->upload->do_upload('image')){
@@ -392,6 +435,8 @@ class Folders extends Admin_Controller {
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['id_master']		= $id_master;
 			$data['id_detail']		= $id_detail;
+			$data['id_perusahaan']  = $prsh;
+			$data['id_cabang']		= $cbg;
 			$data['id_approval']	= $this->input->post('id_approval');	
 			$data['status_approve']	= 1;	
 
@@ -421,6 +466,19 @@ class Folders extends Admin_Controller {
 		$id_master 	= $this->uri->segment('4');	
         $id_detail 	= $this->uri->segment('3');			
 		$this->template->page_icon('fa fa-folder-open');
+		
+		$users	= $this->db->query("SELECT * FROM users WHERE nm_lengkap != 'Administrator' AND id_perusahaan='$prsh' AND id_cabang='$cbg' ORDER BY nm_lengkap ASC")->result_array();  
+		
+		$option = '';
+		foreach ($users as $key => $value) {
+			$option .= "<option value='".$value['id_user']."'>".$value['nm_lengkap']."</option>";
+		}
+
+		$data = [
+			'users' => $option
+		];
+        $this->template->set('results', $data);
+		
        	$this->template->set('idmaster',$id_master);
 		$this->template->set('iddetail',$id_detail);
 		$this->template->set('action', 'add');
@@ -434,6 +492,9 @@ class Folders extends Admin_Controller {
 	public function detail1(){
 		$this->auth->restrict($this->viewPermission);
         $session = $this->session->userdata('app_session');
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
 		
 		$id_detail			= $this->input->get('id_detail');
 		$get_Data		= $this->Folders_model->getData('gambar1','id_detail',$id_detail);
@@ -457,7 +518,9 @@ class Folders extends Admin_Controller {
 		$config['upload_path'] = './assets/files/'; //path folder
 	    $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
 	    $config['encrypt_name'] = false; //Enkripsi nama yang terupload
-		
+		 $session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
 
 	    $this->upload->initialize($config);
 	        if ($this->upload->do_upload('image')){
@@ -485,7 +548,7 @@ class Folders extends Admin_Controller {
 		if($this->input->post()){
 		$id_master 	= $this->input->post('id_master');	
 		$id_detail 	= $this->input->post('id_detail');	
-		// echo"<pre>";print_r($id_master);exit;	        
+		// echo"<pre>";print_r($this->input->post());exit;	        
 	 
 			
 			$Arr_Kembali			= array();			
@@ -499,6 +562,8 @@ class Folders extends Admin_Controller {
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['id_master']		= $id_master;
 			$data['id_detail']		= $id_detail;
+			$data['id_perusahaan']  = $prsh;
+			$data['id_cabang']		= $cbg;
 			$data['id_approval']	= $this->input->post('id_approval');	
 			
 			if( $this->input->post('id_review')!=''){
@@ -535,6 +600,19 @@ class Folders extends Admin_Controller {
 		$id_detail 	= $this->input->get('id_detail');	
         $id_master  = $this->db->query("SELECT id_master FROM gambar WHERE id='$id_detail'")->row();		
 		$this->template->page_icon('fa fa-folder-open');
+		
+		$users	= $this->db->query("SELECT * FROM users WHERE nm_lengkap != 'Administrator' AND id_perusahaan='$prsh' AND id_cabang='$cbg' ORDER BY nm_lengkap ASC")->result_array();  
+		
+		$option = '';
+		foreach ($users as $key => $value) {
+			$option .= "<option value='".$value['id_user']."'>".$value['nm_lengkap']."</option>";
+		}
+
+		$data = [
+			'users' => $option
+		];
+        $this->template->set('results', $data);
+		
        	$this->template->set('iddetail',$id_detail);
 		$this->template->set('idmaster',$id_master->id_master);
 		$this->template->set('action', 'add');
@@ -548,6 +626,9 @@ class Folders extends Admin_Controller {
 	$config['upload_path'] = './assets/files/'; //path folder
 	    $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
 	    $config['encrypt_name'] = false; //Enkripsi nama yang terupload
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
 		
 
 	    $this->upload->initialize($config);
@@ -648,6 +729,10 @@ class Folders extends Admin_Controller {
 	
 	public function download_detail1($id){
 		//echo"<pre>";print_r($id);exit;
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+		
 	    $id_master = $this->db->query("SELECT * FROM gambar1 WHERE id='$id'")->row();
 		$iddetail = $id_master->id_detail;
 		$nme    =   $id_master->nama_file;
@@ -661,6 +746,10 @@ class Folders extends Admin_Controller {
     	
 	
 	function delete_detail1($id){
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+		
 		$id_master = $this->db->query("SELECT id_detail FROM gambar1 WHERE id='$id'")->row();
 		$iddetail  = $id_master->id_detail;
 		// print_r($idmaster);
@@ -688,6 +777,9 @@ class Folders extends Admin_Controller {
 		$config['upload_path'] = './assets/files/'; //path folder
 	    $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
 	    $config['encrypt_name'] = false; //Enkripsi nama yang terupload
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
 		
 
 	    $this->upload->initialize($config);
@@ -730,6 +822,8 @@ class Folders extends Admin_Controller {
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['id_master']		= $id_master;
 			$data['id_detail']		= $id_detail;
+			$data['id_perusahaan']  = $prsh;
+			$data['id_cabang']		= $cbg;
 			$data['id_approval']	= $this->input->post('id_approval');	
 			$data['status_approve']	= 1;	
 
@@ -759,6 +853,19 @@ class Folders extends Admin_Controller {
 		$id_master 	= $this->uri->segment('4');	
         $id_detail 	= $this->uri->segment('3');			
 		$this->template->page_icon('fa fa-folder-open');
+		
+		$users	= $this->db->query("SELECT * FROM users WHERE nm_lengkap != 'Administrator' AND id_perusahaan='$prsh' AND id_cabang='$cbg' ORDER BY nm_lengkap ASC")->result_array();  
+		
+		$option = '';
+		foreach ($users as $key => $value) {
+			$option .= "<option value='".$value['id_user']."'>".$value['nm_lengkap']."</option>";
+		}
+
+		$data = [
+			'users' => $option
+		];
+        $this->template->set('results', $data);
+		
        	$this->template->set('idmaster',$id_master);
 		$this->template->set('iddetail',$id_detail);
 		$this->template->set('action', 'add');
@@ -776,6 +883,8 @@ class Folders extends Admin_Controller {
 	public function detail2(){
 		$this->auth->restrict($this->viewPermission);
         $session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
 		
 		$id_detail1			= $this->input->get('id_detail1');
 		$get_Data		= $this->Folders_model->getData('gambar2','id_detail1',$id_detail1);
@@ -806,6 +915,10 @@ class Folders extends Admin_Controller {
 	    $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
 	    $config['encrypt_name'] = false; //Enkripsi nama yang terupload
 		
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+		
 
 	    $this->upload->initialize($config);
 	        if ($this->upload->do_upload('image')){
@@ -834,7 +947,7 @@ class Folders extends Admin_Controller {
 		$id_master 	= $this->input->post('id_master');	
 		$id_detail 	= $this->input->post('id_detail');	
 		$id_detail1 	= $this->input->post('id_detail1');	
-		// echo"<pre>";print_r($id_master);exit;	        
+		// echo"<pre>";print_r($this->input->post());exit;	        
 	 
 			
 			$Arr_Kembali			= array();			
@@ -849,6 +962,8 @@ class Folders extends Admin_Controller {
 			$data['id_master']		= $id_master;
 			$data['id_detail']		= $id_detail;
 			$data['id_detail1']		= $id_detail1;
+			$data['id_perusahaan']  = $prsh;
+			$data['id_cabang']		= $cbg;
 			$data['id_approval']	= $this->input->post('id_approval');	
 			
 			if( $this->input->post('id_review')!=''){
@@ -886,6 +1001,17 @@ class Folders extends Admin_Controller {
         $id_detail      = $this->db->query("SELECT id_detail FROM gambar1 WHERE id='$id_detail1'")->row();			
         $id_master      = $this->db->query("SELECT id_master FROM gambar1 WHERE id='$id_detail1'")->row();		
 		$this->template->page_icon('fa fa-folder-open');
+		$users	= $this->db->query("SELECT * FROM users WHERE nm_lengkap != 'Administrator' AND id_perusahaan='$prsh' AND id_cabang='$cbg' ORDER BY nm_lengkap ASC")->result_array();  
+		
+		$option = '';
+		foreach ($users as $key => $value) {
+			$option .= "<option value='".$value['id_user']."'>".$value['nm_lengkap']."</option>";
+		}
+
+		$data = [
+			'users' => $option
+		];
+        $this->template->set('results', $data);
 		$this->template->set('iddetail1',$id_detail1);
        	$this->template->set('iddetail',$id_detail->id_detail);
 		$this->template->set('idmaster',$id_master->id_master);
@@ -900,6 +1026,10 @@ class Folders extends Admin_Controller {
 	$config['upload_path'] = './assets/files/'; //path folder
 	    $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
 	    $config['encrypt_name'] = false; //Enkripsi nama yang terupload
+		
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
 		
 
 	    $this->upload->initialize($config);
@@ -1000,6 +1130,10 @@ class Folders extends Admin_Controller {
 	
 	public function download_detail2($id){
 		//echo"<pre>";print_r($id);exit;
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+		
 	    $id_master = $this->db->query("SELECT * FROM gambar1 WHERE id='$id'")->row();
 		$iddetail = $id_master->id_detail;
 		$nme    =   $id_master->nama_file;
@@ -1013,6 +1147,11 @@ class Folders extends Admin_Controller {
     	
 	
 	function delete_detail2($id){
+		
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+		
 		$id_master = $this->db->query("SELECT * FROM gambar2 WHERE id='$id'")->row();
 		$iddetail   = $id_master->id_detail;
 		$iddetail1  = $id_master->id_detail1;
@@ -1041,7 +1180,9 @@ class Folders extends Admin_Controller {
 		$config['upload_path'] = './assets/files/'; //path folder
 	    $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
 	    $config['encrypt_name'] = false; //Enkripsi nama yang terupload
-		
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
 
 	    $this->upload->initialize($config);
 	        if ($this->upload->do_upload('image')){
@@ -1069,7 +1210,7 @@ class Folders extends Admin_Controller {
 		if($this->input->post()){
 		$id_master 	= $this->input->post('id_master');	
 		$id_detail 	= $this->input->post('id_detail');	
-		// echo"<pre>";print_r($id_master);exit;	        
+		// echo"<pre>";print_r($this->input->post());exit;	        
 	 
 			
 			$Arr_Kembali			= array();			
@@ -1083,6 +1224,8 @@ class Folders extends Admin_Controller {
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['id_master']		= $id_master;
 			$data['id_detail']		= $id_detail;
+			$data['id_perusahaan']  = $prsh;
+			$data['id_cabang']		= $cbg;
 			$data['id_approval']	= $this->input->post('id_approval');	
 			
 			if( $this->input->post('id_approval')!=''){
@@ -1119,6 +1262,17 @@ class Folders extends Admin_Controller {
 		$id_master 	= $this->uri->segment('4');	
         $id_detail 	= $this->uri->segment('3');			
 		$this->template->page_icon('fa fa-folder-open');
+		$users	= $this->db->query("SELECT * FROM users WHERE nm_lengkap != 'Administrator' AND id_perusahaan='$prsh' AND id_cabang='$cbg' ORDER BY nm_lengkap ASC")->result_array();  
+		
+		$option = '';
+		foreach ($users as $key => $value) {
+			$option .= "<option value='".$value['id_user']."'>".$value['nm_lengkap']."</option>";
+		}
+
+		$data = [
+			'users' => $option
+		];
+        $this->template->set('results', $data);
        	$this->template->set('idmaster',$id_master);
 		$this->template->set('iddetail',$id_detail);
 		$this->template->set('action', 'add');
@@ -1131,7 +1285,11 @@ class Folders extends Admin_Controller {
 	
 	function get_approval()
     {
-        $users	= $this->db->query("SELECT * FROM tbl_jabatan")->result();
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+		
+        $users	= $this->db->query("SELECT * FROM tbl_jabatan WHERE id_perusahaan='$prsh' AND id_cabang='$cbg'")->result();
 		echo "<span class='input-group-addon'><i class='fa fa-check'></i></span>   
 		<select id='id_approval' name='id_approval' class='form-control input-sm select2'>
 				<option value=''>Pilih Approval</option>";
@@ -1144,7 +1302,12 @@ class Folders extends Admin_Controller {
 	
 	function get_review()
     {
-        $users	= $this->db->query("SELECT * FROM tbl_jabatan")->result();
+        
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+		
+		$users	= $this->db->query("SELECT * FROM tbl_jabatan WHERE id_perusahaan='$prsh' AND id_cabang='$cbg'")->result();
 		echo "<span class='input-group-addon'><i class='fa fa-check'></i></span>   
 		<select id='id_review' name='id_review' class='form-control input-sm select2'>
 				<option value=''>Pilih Review</option>";
@@ -1160,6 +1323,9 @@ class Folders extends Admin_Controller {
 		$this->auth->restrict($this->viewPermission);
         $session = $this->session->userdata('app_session');		
 		$jabatan = $session['id_jabatan'];
+		
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
 		
 				
 		$id    = $this->input->post('id');
@@ -1207,6 +1373,10 @@ class Folders extends Admin_Controller {
 	    $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
 	    $config['encrypt_name'] = false; //Enkripsi nama yang terupload
 		
+		$session = $this->session->userdata('app_session');		
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+		
 
 	    $this->upload->initialize($config);
 	        if ($this->upload->do_upload('image')){
@@ -1238,6 +1408,14 @@ class Folders extends Admin_Controller {
 		// echo"<pre>";print_r($this->input->post());exit;
 		$insert = $this->db->query("SELECT * FROM $table WHERE id='$id_detail' ")->row();
 		
+		if( $insert->id_review !='0'){
+			$approve = '3';
+			}
+			else{			
+			$approve = '1';		
+			}
+			
+		
 
             $Arr_Kembali			= array();			
 	 
@@ -1248,7 +1426,7 @@ class Folders extends Admin_Controller {
 			$data['ukuran_file']	= $ukuran;
 			$data['tipe_file']		= $ext ;
 			$data['lokasi_file']	= $lokasi;
-			$data['status_approve']	= '3';
+			$data['status_approve']	= $approve;
 			$data['status_revisi']	= '1';
 			$data_session			= $this->session->userdata;
 			$data['created_by']		= $this->auth->user_id(); 
@@ -1336,6 +1514,10 @@ class Folders extends Admin_Controller {
 	    $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
 	    $config['encrypt_name'] = false; //Enkripsi nama yang terupload
 		
+		$session = $this->session->userdata('app_session');		
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+		
 
 	    $this->upload->initialize($config);
 	        if ($this->upload->do_upload('image')){
@@ -1365,7 +1547,14 @@ class Folders extends Admin_Controller {
 		$id_detail 	= $this->input->post('id');	
 		$table      = $this->input->post('table');	
 		// echo"<pre>";print_r($this->input->post());exit;
-		$insert = $this->db->query("SELECT * FROM $table  WHERE id='$id_detail'")->row();
+		$insert = $this->db->query("SELECT * FROM $table  WHERE id='$id_detail'")->row(); 
+		
+			if( $insert->id_review !='0'){
+			$approve = '3';
+			}
+			else{			
+			$approve = '1';		
+			}
 
             $Arr_Kembali			= array();			
 	 
@@ -1376,7 +1565,7 @@ class Folders extends Admin_Controller {
 			$data['ukuran_file']	= $ukuran;
 			$data['tipe_file']		= $ext ;
 			$data['lokasi_file']	= $lokasi;
-			$data['status_approve']	= '3';
+			$data['status_approve']	= $approve;
 			$data['status_revisi']	= '1';
 			$data_session			= $this->session->userdata;
 			$data['created_by']		= $this->auth->user_id(); 
@@ -1417,7 +1606,7 @@ class Folders extends Admin_Controller {
 			else{
 			//$data					= $this->input->post();
 			$data_session			= $this->session->userdata;
-			if($insert->id_review !=''){
+			if($insert->id_review !='0'){
 			$data['status_approve']	= 3;	
 			}
 			else{
@@ -1468,6 +1657,10 @@ class Folders extends Admin_Controller {
 	    $config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
 	    $config['encrypt_name'] = false; //Enkripsi nama yang terupload
 		
+		$session = $this->session->userdata('app_session');		
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+		
 
 	    $this->upload->initialize($config);
 	        if ($this->upload->do_upload('image')){
@@ -1498,6 +1691,13 @@ class Folders extends Admin_Controller {
 		$table      = $this->input->post('table');	
 		// echo"<pre>";print_r($this->input->post());exit;
 		$insert = $this->db->query("SELECT * FROM $table WHERE id='$id_detail' ")->row();
+		    
+			if( $insert->id_review !='0'){
+			$approve = '3';
+			}
+			else{			
+			$approve = '1';		
+			}
 
             $Arr_Kembali			= array();			
 	 
@@ -1508,7 +1708,7 @@ class Folders extends Admin_Controller {
 			$data['ukuran_file']	= $ukuran;
 			$data['tipe_file']		= $ext ;
 			$data['lokasi_file']	= $lokasi;
-			if($insert->id_review !=''){
+			if($insert->id_review !='0'){
 			$data['status_approve']	= 3;	
 			}
 			else{
@@ -1557,7 +1757,7 @@ class Folders extends Admin_Controller {
 			$data['created_by']		= $this->auth->user_id(); 
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['id_master']		= $id_master;
-			if($insert->id_review !=''){
+			if($insert->id_review !='0'){
 			$data['status_approve']	= 3;	
 			}
 			else{

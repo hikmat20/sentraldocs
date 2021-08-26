@@ -1,81 +1,249 @@
-<?php 
-    $ENABLE_ADD     = has_permission('Supplier.Add');
-    $ENABLE_MANAGE  = has_permission('Supplier.Manage');
-    $ENABLE_DELETE  = has_permission('Supplier.Delete');
+<?php
+    $ENABLE_ADD     = has_permission('Perusahaan.Add');
+    $ENABLE_MANAGE  = has_permission('Perusahaan.Manage');
+    $ENABLE_VIEW    = has_permission('Perusahaan.View');
+    $ENABLE_DELETE  = has_permission('Perusahaan.Delete');
 ?>
-<div class="box box-primary">
-	<?= form_open($this->uri->uri_string(),array('id'=>'frm_supplier','name'=>'frm_supplier')) ?>
-        <div class="box-header">
-            <div class="form-group">
-                <?php if ($ENABLE_ADD) : ?>
-	  	        <a href="<?= site_url('supplier/create') ?>" class="btn btn-success" title="<?= lang('supplier_btn_new') ?>"><?= lang('supplier_btn_new') ?></a>
-                <?php endif; ?>
-                <div class="pull-right">
-                    <div class="input-group">
-                        <input type="text" name="table_search" value="<?php echo isset($search) ? $search : ''; ?>" class="form-control pull-right" placeholder="Search" autofocus />
-                        <div class="input-group-btn">
-                            <button class="btn btn-default"><i class="fa fa-search"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-	<?php if (isset($results) && is_array($results) && count($results)) : ?>
-	<div class="box-body table-responsive no-padding">
-            <table class="table table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th class="column-check" style="width: 30px;"><input class="check-all" type="checkbox" /></th>
-                        <th width="50">#</th>
-                        <th><?= lang('supplier_name') ?></th>
-                        <th><?= lang('supplier_addr') ?></th>
-                        <th><?= lang('supplier_telp1') ?></th>
-                        <th><?= lang('supplier_email') ?></th>
-                        <th><?= lang('supplier_cp') ?></th>
-                        <th><?= lang('supplier_status') ?></th>
-                        <?php if($ENABLE_MANAGE) : ?>
-                        <th width="25"></th>
-                        <?php endif; ?>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($results as $record) : ?>
-                    <tr>
-                        <td class="column-check"><input type="checkbox" name="checked[]" value="<?= $record->id_supplier ?>" /></td>
-                        <td><?= $numb; ?></td>
-                        <td><?= $record->nm_supplier ?></td>
-                        <td><?= $record->alamat ?></td>
-                        <td><?= $record->telp1 ?></td>
-                        <td><?= $record->email ?></td>
-                        <td><?= $record->cp ?></td>
-                        <td>
-                            <?php if($record->st_aktif == 1) : ?>
-                            <label class="label label-success"><?= lang('supplier_active') ?></label>
-                            <?php else : ?>
-                            <label class="label label-danger"><?= lang('supplier_inactive') ?></label>
-                            <?php endif; ?>
-                        </td>
-                        <?php if($ENABLE_MANAGE) : ?>
-                        <td style="padding-right:20px"><a class="text-black" href="<?= site_url('supplier/edit/' . $record->id_supplier); ?>" data-toggle="tooltip" data-placement="left" title="Edit Data"><i class="fa fa-pencil"></i></a></td>
-                        <?php endif; ?>
-                    </tr>
-                    <?php $numb++; endforeach; ?>
-                </tbody>
-	  </table>
-	</div><!-- /.box-body -->
-	<div class="box-footer clearfix">
-		<?php if($ENABLE_DELETE) : ?>
-		<input type="submit" name="delete" class="btn btn-danger" id="delete-me" value="<?php echo lang('supplier_btn_delete') ?>" onclick="return confirm('<?= (lang('supplier_delete_confirm')); ?>')">
-		<?php endif;
-		echo $this->pagination->create_links(); 
-		?>
+<div id='alert_edit' class="alert alert-success alert-dismissable" style="padding: 15px; display: none;"></div>
+<link rel="stylesheet" href="<?= base_url('assets/plugins/datatables/dataTables.bootstrap.css')?>">
+
+<div class="box">
+	<div class="box-header">
+		<?php if ($ENABLE_ADD) : ?>
+			<a class="btn btn-success" id="create" href="javascript:void(0)" title="Add" ><i class="fa fa-plus">&nbsp;</i>New</a>
+		<?php endif; ?>
+
+		<span class="pull-right">
+				<?php //echo anchor(site_url('customer/downloadExcel'), ' <i class="fa fa-download"></i> Excel ', 'class="btn btn-primary btn-sm"'); ?>
+		</span>
 	</div>
-	<?php else: ?>
-    <div class="callout callout-info">
-        <p><i class="fa fa-warning"></i> &nbsp; <?= lang('supplier_no_records_found') ?></p>
+	<!-- /.box-header -->
+	<div class="box-body">
+		<table id="example1" class="table table-bordered table-striped">
+		<thead>
+		<tr>
+			<th width="10%">#</th>
+			<th width="20%">Nama Perusahaan</th>
+			<th width="20%">Nama Cabang</th>
+			<th width="10%">Kode Cabang</th>
+			<th width="30%">Alamat Cabang</th>
+			<?php if($ENABLE_MANAGE) : ?>
+			<th width="25">Action</th>
+			<?php endif; ?>
+		</tr>
+		</thead>
+
+		<tbody>
+		<?php if(empty($results)){
+		}else{
+			$numb=0; foreach($results AS $record){ $numb++; 
+			$idprsh = $record->id_perusahaan;
+			$perusahaan = $this->db->query("SELECT nm_perusahaan FROM perusahaan WHERE id_perusahaan='$idprsh'")->row();
+			$nm_perusahaan = $perusahaan->nm_perusahaan; 
+		?>
+		<tr>
+		    <td><?= $numb; ?></td>
+			<td><?= $nm_perusahaan ?></td>
+			<td><?= $record->nm_cabang ?></td>
+			<td><?= $record->inisial ?></td>
+			<td><?= $record->alamat ?></td>			
+			<td style="padding-left:20px">
+			<?php if($ENABLE_MANAGE) : ?>
+				<a class="text-green" id="edit" href="javascript:void(0)" title="Edit" data-cabang="<?=$record->id_cabang?>"><i class="fa fa-pencil"></i>
+				</a>
+			<?php endif; ?>
+
+			<?php if($ENABLE_DELETE) : ?>
+				<a class="text-red" href="javascript:void(0)" title="Delete" onclick="delete_data('<?=$record->id_cabang?>')"><i class="fa fa-trash"></i>
+				</a>
+			<?php endif; ?>
+			</td>
+		</tr>
+		<?php } }  ?>
+		</tbody>
+
+		<tfoot>
+		<tr>
+			<th width="10%">#</th>
+			<th width="20%">Nama Perusahaan</th>
+			<th width="20%">Nama Cabang</th>
+			<th width="10%">Kode Cabang</th>
+			<th width="30%">Alamat Cabang</th>
+			<?php if($ENABLE_MANAGE) : ?>
+			<th width="25">Action</th>
+			<?php endif; ?>
+		</tr>
+		</tfoot>
+		</table>
+	</div>
+	<!-- /.box-body -->
+</div>
+
+<!-- awal untuk modal dialog -->
+<!-- Modal -->
+<div class="modal modal-success" id="dialog-data-lebihbayar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel"><span class="fa fa-file-pdf-o"></span>&nbsp;Add Cabang</h4>
+      </div>
+      <div class="modal-body" id="MyModalBodyLebihbayar" style="background: #FFF !important;color:#000 !important;">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+        <span class="glyphicon glyphicon-remove"></span>  Tutup</button> 
+        </div>
     </div>
-    <?php
-	endif;
-	form_close(); 
-	?>
-</div><!-- /.box -->
+  </div>
+</div>
+
+<div class="modal modal-default fade" id="dialog-popup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Tutup</span></button>
+        <h4 class="modal-title" id="myModalLabel"><span class="fa fa-users"></span>&nbsp;List Invoice</h4>
+      </div>
+      <div class="modal-body" id="ModalView">
+		...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">
+        <span class="glyphicon glyphicon-remove"></span>  Tutup</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- DataTables -->
+<script src="<?= base_url('assets/plugins/datatables/jquery.dataTables.min.js')?>"></script>
+<script src="<?= base_url('assets/plugins/datatables/dataTables.bootstrap.min.js')?>"></script>
+
+<!-- page script -->
+<script type="text/javascript">
+
+  	$(function() {
+    	$("#example1").DataTable();
+    	$("#form-area").hide();
+  	});
+
+  	function add_data(){
+		var url = 'cabang/create/';
+		$(".box").hide();
+		$("#form-area").show();
+		$("#form-area").load(siteurl+url);
+		$("#title").focus();
+	}
+
+  	function edit_data(id){
+		if(id!=""){
+			var url = 'cabang/edit/'+id;
+			$(".box").hide();
+			$("#form-area").show();
+			$("#form-area").load(siteurl+url);
+		    $("#title").focus();
+		}
+	}
+
+	//Delete
+	function delete_data(id){
+		//alert(id);
+		swal({
+		  title: "Anda Yakin?",
+		  text: "Data Akan Terhapus secara Permanen!",
+		  type: "warning",
+		  showCancelButton: true,
+		  confirmButtonColor: "#DD6B55",
+		  confirmButtonText: "Ya, delete!",
+		  cancelButtonText: "Tidak!",
+		  closeOnConfirm: false,
+		  closeOnCancel: true
+		},
+		function(isConfirm){
+		  if (isConfirm) {
+		  	$.ajax({
+		            url: siteurl+'cabang/hapus_cabang/'+id,
+		            dataType : "json",
+		            type: 'POST',
+		            success: function(msg){
+		                if(msg['delete']=='1'){		                	
+		                    swal({
+		                      title: "Terhapus!",
+		                      text: "Data berhasil dihapus",
+		                      type: "success",
+		                      timer: 1500,
+		                      showConfirmButton: false
+		                    });
+		                    window.location.reload();
+		                } else {
+		                    swal({
+		                      title: "Gagal!",
+		                      text: "Data gagal dihapus",
+		                      type: "error",
+		                      timer: 1500,
+		                      showConfirmButton: false
+		                    });
+		                };
+		            },
+		            error: function(){
+		                swal({
+	                      title: "Gagal!",
+	                      text: "Gagal Eksekusi Ajax",
+	                      type: "error",
+	                      timer: 1500,
+	                      showConfirmButton: false
+	                    });
+		            }
+		        });
+		  } else {
+		    //cancel();
+		  }
+		});
+	}
+
+	function PreviewPdf(id)
+	{
+		param=id;
+		tujuan = 'customer/print_request/'+param;
+
+	   	$(".modal-body").html('<iframe src="'+tujuan+'" frameborder="no" width="570" height="400"></iframe>');
+	}
+	
+	$(document).on('click', '#create', function(){
+		
+		var id_customer=0;
+		
+		$("#head_title").html("<i class='fa fa-list-alt'></i><b>Add Cabang</b>"); 
+		$.ajax({
+			type:'POST',
+			 url:siteurl+'cabang/create/',
+			data:{'id_customer':id_customer},
+			success:function(data){
+				$("#dialog-data-lebihbayar").modal();
+				$("#MyModalBodyLebihbayar").html(data);
+				
+			}
+		})
+	});
+
+    $(document).on('click', '#edit', function(){
+		
+		var id_cabang= $(this).data('cabang');
+		
+		$("#head_title").html("<i class='fa fa-list-alt'></i><b>Edit Cabang</b>"); 
+		$.ajax({
+			type:'POST',
+			 url:siteurl+'cabang/edit/',
+			data:{'id_cabang':id_cabang},
+			success:function(data){
+				$("#dialog-data-lebihbayar").modal();
+				$("#MyModalBodyLebihbayar").html(data);
+				
+			}
+		})
+	});	
+	
+	
+
+</script>

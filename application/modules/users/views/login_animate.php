@@ -9,7 +9,7 @@
   body {
     font-family: "Open Sans", sans-serif;
     height: 100vh;
-    background: url("<?php echo site_url();?>assets/images/importa.jpg") 100% fixed;
+    background: url("<?php echo site_url();?>assets/img/background1.jpg") 100% fixed;
     background-size: cover;
   }
 
@@ -203,8 +203,8 @@
   <?= form_open($this->uri->uri_string(), array('id' => 'frm_login', 'name' => 'frm_login', 'class' => 'login')) ?>
   
 	<header>
-	<font color="green">  
-	<h3 class='box-title' align='center'><b>Documents Control</b></h3>
+	<font color="white">  
+	<h3 class='box-title' align='center'><b>Project Controller</b></h3>
 	<img src="<?php echo base_url('assets/img/logo.png') ?>" class="img-circle" alt="Logo">
 	</font>
 	</header>
@@ -219,7 +219,7 @@
   </form>
   <footer>
   <font color="white">  
-  <p>Copyright &copy; <?php echo $idt->nm_perusahaan;?> 2018</p>
+  <p>Copyright &copy; <?php echo $idt->nm_perusahaan;?> 2021</p>
   <p>Halaman ini dimuat selama <strong>{elapsed_time}</strong> detik</p>
   </font>
 </footer>

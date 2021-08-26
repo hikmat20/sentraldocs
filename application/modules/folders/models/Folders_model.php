@@ -66,6 +66,29 @@ class Folders_model extends BF_Model
 	
 	// Fungsi untuk menampilkan semua data gambar
  	public function getData($table,$where_field='',$where_value=''){
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+		// print_r($where_field);
+		// echo "<br>";
+		
+		if($where_field !='' && $where_value!=''){
+			$this->db->where('id_perusahaan', $prsh); 
+			$this->db->where('id_cabang', $cbg); 
+			$query = $this->db->get_where($table, array($where_field=>$where_value));
+		// print_r($query);
+		// exit;
+		}else{
+			$this->db->where('id_perusahaan', $prsh); 
+			$this->db->where('id_cabang', $cbg); 
+			$query = $this->db->get($table);
+		}
+		
+		return $query->result();
+	}
+	
+	// Fungsi untuk menampilkan semua data per perusahaan
+ 	public function getData_perusahaan($table,$where_field='',$where_value=''){
 		if($where_field !='' && $where_value!=''){
 			$query = $this->db->get_where($table, array($where_field=>$where_value));
 		}else{
@@ -74,6 +97,7 @@ class Folders_model extends BF_Model
 		
 		return $query->result();
 	}
+	
   // Fungsi untuk menampilkan data gambar sesuai kategori
 	public function getdetail($table,$where_field='',$where_value=''){
 		if($where_field !='' && $where_value!=''){
@@ -131,9 +155,17 @@ class Folders_model extends BF_Model
   
   // Fungsi untuk menampilkan semua data gambar
  	public function getDataApprove($table,$where){
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+		
 		if($where!=''){
+			$this->db->where('id_perusahaan', $prsh); 
+			$this->db->where('id_cabang', $cbg); 
 			$query = $this->db->get_where($table,$where);
 		}else{
+			$this->db->where('id_perusahaan', $prsh); 
+			$this->db->where('id_cabang', $cbg); 
 			$query = $this->db->get($table);
 		}
 		
