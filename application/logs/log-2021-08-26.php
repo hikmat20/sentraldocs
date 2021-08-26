@@ -211,3 +211,6 @@ ERROR - 2021-08-26 16:45:04 --> Severity: Notice --> Trying to get property 'nm_
 ERROR - 2021-08-26 16:45:13 --> Severity: Notice --> Trying to get property 'nm_lengkap' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs_backup\application\modules\dokumen\views\index_approve.php 67
 ERROR - 2021-08-26 09:48:25 --> 404 Page Not Found: /index
 ERROR - 2021-08-26 09:48:26 --> 404 Page Not Found: /index
+ERROR - 2021-08-26 10:24:19 --> 404 Page Not Found: /index
+ERROR - 2021-08-26 10:24:20 --> 404 Page Not Found: /index
+ERROR - 2021-08-26 17:24:39 --> Severity: Notice --> Trying to get property 'nm_lengkap' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 67
