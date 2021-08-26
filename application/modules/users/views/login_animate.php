@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+<<<<<<< HEAD
   <title><?php echo $nama_program; ?></title>
   <style>
     /* NOTE: The styles were added inline because Prefixfree needs access to your styles and they must be inlined if they are on local disk! */
@@ -12,6 +13,17 @@
       background: url("<?php echo site_url(); ?>assets/images/importa.jpg") 100% fixed;
       background-size: cover;
     }
+=======
+  <title><?php echo $nama_program; ?></title>  
+<style>
+      /* NOTE: The styles were added inline because Prefixfree needs access to your styles and they must be inlined if they are on local disk! */
+  body {
+    font-family: "Open Sans", sans-serif;
+    height: 100vh;
+    background: url("<?php echo site_url();?>assets/img/background1.jpg") 100% fixed;
+    background-size: cover;
+  }
+>>>>>>> 103e29958206849e8d6ab102cdae171d54f52c31
 
     @keyframes spinner {
       0% {
@@ -214,6 +226,7 @@
 <body>
 
   <div class="wrapper">
+<<<<<<< HEAD
     <?= form_open($this->uri->uri_string(), array('id' => 'frm_login', 'name' => 'frm_login', 'class' => 'login')) ?>
     <header>
       <font color="green">
@@ -222,11 +235,26 @@
       </font>
     </header>
 
+=======
+  
+    
+  
+  <?= form_open($this->uri->uri_string(), array('id' => 'frm_login', 'name' => 'frm_login', 'class' => 'login')) ?>
+  
+	<header>
+	<font color="white">  
+	<h3 class='box-title' align='center'><b>Project Controller</b></h3>
+	<img src="<?php echo base_url('assets/img/logo.png') ?>" class="img-circle" alt="Logo">
+	</font>
+	</header>
+	
+>>>>>>> 103e29958206849e8d6ab102cdae171d54f52c31
     <p class='title'>Log in</p>
     <input type="text" name="username" placeholder="Username" value="<?= set_value('username') ?>" required autofocus>
     <i class="fa fa-user"></i>
     <input type="password" name="password" placeholder="Password" value="" required>
     <i class="fa fa-key"></i>
+<<<<<<< HEAD
 
     <button type="submit" name="login">Sign In</button>
     </form>
@@ -239,6 +267,20 @@
     </p>
   </div>
   <script src="<?php echo base_url(); ?>assets/login/js/index.js"></script>
+=======
+   
+    <button type="submit" name="login">Sign In</button>    
+  </form>
+  <footer>
+  <font color="white">  
+  <p>Copyright &copy; <?php echo $idt->nm_perusahaan;?> 2021</p>
+  <p>Halaman ini dimuat selama <strong>{elapsed_time}</strong> detik</p>
+  </font>
+</footer>
+  </p>
+</div>
+  <script  src="<?php echo base_url();?>assets/login/js/index.js"></script>
+>>>>>>> 103e29958206849e8d6ab102cdae171d54f52c31
 </body>
 
 </html>

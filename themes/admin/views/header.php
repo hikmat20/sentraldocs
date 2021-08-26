@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title><?= isset($idt->nm_perusahaan) ? $idt->nm_perusahaan : 'not-set'; ?><?= isset($template['title']) ? ' | '.$template['title'] : ''; ?></title>
+  <title><?= isset($idt->nm_perusahaan) ? $idt->nm_perusahaan : 'not-set'; ?><?= isset($template['title']) ? ' | ' . $template['title'] : ''; ?></title>
   <link rel="shortcut icon" href="<?php echo base_url('assets/'); ?>images/importa.png" />
-  <style>
-    // thead{
-      // background-color: #175477;
-      // color: white;
-    // }
-  </style>
+
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Sweet Alert -->
@@ -32,8 +28,8 @@
         apply the skin class to the body tag so the changes take effect.
   -->
   <link rel="stylesheet" href="<?= base_url('assets/adminlte/dist/css/skins/_all-skins.min.css'); ?>">
-   
-  
+
+
   <!-- Custom CSS -->
   <link rel="stylesheet" href="<?= base_url('assets/css/styles.css'); ?>">
   <!-- bootstrap datepicker -->
@@ -56,10 +52,10 @@
   <script src="<?= base_url('assets/plugins/datetimepicker/moment-with-locales.js'); ?>"></script>
 
   <!-- Sweet Alert -->
-  <script src="<?=base_url('assets/dist/sweetalert.min.js'); ?>"></script>
+  <script src="<?= base_url('assets/dist/sweetalert.min.js'); ?>"></script>
   <!-- Form Jquery -->
-  <script src="<?=base_url('assets/plugins/jqueryform/jquery.form.js'); ?>"></script>
-  <script src="<?=base_url('assets/plugins/slimScroll/jquery.slimscroll.min.js'); ?>"></script>
+  <script src="<?= base_url('assets/plugins/jqueryform/jquery.form.js'); ?>"></script>
+  <script src="<?= base_url('assets/plugins/slimScroll/jquery.slimscroll.min.js'); ?>"></script>
   <script src="<?= base_url('assets/js/scripts.js'); ?>" type="text/javascript"></script>
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -70,99 +66,105 @@
   <script type="text/javascript">
     var baseurl = "<?= base_url(); ?>";
     var siteurl = "<?php echo site_url(); ?>";
-    var base_url			= siteurl;
-  	var active_controller	= '<?php echo $this->uri->segment(1); ?>'+'/';
-    var active_function	= '<?php echo $this->uri->segment(2); ?>'+'/';
+    var base_url = siteurl;
+    var active_controller = '<?php echo $this->uri->segment(1); ?>' + '/';
+    var active_function = '<?php echo $this->uri->segment(2); ?>' + '/';
   </script>
 </head>
-<body class="hold-transition skin-green-light sidebar-mini fixed" >
-<div class="ajax_loader">
-  <img src="<?php echo base_url('assets/images/ajax_loader.gif'); ?>" >
-</div>
-<div class="wrapper">
 
-  <!-- Main Header -->
-  <header class="main-header">
+<body class="hold-transition skin-green-light sidebar-mini fixed">
+  <div class="ajax_loader">
+    <img src="<?php echo base_url('assets/images/ajax_loader.gif'); ?>">
+  </div>
+  <div class="wrapper">
 
-    <!-- Logo -->
-    <a href="<?= site_url(); ?>" class="logo">
-      <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>DC</b></span>
-      <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b><?= isset($idt->nm_perusahaan) ? $idt->nm_perusahaan : 'not-set'; ?></b></span>
-    </a>
+    <!-- Main Header -->
+    <header class="main-header">
 
-    <!-- Header Navbar -->
-    <nav class="navbar navbar-static-top" role="navigation">
-      <!-- Sidebar toggle button-->
-      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-        <span class="sr-only">Toggle navigation</span>
+      <!-- Logo -->
+      <a href="<?= site_url(); ?>" class="logo">
+        <!-- mini logo for sidebar mini 50x50 pixels -->
+        <span class="logo-mini"><b>DC</b></span>
+        <!-- logo for regular state and mobile devices -->
+        <span class="logo-lg"><b><?= isset($idt->nm_perusahaan) ? $idt->nm_perusahaan : 'not-set'; ?></b></span>
       </a>
-      <!-- Navbar Right Menu -->
-      <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">
-          <!-- Notifications Menu -->
+
+      <!-- Header Navbar -->
+      <nav class="navbar navbar-static-top" role="navigation">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+          <span class="sr-only">Toggle navigation</span>
+        </a>
+        <!-- Navbar Right Menu -->
+        <div class="navbar-custom-menu">
+          <ul class="nav navbar-nav">
+            <!-- Notifications Menu -->
 
 
-          <!-- User Account Menu -->
-          <li class="dropdown user user-menu">
-            <!-- Menu Toggle Button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <!-- The user image in the navbar-->
-              <img src="<?= (isset($userData->photo) && file_exists('assets/images/users/'.$userData->photo)) ? base_url('assets/images/users/'.$userData->photo) : base_url('assets/images/male-def.png'); ?>" class="user-image" alt="User Image">
-              <!-- hidden-xs hides the username on small devices so only the image appears. -->
-              <span class="hidden-xs">
-              <?php echo isset($userData->nm_lengkap) ? ucwords($userData->nm_lengkap) : $userData->username; ?></span>
-            </a>
-            <ul class="dropdown-menu">
-              <!-- The user image in the menu -->
-              <li class="user-header">
-                <img src="<?= (isset($userData->photo) && file_exists('assets/images/users/'.$userData->photo)) ? base_url('assets/images/users/'.$userData->photo) : base_url('assets/images/male-def.png'); ?>" class="img-circle" alt="User Image">
+            <!-- User Account Menu -->
+            <li class="dropdown user user-menu">
+              <!-- Menu Toggle Button -->
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <!-- The user image in the navbar-->
+                <img src="<?= (isset($userData->photo) && file_exists('assets/images/users/' . $userData->photo)) ? base_url('assets/images/users/' . $userData->photo) : base_url('assets/images/male-def.png'); ?>" class="user-image" alt="User Image">
+                <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                <span class="hidden-xs">
+                  <?php echo isset($userData->nm_lengkap) ? ucwords($userData->nm_lengkap) : $userData->username;
+                  $kdprsh    = $userData->id_perusahaan;
+                  $perusahaan = $this->db->query("SELECT nm_perusahaan FROM perusahaan WHERE id_perusahaan='$kdprsh'")->row();
 
-                <p>
-                  <?= isset($userData->nm_lengkap) ? ucwords($userData->nm_lengkap) : $userData->username; ?> - <?= isset($userData->groups) ? $userData->groups : '-'; ?>
-                  <small>Member since <?= isset($userData->created_on) ? date('M Y', strtotime($userData->created_on)) : '-'; ?></small>
-                </p>
-              </li>
-              <!-- Menu Footer-->
-              <li class="user-footer">
-                <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat bg-green">Profile</a>
-                </div>
-                <div class="pull-right">
-                  <a href="<?= site_url('users/logout'); ?>" class="btn btn-default btn-flat bg-red">Sign out</a>
-                </div>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </header>
-  <!-- Left side column. contains the logo and sidebar -->
-  <aside class="main-sidebar">
+                  ?></span><span>&nbsp;-</span>
+                <span class="logo-lg"><b><?= isset($perusahaan->nm_perusahaan) ? $perusahaan->nm_perusahaan : 'not-set'; ?></b></span>
+              </a>
+              <ul class="dropdown-menu">
+                <!-- The user image in the menu -->
+                <li class="user-header">
+                  <img src="<?= (isset($userData->photo) && file_exists('assets/images/users/' . $userData->photo)) ? base_url('assets/images/users/' . $userData->photo) : base_url('assets/images/male-def.png'); ?>" class="img-circle" alt="User Image">
 
-    <!-- sidebar: style can be found in sidebar.less -->
-    <section class="sidebar">
-	 
-      <!-- Sidebar Menu -->
-      <?= $this->menu_generator->build_menus(); ?>
-      <!-- /.sidebar-menu -->
-	
-    </section>
-    <!-- /.sidebar -->
-  </aside>
+                  <p>
+                    <?= isset($userData->nm_lengkap) ? ucwords($userData->nm_lengkap) : $userData->username; ?> - <?= isset($userData->groups) ? $userData->groups : '-'; ?>
+                    <small>Member since <?= isset($userData->created_on) ? date('M Y', strtotime($userData->created_on)) : '-'; ?></small>
+                  </p>
+                </li>
+                <!-- Menu Footer-->
+                <li class="user-footer">
+                  <div class="pull-left">
+                    <a href="#" class="btn btn-default btn-flat bg-green">Profile</a>
+                  </div>
+                  <div class="pull-right">
+                    <a href="<?= site_url('users/logout'); ?>" class="btn btn-default btn-flat bg-red">Sign out</a>
+                  </div>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h4>
-        <i class="<?= isset($template['page_icon']) ? $template['page_icon'] : 'fa fa-table'; ?>"></i>
-        <?= isset($template['title']) ? $template['title'] : ''; ?>
-      </h4>
-    </section>
+      <!-- sidebar: style can be found in sidebar.less -->
+      <section class="sidebar">
 
-    <!-- Main content -->
-    <section class="content">
-	<!-- <font size="1">-->
+        <!-- Sidebar Menu -->
+        <?= $this->menu_generator->build_menus(); ?>
+        <!-- /.sidebar-menu -->
+
+      </section>
+      <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h4>
+          <i class="<?= isset($template['page_icon']) ? $template['page_icon'] : 'fa fa-table'; ?>"></i>
+          <?= isset($template['title']) ? $template['title'] : ''; ?>
+        </h4>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <!-- <font size="1">-->

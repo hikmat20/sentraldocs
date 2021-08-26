@@ -27,7 +27,7 @@ class Dokumen extends Admin_Controller
 			'Aktifitas/aktifitas_model'
 		));
 
-		$this->template->title('Manage Data Folder');
+		$this->template->set('title', 'Manage Data Folder');
 		$this->template->page_icon('fa fa-folder');
 
 		date_default_timezone_set("Asia/Bangkok");
@@ -1106,11 +1106,13 @@ class Dokumen extends Admin_Controller
 		$this->auth->restrict($this->viewPermission);
 		$session = $this->session->userdata('app_session');
 		$jabatan = $session['id_jabatan'];
+		$user    = $session['id_user'];
 		$this->template->page_icon('fa fa-folder-open');
 		$get_Data		= $this->Folders_model->getData('master_gambar');
 		$this->template->set('row', $get_Data);
 		$this->template->set('title', 'Index Of Dokumen');
 		$this->template->set('jabatan', $jabatan);
+		$this->template->set('user', $user);
 		$this->template->render('index_approve');
 	}
 
@@ -1247,10 +1249,7 @@ class Dokumen extends Admin_Controller
 				'approval_by'		=> $this->auth->user_id()
 			);
 
-
-
 			$this->Folders_model->getUpdateData($table, $data_update, $where);
-
 			$this->db->insert("tbl_approval", $data_insert);
 		}
 
@@ -1265,7 +1264,7 @@ class Dokumen extends Admin_Controller
 			$Arr_Return		= array(
 				'status'		=> 1,
 				'pesan'			=> 'Save Process Success. ',
-				'kode'			=> $kode
+				// 'kode'			=> $kode
 			);
 		}
 		echo json_encode($Arr_Return);
@@ -1371,12 +1370,8 @@ class Dokumen extends Admin_Controller
 		$this->template->render('input_koreksi');
 	}
 
-
-
 	public function saveKoreksi()
 	{
-
-
 		$status = $this->input->post('status');
 		$id = $this->input->post('id');
 		$table = $this->input->post('table');
@@ -1404,15 +1399,11 @@ class Dokumen extends Admin_Controller
 			'id' => $this->input->post('id'),
 		);
 
-
-
-
 		$this->Folders_model->getUpdateData($table, $data_update, $where);
 	}
 
 	public function simpan_koreksi()
 	{
-
 		$config['upload_path'] = './assets/files/'; //path folder
 		$config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
 		$config['encrypt_name'] = false; //Enkripsi nama yang terupload
@@ -1445,10 +1436,16 @@ class Dokumen extends Admin_Controller
 		$id_detail 	= $this->input->post('id');
 		$table      = $this->input->post('table');
 		// echo"<pre>";print_r($this->input->post());exit;
+
+		$Arr_Kembali			= array();
 		$insert = $this->db->query("SELECT * FROM $table WHERE id='$id_detail' ")->row();
 		$norev  = $insert->revisi;
 
-		$Arr_Kembali			= array();
+		if ($insert->id_review != '0') {
+			$approve	= '3';
+		} else {
+			$approve	= '1';
+		}
 
 		if ($ukuran > 0) {
 			//$data					= $this->input->post();
@@ -1467,13 +1464,7 @@ class Dokumen extends Admin_Controller
 			$data_session			= $this->session->userdata;
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
-
-			if ($insert->id_review != '') {
-				$data['status_approve']	= 3;
-			} else {
-				$data['status_approve']	= 1;
-			}
-
+			$data['status_approve']	= $approve;
 
 			$data_insert = array(
 
@@ -1486,7 +1477,7 @@ class Dokumen extends Admin_Controller
 				'created'	    	=> $insert->created,
 				'id_master'	    	=> $insert->id_master,
 				'id_approval'	    => $insert->id_approval,
-				'status_approve'	=> $insert->status_approve,
+				'status_approve'	=> $approve,
 				'revisi'	        => $norev,
 				'id_dokumen'	    => $insert->id,
 				'nm_table'	        => $table
@@ -1504,20 +1495,13 @@ class Dokumen extends Admin_Controller
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['id_master']		= $id_master;
 			$data['id']		        = $id_detail;
-			if ($insert->id_review != '') {
+			if ($insert->id_review != '0') {
 				$data['status_approve']	= 3;
 			} else {
 				$data['status_approve']	= 1;
 			}
 			$update = $this->Folders_model->getUpdate('gambar', $data, 'id', $this->input->post('id'));
 		}
-
-
-
-
-
-
-
 
 		if ($update) {
 			$Arr_Kembali		= array(
@@ -1541,17 +1525,11 @@ class Dokumen extends Admin_Controller
 	}
 
 
-
-
-
 	public function simpan_koreksi1()
 	{
-
 		$config['upload_path'] = './assets/files/'; //path folder
 		$config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
 		$config['encrypt_name'] = false; //Enkripsi nama yang terupload
-
-
 		$this->upload->initialize($config);
 		if ($this->upload->do_upload('image')) {
 			$gbr = $this->upload->data();
@@ -1582,6 +1560,15 @@ class Dokumen extends Admin_Controller
 
 		$insert = $this->db->query("SELECT * FROM $table  WHERE id='$id_detail'")->row();
 		$norev  = $insert->revisi;
+		if ($insert->id_review != '0') {
+			$approve	= '3';
+		} else {
+			$approve	= '1';
+		}
+
+
+		$insert = $this->db->query("SELECT * FROM $table  WHERE id='$id_detail'")->row();
+		$norev  = $insert->revisi;
 
 		$Arr_Kembali			= array();
 
@@ -1602,13 +1589,7 @@ class Dokumen extends Admin_Controller
 			$data_session			= $this->session->userdata;
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
-			if ($insert->id_review != '') {
-				$data['status_approve']	= 3;
-			} else {
-				$data['status_approve']	= 1;
-			}
-
-
+			$data['status_approve']	= $approve;
 
 			$data_insert = array(
 
@@ -1640,20 +1621,10 @@ class Dokumen extends Admin_Controller
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['id_master']		= $id_master;
 			$data['id_detail']		= $id_detail;
-			if ($insert->id_review != '') {
-				$data['status_approve']	= 3;
-			} else {
-				$data['status_approve']	= 1;
-			}
+			$data['status_approve']	= $approve;
+
 			$update = $this->Folders_model->getUpdate('gambar1', $data, 'id', $this->input->post('id'));
 		}
-
-
-
-
-
-
-
 
 		if ($update) {
 			$Arr_Kembali		= array(
@@ -1675,7 +1646,6 @@ class Dokumen extends Admin_Controller
 		}
 		echo json_encode($Arr_Kembali);
 	}
-
 
 	public function simpan_koreksi2()
 	{
@@ -1715,6 +1685,14 @@ class Dokumen extends Admin_Controller
 
 		$insert = $this->db->query("SELECT * FROM $table WHERE id='$id_detail' ")->row();
 		$norev  = $insert->revisi;
+		if ($insert->id_review != '0') {
+			$approve	= '3';
+		} else {
+			$approve	= '1';
+		}
+
+		$insert = $this->db->query("SELECT * FROM $table WHERE id='$id_detail' ")->row();
+		$norev  = $insert->revisi;
 
 		$Arr_Kembali			= array();
 
@@ -1735,11 +1713,6 @@ class Dokumen extends Admin_Controller
 			$data_session			= $this->session->userdata;
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
-			if ($insert->id_review != '') {
-				$data['status_approve']	= 3;
-			} else {
-				$data['status_approve']	= 1;
-			}
 
 			$data_insert = array(
 
@@ -1754,7 +1727,7 @@ class Dokumen extends Admin_Controller
 				'id_detail'	    	=> $insert->id_detail,
 				'id_detail1'	    => $insert->id_detail1,
 				'id_approval'	    => $insert->id_approval,
-				'status_approve'	=> $insert->status_approve,
+				'status_approve'	=> $approve,
 				'revisi'	        => $norev,
 				'id_dokumen'	    => $insert->id,
 				'nm_table'	        => $table
@@ -1772,20 +1745,9 @@ class Dokumen extends Admin_Controller
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['id_master']		= $id_master;
 			$data['id_detail']		= $id_detail;
-			if ($insert->id_review != '') {
-				$data['status_approve']	= 3;
-			} else {
-				$data['status_approve']	= 1;
-			}
+			$data['status_approve']	= $approve;
 			$update = $this->Folders_model->getUpdate('gambar2', $data, 'id', $this->input->post('id'));
 		}
-
-
-
-
-
-
-
 
 		if ($update) {
 			$Arr_Kembali		= array(
@@ -1915,10 +1877,7 @@ class Dokumen extends Admin_Controller
 				'approval_by'		=> $this->auth->user_id()
 			);
 
-
-
 			$this->Folders_model->getUpdateData($table, $data_update, $where);
-
 			$this->db->insert("tbl_approval", $data_insert);
 		}
 
@@ -1933,7 +1892,7 @@ class Dokumen extends Admin_Controller
 			$Arr_Return		= array(
 				'status'		=> 1,
 				'pesan'			=> 'Save Process Success. ',
-				'kode'			=> $kode
+				// 'kode'			=> $kode
 			);
 		}
 		echo json_encode($Arr_Return);

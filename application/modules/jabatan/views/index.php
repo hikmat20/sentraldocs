@@ -29,6 +29,7 @@ $ENABLE_DOWNLOAD  = has_permission('Jabatan.Download');
 				<tr>
 					<th>No</th>
 					<th>Jabatan</th>
+					<th align="center">Option</th>
 
 				</tr>
 			</thead>
@@ -41,6 +42,18 @@ $ENABLE_DOWNLOAD  = has_permission('Jabatan.Download');
 						echo "<tr>";
 						echo "<td>" . $int . "</td>";
 						echo "<td>" . $datas->nm_jabatan . "</td>";
+						echo "<td align='center'>";
+						if ($ENABLE_VIEW) {
+							echo "<a href='" . site_url('jabatan/add_pejabat?id_jabatan=' . $datas->id) . "' class='btn btn-sm btn-primary' title='Tambah Pejabat' data-role='qtip'><i class='fa fa-user'></i></a>";
+						}
+						// if($ENABLE_DELETE){ 
+						// echo"&nbsp;<a href='".site_url('folders/delete_master/'.$datas->id_master)."' class='btn btn-sm btn-warning' title='Delete Data' data-role='qtip'><i class='fa fa-trash'></i></a>";
+						// }
+						echo "</td>";
+
+						echo "</tr>";
+
+
 
 						echo "</tr>";
 					}

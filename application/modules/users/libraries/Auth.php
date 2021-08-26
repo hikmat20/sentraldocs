@@ -22,10 +22,6 @@ class Auth
 
     public function is_login()
     {
-        // echo '<pre>';
-        // print_r($this->user);
-        // echo '<pre>';
-        // exit;
         return ($this->user) ? TRUE : FALSE;
     }
 
@@ -68,7 +64,6 @@ class Auth
 
     public function login($username = "", $password = "")
     {
-
         if ($this->is_login()) {
             redirect('/');
         }
@@ -105,11 +100,10 @@ class Auth
             $ip_address = ($this->ci->input->ip_address()) == "::1" ? "127.0.0.1" : $this->ci->input->ip_address();
             $this->ci->users_model->update($this->user_id(), array('login_terakhir' => date('Y-m-d H:i:s'), 'ip' => $ip_address));
 
-            // $requested_page = $this->ci->session->userdata('requested_page');
-            // if($requested_page != '')
-            // {
-            // redirect($requested_page);
-            // }
+            $requested_page = $this->ci->session->userdata('requested_page');
+            if ($requested_page != '') {
+                redirect("/");
+            }
 
             redirect("/");
         }

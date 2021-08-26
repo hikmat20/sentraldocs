@@ -23,7 +23,12 @@ $lang['users_td_aktif'] 	= 'Inactive';
 $lang['departemen'] 	    = 'Departemen Dokter';
 $lang['divisi'] 	        = 'Divisi';
 $lang['dokter'] 	        = 'Id Dokter';
-$lang['jabatan'] 	        = 'Jabatan';
+$lang['level'] 	= 'Level';
+$lang['level_admin'] 		= 'Admin';
+$lang['level_user'] 	    = 'User';
+
+$lang['nm_perusahaan'] 	    = 'Nama Perusahaan';
+$lang['nm_cabang']			= 'Nama Cabang';
 
 $lang['users_btn_new'] 		= 'New';
 $lang['users_btn_save'] 	= 'Save';

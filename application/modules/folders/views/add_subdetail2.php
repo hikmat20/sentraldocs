@@ -37,6 +37,19 @@
 				</div>
 			</div>
 			<div class='form-group row'>
+			<label class='label-control col-sm-2'><b>Prepared By<span class='text-red'>*</span></b></label>
+				<div class='col-sm-4'>
+					<div class="input-group">
+					    <span class="input-group-addon"><i class="fa fa-user"></i></span>   
+						<select name="prepared_by" id="prepared_by" class="form-control input-md select2">";
+						<option value="0">Pilih User</option><?=$results['users']?>
+						</select>
+					</div>
+					
+							
+				</div>
+			</div>	
+			<div class='form-group row'>
 			<label class='label-control col-sm-2'><b>Review<span class='text-red'>*</span></b></label>
 				<div class='col-sm-4'>
 					<div class="input-group" id="select_review">
@@ -74,7 +87,7 @@
 	$(document).ready(function(){
 		get_approval();
 		get_review();
-		
+		$('.select2').select2();
 		$('#simpan-com').click(function(e){
 			e.preventDefault();
 			var deskripsi	= $('#deskripsi').val();

@@ -1,10 +1,10 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /*
- * @author Yunaz
- * @copyright Copyright (c) 2018, Yunaz
+ * @author Syamsudin
+ * @copyright Copyright (c) 2021, Syamsudin
  *
- * This is controller for Cabang
+ * This is controller for Perusahaan
  */
 
 class Cabang extends Admin_Controller {
@@ -32,45 +32,153 @@ class Cabang extends Admin_Controller {
     {
         $this->auth->restrict($this->viewPermission);
 
-        $data = $this->Cabang_model->where('deleted',0)->order_by('namacabang','ASC')->find_all();
+        $data = $this->Cabang_model->get_data('perusahaan_cbg');
 
         $this->template->set('results', $data);
         $this->template->title('Cabang');
-        $this->template->render('list');
+        $this->template->render('index');
     }
 
     //Create New Customer
     public function create()
     {
         $this->auth->restrict($this->addPermission);
-        $datkota    = $this->Cabang_model->pilih_kota()->result();
+        // $datkota    = $this->Cabang_model->pilih_kota()->result();
 
-        $this->template->set('datkota',$datkota);
+        // $this->template->set('datkota',$datkota);
         $this->template->title('Input Master Cabang');
-        $this->template->render('cabang_form');
+        $this->template->render('create_cabang');
     }
+	
+	public function saveCabang(){
+		$this->auth->restrict($this->addPermission);
+		$session = $this->session->userdata('app_session');
+		
+		$post = $this->input->post();
+		$perusahaan = $this->input->post('nm_perusahaan');
+		$cabang     = $this->input->post('nm_cabang');
+		$alamat     = $this->input->post('alamat_cabang');
+		$inisial    = $this->input->post('inisial');
+		$tgl = date("Y-m-d H:i:s");
+		
+		$this->db->trans_begin();
+		$data = [
+			'id_perusahaan'		=> $perusahaan,
+			'nm_cabang'		    => $cabang,
+			'alamat'		    => $alamat,
+			'inisial'			=> $inisial,
+			'created_on'		=> date('Y-m-d H:i:s'),
+			'created_by'		=> $this->auth->user_id()
+			
+		];
+		
+		$insert = $this->db->insert("perusahaan_cbg",$data);
+		
+		 if($this->db->trans_status() === FALSE){
+			 $this->db->trans_rollback();
+			 $Arr_Return		= array(
+					'status'		=> 2,
+					'pesan'			=> 'Save Process Failed. Please Try Again...'
+			   );
+			   
+			    $keterangan     = "Gagal, Add data Cabang ".$cabang.", atas Nama : ".$perusahaan;
+                $status         = 0;
+                $nm_hak_akses   = $this->addPermission;
+                $kode_universal = $cabang;
+                $jumlah         = 1;
+                $sql            = $this->db->last_query();
+		}else{
+			 $this->db->trans_commit();
+			 $Arr_Return		= array(
+				'status'		=> 1,
+				'pesan'			=> 'Save Process Success. '
+		   );
+		   
+		        $keterangan     = "Sukses, Add data Cabang ".$cabang.", atas Nama : ".$perusahaan;
+                $status         = 1;
+                $nm_hak_akses   = $this->addPermission;
+                $kode_universal = $cabang;
+                $jumlah         = 1;
+                $sql            = $this->db->last_query();
+		}
+		echo json_encode($Arr_Return);
+		
+		 simpan_aktifitas($nm_hak_akses, $kode_universal, $keterangan, $jumlah, $sql, $status);
+	}
 
     //Edit Cabang
-    public function edit()
-    {
-        $this->auth->restrict($this->managePermission);
+  public function edit(){
+		$this->auth->restrict($this->viewPermission);
+        $session = $this->session->userdata('app_session');		
+		
+		
+		$id    = $this->input->post('id_cabang');
+		
+		
+		$this->template->set('id',$id);
+		$this->template->render('edit_cabang'); 
+		
+	}
 
-        $id = $this->uri->segment(3);
-        $data  = $this->Cabang_model->find_by(array('id' => $id));
-        if(!$data)
-        {
-            $this->template->set_message("Invalid ID", 'error');
-            redirect('Cabang');
-        }
 
-        $datkota    = $this->Cabang_model->pilih_kota()->result();
-
-        $this->template->set('datkota',$datkota);
-        $this->template->set('data', $data);
-        $this->template->title('Edit Data Cabang');
-        $this->template->render('cabang_form');
-    }
-
+    public function saveEditCabang(){
+		$this->auth->restrict($this->addPermission);
+		$session = $this->session->userdata('app_session');
+		
+		$post = $this->input->post();
+		$id         = $this->input->post('id_cabang');
+		$perusahaan = $this->input->post('nm_perusahaan');
+		$cabang     = $this->input->post('nm_cabang');
+		$inisial    = $this->input->post('inisial');
+		$alamat     = $this->input->post('alamat_cabang');
+		$tgl = date("Y-m-d H:i:s");
+		
+		$this->db->trans_begin();
+		$data = [
+			'nm_cabang'		    => $cabang,
+			'id_perusahaan'		=> $perusahaan,
+			'alamat'		    => $alamat,
+			'modified_on'		=> date('Y-m-d H:i:s'),
+			'modified_by'		=> $this->auth->user_id(),
+			'inisial'		    => $inisial,
+			
+		];
+		
+		$this->db->where('id_cabang', $id);
+        $this->db->update('perusahaan_cbg', $data);
+		
+		 if($this->db->trans_status() === FALSE){
+			 $this->db->trans_rollback();
+			 $Arr_Return		= array(
+					'status'		=> 2,
+					'pesan'			=> 'Update Process Failed. Please Try Again...'
+			   );
+			   
+			    $keterangan     = "Gagal, Update data Cabang ".$cabang.", atas Nama : ".$perusahaan;
+                $status         = 0;
+                $nm_hak_akses   = $this->addPermission;
+                $kode_universal = $cabang;
+                $jumlah         = 1;
+                $sql            = $this->db->last_query();
+		}else{
+			 $this->db->trans_commit();
+			 $Arr_Return		= array(
+				'status'		=> 1,
+				'pesan'			=> 'Save Process Success. '
+		   );
+		   
+		        $keterangan     = "Sukses, Update data Cabang ".$cabang.", atas Nama : ".$perusahaan;
+                $status         = 1;
+                $nm_hak_akses   = $this->addPermission;
+                $kode_universal = $cabang;
+                $jumlah         = 1;
+                $sql            = $this->db->last_query();
+		}
+		echo json_encode($Arr_Return);
+		
+		 simpan_aktifitas($nm_hak_akses, $kode_universal, $keterangan, $jumlah, $sql, $status);
+	}
+	
     //Save customer ajax
     public function save_data_cabang(){
 
@@ -252,159 +360,20 @@ class Cabang extends Admin_Controller {
 
         echo json_encode($param);
     }
-
-    function print_request($id){
-        $id_customer = $id;
-        $mpdf=new mPDF('','','','','','','','','','');
-        $mpdf->SetImportUse();
-        $mpdf->RestartDocTemplate();
-
-        $cust_toko      =  $this->Toko_model->tampil_toko($id_customer)->result();
-        $cust_setpen    =  $this->Penagihan_model->tampil_tagih($id_customer)->result();
-        $cust_setpem    =  $this->Pembayaran_model->tampil_bayar($id_customer)->result();
-        $cust_pic       =  $this->Pic_model->tampil_pic($id_customer)->result();
-        $cust_data      =  $this->Customer_model->find_data('customer',$id_customer,'id_customer');
-        $inisial        =  $this->Customer_model->find_data('data_reff',$id_customer,'id_customer');
-
-
-        $this->template->set('cust_data', $cust_data);
-        $this->template->set('inisial', $inisial);
-        $this->template->set('cust_toko', $cust_toko);
-        $this->template->set('cust_setpen', $cust_setpen);
-        $this->template->set('cust_setpem', $cust_setpem);
-        $this->template->set('cust_pic', $cust_pic);
-        $show = $this->template->load_view('print_data',$data);
-
-        $this->mpdf->WriteHTML($show);
-        $this->mpdf->Output();
-    }
-
-    function downloadExcel()
+	
+	
+	function get_perusahaan()
     {
-        $data = $this->Customer_model->select("customer.id_customer,
-        customer.nm_customer,
-        customer.bidang_usaha,
-        customer.produk_jual,
-        customer.kredibilitas,
-        customer.alamat,
-        customer.provinsi,
-        customer.kota,
-        customer.kode_pos,
-        customer.telpon,
-        customer.fax,
-        customer.npwp,
-        customer.alamat_npwp,
-        customer.id_marketing,
-        customer.referensi,
-        customer.website,
-        customer.foto
-        ")->order_by('customer','ASC')->find_all();
+        $users	= $this->db->query("SELECT * FROM perusahaan")->result();
+		echo "<select id='nm_perusahaan' name='nm_perusahaan' class='select2'>
+				<option value=''>Pilih Perusahaan</option>";
+				foreach($users as $pic){
+		echo "<option value='$pic->id_perusahaan'>$pic->nm_perusahaan</option>";
+				}
+		echo "</select>";
+	}
 
-        $objPHPExcel    = new PHPExcel();
-        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(10);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(25);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(17);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(17);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(17);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(17);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(17);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(17);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(17);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(17);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(17);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('O')->setWidth(17);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('P')->setWidth(17);
-        //$objPHPExcel->getActiveSheet()->getColumnDimension('Q')->setWidth(17);
-       //// $objPHPExcel->getActiveSheet()->getColumnDimension('R')->setWidth(17);
-
-        $objPHPExcel->getActiveSheet()->getStyle(1)->getFont()->setBold(true);
-        $objPHPExcel->getActiveSheet()->getStyle(2)->getFont()->setBold(true);
-        $objPHPExcel->getActiveSheet()->getStyle(3)->getFont()->setBold(true);
-
-        $header = array(
-            'alignment' => array(
-                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
-                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER,
-            ),
-            'font' => array(
-                'bold' => true,
-                'color' => array('rgb' => '000000'),
-                'name' => 'Verdana'
-            )
-        );
-        $objPHPExcel->getActiveSheet()->getStyle("A1:P2")
-                ->applyFromArray($header)
-                ->getFont()->setSize(14);
-        $objPHPExcel->getActiveSheet()->mergeCells('A1:P2');
-        $objPHPExcel->setActiveSheetIndex(0)
-            ->setCellValue('A1', 'Daftar Mitra')
-            ->setCellValue('A3', 'No.')
-            ->setCellValue('B3', 'No Anggota')
-            ->setCellValue('C3', 'Nama Mitra')
-            ->setCellValue('D3', 'Tempat Lahir')
-            ->setCellValue('E3', 'Tanggal Lahir')
-            ->setCellValue('F3', 'Warga Negara')
-            ->setCellValue('G3', 'Jenis Kelamin')
-            ->setCellValue('H3', 'Agama')
-            ->setCellValue('I3', 'Alamat')
-            ->setCellValue('J3', 'No HP')
-            ->setCellValue('K3', 'Nama Bank')
-            ->setCellValue('L3', 'No Rekening')
-            ->setCellValue('M3', 'No KTP')
-            ->setCellValue('N3', 'Email')
-            ->setCellValue('O3', 'No Polisi')
-            ->setCellValue('P3', 'Status');
-            //->setCellValue('Q3', 'Hutang');
-            //->setCellValue('R3', 'Hutang');
-
-        $ex = $objPHPExcel->setActiveSheetIndex(0);
-        $no = 1;
-        $counter = 4;
-        foreach ($data as $row):
-            $tanggallahir = date('d-m-Y',strtotime($row->tanggallahir));
-            $ex->setCellValue('A'.$counter, $no++);
-            $ex->setCellValue('B'.$counter, strtoupper($row->nama_mitra));
-            $ex->setCellValue('C'.$counter, $row->nim);
-            $ex->setCellValue('D'.$counter, $row->tempatlahir);
-            $ex->setCellValue('E'.$counter, $tanggallahir);
-            $ex->setCellValue('F'.$counter, $row->warganegara);
-            $ex->setCellValue('G'.$counter, $row->jeniskelamin);
-            $ex->setCellValue('H'.$counter, $row->jeniskagamaelamin);
-            $ex->setCellValue('I'.$counter, $row->alamataktif);
-            $ex->setCellValue('J'.$counter, $row->nohp);
-            $ex->setCellValue('K'.$counter, $row->norekeningbank);
-            $ex->setCellValue('L'.$counter, $row->namabank);
-            $ex->setCellValue('M'.$counter, $row->noktp);
-            $ex->setCellValue('N'.$counter, $row->email);
-            $ex->setCellValue('O'.$counter, $row->nopolisi);
-            $ex->setCellValue('P'.$counter, $row->status_aktif);
-
-            $counter = $counter+1;
-        endforeach;
-
-        $objPHPExcel->getProperties()->setCreator("Yunaz Fandy")
-            ->setLastModifiedBy("Yunaz Fandy")
-            ->setTitle("Export Daftar Mitra")
-            ->setSubject("Export Daftar Mitra")
-            ->setDescription("Daftar Invoice for Office 2007 XLSX, generated by PHPExcel.")
-            ->setKeywords("office 2007 openxml php")
-            ->setCategory("PHPExcel");
-        $objPHPExcel->getActiveSheet()->setTitle('Data Mitra');
-
-        $objWriter  = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-        header('Last-Modified:'. gmdate("D, d M Y H:i:s").'GMT');
-        header('Chace-Control: no-store, no-cache, must-revalation');
-        header('Chace-Control: post-check=0, pre-check=0', FALSE);
-        header('Pragma: no-cache');
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="ExportDataMitra'. date('Ymd') .'.xlsx"');
-
-        $objWriter->save('php://output');
-
-    }
+   
 }
 
 ?>
