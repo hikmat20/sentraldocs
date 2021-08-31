@@ -13,13 +13,19 @@
 <body>
     <div class="content" style="background-image: url(<?= base_url(); ?>assets/img/geomtri.png);background-repeat:repeat">
         <div class="container">
-            <div class="row">
+            <?php if ($this->session->userdata('tmessage')) : ?>
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <strong>Failed!</strong> <?= $this->session->userdata('tmessage'); ?>
+                </div>
+            <?php endif; ?>
+            <div class="row px-4">
                 <div class="col-md-6 order-md-2">
-                    <img src="<?= base_url(); ?>assets/img/Doc-Man.png" height="400vh" alt="Image">
+                    <img src="<?= base_url(); ?>assets/img/Doc-Man.png" alt="Image" class="img-fluid" style="max-height: 60vh;">
                 </div>
                 <div class="col-md-6 contents">
                     <div class="row justify-content-center">
-                        <div class="col-md-8 shadow bg-white py-4 px-5" style="border-radius: 1em;">
+                        <div class="col-md-8 shadow bg-white py-4 px-4" style="border-radius: 1em;">
                             <img src="<?= base_url('assets/login/images/logo-2.png'); ?>" width="100%" class="img-responsive" alt="Image">
                             <div class="my-4 text- text-muted">
                                 <p>Login</p><!-- <p class="mb-4">Login</p> -->
@@ -28,7 +34,10 @@
                             <i class="fa fa-user"></i>
                             <i class="fa fa-key"></i>
                             <div class="form-group first">
-                                <input type="text" name="username" class="form-control" placeholder="Username" value="<?= set_value('username') ?>" required autofocus>
+                                <input type="text" name="inisial" class="form-control" placeholder="Inisial" value="<?= set_value('inisial') ?>" required autofocus>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="username" class="form-control" placeholder="Username" value="<?= set_value('username') ?>" required>
                             </div>
                             <div class="form-group last mb-4">
                                 <input type="password" name="password" class="form-control" placeholder="Password" value="" required>

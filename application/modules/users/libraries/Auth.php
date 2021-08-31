@@ -63,13 +63,19 @@ class Auth
         return $userdata;
     }
 
-    public function login($username = "", $password = "")
+    public function login($username = "", $password = "", $inisial = "")
     {
         if ($this->is_login()) {
             redirect('/');
         }
 
-        $user     = $this->ci->users_model->find_by(array('username' => $username));
+        $inis     = $this->ci->users_model->find_by(array('inisial' => $inisial));
+        if (!$inis) {
+            $this->ci->template->set_message('Inisial Company not found', '');
+            return FALSE;
+        }
+
+        $user     = $this->ci->users_model->find_by(array('username' => $username, 'inisial' => $inisial));
 
         if (!$user) {
             $this->ci->template->set_message(lang('users_login_fail'), 'error');
@@ -85,6 +91,12 @@ class Auth
             $this->ci->template->set_message(lang('users_not_active'), 'error');
             return FALSE;
         }
+
+        if ($user->inisial == '') {
+            $this->ci->template->set_message(lang('users_inisial'));
+            return FALSE;
+        }
+
 
         if (password_verify($password, $user->password)) {
             //Buat Session

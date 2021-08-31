@@ -40,8 +40,8 @@ class Users extends Front_Controller
         if (isset($_POST['login'])) {
             $username = $this->input->post('username');
             $password = $this->input->post('password');
-
-            $this->auth->login($username, $password);
+            $inisial = $this->input->post('inisial');
+            $this->auth->login($username, $password, $inisial);
         }
 
         $this->template->set('idt', $identitas);
