@@ -27,38 +27,40 @@ $ENABLE_DOWNLOAD  = has_permission('Jabatan.Download');
 		<table id="example1" class="table table-bordered table-striped">
 			<thead style="color:white">
 				<tr>
-					<th>No</th>
+					<th width="20px">No</th>
 					<th>Jabatan</th>
-					<th align="center">Option</th>
+					<th>User</th>
+					<th align="center" width="100px">Option</th>
 
 				</tr>
 			</thead>
 			<tbody>
 				<?php
-				if ($row) {
+				if ($row) :
 					$int	= 0;
-					foreach ($row as $datas) {
+					foreach ($row as $datas) :
 						$int++;
-						echo "<tr>";
-						echo "<td>" . $int . "</td>";
-						echo "<td>" . $datas->nm_jabatan . "</td>";
-						echo "<td align='center'>";
-						if ($ENABLE_VIEW) {
-							echo "<a href='" . site_url('jabatan/add_pejabat?id_jabatan=' . $datas->id) . "' class='btn btn-sm btn-primary' title='Tambah Pejabat' data-role='qtip'><i class='fa fa-user'></i></a>";
-						}
-						// if($ENABLE_DELETE){ 
-						// echo"&nbsp;<a href='".site_url('folders/delete_master/'.$datas->id_master)."' class='btn btn-sm btn-warning' title='Delete Data' data-role='qtip'><i class='fa fa-trash'></i></a>";
-						// }
-						echo "</td>";
-
-						echo "</tr>";
-
-
-
-						echo "</tr>";
-					}
-				}
 				?>
+						<tr>
+							<td><?= $int; ?></td>
+							<td><?= $datas->nm_jabatan; ?></td>
+							<td>
+								<?php
+								$Pejabat = $this->db->get_where('view_user_pejabat', ['id' => $datas->id, 'id_perusahaan' => $prsh])->result();
+								$n = 0;
+								foreach ($Pejabat as $pej) : $n++ ?>
+									<span><?= $n . ". " . $pej->nm_lengkap; ?></span><br>
+								<?php endforeach; ?>
+							</td>
+							<td <td align='center'>
+								<?php
+								if ($ENABLE_VIEW) {
+									echo "<a href='" . site_url('jabatan/add_pejabat?id_jabatan=' . $datas->id) . "' class='btn btn-sm btn-primary' title='Tambah Pejabat' data-role='qtip'><i class='fa fa-user'></i></a>";
+								}; ?>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				<?php endif ?>
 			</tbody>
 		</table>
 	</div>

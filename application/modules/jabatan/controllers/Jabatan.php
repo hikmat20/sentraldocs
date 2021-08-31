@@ -30,11 +30,16 @@ class Jabatan extends Admin_Controller
 		$this->template->set('title', 'Manage Data Folder');
 		$this->template->page_icon('fa fa-folder');
 
+		$session = $this->session->userdata('app_session');
+		$this->template->set('prsh', $session['id_perusahaan']);
+		$this->template->set('cbg', $session['id_cabang']);
+
 		date_default_timezone_set("Asia/Bangkok");
 	}
 
 	public function index()
 	{
+
 		$this->auth->restrict($this->viewPermission);
 		$session = $this->session->userdata('app_session');
 		$this->template->page_icon('fa fa-user');
@@ -84,9 +89,11 @@ class Jabatan extends Admin_Controller
 			echo json_encode($Arr_Kembali);
 		} else {
 
-
-
+			$jabatan = $this->db->get('tbl_jabatan')->result();
+			$users	= $this->db->query("SELECT * FROM users WHERE nm_lengkap != 'Administrator' ORDER BY nm_lengkap ASC")->result();
 			$this->template->page_icon('fa fa-user');
+			$this->template->set('users', $users);
+			$this->template->set('jabatan', $jabatan);
 			$this->template->title('Create Jabatan ');
 			$this->template->render('add_jabatan');
 		}
@@ -110,13 +117,14 @@ class Jabatan extends Admin_Controller
 		$data = [
 			'users' => $option
 		];
+
+		$pejabat = $this->db->get_where('view_user_pejabat', ['id' => $id_jabatan, 'id_perusahaan' => $session['id_perusahaan'], 'id_cabang' => $session['id_cabang']])->result();
+
 		$this->template->set('results', $data);
-
-
-
 		$this->template->page_icon('fa fa-folder-open');
 		$this->template->set('jabatan', $id_jabatan);
 		$this->template->set('row', $get_Data);
+		$this->template->set('pejabat', $pejabat);
 		$this->template->title('Add Pejabat');
 		$this->template->render('add_pejabat');
 	}
@@ -127,36 +135,91 @@ class Jabatan extends Admin_Controller
 		$session = $this->session->userdata('app_session');
 		$prsh    = $session['id_perusahaan'];
 		$cbg     = $session['id_cabang'];
-		// print_r($this->input->post());
-		// exit;
-		$this->db->trans_begin();
-		$data = [
-			'id_jabatan'	    => $this->input->post('id_jabatan'),
-			'id_user'	        => $this->input->post('user'),
-			'id_perusahaan'     => $prsh,
-			'id_cabang'         => $cbg,
 
-		];
+		$axis_user = $this->db->get_where(
+			'tbl_pejabat',
+			[
+				'id_user' => $this->input->post('user'),
+				'id_perusahaan' => $prsh,
+				'id_cabang' 	=> $cbg,
+				'id_jabatan' 	=> $this->input->post('jabatan')
+			]
+		)->num_rows();
 
-		$insert = $this->db->insert("tbl_pejabat", $data);
-
-		if ($this->db->trans_status() === FALSE) {
-			$this->db->trans_rollback();
+		if ($axis_user) {
 			$Arr_Return		= array(
 				'status'		=> 2,
-				'pesan'			=> 'Save Process Failed. Please Try Again...'
+				'pesan'			=> 'User already axis..'
 			);
 		} else {
-			$this->db->trans_commit();
-			$Arr_Return		= array(
-				'status'		=> 1,
-				'pesan'			=> 'Save Process Success. ',
-				// 'kode'			=> $kode
-			);
+			$this->db->trans_begin();
+			$data = [
+				'id_jabatan'	    => $this->input->post('jabatan'),
+				'id_user'	        => $this->input->post('user'),
+				'id_perusahaan'     => $prsh,
+				'id_cabang'         => $cbg,
+			];
+
+			$this->db->insert("tbl_pejabat", $data);
+			if ($this->db->trans_status() === FALSE) {
+				$this->db->trans_rollback();
+				$Arr_Return		= array(
+					'status'		=> 2,
+					'pesan'			=> 'Save Process Failed. Please Try Again...'
+				);
+			} else {
+				$this->db->trans_commit();
+				$Arr_Return		= array(
+					'status'		=> 1,
+					'pesan'			=> 'Save Process Success. ',
+					// 'kode'			=> $kode
+				);
+			}
 		}
 		echo json_encode($Arr_Return);
 	}
 
+	public function load_jabatan()
+	{
+		$session 	= $this->session->userdata('app_session');
+		$prsh    	= $session['id_perusahaan'];
+		$cbg     	= $session['id_cabang'];
+		$id_jabatan	= $_POST['id_jbt'];
+		if ($id_jabatan) {
+			$jabatan = $this->db->get_where('tbl_jabatan', ['id' => $id_jabatan, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->result();
+		} else {
+			$jabatan = $this->db->get_where('tbl_jabatan', ['id_perusahaan' => $prsh, 'id_cabang' => $cbg])->result();
+		}
+
+		if ($jabatan != 0) {
+			echo "	<table id='example1' class='table table-bordered table-striped'>
+			<tr>
+			<td width='5%' align='center' width='4%'><b>No</td>
+			<td align='left'><b>Nama Jabatan</td>
+			<td align='left'><b>Nama Karyawan</td>
+			</tr>";
+			$n = 0;
+			foreach ($jabatan as $d) {
+				$pejabat = $this->db->get_where('view_user_pejabat', ['id' => $d->id, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->result();
+
+				$n++;
+				echo "<tr class='view$n'>
+				<td align='center'>$n</td>
+				<td align='left'>$d->nm_jabatan</td>
+				<td align='left'>";
+				$no = 0;
+				foreach ($pejabat as $pjb) {
+					$no++;
+					echo $no . ". " . $pjb->nm_lengkap . "<br>";
+				};
+				echo "</td>";
+				echo "</tr>";
+			}
+			echo "</table>";
+		} else {
+			echo "Belum Ada Karyawan";
+		}
+	}
 
 	public function load_pejabat()
 	{
@@ -176,8 +239,9 @@ class Jabatan extends Admin_Controller
 		//$divisi  = $session['id_div']; 
 		//$where   =array('kd_meeting'=> $kd_meeting, 'id_perusahaan'=>$prsh, 'id_cabang'=>$cbg );
 		$numb = 1;
+
 		$data = $this->db->query("SELECT a.*, b.nm_lengkap FROM tbl_pejabat a
-        INNER JOIN users b on a.id_user = b.id_user
+		INNER JOIN users b on a.id_user = b.id_user
 		WHERE a.id_jabatan='$kd_meeting' AND a.id_perusahaan='$prsh' AND a.id_cabang='$cbg'")->result();
 
 		// print_r ($data);
@@ -197,13 +261,6 @@ class Jabatan extends Admin_Controller
 				echo "<tr class='view$n'>
 				<td align='center'>$n</td>
 				<td align='left'>$d->nm_lengkap</td>";
-
-
-
-
-
-
-
 				echo "</tr>";
 			}
 
@@ -211,5 +268,35 @@ class Jabatan extends Admin_Controller
 		} else {
 			echo "Belum Ada Karyawan";
 		}
+	}
+
+	public function delete_user()
+	{
+		$data = $this->input->post();
+
+		$this->db->trans_begin();
+		$this->db->where(['id_jabatan' => $data['id'], 'id_user' => $data['usr'], 'id_perusahaan' => $data['prsh'], 'id_cabang' => $data['cbg']])->delete('tbl_pejabat');
+		if ($this->db->trans_status() == TRUE) {
+			$this->db->trans_commit();
+			$Arr_Kembali		= array(
+				'status'		=> 1,
+				'pesan'			=> 'Delete Karyawan Success. Thank you & have a nice day.......'
+			);
+
+			$keterangan = 'Berhasil Hapus Karyawan';
+			$status = 1;
+			$nm_hak_akses = $this->addPermission;
+			$kode_universal = $this->input->post('nama_master');
+			$jumlah = 1;
+			$sql = $this->db->last_query();
+			simpan_aktifitas($nm_hak_akses, $kode_universal, $keterangan, $jumlah, $sql, $status);
+		} else {
+			$this->db->trans_rollback();
+			$Arr_Kembali        = array(
+				'status'        => 0,
+				'pesan'            => 'Delete Karyawan failed. Please try again later......'
+			);
+		}
+		echo json_encode($Arr_Kembali);
 	}
 }
