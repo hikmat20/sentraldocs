@@ -54,12 +54,10 @@ class Folders extends Admin_Controller
 		$prsh    = $session['id_perusahaan'];
 		$cbg     = $session['id_cabang'];
 
-
 		if ($this->input->post()) {
 
 			$Arr_Kembali			= array();
-			$data_session			= $this->session->userdata;
-			$data['created_by']		= $data_session['User']['username'];
+			$data['created_by']		= $session['username'];
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['nama_master']	= $this->input->post('nama_master');
 			$data['id_perusahaan']  = $prsh;
@@ -86,9 +84,6 @@ class Folders extends Admin_Controller
 			}
 			echo json_encode($Arr_Kembali);
 		} else {
-
-
-
 			$this->template->page_icon('fa fa-folder-open');
 			$this->template->title('Create Folder ');
 			$this->template->render('add');
@@ -168,18 +163,13 @@ class Folders extends Admin_Controller
 		}
 		if ($this->input->post()) {
 			$id_master 	= $this->input->post('id_master');
-			// echo"<pre>";
-			// print_r($this->input->post());
-			// exit;	        
-
 
 			$Arr_Kembali			= array();
 			$data					= $this->input->post();
-			$data['nama_file']	    = $gambar;
-			$data['ukuran_file']	= $ukuran;
-			$data['tipe_file']		= $ext;
-			$data['lokasi_file']	= $lokasi;
-			$data_session			= $this->session->userdata;
+			$data['nama_file']	    = (isset($gambar)) ? $gambar : '';
+			$data['ukuran_file']	= (isset($ukuran)) ? $ukuran : '';
+			$data['tipe_file']		= (isset($ext)) ? $ext : '';
+			$data['lokasi_file']	= (isset($lokasi)) ? $lokasi : '';
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['id_master']		= $id_master;
@@ -277,10 +267,10 @@ class Folders extends Admin_Controller
 
 			if ($ukuran > 0) {
 				$data					= $this->input->post();
-				$data['nama_file']	    = $gambar;
-				$data['ukuran_file']	= $ukuran;
-				$data['tipe_file']		= $ext;
-				$data['lokasi_file']	= $lokasi;
+				$data['nama_file']	    = (isset($gambar)) ? $gambar : '';
+				$data['ukuran_file']	= (isset($ukuran)) ? $ukuran : '';
+				$data['tipe_file']		= (isset($ext)) ? $ext : '';
+				$data['lokasi_file']	= (isset($lokasi)) ? $lokasi : '';
 				$data_session			= $this->session->userdata;
 				$data['created_by']		= $this->auth->user_id();
 				$data['created']		= date('Y-m-d H:i:s');
@@ -421,11 +411,10 @@ class Folders extends Admin_Controller
 
 			$Arr_Kembali			= array();
 			$data					= $this->input->post();
-			$data['nama_file']	    = $gambar;
-			$data['ukuran_file']	= $ukuran;
-			$data['tipe_file']		= $ext;
-			$data['lokasi_file']	= $lokasi;
-			$data_session			= $this->session->userdata;
+			$data['nama_file']	    = (isset($gambar)) ? $gambar : '';
+			$data['ukuran_file']	= (isset($ukuran)) ? $ukuran : '';
+			$data['tipe_file']		= (isset($ext)) ? $ext : '';
+			$data['lokasi_file']	= (isset($lokasi)) ? $lokasi : '';
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['id_master']		= $id_master;
@@ -458,9 +447,7 @@ class Folders extends Admin_Controller
 			$id_master 	= $this->uri->segment('4');
 			$id_detail 	= $this->uri->segment('3');
 			$this->template->page_icon('fa fa-folder-open');
-
 			$users	= $this->db->query("SELECT * FROM users WHERE nm_lengkap != 'Administrator' AND id_perusahaan='$prsh' AND id_cabang='$cbg' ORDER BY nm_lengkap ASC")->result_array();
-
 			$option = '';
 			foreach ($users as $key => $value) {
 				$option .= "<option value='" . $value['id_user'] . "'>" . $value['nm_lengkap'] . "</option>";
@@ -545,10 +532,10 @@ class Folders extends Admin_Controller
 
 			$Arr_Kembali			= array();
 			$data					= $this->input->post();
-			$data['nama_file']	    = $gambar;
-			$data['ukuran_file']	= $ukuran;
-			$data['tipe_file']		= $ext;
-			$data['lokasi_file']	= $lokasi;
+			$data['nama_file']	    = (isset($gambar)) ? $gambar : '';
+			$data['ukuran_file']	= (isset($ukuran)) ? $ukuran : '';
+			$data['tipe_file']		= (isset($ext)) ? $ext : '';
+			$data['lokasi_file']	= (isset($lokasi)) ? $lokasi : '';
 			$data_session			= $this->session->userdata;
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
@@ -652,10 +639,10 @@ class Folders extends Admin_Controller
 
 			if ($ukuran > 0) {
 				$data					= $this->input->post();
-				$data['nama_file']	    = $gambar;
-				$data['ukuran_file']	= $ukuran;
-				$data['tipe_file']		= $ext;
-				$data['lokasi_file']	= $lokasi;
+				$data['nama_file']	    = (isset($gambar)) ? $gambar : '';
+				$data['ukuran_file']	= (isset($ukuran)) ? $ukuran : '';
+				$data['tipe_file']		= (isset($ext)) ? $ext : '';
+				$data['lokasi_file']	= (isset($lokasi)) ? $lokasi : '';
 				$data_session			= $this->session->userdata;
 				$data['created_by']		= $this->auth->user_id();
 				$data['created']		= date('Y-m-d H:i:s');
@@ -798,10 +785,10 @@ class Folders extends Admin_Controller
 
 			$Arr_Kembali			= array();
 			$data					= $this->input->post();
-			$data['nama_file']	    = $gambar;
-			$data['ukuran_file']	= $ukuran;
-			$data['tipe_file']		= $ext;
-			$data['lokasi_file']	= $lokasi;
+			$data['nama_file']	    = (isset($gambar)) ? $gambar : '';
+			$data['ukuran_file']	= (isset($ukuran)) ? $ukuran : '';
+			$data['tipe_file']		= (isset($ext)) ? $ext : '';
+			$data['lokasi_file']	= (isset($lokasi)) ? $lokasi : '';
 			$data_session			= $this->session->userdata;
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
@@ -934,11 +921,10 @@ class Folders extends Admin_Controller
 
 			$Arr_Kembali			= array();
 			$data					= $this->input->post();
-			$data['nama_file']	    = $gambar;
-			$data['ukuran_file']	= $ukuran;
-			$data['tipe_file']		= $ext;
-			$data['lokasi_file']	= $lokasi;
-			$data_session			= $this->session->userdata;
+			$data['nama_file']	    = (isset($gambar)) ? $gambar : '';
+			$data['ukuran_file']	= (isset($ukuran)) ? $ukuran : '';
+			$data['tipe_file']		= (isset($ext)) ? $ext : '';
+			$data['lokasi_file']	= (isset($lokasi)) ? $lokasi : '';
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['id_master']		= $id_master;
@@ -1044,11 +1030,10 @@ class Folders extends Admin_Controller
 
 			if ($ukuran > 0) {
 				$data					= $this->input->post();
-				$data['nama_file']	    = $gambar;
-				$data['ukuran_file']	= $ukuran;
-				$data['tipe_file']		= $ext;
-				$data['lokasi_file']	= $lokasi;
-				$data_session			= $this->session->userdata;
+				$data['nama_file']	    = (isset($gambar)) ? $gambar : '';
+				$data['ukuran_file']	= (isset($ukuran)) ? $ukuran : '';
+				$data['tipe_file']		= (isset($ext)) ? $ext : '';
+				$data['lokasi_file']	= (isset($lokasi)) ? $lokasi : '';
 				$data['created_by']		= $this->auth->user_id();
 				$data['created']		= date('Y-m-d H:i:s');
 				$data['id_master']		= $id_master;
@@ -1056,7 +1041,6 @@ class Folders extends Admin_Controller
 				$data['id_detail1']		= $id_detail1;
 			} else {
 				$data					= $this->input->post();
-				$data_session			= $this->session->userdata;
 				$data['created_by']		= $this->auth->user_id();
 				$data['created']		= date('Y-m-d H:i:s');
 				$data['id_master']		= $id_master;
@@ -1064,11 +1048,7 @@ class Folders extends Admin_Controller
 				$data['id_detail1']		= $id_detail1;
 			}
 
-
-
 			$update = $this->Folders_model->getUpdate('gambar2', $data, 'id', $this->input->post('id'));
-
-
 			if ($update) {
 				$Arr_Kembali		= array(
 					'status'		=> 1,
@@ -1090,11 +1070,7 @@ class Folders extends Admin_Controller
 			echo json_encode($Arr_Kembali);
 		} else {
 
-
 			$detail				= $this->Folders_model->getData('gambar2', 'id', $id);
-
-
-
 			$this->template->page_icon('fa fa-folder-open');
 			$this->template->set('id', $id);
 			$this->template->set('row', $detail);
@@ -1193,10 +1169,10 @@ class Folders extends Admin_Controller
 
 			$Arr_Kembali			= array();
 			$data					= $this->input->post();
-			$data['nama_file']	    = $gambar;
-			$data['ukuran_file']	= $ukuran;
-			$data['tipe_file']		= $ext;
-			$data['lokasi_file']	= $lokasi;
+			$data['nama_file']	    = (isset($gambar)) ? $gambar : '';
+			$data['ukuran_file']	= (isset($ukuran)) ? $ukuran : '';
+			$data['tipe_file']		= (isset($ext)) ? $ext : '';
+			$data['lokasi_file']	= (isset($lokasi)) ? $lokasi : '';
 			$data_session			= $this->session->userdata;
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
@@ -1393,10 +1369,10 @@ class Folders extends Admin_Controller
 		if ($ukuran > 0) {
 			//$data					= $this->input->post();
 
-			$data['nama_file']	    = $gambar;
-			$data['ukuran_file']	= $ukuran;
-			$data['tipe_file']		= $ext;
-			$data['lokasi_file']	= $lokasi;
+			$data['nama_file']	    = (isset($gambar)) ? $gambar : '';
+			$data['ukuran_file']	= (isset($ukuran)) ? $ukuran : '';
+			$data['tipe_file']		= (isset($ext)) ? $ext : '';
+			$data['lokasi_file']	= (isset($lokasi)) ? $lokasi : '';
 			$data['status_approve']	= $approve;
 			$data['status_revisi']	= '1';
 			$data_session			= $this->session->userdata;
@@ -1515,10 +1491,10 @@ class Folders extends Admin_Controller
 		if ($ukuran > 0) {
 			//$data					= $this->input->post();
 
-			$data['nama_file']	    = $gambar;
-			$data['ukuran_file']	= $ukuran;
-			$data['tipe_file']		= $ext;
-			$data['lokasi_file']	= $lokasi;
+			$data['nama_file']	    = (isset($gambar)) ? $gambar : '';
+			$data['ukuran_file']	= (isset($ukuran)) ? $ukuran : '';
+			$data['tipe_file']		= (isset($ext)) ? $ext : '';
+			$data['lokasi_file']	= (isset($lokasi)) ? $lokasi : '';
 			$data['status_approve']	= $approve;
 			$data['status_revisi']	= '1';
 			$data_session			= $this->session->userdata;
@@ -1643,10 +1619,10 @@ class Folders extends Admin_Controller
 		if ($ukuran > 0) {
 			//$data					= $this->input->post();
 
-			$data['nama_file']	    = $gambar;
-			$data['ukuran_file']	= $ukuran;
-			$data['tipe_file']		= $ext;
-			$data['lokasi_file']	= $lokasi;
+			$data['nama_file']	    = (isset($gambar)) ? $gambar : '';
+			$data['ukuran_file']	= (isset($ukuran)) ? $ukuran : '';
+			$data['tipe_file']		= (isset($ext)) ? $ext : '';
+			$data['lokasi_file']	= (isset($lokasi)) ? $lokasi : '';
 			if ($insert->id_review != '0') {
 				$data['status_approve']	= 3;
 			} else {
