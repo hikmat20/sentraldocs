@@ -39,7 +39,7 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
                                             </div>
                                             <div class="overlay-layer">
                                                 <a href="javascript:void(0)" data-id="<?= $data->id; ?>" data-file="<?= $data->nama_file; ?>" data-table="gambar1" class="view btn btn-icon btn-warning btn-sm btn-shadow" title="View Dokumen"><i class="fa fa-eye"></i></a>
-                                                <a href="javascript:void(0)" onclick="location.href = siteurl+active_controller+'download_detail1/<?= $data->id; ?>'" data-id="<?= $data->id; ?>" data-file="<?= $data->nama_file; ?>" data-table="gambar1" class="download btn btn-icon btn-info btn-sm btn-shadow ml-2" title="Download Dokumen"><i class="fa fa-download"></i></a>
+                                                <a href="javascript:void(0)" onclick="location.href = siteurl+'dokumen/download_detail1/<?= $data->id; ?>'" data-id="<?= $data->id; ?>" data-file="<?= $data->nama_file; ?>" data-table="gambar1" class="download btn btn-icon btn-info btn-sm btn-shadow ml-2" title="Download Dokumen"><i class="fa fa-download"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -200,7 +200,7 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
             function(isConfirm) {
                 if (isConfirm) {
                     loading_spinner();
-                    window.location.href = base_url + 'index.php/' + active_controller + '/delete/' + id;
+                    window.location.href = base_url + active_controller + '/delete/' + id;
 
                 } else {
                     swal("Cancelled", "Data can be process again :)", "error");
@@ -217,7 +217,7 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
         // alert(id + ", " + table + ", " + file)
         $.ajax({
             type: "post",
-            url: siteurl + active_controller + 'history_revisi',
+            url: siteurl + 'dokumen/history_revisi',
             data: "id=" + id + "&table=" + table + "&file=" + file,
             success: function(result) {
                 // $(".modal-dialog").css('max-width', '1360px !important');
