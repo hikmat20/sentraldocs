@@ -74,7 +74,7 @@ class Dokumen extends Admin_Controller
 			$this->template->set('row', $get_Data);
 			$this->template->render('index_new_subfolder');
 		} else {
-			$get_Data		= $this->Folders_model->getData('xgambar1', 'id_detail', $idsub);
+			$get_Data		= $this->Folders_model->getData('gambar1', 'id_detail', $idsub);
 			$get_Master		= $this->Folders_model->getData('gambar', 'id', $idsub);
 			$this->template->set('list', true);
 			$this->template->set('row', $get_Data);
