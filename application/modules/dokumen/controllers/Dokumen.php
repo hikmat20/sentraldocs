@@ -648,7 +648,8 @@ class Dokumen extends Admin_Controller
 		$id_master = $this->db->query("SELECT * FROM gambar1 WHERE id='$id'")->row();
 		$iddetail = $id_master->id_detail;
 		$nme    =   $id_master->nama_file;
-		$pth    =   file_get_contents(base_url() . "./assets/files/" . $nme);
+
+		$pth    =   file_get_contents(base_url() . "assets/files/" . $nme);
 
 		force_download($nme, $pth);
 
