@@ -48,10 +48,10 @@ class Dokumen extends Admin_Controller
 	{
 		$this->auth->restrict($this->viewPermission);
 		$session = $this->session->userdata('app_session');
+		$get_Data		= $this->Folders_model->getData('master_gambar');
 		$this->template->page_icon('fa fa-folder-open');
 		$this->template->set('title', 'Index Of Folders');
 		$this->template->set_theme('dashboard');
-		$get_Data		= $this->Folders_model->getData('master_gambar');
 		$this->template->set('row', $get_Data);
 		$this->template->render('index_new');
 	}

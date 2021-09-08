@@ -36,15 +36,11 @@ class Folders extends Admin_Controller
 	public function index()
 	{
 		$this->auth->restrict($this->viewPermission);
-		$session = $this->session->userdata('app_session');
-		$prsh    = $session['id_perusahaan'];
-		$cbg     = $session['id_cabang'];
-
-		$this->template->page_icon('fa fa-folder-open');
 		$get_Data		= $this->Folders_model->getData('master_gambar');
+		$this->template->page_icon('fa fa-folder-open');
 		$this->template->set('row', $get_Data);
-		// $this->template->title('Index Of Folders');
-		$this->template->render('index');
+		$this->template->set_theme('dashboard');
+		$this->template->render('index_new');
 	}
 
 	public function add()
@@ -59,7 +55,7 @@ class Folders extends Admin_Controller
 			$Arr_Kembali			= array();
 			$data['created_by']		= $session['username'];
 			$data['created']		= date('Y-m-d H:i:s');
-			$data['nama_master']	= $this->input->post('nama_master');
+			$data['nama_master']	= $this->input->post('folder_name');
 			$data['id_perusahaan']  = $prsh;
 			$data['id_cabang']		= $cbg;
 
@@ -85,7 +81,7 @@ class Folders extends Admin_Controller
 			echo json_encode($Arr_Kembali);
 		} else {
 			$this->template->page_icon('fa fa-folder-open');
-			$this->template->title('Create Folder ');
+			$this->template->title('Create Folder');
 			$this->template->render('add');
 		}
 	}
@@ -161,6 +157,7 @@ class Folders extends Admin_Controller
 			$ext     = $ext1[1];
 			$lokasi = './assets/files/' . $gbr['file_name'] . '.' . $ext;
 		}
+
 		if ($this->input->post()) {
 			$id_master 	= $this->input->post('id_master');
 
@@ -339,9 +336,6 @@ class Folders extends Admin_Controller
 		redirect(site_url('folders/detail?id_master=$id_master'));
 	}
 
-
-
-
 	function delete_detail($id)
 	{
 
@@ -370,7 +364,6 @@ class Folders extends Admin_Controller
 			redirect(site_url('Folders/detail?id_master=' . $idmaster));
 		}
 	}
-
 
 	public function add_subdetail1()
 	{
@@ -466,7 +459,85 @@ class Folders extends Admin_Controller
 		}
 	}
 
+	// SUB FOLDER
+
+	public function subfolder($subfolder = '', $detail = '')
+	{
+		$this->auth->restrict($this->viewPermission);
+		$this->template->page_icon('fa fa-folder-open');
+		$this->template->set('title', 'Index Of Folders');
+		$this->template->set_theme('dashboard');
+		$master 			= $this->db->get_where('master_gambar', ['nama_master' => str_replace('-', ' ', $subfolder)])->row();
+		$id_master 			= $master->id_master;
+		$nama_master 		= str_replace(' ', '-', strtolower($master->nama_master));
+
+		if (!$detail) {
+			$get_Data		= $this->Folders_model->getData('gambar', 'id_master', $id_master);
+			$this->template->set('list', false);
+			$this->template->set('row', $get_Data);
+			$this->template->set('nama_master', $nama_master);
+			$this->template->set('id_master', $id_master);
+			$this->template->render('index_new_subfolder');
+		} else {
+			$sub_folder 	= $this->db->get_where('gambar', ['deskripsi' => str_replace('-', ' ', $detail)])->row();
+			$id_sub 		= $sub_folder->id;
+			$nama_master 	= str_replace(' ', '-', strtolower($sub_folder->deskripsi));
+			// echo '<pre>';
+			// print_r($nama_master);
+			// echo '<pre>';
+			// exit;
+			$get_Data		= $this->Folders_model->getData('gambar1', 'id_detail', $id_sub);
+			$get_Master		= $this->Folders_model->getData('gambar', 'id', $id_sub);
+			$this->template->set('list', true);
+			$this->template->set('row', $get_Data);
+			$this->template->set('masDoc', $get_Master);
+			$this->template->render('index_new_detail');
+		}
+	}
+
+	public function add_subfolder()
+	{
+		$this->auth->restrict($this->viewPermission);
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+
+		if ($this->input->post()) {
+
+			$Arr_Kembali			= array();
+			$data['created_by']		= $session['id_user'];
+			$data['created']		= date('Y-m-d H:i:s');
+			$data['id_master']		= $this->input->post('id_master');
+			$data['deskripsi']		= $this->input->post('folder_name');
+			$data['id_perusahaan']  = $prsh;
+			$data['id_cabang']		= $cbg;
+
+			if ($this->Folders_model->simpan('gambar', $data)) {
+				$Arr_Kembali		= array(
+					'status'		=> 1,
+					'pesan'			=> 'Add gambar Success. Thank you & have a nice day.......'
+				);
+
+				$keterangan 		= 'Berhasil Simpan Folder';
+				$status 			= 1;
+				$nm_hak_akses 		= $this->addPermission;
+				$kode_universal 	= $this->input->post('folder_name');
+				$jumlah 			= 1;
+				$sql 				= $this->db->last_query();
+				simpan_aktifitas($nm_hak_akses, $kode_universal, $keterangan, $jumlah, $sql, $status);
+			} else {
+				$Arr_Kembali		= array(
+					'status'		=> 2,
+					'pesan'			=> 'Add gambar failed. Please try again later......'
+				);
+			}
+			echo json_encode($Arr_Kembali);
+		}
+	}
+
+
 	//SUB DOKUMEN 1
+
 
 	public function detail1()
 	{

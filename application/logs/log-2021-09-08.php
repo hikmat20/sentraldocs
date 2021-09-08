@@ -42,3 +42,52 @@ FROM `xgambar1`
 WHERE `id_perusahaan` = '1'
 AND `id_cabang` = '1'
 AND `id_detail` = '6'
+ERROR - 2021-09-08 06:21:49 --> 404 Page Not Found: /index
+ERROR - 2021-09-08 06:22:00 --> 404 Page Not Found: /index
+ERROR - 2021-09-08 06:22:02 --> 404 Page Not Found: /index
+ERROR - 2021-09-08 06:22:11 --> 404 Page Not Found: /index
+ERROR - 2021-09-08 07:07:25 --> 404 Page Not Found: ../modules/folders/controllers/Folders/subfolder
+ERROR - 2021-09-08 08:46:08 --> 404 Page Not Found: ../modules/folders/controllers/Folders/subfolder
+ERROR - 2021-09-08 08:49:16 --> 404 Page Not Found: ../modules/folders/controllers/Folders/subfolder
+ERROR - 2021-09-08 15:55:05 --> Severity: error --> Exception: Too few arguments to function Folders::subfolder(), 1 passed in D:\SENTRAL\SENTRALDOCS\sentraldocs\system\core\CodeIgniter.php on line 532 and exactly 2 expected D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 464
+ERROR - 2021-09-08 15:55:16 --> Severity: error --> Exception: Too few arguments to function Folders::subfolder(), 1 passed in D:\SENTRAL\SENTRALDOCS\sentraldocs\system\core\CodeIgniter.php on line 532 and exactly 2 expected D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 464
+ERROR - 2021-09-08 15:55:33 --> Severity: error --> Exception: Too few arguments to function Folders::subfolder(), 1 passed in D:\SENTRAL\SENTRALDOCS\sentraldocs\system\core\CodeIgniter.php on line 532 and exactly 2 expected D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 464
+ERROR - 2021-09-08 16:06:12 --> Severity: error --> Exception: Too few arguments to function Folders::subfolder(), 1 passed in D:\SENTRAL\SENTRALDOCS\sentraldocs\system\core\CodeIgniter.php on line 532 and exactly 2 expected D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 464
+ERROR - 2021-09-08 16:20:18 --> Query error: Unknown column 'nama_master' in 'where clause' - Invalid query: SELECT *
+FROM `gambar`
+WHERE `id_perusahaan` = '1'
+AND `id_cabang` = '1'
+AND `nama_master` = 'quality-manual'
+ERROR - 2021-09-08 16:21:33 --> Query error: Unknown column 'nama_master' in 'where clause' - Invalid query: SELECT *
+FROM `gambar`
+WHERE `id_perusahaan` = '1'
+AND `id_cabang` = '1'
+AND `nama_master` = 'quality manual'
+ERROR - 2021-09-08 16:21:39 --> Query error: Unknown column 'nama_master' in 'where clause' - Invalid query: SELECT *
+FROM `gambar`
+WHERE `id_perusahaan` = '1'
+AND `id_cabang` = '1'
+AND `nama_master` = 'quality manual'
+ERROR - 2021-09-08 16:25:20 --> Severity: Notice --> Undefined property: stdClass::$id D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 470
+ERROR - 2021-09-08 16:26:24 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 470
+ERROR - 2021-09-08 16:26:31 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 470
+ERROR - 2021-09-08 16:27:43 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 470
+ERROR - 2021-09-08 16:27:47 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 470
+ERROR - 2021-09-08 16:27:49 --> Severity: Notice --> Undefined property: stdClass::$name_master D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\index_new_subfolder.php 28
+ERROR - 2021-09-08 16:31:03 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 471
+ERROR - 2021-09-08 16:31:03 --> Severity: Notice --> Trying to get property 'nama_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 472
+ERROR - 2021-09-08 16:35:21 --> Query error: Unknown column 'nama_master' in 'where clause' - Invalid query: SELECT *
+FROM `gambar`
+WHERE `nama_master` = 'quality manual'
+ERROR - 2021-09-08 16:35:31 --> Severity: Notice --> Undefined property: stdClass::$id D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 482
+ERROR - 2021-09-08 16:36:21 --> Severity: Notice --> Undefined property: stdClass::$id D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 482
+ERROR - 2021-09-08 16:39:07 --> Severity: Notice --> Trying to get property 'id' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 482
+ERROR - 2021-09-08 16:39:07 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 483
+ERROR - 2021-09-08 16:39:13 --> Severity: Notice --> Trying to get property 'id' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 482
+ERROR - 2021-09-08 16:39:13 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 483
+ERROR - 2021-09-08 16:55:37 --> Severity: Notice --> Undefined variable: data D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\index_new_subfolder.php 39
+ERROR - 2021-09-08 16:55:37 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\index_new_subfolder.php 39
+ERROR - 2021-09-08 16:55:37 --> Severity: Notice --> Undefined variable: data D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\index_new_subfolder.php 39
+ERROR - 2021-09-08 16:55:37 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\index_new_subfolder.php 39
+ERROR - 2021-09-08 16:55:37 --> Severity: Notice --> Undefined variable: data D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\index_new_subfolder.php 41
+ERROR - 2021-09-08 16:55:37 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\index_new_subfolder.php 41
