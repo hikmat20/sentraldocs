@@ -173,7 +173,7 @@
 
               <!--begin::User-->
               <div class="topbar-item mr-3">
-                <div class="btn btn-icon btn-hover-transparent-white w-auto d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
+                <div class="btn btn-icon btn-hover-transparent-white w-auto d-flex align-items-center btn-lg px-2" onclick="$('#kt_quick_user_toggle').click()">
                   <div class="symbol symbol-circle symbol-30 bg-white overflow-hidden">
                     <div class="symbol-label">
                       <img alt="Logo" src="<?= (isset($userData->photo) && file_exists('assets/images/users/' . $userData->photo)) ? base_url('assets/images/users/' . $userData->photo) : base_url('assets/images/male-def.png'); ?>" class="h-75 align-self-end" />
