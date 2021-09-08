@@ -33,7 +33,7 @@
 </head>
 <!-- 0c18a9 -->
 
-<body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled aside-enabled aside-static page-loading" style="background-image: url(<?= base_url('assets/images/image-asset-2.jpg'); ?>);background-repeat:no-repeat;background-size:cover;background-position:center">
+<body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled aside-enabled aside-static page-loading" style="background-image: url(<?= base_url('assets/images/image-asset-2.jpg'); ?>);background-repeat:no-repeat;background-size:cover;background-position:top;background-attachment:fixed">
   <div id="kt_header_mobile" class="header-mobile header-mobile-fixed">
     <a href="<?= base_url('/'); ?>">
       <img alt="Logo" src="<?= base_url('assets/img/logo.png'); ?>" class="max-h-30px" />
