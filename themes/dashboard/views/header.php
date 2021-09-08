@@ -31,8 +31,9 @@
     var active_function = '<?php echo $this->uri->segment(2); ?>' + '/';
   </script>
 </head>
+<!-- 0c18a9 -->
 
-<body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled aside-enabled aside-static page-loading" style="background-color: #0c18a9;">
+<body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled aside-enabled aside-static page-loading" style="background-image: url('assets/images/buku.jpg');background-repeat:no-repeat;background-size:cover">
   <div id="kt_header_mobile" class="header-mobile header-mobile-fixed">
     <a href="<?= base_url('/'); ?>">
       <img alt="Logo" src="<?= base_url('assets/img/logo.png'); ?>" class="max-h-30px" />
