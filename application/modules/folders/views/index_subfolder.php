@@ -8,21 +8,61 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <div class="d-flex flex-column-fluid">
         <div class="container">
-            <div class="card card-stretch shadow card-custom">
+            <div class="card card-stretch shadow-lg card-custom">
                 <div class="card-body">
-                    <button type="button" onclick="history.go(-1)" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary" title="Kembali">
+                    <button type="button" onclick="history.go(-1)" class="btn btn-icon btn-secondary m-1" title="Kembali">
                         <i class="fa fa-arrow-left"></i>
                     </button>
-                    <button type="button" onclick="new_folder()" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary " title="New Folder">
-                        <i class="fa fa-plus"></i>
+                    <button type="button" onclick="new_folder()" class="btn btn-icon btn-secondary m-1 " title="New Folder">
+                        <i class="far fa-folder"></i>
                     </button>
-                    <!-- <button type="button" id="btn-rename" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary" title="Rename">
-                <i class="fa fa-pen"></i>
-            </button>
-            <button type="button" id="btn-delete" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary" title="Delete">
+                    <button type="button" onclick="add_file('<?= $id_master; ?>')" id="btn-file" class="btn btn-icon btn-secondary m-1" title="New File">
+                        <i class="far fa-file"></i>
+                    </button>
+                    <!-- <button type="button" id="btn-delete" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary" title="Delete">
                 <i class="fa fa-trash"></i>
             </button> -->
                     <hr>
+                    <h4>Dokumen</h4>
+                    <table id="example1" class="table table-borderless table-condensed table-hover">
+                        <thead class="bg-light">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nama File</th>
+                                <th scope="col">Ukuran</th>
+                                <th scope="col">Sts. Approve</th>
+                                <th scope="col">Tgl. Approve</th>
+                                <th scope="col">Revisi</th>
+                                <th scope="col">Sts. Revisi</th>
+                                <th scope="col">Prepered By</th>
+                                <th scope="col">Opsi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if ($row) : $n = 0;
+                                foreach ($row as $doc) : $n++
+                            ?>
+                                    <tr>
+                                        <th scope="row"><?= $n; ?></th>
+                                        <td><?= $doc->nama_file; ?></td>
+                                        <td><?= $doc->ukuran_file; ?></td>
+                                        <td><?= $doc->status_approve; ?></td>
+                                        <td><?= $doc->approval_on; ?></td>
+                                        <td><?= $doc->revisi; ?></td>
+                                        <td><?= $doc->status_revisi; ?></td>
+                                        <td><?= $doc->prepared_by; ?></td>
+                                        <td>
+                                            <a href="javascript:void(0)" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="view btn btn-icon btn-warning btn-xs btn-shadow" title="View Dokumen"><i class="fa fa-eye"></i></a>
+                                            <a href="javascript:void(0)" tooltip="qtip" onclick="location.href = siteurl+'dokumen/download_detail1/<?= $doc->id; ?>'" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="download btn btn-icon btn-info btn-xs btn-shadow ml-2" title="Download Dokumen"><i class="fa fa-download"></i></a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                    <hr class="mt-5 mb-8">
+                    <h4>Folder</h4>
                     <input type="hidden" id="id_master" value="<?= $id_master; ?>">
                     <div class="row">
                         <?php if ($row) :
@@ -47,20 +87,33 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
     </div>
 </div>
 
+
+<div class="modal fade" id="ModalView" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeSm" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 1360px !Important;" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal Title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="viewData"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $('#example1').DataTable({
         orderCellsTop: false,
         fixedHeader: true,
         scrollX: true,
         ordering: false,
-        info: false
-    });
-
-    $(document).ready(function() {
-        $('#btn-add').click(function() {
-            loading_spinner();
-        });
-
+        // info: false
     });
 
     function new_folder() {
@@ -124,6 +177,13 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
         })
     }
 
+    function add_file(id) {
+        console.log(id);
+        $(".modal-title").html("Add File");
+        $("#viewData").load(siteurl + active_controller + 'load_form/' + id);
+        $("#ModalView").modal('show');
+    }
+
     $(document).on('focus', '.button-master', function() {
         $('.button-master').removeClass('active');
         $(this).toggleClass('active');
@@ -163,4 +223,24 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
             });
 
     }
+
+    $(document).on('click', '.view', function(e) {
+        $("#viewData").html('');
+        var id = $(this).data('id');
+        var table = $(this).data('table');
+        var file = $(this).data('file');
+        loading_spinner();
+        $.ajax({
+            type: "post",
+            url: siteurl + 'dokumen/history_revisi',
+            data: "id=" + id + "&table=" + table + "&file=" + file,
+            success: function(result) {
+                // $(".modal-dialog").css('max-width', '1360px !important');
+                $(".modal-title").html("<b>VIEW DATA</b>");
+                $("#viewData").html(result);
+                $("#ModalView").modal('show');
+                Swal.close();
+            }
+        })
+    })
 </script>

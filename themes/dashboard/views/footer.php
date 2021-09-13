@@ -273,7 +273,18 @@
  <script src="<?= base_url(); ?>themes/dashboard/assets/js/pages/widgets1036.js?v=2.1.1"></script>
  <script src="<?= base_url('assets/plugins/select2/select2.full.min.js'); ?>"></script>
  <script src="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/datatables/datatables.bundle1036.js"></script>
+ <script>
+     $(document).ready(function() {})
 
+     function loading_spinner() {
+         Swal.fire({
+             title: 'Please wait...!',
+             didOpen: () => {
+                 Swal.showLoading()
+             }
+         })
+     }
+ </script>
  </body>
 
  </html>

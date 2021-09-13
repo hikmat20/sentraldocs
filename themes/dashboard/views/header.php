@@ -30,6 +30,17 @@
     var active_controller = '<?php echo $this->uri->segment(1); ?>' + '/';
     var active_function = '<?php echo $this->uri->segment(2); ?>' + '/';
   </script>
+
+  <style>
+    .swal2-loader {
+      width: 10.2em;
+      height: 10.2em;
+      -webkit-animation: swal2-rotate-loading .8s linear 0s infinite normal;
+      animation: swal2-rotate-loading .8s linear 0s infinite normal;
+      border-width: .8em;
+      border-color: #704dff #704dff #704dff #bbabff;
+    }
+  </style>
 </head>
 <!-- 0c18a9 -->
 

@@ -10,83 +10,60 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
         <div class="container">
             <div class="card card-stretch shadow card-custom">
                 <div class="card-body">
-                    <button type="button" onclick="history.go(-1)" class="btn btn-icon text-dark-95 bg-white bg-hover-secondary" title="Kembali">
+                    <button type="button" onclick="history.go(-1)" class="btn btn-icon btn-secondary" title="Kembali">
                         <i class="fa fa-arrow-left"></i>
                     </button>
-                    <hr class="my-8">
-                    <!-- <button type="button" id="btn-rename" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary" title="Rename">
-                <i class="fa fa-pen"></i>
-            </button>
-            <button type="button" id="btn-delete" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary" title="Delete">
-                <i class="fa fa-trash"></i>
-            </button> -->
-
-                    <h4 for="">Master Dokumen</h4>
-                    <div class="row">
-                        <?php if ($masDoc) :
-                            foreach ($masDoc as $data) :
-                        ?>
-                                <div class="col-lg-3 col-xl-2 col-md-3 col-sm-6 col-xs-6 m-0 px-2">
-                                    <div class="card bg-transparent card-custom my-2 overlay shadow-none">
-                                        <div class="card-body p-0" title="<?= $data->nama_file; ?>">
-                                            <div class="overlay-wrapper text-center">
-                                                <i class="fa fa-file-alt p-3 text-muted" style="font-size:7rem;"></i><br>
-                                                <div class="p-3">
-                                                    <div class="card-title m-0">
-                                                        <?= $data->deskripsi; ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="overlay-layer">
-                                                <a href="javascript:void(0)" data-id="<?= $data->id; ?>" data-file="<?= $data->nama_file; ?>" data-table="gambar1" class="view btn btn-icon btn-warning btn-sm btn-shadow" title="View Dokumen"><i class="fa fa-eye"></i></a>
-                                                <a href="javascript:void(0)" tooltip="qtip" onclick="location.href = siteurl+'dokumen/download_detail1/<?= $data->id; ?>'" data-id="<?= $data->id; ?>" data-file="<?= $data->nama_file; ?>" data-table="gambar1" class="download btn btn-icon btn-info btn-sm btn-shadow ml-2" title="Download Dokumen"><i class="fa fa-download"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php else : ?>
-                            <div class="d-flex justify-content-center col-md-12" style="padding:10rem 0">
-                                <h5 class="text-muted">--Empty data--</h5>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                    <hr class="my-8">
+                    <!-- <button type="button" onclick="new_folder()" class="btn btn-icon btn-secondary m-1 " title="New Folder">
+                        <i class="far fa-folder"></i>
+                    </button> -->
+                    <button type="button" id="btn-file" class="btn btn-icon btn-secondary m-1" title="New File">
+                        <i class="far fa-file"></i>
+                    </button>
+                    <hr class="my-5">
                     <h4 for="">Lampiran Dokumen</h4>
-                    <div class="row">
-                        <?php if ($row) :
-                            foreach ($row as $data) :
-                        ?>
-                                <div class="col-lg-3 col-xl-2 col-md-3 col-sm-6 col-xs-6 m-0 px-2">
-                                    <div class="card bg-transparent card-custom my-2 overlay shadow-none">
-                                        <div class="card-body p-0" title="<?= $data->nama_file; ?>">
-                                            <div class="overlay-wrapper text-center">
-                                                <i class="fa fa-file-alt p-3 text-muted" style="font-size:7rem;"></i><br>
-                                                <div class="p-3">
-                                                    <div class="card-title m-0">
-                                                        <?= $data->deskripsi; ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="overlay-layer">
-                                                <a href="javascript:void(0)" data-id="<?= $data->id; ?>" data-file="<?= $data->nama_file; ?>" data-table="gambar1" class="view btn btn-icon btn-warning btn-sm btn-shadow" title="View Dokumen"><i class="fa fa-eye"></i></a>
-                                                <a href="javascript:void(0)" onclick="location.href = siteurl+active_controller+'download_detail1/<?= $data->id; ?>'" data-id="<?= $data->id; ?>" data-file="<?= $data->nama_file; ?>" data-table="gambar1" class="download btn btn-icon btn-info btn-sm btn-shadow ml-2" title="Download Dokumen"><i class="fa fa-download"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php else : ?>
-                            <div class="d-flex justify-content-center col-md-12" style="padding:10rem 0">
-                                <h5 class="text-muted">--Empty data--</h5>
-                            </div>
-                        <?php endif; ?>
-                    </div>
+                    <table id="example1" class="table table-borderless table-condensed table-hover">
+                        <thead class="bg-light">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Nama File</th>
+                                <th scope="col">Ukuran</th>
+                                <th scope="col">Sts. Approve</th>
+                                <th scope="col">Tgl. Approve</th>
+                                <th scope="col">Revisi</th>
+                                <th scope="col">Sts. Revisi</th>
+                                <th scope="col">Prepered By</th>
+                                <th scope="col">Opsi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if ($row) : $n = 0;
+                                foreach ($row as $doc) : $n++
+                            ?>
+                                    <tr>
+                                        <th scope="row"><?= $n; ?></th>
+                                        <td><?= $doc->nama_file; ?></td>
+                                        <td><?= $doc->ukuran_file; ?></td>
+                                        <td><?= $doc->status_approve; ?></td>
+                                        <td><?= $doc->approval_on; ?></td>
+                                        <td><?= $doc->revisi; ?></td>
+                                        <td><?= $doc->status_revisi; ?></td>
+                                        <td><?= $doc->prepared_by; ?></td>
+                                        <td>
+                                            <a href="javascript:void(0)" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="view btn btn-icon btn-warning btn-xs btn-shadow" title="View Dokumen"><i class="fa fa-eye"></i></a>
+                                            <a href="javascript:void(0)" tooltip="qtip" onclick="location.href = siteurl+'dokumen/download_detail1/<?= $doc->id; ?>'" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="download btn btn-icon btn-info btn-xs btn-shadow ml-2" title="Download Dokumen"><i class="fa fa-download"></i></a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="ModalView" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeSm" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 1360px !Important;" role="document">
         <div class="modal-content">
@@ -211,6 +188,7 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
     }
 
     $(document).on('click', '.view', function(e) {
+        $("#viewData").html('');
         var id = $(this).data('id');
         var table = $(this).data('table');
         var file = $(this).data('file');
