@@ -99,7 +99,7 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 						<i class="fa fa-check"></i>
 					</span>
 				</div>
-				<select class="form-control select2" name="id_distribusi" id="id_distribusi">
+				<select class="form-control select2" multiple name="id_distribusi" id="id_distribusi">
 					<option value=""></option>
 					<?php foreach ($jabatan as $jbt) : ?>
 						<option value="<?= $jbt->id; ?>"><?= $jbt->nm_jabatan; ?></option>
