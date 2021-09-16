@@ -340,12 +340,9 @@ class Dokumen extends Admin_Controller
 	{
 
 		$file 	= $this->db->get_where('gambar', ['id' => $id])->row();
-// echo '<pre>';
-// print_r(base_url("assets/files/$file->nama_file"));
-// echo '<pre>';
-// exit;
+
 		if ($file) {
-			$path   	= file_get_contents(base_url("assets/files/$file->nama_file"));
+			$path   	= file_get_contents(base_url()."assets/files/$file->nama_file");
 			$downloaded = force_download($file->nama_file, $path);
 		}
 		if ($downloaded) {
