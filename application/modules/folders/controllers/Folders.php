@@ -126,9 +126,7 @@ class Folders extends Admin_Controller
 
 	public function add_detail()
 	{
-
 		if ($this->input->post()) {
-
 			$config['upload_path'] = './assets/files/'; //path folder
 			$config['allowed_types'] = 'gif|jpg|png|jpeg|pdf'; //type yang dapat diakses bisa anda sesuaikan
 			$config['encrypt_name'] = false; //Enkripsi nama yang terupload
@@ -160,9 +158,7 @@ class Folders extends Admin_Controller
 				$lokasi = './assets/files/' . $gbr['file_name'];
 			}
 
-
-			$id_master 	= $this->input->post('id_master');
-
+			$id_master 				= $this->input->post('id_master');
 			$Arr_Kembali			= array();
 			$data					= $this->input->post();
 			$data['nama_file']	    = (isset($gambar)) ? $gambar : '';
@@ -175,6 +171,8 @@ class Folders extends Admin_Controller
 			$data['id_approval']	= $this->input->post('id_approval');
 			$data['id_perusahaan']  = $prsh;
 			$data['id_cabang']		= $cbg;
+			$dist 					= implode(",", $this->input->post('id_distribusi'));
+			$data['id_distribusi']	= $dist;
 
 			if ($this->input->post('id_review') != '') {
 				$data['status_approve']	= 3;
@@ -182,6 +180,7 @@ class Folders extends Admin_Controller
 			} else {
 				$data['status_approve']	= 1;
 			}
+
 			$this->db->trans_begin();
 			$this->Folders_model->simpan('gambar', $data);
 			if ($this->db->trans_status() === 0) {
@@ -1365,7 +1364,6 @@ class Folders extends Admin_Controller
 		$this->auth->restrict($this->viewPermission);
 		$session = $this->session->userdata('app_session');
 		$jabatan = $session['id_jabatan'];
-
 		$prsh    = $session['id_perusahaan'];
 		$cbg     = $session['id_cabang'];
 
@@ -1373,18 +1371,18 @@ class Folders extends Admin_Controller
 		$id    = $this->input->post('id');
 		$table    = $this->input->post('table');
 		$nama_file = $this->input->post('file');
-		// print_r($nama_file);
-		// exit;
-
-		//$data = $this->db->query("SELECT * FROM $table WHERE id='$id'")->result();
 
 		if ($table == 'gambar') {
-			$detail				= $this->Folders_model->getData('gambar', 'id', $id);
+			$detail				= $this->db->get_where('gambar', ['id' => $id])->row();
 		} else if ($table == 'gambar1') {
 			$detail				= $this->Folders_model->getData('gambar1', 'id', $id);
 		} else if ($table == 'gambar2') {
 			$detail				= $this->Folders_model->getData('gambar2', 'id', $id);
 		}
+		// echo '<pre>';
+		// print_r($detail);
+		// echo '<pre>';
+		// exit;
 
 		$uri3 = $this->uri->segment(3);
 		$uri4 = $this->uri->segment(4);
@@ -1395,7 +1393,6 @@ class Folders extends Admin_Controller
 		$this->template->set('uri4', $uri4);
 		$this->template->set('uri5', $uri5);
 		$this->template->set('uri6', $uri6);
-
 
 		$this->template->set('jabatan', $jabatan);
 		$this->template->set('id', $id);
@@ -1408,6 +1405,7 @@ class Folders extends Admin_Controller
 
 	public function simpan_koreksi()
 	{
+
 
 		$config['upload_path'] = './assets/files/'; //path folder
 		$config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
@@ -1441,11 +1439,12 @@ class Folders extends Admin_Controller
 			$lokasi = './assets/files/' . $gbr['file_name'] . '.' . $ext;
 		}
 
+
+		$id 	= $this->input->post('id');
 		$id_master 	= $this->input->post('id_master');
-		$id_detail 	= $this->input->post('id');
 		$table      = $this->input->post('table');
-		// echo"<pre>";print_r($this->input->post());exit;
-		$insert = $this->db->query("SELECT * FROM $table WHERE id='$id_detail' ")->row();
+
+		$insert = $this->db->query("SELECT * FROM $table WHERE id='$id' ")->row();
 
 		if ($insert->id_review != '0') {
 			$approve = '3';
@@ -1453,30 +1452,21 @@ class Folders extends Admin_Controller
 			$approve = '1';
 		}
 
-
-
-
 		$Arr_Kembali			= array();
-
-		if ($ukuran > 0) {
+		if (isset($ukuran) > 0) {
 			//$data					= $this->input->post();
-
 			$data['nama_file']	    = (isset($gambar)) ? $gambar : '';
 			$data['ukuran_file']	= (isset($ukuran)) ? $ukuran : '';
 			$data['tipe_file']		= (isset($ext)) ? $ext : '';
 			$data['lokasi_file']	= (isset($lokasi)) ? $lokasi : '';
 			$data['status_approve']	= $approve;
 			$data['status_revisi']	= '1';
-			$data_session			= $this->session->userdata;
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
-
-
 
 			$norev  = $insert->revisi + 1;
 			$norev1  = $insert->revisi;
 			$data_insert = array(
-
 				'deskripsi'	        => $insert->deskripsi,
 				'keterangan_rev'	=> $this->input->post('keterangan'),
 				'nama_file'        	=> $insert->nama_file,
@@ -1492,7 +1482,6 @@ class Folders extends Admin_Controller
 				'revisi_dokumen'	=> $norev1,
 				'id_dokumen'	    => $insert->id,
 				'nm_table'	        => $table
-
 			);
 
 			$update = $this->Folders_model->getUpdate('gambar', $data, 'id', $this->input->post('id'));
@@ -1501,13 +1490,13 @@ class Folders extends Admin_Controller
 			}
 		} else {
 			//$data					= $this->input->post();
-			$data_session			= $this->session->userdata;
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['status_approve']	= '3';
 			$data['status_revisi']	= '1';
-			$data['id']		        = $id_detail;
-			$update = $this->Folders_model->getUpdate('gambar', $data, 'id', $this->input->post('id'));
+			$data['id']		        = $id;
+			// $data['keterangan']		= $this->input->post('keterangan');
+			$update 				= $this->Folders_model->getUpdate('gambar', $data, 'id', $this->input->post('id'));
 		}
 
 		if ($update) {

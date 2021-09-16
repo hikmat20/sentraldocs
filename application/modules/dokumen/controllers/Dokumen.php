@@ -324,16 +324,38 @@ class Dokumen extends Admin_Controller
 		}
 	}
 
+	// public function download($id)
+	// {
+	// 	$id_master = $this->db->query("SELECT * FROM gambar WHERE id='$id'")->row();
+	// 	$iddetail = $id_master->id_detail;
+	// 	$nme    =   $id_master->nama_file;
+	// 	$pth    =   file_get_contents(base_url() . "./assets/files/" . $nme);
+
+	// 	force_download($nme, $pth);
+
+	// 	redirect(site_url('dokumen'));
+	// }
+
 	public function download($id)
 	{
-		$id_master = $this->db->query("SELECT * FROM gambar WHERE id='$id'")->row();
-		$iddetail = $id_master->id_detail;
-		$nme    =   $id_master->nama_file;
-		$pth    =   file_get_contents(base_url() . "./assets/files/" . $nme);
 
-		force_download($nme, $pth);
-
-		redirect(site_url('dokumen'));
+		$file = $this->db->get_where('gambar', ['id' => $id])->row();
+		$path    =   file_get_contents(base_url() . "assets/files/" . $file->nama_file);
+		if ($file) {
+			force_download($path, NULL);
+		}
+		// if ()) {
+		// 	$return = [
+		// 		'status' => 1,
+		// 		'msg' => 'File Berhasil Didownload'
+		// 	];
+		// } else {
+		// 	$return = [
+		// 		'status' => 0,
+		// 		'msg' => 'File Gagal Didownload. Mohon coba beberapa saat lagi.'
+		// 	];
+		// }
+		// echo json_encode($return);
 	}
 
 
@@ -1281,9 +1303,19 @@ class Dokumen extends Admin_Controller
 		$id    = $this->input->post('id');
 		$table    = $this->input->post('table');
 		$nama_file = $this->input->post('file');
-		// print_r($id);
-		// print_r($table);
-		// exit;
+
+		$file = $this->db->get_where('gambar', ['id' => $id])->row();
+		$exp = explode(",", ($file->id_distribusi));
+
+		$Jabatan = $this->db->get_where('tbl_jabatan', ['id_perusahaan' => $session['id_perusahaan'], 'id_cabang' => $session['id_cabang']])->result_array();
+		// $arr = array(4, 5, 6);
+
+		$arr_jbt = [];
+		foreach ($Jabatan as $key => $jbt) {
+			if (in_array($jbt['id'], $exp)) {
+				$arr_jbt[] = $jbt;
+			}
+		}
 
 		$data = $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
 		$data1 = $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
@@ -1300,6 +1332,7 @@ class Dokumen extends Admin_Controller
 
 
 		$this->template->set('jabatan', $jabatan);
+		$this->template->set('arr_jbt', $arr_jbt);
 		$this->template->set('id', $id);
 		$this->template->set('table', $table);
 		$this->template->set('nama_file', $nama_file);

@@ -99,7 +99,7 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 						<i class="fa fa-check"></i>
 					</span>
 				</div>
-				<select class="form-control select2" multiple name="id_distribusi" id="id_distribusi">
+				<select class="form-control select2" multiple name="id_distribusi[]" id="id_distribusi">
 					<option value=""></option>
 					<?php foreach ($jabatan as $jbt) : ?>
 						<option value="<?= $jbt->id; ?>"><?= $jbt->nm_jabatan; ?></option>
@@ -214,7 +214,7 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 								Swal.fire({
 									title: "Save Success!",
 									text: data.pesan,
-									type: "success",
+									icon: "success",
 									timer: 7000,
 									showCancelButton: false,
 									showConfirmButton: false,
@@ -228,20 +228,14 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 										title: "Save Failed!",
 										text: data.pesan,
 										icon: "warning",
-										timer: 7000,
-										showCancelButton: false,
-										showConfirmButton: false,
-										allowOutsideClick: false
+										timer: 3000,
 									});
 								} else {
 									Swal.fire({
 										title: "Save Failed!",
 										text: data.pesan,
 										icon: "warning",
-										timer: 7000,
-										showCancelButton: false,
-										showConfirmButton: false,
-										allowOutsideClick: false
+										timer: 3000,
 									});
 								}
 
@@ -253,10 +247,7 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 								title: "Error Message !",
 								text: 'An Error Occured During Process. Please try again..',
 								icon: "warning",
-								timer: 7000,
-								showCancelButton: false,
-								showConfirmButton: false,
-								allowOutsideClick: false
+								timer: 3000,
 							});
 						}
 					});

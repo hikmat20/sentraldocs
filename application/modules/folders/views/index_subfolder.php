@@ -54,6 +54,8 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
                                         <td>
                                             <a href="javascript:void(0)" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="view btn btn-icon btn-warning btn-xs btn-shadow" title="View Dokumen"><i class="fa fa-eye"></i></a>
                                             <a href="javascript:void(0)" tooltip="qtip" onclick="location.href = siteurl+'dokumen/download_detail1/<?= $doc->id; ?>'" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="download btn btn-icon btn-info btn-xs btn-shadow ml-2" title="Download Dokumen"><i class="fa fa-download"></i></a>
+                                            <a href="javascript:void(0)" tooltip="qtip" data-file="<?= $doc->nama_file ?>" data-id="<?= $doc->id ?>" data-table="gambar" class="btn btn-icon btn-primary btn-xs btn-shadow ml-2 edit" title="Revisi Dokumen"><i class="fa fa-pen"></i></a>
+                                            <a href="javascript:void(0)" tooltip="qtip" data-table="gambar1" class="download btn btn-icon btn-danger btn-xs btn-shadow ml-2" title="Hapus Dokumen"><i class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -137,7 +139,7 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
                     $('#feedback').removeClass('d-none');
                     return false;
                 } else {
-                    console.log(folder_name);
+                    // console.log(folder_name);
                     return $.ajax({
                         url: base_url + active_controller + 'add_subfolder',
                         type: 'POST',
@@ -147,7 +149,7 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
                             folder_name
                         },
                         success: function(res) {
-                            console.log(res)
+                            // console.log(res)
                             if (res.status == '1') {
                                 Swal.fire({
                                     icon: 'success',
@@ -178,7 +180,8 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
     }
 
     function add_file(id) {
-        console.log(id);
+        $("#viewData").html('');
+        // console.log(id);
         $(".modal-title").html("Add File");
         $("#viewData").load(siteurl + active_controller + 'load_form/' + id);
         $("#ModalView").modal('show');
@@ -200,27 +203,47 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
 
 
     function delData(id) {
-        swal({
-                title: "Are you sure?",
-                text: "You will not be able to process again this data!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonClass: "btn-danger",
-                confirmButtonText: "Yes, Process it!",
-                cancelButtonText: "No, cancel process!",
-                closeOnConfirm: true,
-                closeOnCancel: false
-            },
-            function(isConfirm) {
-                if (isConfirm) {
-                    loading_spinner();
-                    window.location.href = base_url + 'index.php/' + active_controller + '/delete/' + id;
-
-                } else {
-                    swal("Cancelled", "Data can be process again :)", "error");
-                    return false;
-                }
-            });
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You will not be able to process again this data!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, Process it!",
+            cancelButtonText: "No, cancel process!",
+        }).then((value) => {
+            if (value.isConfrimed) {
+                loading_spinner();
+                $.ajax({
+                    url: siteurl + active_controller + '/delete/' + id,
+                    type: 'GET',
+                    dataType: 'JSON',
+                    sussess: function(result) {
+                        if (result.status == 1) {
+                            Swal.fire({
+                                title: "Success!",
+                                text: result.msg,
+                                icon: "success",
+                            }).then(function() {
+                                location.reload();
+                            })
+                        } else {
+                            Swal.fire({
+                                title: "Failed!",
+                                text: result.msg,
+                                icon: "error",
+                            })
+                        }
+                    },
+                    error: function(result) {
+                        Swal.fire({
+                            title: "Error!",
+                            text: result.msg,
+                            icon: "error",
+                        })
+                    }
+                })
+            }
+        })
 
     }
 
@@ -243,4 +266,27 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
             }
         })
     })
+
+    $(document).on('click', '.edit', function(e) {
+        var id = $(this).data('id');
+        var table = $(this).data('table');
+        var file = $(this).data('file');
+        $("#view").html('');
+        $.ajax({
+            type: "post",
+            url: siteurl + active_controller + 'revisi/',
+            data: {
+                id,
+                table,
+                file
+            },
+            success: function(result) {
+                // console.log(result);
+                $(".modal-dialog").css('width', '90%');
+                $("#head_title").html("<b>REVISI</b>");
+                $("#viewData").html(result);
+                $("#ModalView").modal('show');
+            }
+        })
+    });
 </script>

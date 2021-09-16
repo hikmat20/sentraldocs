@@ -10,11 +10,11 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
 		<div class="container">
 			<div class="card card-stretch shadow card-custom">
 				<div class="card-body">
-					<button type="button" onclick="history.go(-1)" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary " title="Back">
+					<button type="button" onclick="history.go(-1)" class="btn btn-icon btn-secondary m-1 " title="Back">
 						<i class="fa fa-arrow-left"></i>
 					</button>
-					<button type="button" onclick="new_folder()" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary " title="New Folder">
-						<i class="fa fa-plus"></i>
+					<button type="button" onclick="new_folder()" class="btn btn-icon btn-secondary m-1 " title="New Folder">
+						<i class="far fa-folder"></i>
 					</button>
 					<hr>
 					<div class="row">
