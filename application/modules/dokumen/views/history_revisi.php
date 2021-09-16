@@ -198,11 +198,14 @@
 					url: siteurl + 'dokumen/download/' + id,
 					type: 'GET',
 					dataType: 'JSON',
+					contentType:false,
+					processData:false,
 					data: {
 						id
 					},
 					success: function(result) {
 						if (result.status == 1) {
+							console.log(result);
 							Swal.fire({
 								title: 'Success!',
 								text: result.msg,

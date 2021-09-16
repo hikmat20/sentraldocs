@@ -339,23 +339,31 @@ class Dokumen extends Admin_Controller
 	public function download($id)
 	{
 
-		$file = $this->db->get_where('gambar', ['id' => $id])->row();
-		$path    =   file_get_contents(base_url() . "assets/files/" . $file->nama_file);
+		$arrContextOptions = array(
+			"ssl" => array(
+				"verify_peer" => false,
+				"verify_peer_name" => false,
+			),
+		);
+
+		$file 	= $this->db->get_where('gambar', ['id' => $id])->row();
 		if ($file) {
-			force_download($path, NULL);
+			$path   	= file_get_contents(base_url("assets/files/$file->nama_file"));
+			$downloaded = force_download($file->nama_file, $path);
 		}
-		// if ()) {
-		// 	$return = [
-		// 		'status' => 1,
-		// 		'msg' => 'File Berhasil Didownload'
-		// 	];
-		// } else {
-		// 	$return = [
-		// 		'status' => 0,
-		// 		'msg' => 'File Gagal Didownload. Mohon coba beberapa saat lagi.'
-		// 	];
-		// }
-		// echo json_encode($return);
+		if ($downloaded) {
+			$return = [
+				'status' => 1,
+				'msg' => 'File Berhasil Didownload'
+			];
+		} else {
+			$return = [
+				'status' => 0,
+				'msg' => 'File Gagal Didownload. Mohon coba beberapa saat lagi.'
+			];
+		}
+		
+		echo json_encode($return);
 	}
 
 
