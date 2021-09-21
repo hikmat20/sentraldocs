@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-md-3">
+	<div class="col-md-4">
 		<h5>History Revisi</h5>
 		<table class="table table-condensed table-bordered table-striped">
 			<thead>
@@ -68,7 +68,7 @@
 		<table class="table table-condensed table-bordered table-striped">
 			<thead>
 				<tr>
-					<th width="30%">No</th>
+					<th width="30px">No</th>
 					<th>Jabatan</th>
 					<th>User</th>
 					<th>Downloaded</th>
@@ -76,24 +76,29 @@
 			</thead>
 			<tbody>
 				<?php
-				$idjabatan = $jabatan;
-				if ($arr_jbt) :
+				$sts = [
+					'Y' => '<span class="label label-success label-inline mr-2">Sudah Download</span>',
+					'N' => '<span class="label label-warning label-inline ">Belum Download</span>',
+				];
+				if ($dist) :
 					$int	= 0;
-					foreach ($arr_jbt as $jbt) :
+					foreach ($dist as $dst) :
 						$int++; ?>
 						<tr>
 							<td><?= $int; ?></td>
-							<td><?= $jbt['nm_jabatan']; ?></td>
-							<td></td>
-							<td></td>
+							<td><?= $dst->nm_jabatan; ?></td>
+							<td><?= $dst->nm_lengkap; ?></td>
+							<td><?= $sts[$dst->status_download]; ?></td>
 						</tr>
 				<?php endforeach;
 				endif; ?>
 			</tbody>
 		</table>
-		<a href="<?= base_url("dokumen/download/$id"); ?>" type="button" id="download" class="btn btn-block btn-primary btn-outline-primary" data-id="<?= $id; ?>"><i class="fa fa-download"></i> Download</a>
+
+		<a href="#" type="button" id="download" class="btn btn-block btn-primary btn-outline-primary" data-id="<?= $id; ?>"><i class="fa fa-download"></i> Download</a>
+		<!-- <a href="<?= base_url("dokumen/download/$id"); ?>" type="button" id="download" class="btn btn-block btn-primary btn-outline-primary" data-id="<?= $id; ?>"><i class="fa fa-download"></i> Download</a> -->
 	</div>
-	<div class="col-md-9 p-2" style="border:1px solid #eaeaea ;">
+	<div class="col-md-8 p-2" style="border:1px solid #eaeaea ;">
 		<iframe src='<?php echo site_url(); ?>assets/files/<?php echo "$nama_file"; ?>' width='100%' height='565px' frameborder='0'> </iframe>
 	</div>
 </div>
@@ -195,24 +200,25 @@
 			let id = $(this).data('id');
 			if (id) {
 				$.ajax({
-					url: siteurl + 'dokumen/download/' + id,
+					url: siteurl + 'dokumen/confirm_download/' + id,
 					type: 'GET',
 					dataType: 'JSON',
-					contentType:false,
-					processData:false,
+					async: false,
 					data: {
 						id
 					},
 					success: function(result) {
 						if (result.status == 1) {
 							console.log(result);
-							Swal.fire({
-								title: 'Success!',
-								text: result.msg,
-								icon: 'success',
-								timer: 1500,
-								showConfirmButton: false
-							})
+							if (location.href = siteurl + 'dokumen/download/' + id) {
+								Swal.fire({
+									title: 'Success!',
+									text: result.msg,
+									icon: 'success',
+									timer: 1500,
+									showConfirmButton: false
+								})
+							}
 						} else {
 							Swal.fire({
 								title: 'Failed!',

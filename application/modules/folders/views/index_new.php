@@ -16,16 +16,26 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
 					<button type="button" onclick="new_folder()" class="btn btn-icon btn-secondary m-1 " title="New Folder">
 						<i class="far fa-folder"></i>
 					</button>
+					<button type="button" onclick="rename_folder()" id="btn-rename" class="btn btn-icon btn-secondary m-1" disabled title="Rename">
+						<i class="fa fa-pen"></i>
+					</button>
+					<button type="button" onclick="delete_folder()" id="btn-delete" class="btn btn-icon btn-secondary m-1" disabled title="Delete">
+						<i class="fa fa-trash"></i>
+					</button>
+					<!-- <button type="button" id="btn-move" class="btn btn-icon btn-secondary m-1" disabled title="Move">
+						<i class="fa fa-move"></i>
+					</button> -->
 					<hr>
 					<div class="row">
 						<?php if ($row) :
 							foreach ($row as $data) :
 						?>
-								<div class="col-lg-3 col-xl-2 col-md-3 col-sm-6 col-xs-6 m-0 px-2">
-									<button type="button" ondblclick="location.href = base_url+active_controller+'subfolder/<?= str_replace(' ', '-', strtolower($data->nama_master)); ?>'" data-id="<?= $data->id_master; ?>" class="h-99px p-0 btn btn-block btn-text-dark-50 btn-icon-primary btn-bg-transparent font-weight-bold btn-hover-bg-secondary my-2 button-master">
+								<div class="checkbox col-lg-3 col-xl-2 col-md-3 col-sm-6 col-xs-6 m-0 px-2">
+									<label ondblclick="location.href = base_url+active_controller+'subfolder/<?= str_replace(' ', '-', strtolower($data->nama_master)); ?>'" data-id="<?= $data->id_master; ?>" class="h-99px p-0 btn btn-block btn-text-dark-50 btn-icon-primary font-weight-bold btn-hover-bg-secondary my-2 button-master">
 										<i class="fa fa-folder" style="font-size:7rem;"></i><br>
+										<input class="d-none" type="checkbox" data-id="<?= $data->id_master; ?>" data-name="<?= $data->nama_master;; ?>" name="folder[]" value="folder">
 										<?= $data->nama_master; ?>
-									</button>
+									</label>
 								</div>
 							<?php endforeach;
 						else : ?>
@@ -37,15 +47,7 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
 				</div>
 			</div>
 			<!-- 
-				<button type="button" onclick="new_folder()" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary " title="New Folder">
-				<i class="fa fa-plus"></i>
-			</button>
-			<button type="button" id="btn-rename" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary" title="Rename">
-				<i class="fa fa-pen"></i>
-			</button>
-			<button type="button" id="btn-delete" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary" title="Delete">
-				<i class="fa fa-trash"></i>
-			</button> -->
+			 -->
 
 		</div>
 	</div>
@@ -58,13 +60,6 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
 		scrollX: true,
 		ordering: false,
 		info: false
-	});
-
-	$(document).ready(function() {
-		$('#btn-add').click(function() {
-			loading_spinner();
-		});
-
 	});
 
 	function new_folder() {
@@ -80,6 +75,7 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
 			showCancelButton: true,
 			confirmButtonText: 'Save',
 			showLoaderOnConfirm: true,
+			allowOutsideClick: false,
 			preConfirm: (create) => {
 				let folder_name = $('#folder_name').val()
 				if (folder_name == '') {
@@ -99,70 +95,189 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
 							console.log(res)
 							if (res.status == '1') {
 								Swal.fire({
-									icon: 'success',
 									title: 'Folder baru berhasil dibuat!',
+									icon: 'success',
+									timer: 1500
 								}).then(function() {
 									location.reload()
 								})
 							} else {
 								Swal.fire({
-									icon: 'error',
-									title: 'Terjadi Kesalahan!',
-									text: res.pesan
+									title: 'Gagal!',
+									icon: 'warning',
+									text: res.pesan,
+									timer: 1500
 								})
 							}
 						},
 						error: function(res) {
 							Swal.fire({
+								title: 'Error!',
 								icon: 'error',
-								title: 'Terjadi kesalahan!',
-								text: res.pesan
+								text: res.pesan,
+								timer: 3000
 							})
 						}
 					})
 				}
-			},
-			allowOutsideClick: false,
+			}
+
 		})
 	}
 
-	$(document).on('focus', '.button-master', function() {
-		$('.button-master').removeClass('active');
-		$(this).toggleClass('active');
-		$('#btn-rename').attr('data-id', $(this).data('id'))
-		$('#btn-delete').attr('data-id', $(this).data('id'))
-	})
-
-	$(document).on('blur', 'body', function() {
-
-		$('.button-master').removeClass('active');
-		$('#btn-rename').attr('data-id', '')
-		$('#btn-delete').attr('data-id', '')
-	})
-
-
-	function delData(id) {
-		swal({
-				title: "Are you sure?",
-				text: "You will not be able to process again this data!",
-				type: "warning",
-				showCancelButton: true,
-				confirmButtonClass: "btn-danger",
-				confirmButtonText: "Yes, Process it!",
-				cancelButtonText: "No, cancel process!",
-				closeOnConfirm: true,
-				closeOnCancel: false
-			},
-			function(isConfirm) {
-				if (isConfirm) {
-					loading_spinner();
-					window.location.href = base_url + 'index.php/' + active_controller + '/delete/' + id;
-
-				} else {
-					swal("Cancelled", "Data can be process again :)", "error");
+	function rename_folder() {
+		let id = $('#btn-rename').data('id');
+		let folder_name = $('#btn-rename').data('name');
+		Swal.fire({
+			title: 'Rename Folder',
+			html: `<input id='folder_name' required class='form-control ' name='rename-folder' placeholder='New Folder' value='` + folder_name + `'>
+			<div id="feedback" class="invalid-feedback d-none">Mohon mengisi nama folder terlebih dahulu.</div>
+			<style>
+			.swal2-content{
+				text-align:left;
+			}
+			</style>`,
+			showCancelButton: true,
+			confirmButtonText: 'Save',
+			showLoaderOnConfirm: true,
+			allowOutsideClick: false,
+			preConfirm: (create) => {
+				let folder_name = $('#folder_name').val()
+				if (folder_name == '') {
+					$('#folder_name').addClass('is-invalid');
+					$('#feedback').removeClass('d-none');
 					return false;
+				} else {
+					console.log(folder_name);
+					return $.ajax({
+						url: base_url + active_controller + 'rename_folder',
+						type: 'POST',
+						dataType: 'JSON',
+						data: {
+							id,
+							folder_name
+						},
+						success: function(res) {
+							console.log(res)
+							if (res.status == '1') {
+								Swal.fire({
+									title: res.msg,
+									icon: 'success',
+									timer: 1500
+								}).then(function() {
+									location.reload()
+								})
+							} else {
+								Swal.fire({
+									title: 'Gagal!',
+									icon: 'warning',
+									text: res.msg,
+									timer: 1500
+								})
+							}
+						},
+						error: function(res) {
+							Swal.fire({
+								title: 'Error!',
+								icon: 'error',
+								text: res.msg,
+								timer: 3000
+							})
+						}
+					})
 				}
-			});
+			}
+
+		})
+	}
+
+	$("input:checkbox").on('click', function() {
+		// in the handler, 'this' refers to the box clicked on
+		var $box = $(this);
+		var group = "input:checkbox[name='" + $box.attr("name") + "']";
+		$(group).parents('label').removeClass('btn-bg-secondary');
+		if ($box.is(":checked")) {
+			$(group).prop("checked", false);
+			$box.prop("checked", true);
+			$box.parents('label').addClass('btn-bg-secondary');
+			$('#btn-rename').attr('data-id', $(this).data('id'))
+			$('#btn-rename').attr('data-name', $(this).data('name'))
+			$('#btn-rename').prop('disabled', false)
+			$('#btn-delete').attr('data-id', $(this).data('id'))
+			$('#btn-delete').prop('disabled', false)
+		} else {
+			$box.prop("checked", false);
+			$('#btn-rename').attr('data-id', '')
+			$('#btn-rename').attr('data-name', '')
+			$('#btn-rename').prop('disabled', true)
+			$('#btn-delete').attr('data-id', '')
+			$('#btn-delete').prop('disabled', true)
+		}
+	});
+
+	function delete_folder() {
+		let id = $('#btn-delete').data('id');
+		// alert(id)
+		console.log(id);
+		Swal.fire({
+			title: "Are you sure?",
+			text: "You will not be able to process again this data!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonText: "Yes, Delete!",
+			cancelButtonText: "No",
+		}).then((value) => {
+			if (value.isConfirmed) {
+				loading_spinner();
+				$.ajax({
+					url: base_url + active_controller + 'delete_folder',
+					type: 'POST',
+					dataType: 'JSON',
+					data: {
+						id
+					},
+					success: function(result) {
+						if (result.status == 1) {
+							Swal.fire({
+								title: "Success!",
+								text: result.msg,
+								icon: "success",
+								timer: 1500
+							}).then(() => {
+								location.reload();
+							})
+						} else {
+							Swal.fire({
+								title: "Gagal!",
+								text: result.msg,
+								icon: "warning",
+								timer: 3000
+							})
+						}
+					},
+					error: function(result) {
+						Swal.fire({
+							title: "Error",
+							text: "Server Timeout!",
+							icon: "error",
+							timer: 3000
+						})
+					}
+				})
+			}
+
+		})
 
 	}
+
+	$(document).on('blur', 'input:checkbox', function() {
+		var group = "input:checkbox";
+		$(group).parents('label').removeClass('btn-bg-secondary');
+		$(group).prop("checked", false);
+		$('#btn-rename').attr('data-id', '')
+		$('#btn-rename').attr('data-name', '')
+		$('#btn-rename').prop('disabled', true)
+		$('#btn-delete').attr('data-id', '')
+		$('#btn-delete').prop('disabled', true)
+	});
 </script>

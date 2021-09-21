@@ -16,7 +16,7 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
                     <!-- <button type="button" onclick="new_folder()" class="btn btn-icon btn-secondary m-1 " title="New Folder">
                         <i class="far fa-folder"></i>
                     </button> -->
-                    <button type="button" id="btn-file" class="btn btn-icon btn-secondary m-1" title="New File">
+                    <button type="button" onclick="add_file('<?= $id_master; ?>','<?= $id_sub; ?>')" id="btn-file" class="btn btn-icon btn-secondary m-1" title="New File">
                         <i class="far fa-file"></i>
                     </button>
                     <hr class="my-5">
@@ -145,6 +145,15 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
                 }
             }
         });
+    }
+
+
+    function add_file(id_master, id_sub) {
+        $("#viewData").html('');
+        // console.log(id);
+        $(".modal-title").html("Add File");
+        $("#viewData").load(siteurl + active_controller + 'load_form_detail/' + id_master + '/' + id_sub);
+        $("#ModalView").modal('show');
     }
 
     $(document).on('focus', '.button-master', function() {

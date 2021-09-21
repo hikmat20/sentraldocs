@@ -86,6 +86,86 @@ class Folders extends Admin_Controller
 		}
 	}
 
+	public function rename_folder()
+	{
+		$this->auth->restrict($this->viewPermission);
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+
+		if ($this->input->post()) {
+
+			$Arr_Kembali			= array();
+			$id						= $this->input->post('id');
+			$data['nama_master']	= $this->input->post('folder_name');
+			$data['id_perusahaan']  = $prsh;
+			$data['id_cabang']		= $cbg;
+			$this->db->trans_begin();
+			$this->db->where('id_master', $id)->update('master_gambar', $data);;
+			if ($this->db->trans_status() == TRUE) {
+				$this->db->trans_commit();
+				$Arr_Kembali		= array(
+					'status'		=> 1,
+					'msg'			=> 'Rename filder success.'
+				);
+
+				$keterangan = 'Berhasil Simpan Folder';
+				$status = 1;
+				$nm_hak_akses = $this->addPermission;
+				$kode_universal = $this->input->post('nama_master');
+				$jumlah = 1;
+				$sql = $this->db->last_query();
+				simpan_aktifitas($nm_hak_akses, $kode_universal, $keterangan, $jumlah, $sql, $status);
+			} else {
+				$Arr_Kembali		= array(
+					'status'		=> 0,
+					'msg'			=> 'Gagal merubah nama folder'
+				);
+			}
+			echo json_encode($Arr_Kembali);
+		}
+	}
+
+	public function rename_subfolder()
+	{
+		$this->auth->restrict($this->viewPermission);
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+
+		if ($this->input->post()) {
+
+			$Arr_Kembali			= array();
+			$id						= $this->input->post('id');
+			$data['deskripsi']		= $this->input->post('folder_name');
+			$data['id_perusahaan']  = $prsh;
+			$data['id_cabang']		= $cbg;
+			$this->db->trans_begin();
+			$this->db->where('id', $id)->update('gambar', $data);;
+			if ($this->db->trans_status() == TRUE) {
+				$this->db->trans_commit();
+				$Arr_Kembali		= array(
+					'status'		=> 1,
+					'msg'			=> 'Rename filder success.'
+				);
+
+				$keterangan = 'Berhasil Simpan Folder';
+				$status = 1;
+				$nm_hak_akses = $this->addPermission;
+				$kode_universal = $this->input->post('nama_master');
+				$jumlah = 1;
+				$sql = $this->db->last_query();
+				simpan_aktifitas($nm_hak_akses, $kode_universal, $keterangan, $jumlah, $sql, $status);
+			} else {
+				$Arr_Kembali		= array(
+					'status'		=> 0,
+					'msg'			=> 'Gagal merubah nama folder'
+				);
+			}
+			echo json_encode($Arr_Kembali);
+		}
+	}
+
 
 	function delete_master($id)
 	{
@@ -225,7 +305,6 @@ class Folders extends Admin_Controller
 		}
 	}
 
-
 	public function edit($id = '')
 	{
 
@@ -338,71 +417,123 @@ class Folders extends Admin_Controller
 		redirect(site_url('folders/detail?id_master=$id_master'));
 	}
 
-	function delete_detail($id)
+	function delete_folder()
 	{
+		$id 		= $this->input->post('id');
+		$session 	= $this->session->userdata('app_session');
+		$prsh    	= $session['id_perusahaan'];
+		$cbg     	= $session['id_cabang'];
 
-		$session = $this->session->userdata('app_session');
-		$prsh    = $session['id_perusahaan'];
-		$cbg     = $session['id_cabang'];
+		// $this->db->where('id', $id);
+		// $query 		= $this->db->get('gambar');
+		// $path 		= $query->row();
+		// unlink("./assets/files/$path->nama_file");
 
-		$id_master = $this->db->query("SELECT id_master FROM gambar WHERE id='$id'")->row();
-		$idmaster  = $id_master->id_master;
-		// print_r($idmaster);
-		// exit;
-		$this->db->where('id', $id);
-		$query = $this->db->get('gambar');
-		$path = $query->row();
-		unlink("./assets/files/$path->nama_file");
-		$this->db->delete("gambar", array('id' => $id));
-		if ($this->db->affected_rows() > 0) {
-			$this->session->set_flashdata("alert_data", "<div class=\"alert alert-success\" id=\"flash-message\">Data has been successfully deleted...........!!</div>");
-			$keterangan = 'Berhasil Hapus Dokumen';
-			$status = 1;
-			$nm_hak_akses = $this->addPermission;
-			$kode_universal = $id;
-			$jumlah = 1;
-			$sql = $this->db->last_query();
-			simpan_aktifitas($nm_hak_akses, $kode_universal, $keterangan, $jumlah, $sql, $status);
-			redirect(site_url('Folders/detail?id_master=' . $idmaster));
+		$this->db->trans_begin();
+		$this->db->delete("master_gambar", array('id_master' => $id));
+		if ($this->db->trans_status() === FALSE) {
+			$this->db->trans_rollback();
+			$return = [
+				'status' => 0,
+				'msg'	=> 'File gagal dihapus.'
+			];
+		} else {
+			$this->db->trans_commit();
+			$return = [
+				'status' => 1,
+				'msg'	=> 'File berhasil dihapus.'
+			];
 		}
+
+		$this->session->set_flashdata("alert_data", "<div class=\"alert alert-success\" id=\"flash-message\">Data has been successfully deleted...........!!</div>");
+		$keterangan = 'Berhasil Hapus Dokumen';
+		$status = 1;
+		$nm_hak_akses = $this->addPermission;
+		$kode_universal = $id;
+		$jumlah = 1;
+		$sql = $this->db->last_query();
+		simpan_aktifitas($nm_hak_akses, $kode_universal, $keterangan, $jumlah, $sql, $status);
+		echo json_encode($return);
+	}
+
+	function delete_subfolder()
+	{
+		$id 		= $this->input->post('id');
+		$session 	= $this->session->userdata('app_session');
+		$prsh    	= $session['id_perusahaan'];
+		$cbg     	= $session['id_cabang'];
+
+		// $this->db->where('id', $id);
+		// $query 		= $this->db->get('gambar');
+		// $path 		= $query->row();
+		// unlink("./assets/files/$path->nama_file");
+
+		$this->db->trans_begin();
+		$this->db->delete("gambar", array('id' => $id));
+		if ($this->db->trans_status() === FALSE) {
+			$this->db->trans_rollback();
+			$return = [
+				'status' => 0,
+				'msg'	=> 'File gagal dihapus.'
+			];
+		} else {
+			$this->db->trans_commit();
+			$return = [
+				'status' => 1,
+				'msg'	=> 'File berhasil dihapus.'
+			];
+		}
+
+		$this->session->set_flashdata("alert_data", "<div class=\"alert alert-success\" id=\"flash-message\">Data has been successfully deleted...........!!</div>");
+		$keterangan = 'Berhasil Hapus Dokumen';
+		$status = 1;
+		$nm_hak_akses = $this->addPermission;
+		$kode_universal = $id;
+		$jumlah = 1;
+		$sql = $this->db->last_query();
+		simpan_aktifitas($nm_hak_akses, $kode_universal, $keterangan, $jumlah, $sql, $status);
+		echo json_encode($return);
 	}
 
 	public function add_subdetail1()
 	{
-		$config['upload_path'] = './assets/files/'; //path folder
-		$config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
-		$config['encrypt_name'] = false; //Enkripsi nama yang terupload
-		$session = $this->session->userdata('app_session');
-		$prsh    = $session['id_perusahaan'];
-		$cbg     = $session['id_cabang'];
-
-		$this->upload->initialize($config);
-		if ($this->upload->do_upload('image')) {
-			$gbr = $this->upload->data();
-			//Compress Image
-			$config['image_library'] = 'gd2';
-			$config['source_image'] = './assets/files/' . $gbr['file_name'];
-			$config['create_thumb'] = FALSE;
-			$config['maintain_ratio'] = FALSE;
-			$config['umum'] = '50%';
-			$config['width'] = 260;
-			$config['height'] = 350;
-			$config['new_image'] = './assets/files/' . $gbr['file_name'];
-			$this->load->library('image_lib', $config);
-			$this->image_lib->resize();
-
-			$gambar  = $gbr['file_name'];
-			$type    = $gbr['file_type'];
-			$ukuran  = $gbr['file_size'];
-			$ext1    = explode('.', $gambar);
-			$ext     = $ext1[1];
-			$lokasi = './assets/files/' . $gbr['file_name'] . '.' . $ext;
-		}
+		// echo '<pre>';
+		// print_r($this->input->post());
+		// echo '<pre>';
+		// exit;
 		if ($this->input->post()) {
+			$config['upload_path'] = './assets/files/'; //path folder
+			$config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
+			$config['encrypt_name'] = false; //Enkripsi nama yang terupload
+			$session = $this->session->userdata('app_session');
+			$prsh    = $session['id_perusahaan'];
+			$cbg     = $session['id_cabang'];
+			$this->upload->initialize($config);
+			if ($this->upload->do_upload('image')) {
+				$gbr = $this->upload->data();
+				//Compress Image
+				$config['image_library'] = 'gd2';
+				$config['source_image'] = './assets/files/' . $gbr['file_name'];
+				$config['create_thumb'] = FALSE;
+				$config['maintain_ratio'] = FALSE;
+				$config['umum'] = '50%';
+				$config['width'] = 260;
+				$config['height'] = 350;
+				$config['new_image'] = './assets/files/' . $gbr['file_name'];
+				$this->load->library('image_lib', $config);
+				$this->image_lib->resize();
+
+				$gambar  = $gbr['file_name'];
+				$type    = $gbr['file_type'];
+				$ukuran  = $gbr['file_size'];
+				$ext1    = explode('.', $gambar);
+				$ext     = $ext1[1];
+				$lokasi = './assets/files/' . $gbr['file_name'];
+			}
+
 			$id_master 	= $this->input->post('id_master');
 			$id_detail 	= $this->input->post('id_detail');
 			// echo"<pre>";print_r($id_master);exit;	        
-
 
 			$Arr_Kembali			= array();
 			$data					= $this->input->post();
@@ -418,8 +549,29 @@ class Folders extends Admin_Controller
 			$data['id_cabang']		= $cbg;
 			$data['id_approval']	= $this->input->post('id_approval');
 			$data['status_approve']	= 1;
+			$dist 					= implode(",", $this->input->post('id_distribusi'));
+			$data['id_distribusi']	= $dist;
+			// echo '<pre>';
+			// print_r($data);
+			// echo '<pre>';
+			// exit;
 
-			if ($this->Folders_model->simpan('gambar1', $data)) {
+			foreach ($this->input->post('id_distribusi') as $key => $value) {
+				$arr_dist[$key] = [
+					'id_file' => $value
+				];
+			}
+
+			// echo '<pre>';
+			// print_r($arr_dist);
+			// echo '<pre>';
+			// exit;
+
+			$this->db->trans_begin();
+			$this->Folders_model->simpan('gambar1', $data);
+			$this->db->insert_batch('distribusi', $arr_dist);
+			if ($this->db->trans_status() === TRUE) {
+				$this->db->trans_commit();
 				$Arr_Kembali		= array(
 					'status'		=> 1,
 					'pesan'			=> 'Add gambar Success. Thank you & have a nice day.......'
@@ -432,6 +584,7 @@ class Folders extends Admin_Controller
 				$sql = $this->db->last_query();
 				simpan_aktifitas($nm_hak_akses, $kode_universal, $keterangan, $jumlah, $sql, $status);
 			} else {
+				$this->db->trans_rollback();
 				$Arr_Kembali		= array(
 					'status'		=> 2,
 					'pesan'			=> 'Add gambar failed. Please try again later......'
@@ -472,28 +625,33 @@ class Folders extends Admin_Controller
 		$master 			= $this->db->get_where('master_gambar', ['nama_master' => str_replace('-', ' ', $subfolder)])->row();
 		$id_master 			= $master->id_master;
 		$nama_master 		= str_replace(' ', '-', strtolower($master->nama_master));
-
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
 		if (!$detail) {
-			$get_Data		= $this->Folders_model->getData('gambar', 'id_master', $id_master);
+			$folders		= $this->db->get_where('gambar', ['id_master' => $id_master, 'nama_file' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->result();
+			$files			= $this->db->get_where('gambar', ['id_master' => $id_master, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->result();
+			$get_Data		= $this->Folders_model->getData('gambar', 'id_master', $id_master,);
 			// $get_Master		= $this->Folders_model->getData('gambar', 'id', $id_sub);
 
 			$this->template->set('list', false);
 			$this->template->set('row', $get_Data);
+			$this->template->set('folders', $folders);
+			$this->template->set('files', $files);
 			$this->template->set('nama_master', $nama_master);
 			$this->template->set('id_master', $id_master);
 			// $this->template->set('masDoc', $get_Master);
 			$this->template->render('index_subfolder');
 		} else {
 			$sub_folder 	= $this->db->get_where('gambar', ['deskripsi' => str_replace('-', ' ', $detail)])->row();
+			$id_master 		= $sub_folder->id_master;
 			$id_sub 		= $sub_folder->id;
-			// echo '<pre>';
-			// print_r($nama_master);
-			// echo '<pre>';
-			// exit;
 			$get_Data		= $this->Folders_model->getData('gambar1', 'id_detail', $id_sub);
 
 			$this->template->set('list', true);
 			$this->template->set('row', $get_Data);
+			$this->template->set('id_sub', $id_sub);
+			$this->template->set('id_master', $id_master);
 			$this->template->render('index_detail');
 		}
 	}
@@ -509,6 +667,20 @@ class Folders extends Admin_Controller
 		$this->template->set('jabatan', $jabatan);
 		$this->template->set('idmaster', $id);
 		$this->template->render('add_detail');
+	}
+
+	public function load_form_detail($id_master = "", $id_sub = "")
+	{
+		$session 	= $this->session->userdata('app_session');
+		$prsh    	= $session['id_perusahaan'];
+		$cbg     	= $session['id_cabang'];
+		$users		= $this->db->query("SELECT * FROM users WHERE nm_lengkap != 'Administrator' AND id_perusahaan='$prsh' AND id_cabang='$cbg' ORDER BY nm_lengkap ASC")->result();
+		$jabatan	= $this->db->query("SELECT * FROM tbl_jabatan WHERE id_perusahaan='$prsh' AND id_cabang='$cbg'")->result();
+		$this->template->set('users', $users);
+		$this->template->set('jabatan', $jabatan);
+		$this->template->set('id_sub', $id_sub);
+		$this->template->set('id_master', $id_master);
+		$this->template->render('add_subdetail1');
 	}
 
 	public function add_subfolder()
@@ -582,8 +754,6 @@ class Folders extends Admin_Controller
 
 	public function add_detail1()
 	{
-
-
 		if ($this->input->post()) {
 
 			$config['upload_path'] = './assets/files/'; //path folder

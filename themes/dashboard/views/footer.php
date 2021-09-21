@@ -279,6 +279,7 @@
      function loading_spinner() {
          Swal.fire({
              title: 'Please wait...!',
+             allowOutsideClick: false,
              didOpen: () => {
                  Swal.showLoading()
              }

@@ -283,12 +283,7 @@ class Dokumen extends Admin_Controller
 				$data['created']		= date('Y-m-d H:i:s');
 				$data['id_master']		= $id_master;
 			}
-
-
-
 			$update = $this->Folders_model->getUpdate('gambar', $data, 'id', $this->input->post('id'));
-
-
 			if ($update) {
 				$Arr_Kembali		= array(
 					'status'		=> 1,
@@ -309,12 +304,7 @@ class Dokumen extends Admin_Controller
 			}
 			echo json_encode($Arr_Kembali);
 		} else {
-
-
 			$detail				= $this->Folders_model->getData('gambar', 'id', $id);
-
-
-
 			$this->template->page_icon('fa fa-folder-open');
 			$this->template->set('id', $id);
 			$this->template->set('row', $detail);
@@ -324,39 +314,50 @@ class Dokumen extends Admin_Controller
 		}
 	}
 
-	// public function download($id)
-	// {
-	// 	$id_master = $this->db->query("SELECT * FROM gambar WHERE id='$id'")->row();
-	// 	$iddetail = $id_master->id_detail;
-	// 	$nme    =   $id_master->nama_file;
-	// 	$pth    =   file_get_contents(base_url() . "./assets/files/" . $nme);
-
-	// 	force_download($nme, $pth);
-
-	// 	redirect(site_url('dokumen'));
-	// }
-
-	public function download($id)
+	public function confirm_download($id)
 	{
+		$session = $this->session->userdata('app_session');
+		$file = $this->db->get_where("distribusi", ['id_file' => $id, 'id_jabatan' => $session['id_jabatan']])->row();
 
-		$file 	= $this->db->get_where('gambar', ['id' => $id])->row();
 
 		if ($file) {
-			$path   	= file_get_contents("./assets/files/$file->nama_file");
-			$downloaded = force_download($file->nama_file, $path);
-		}
-		if ($downloaded) {
-			$return = [
-				'status' => 1,
-				'msg' => 'File Berhasil Didownload'
-			];
+			if ($file->id_jabatan == $session['id_jabatan'] && $file->id_user  == "") {
+				$this->db->trans_begin();
+				$this->db->where('id_file', $id)->update('distribusi', ['id_user' => $session['id_user'], 'status_download' => 'Y', 'downloaded_at' => date('Y-m-d H:i:s')]);
+			}
+
+			if ($this->db->trans_status() == FALSE) {
+				$this->db->trans_rollback();
+				$return = [
+					'status' => 0,
+					'msg' => 'Proses Download Gagal. Server timeout'
+				];
+			} else {
+				$this->db->trans_commit();
+				$return = [
+					'status' => 1,
+					'msg' => 'File Berhasil di download.'
+				];
+			}
 		} else {
 			$return = [
 				'status' => 0,
-				'msg' => 'File Gagal Didownload. Mohon coba beberapa saat lagi.'
+				'msg' => 'File Tidak di distribusikan.'
 			];
 		}
+
+
+
 		echo json_encode($return);
+	}
+
+	public function download($id)
+	{
+		$file 	= $this->db->get_where('gambar', ['id' => $id])->row();
+		if ($file) {
+			$path   	= file_get_contents("./assets/files/$file->nama_file");
+			force_download($file->nama_file, $path);
+		}
 	}
 
 
@@ -1305,8 +1306,13 @@ class Dokumen extends Admin_Controller
 		$table    = $this->input->post('table');
 		$nama_file = $this->input->post('file');
 
-		$file = $this->db->get_where('gambar', ['id' => $id])->row();
-		$exp = explode(",", ($file->id_distribusi));
+		if ($table == 'gambar1') {
+			$file = $this->db->get_where('gambar1', ['id' => $id])->row();
+			$exp = explode(",", ($file->id_distribusi));
+		} else {
+			$file = $this->db->get_where('gambar', ['id' => $id])->row();
+			$exp = explode(",", ($file->id_distribusi));
+		}
 
 		$Jabatan = $this->db->get_where('tbl_jabatan', ['id_perusahaan' => $session['id_perusahaan'], 'id_cabang' => $session['id_cabang']])->result_array();
 		// $arr = array(4, 5, 6);
@@ -1320,6 +1326,7 @@ class Dokumen extends Admin_Controller
 
 		$data = $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
 		$data1 = $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
+		$dist = $this->db->get_where("view_distribusi", ['id_file' => $id, 'id_jabatan' => $jabatan])->result();
 
 		$uri3 = $this->uri->segment(3);
 		$uri4 = $this->uri->segment(4);
@@ -1339,6 +1346,7 @@ class Dokumen extends Admin_Controller
 		$this->template->set('nama_file', $nama_file);
 		$this->template->set('row', $data);
 		$this->template->set('row1', $data1);
+		$this->template->set('dist', $dist);
 		$this->template->render('history_revisi');
 	}
 
@@ -1362,7 +1370,6 @@ class Dokumen extends Admin_Controller
 		$this->auth->restrict($this->viewPermission);
 		$session = $this->session->userdata('app_session');
 		$jabatan = $session['id_jabatan'];
-
 
 		$id    = $this->input->post('id');
 		$table    = $this->input->post('table');

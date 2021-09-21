@@ -109,3 +109,32 @@ ERROR - 2021-09-16 16:36:40 --> Severity: Warning --> file_get_contents(): php_n
 ERROR - 2021-09-16 16:36:40 --> Severity: Warning --> file_get_contents(https://sentral.dutastydy.com/sentraldocs.new/assets/files/Manual_STM.pdf): failed to open stream: php_network_getaddresses: getaddrinfo failed: No such host is known.  D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 352
 ERROR - 2021-09-16 16:46:46 --> Severity: Warning --> file_get_contents(http://localhost:98/assets/files/CV_Riki1.pdf): failed to open stream: HTTP request failed! D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 355
 ERROR - 2021-09-16 16:47:49 --> Severity: Warning --> file_get_contents(http://localhost:98/assets/files/CV_Riki1.pdf): failed to open stream: HTTP request failed! D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 348
+ERROR - 2021-09-16 17:21:05 --> Severity: error --> Exception: Too few arguments to function Dokumen::download(), 0 passed in D:\SENTRAL\SENTRALDOCS\sentraldocs\system\core\CodeIgniter.php on line 532 and exactly 1 expected D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 339
+ERROR - 2021-09-16 10:36:17 --> 404 Page Not Found: ../modules/dokumen/controllers/Dokumen/downloads
+ERROR - 2021-09-16 17:50:27 --> Severity: Notice --> Trying to get property 'id_jabatan' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 331
+ERROR - 2021-09-16 17:50:27 --> Severity: Notice --> Trying to get property 'id_jabatan' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 331
+ERROR - 2021-09-16 17:50:27 --> Severity: Notice --> Trying to get property 'id_jabatan' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 331
+ERROR - 2021-09-16 17:50:27 --> Severity: Notice --> Trying to get property 'id_user' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 333
+ERROR - 2021-09-16 17:50:32 --> Severity: Notice --> Trying to get property 'id_jabatan' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 331
+ERROR - 2021-09-16 17:50:32 --> Severity: Notice --> Trying to get property 'id_jabatan' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 331
+ERROR - 2021-09-16 17:50:32 --> Severity: Notice --> Trying to get property 'id_jabatan' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 331
+ERROR - 2021-09-16 17:50:32 --> Severity: Notice --> Trying to get property 'id_user' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 333
+ERROR - 2021-09-16 17:51:52 --> Severity: Notice --> Trying to get property 'id_jabatan' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 332
+ERROR - 2021-09-16 17:51:52 --> Severity: Notice --> Trying to get property 'id_jabatan' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 332
+ERROR - 2021-09-16 17:51:52 --> Severity: Notice --> Trying to get property 'id_jabatan' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 332
+ERROR - 2021-09-16 17:51:52 --> Severity: Notice --> Trying to get property 'id_user' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 334
+ERROR - 2021-09-16 17:52:40 --> Severity: Notice --> Trying to get property 'id_jabatan' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 332
+ERROR - 2021-09-16 17:52:57 --> Severity: Notice --> Trying to access array offset on value of type null D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 332
+ERROR - 2021-09-16 17:56:08 --> Severity: error --> Exception: Cannot use object of type stdClass as array D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 332
+ERROR - 2021-09-16 17:58:25 --> Query error: Unknown column 'xid_file' in 'where clause' - Invalid query: UPDATE `distribusi` SET `id_user` = '69', `status_download` = 'Y', `downloaded_at` = '2021-09-16 17:58:24'
+WHERE `xid_file` = '6'
+ERROR - 2021-09-16 18:00:54 --> Query error: Unknown column 'xid_file' in 'where clause' - Invalid query: UPDATE `distribusi` SET `id_user` = '69', `status_download` = 'Y', `downloaded_at` = '2021-09-16 18:00:54'
+WHERE `xid_file` = '6'
+ERROR - 2021-09-16 18:03:43 --> Query error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '['id_file'=>6, 'id_jabatan'=>23]' at line 2 - Invalid query: SELECT *
+FROM `distribusi`, ['id_file'=>6, 'id_jabatan'=>23]
+ERROR - 2021-09-16 18:07:11 --> Severity: error --> Exception: Cannot use object of type stdClass as array D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\history_revisi.php 85
+ERROR - 2021-09-16 18:20:06 --> Severity: Notice --> Undefined variable: return D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 343
+ERROR - 2021-09-16 18:20:06 --> Severity: Notice --> Undefined variable: return D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 343
+ERROR - 2021-09-16 18:20:06 --> Severity: Notice --> Undefined variable: return D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 343
+ERROR - 2021-09-16 18:20:07 --> Severity: Notice --> Undefined variable: return D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 343
+ERROR - 2021-09-16 18:35:32 --> Severity: Notice --> Trying to get property 'id_distribusi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 1310

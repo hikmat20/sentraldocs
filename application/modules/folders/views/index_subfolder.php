@@ -19,9 +19,12 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
                     <button type="button" onclick="add_file('<?= $id_master; ?>')" id="btn-file" class="btn btn-icon btn-secondary m-1" title="New File">
                         <i class="far fa-file"></i>
                     </button>
-                    <!-- <button type="button" id="btn-delete" class="btn btn-icon text-dark-95 bg-white m-1 bg-hover-secondary" title="Delete">
-                <i class="fa fa-trash"></i>
-            </button> -->
+                    <button type="button" onclick="rename_folder()" id="btn-rename" class="btn btn-icon btn-secondary m-1" disabled title="Rename">
+                        <i class="fa fa-pen"></i>
+                    </button>
+                    <button type="button" onclick="delete_folder()" id="btn-delete" class="btn btn-icon btn-secondary m-1" disabled title="Delete">
+                        <i class="fa fa-trash"></i>
+                    </button>
                     <hr>
                     <h4>Dokumen</h4>
                     <table id="example1" class="table table-borderless table-condensed table-hover">
@@ -39,8 +42,8 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if ($row) : $n = 0;
-                                foreach ($row as $doc) : $n++
+                            <?php if ($files) : $n = 0;
+                                foreach ($files as $doc) : $n++
                             ?>
                                     <tr>
                                         <th scope="row"><?= $n; ?></th>
@@ -53,9 +56,9 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
                                         <td><?= $doc->prepared_by; ?></td>
                                         <td>
                                             <a href="javascript:void(0)" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="view btn btn-icon btn-warning btn-xs btn-shadow" title="View Dokumen"><i class="fa fa-eye"></i></a>
-                                            <a href="javascript:void(0)" tooltip="qtip" onclick="location.href = siteurl+'dokumen/download_detail1/<?= $doc->id; ?>'" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="download btn btn-icon btn-info btn-xs btn-shadow ml-2" title="Download Dokumen"><i class="fa fa-download"></i></a>
+                                            <!-- <a href="javascript:void(0)" tooltip="qtip" onclick="location.href = siteurl+'dokumen/download_detail1/<?= $doc->id; ?>'" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="download btn btn-icon btn-info btn-xs btn-shadow ml-2" title="Download Dokumen"><i class="fa fa-download"></i></a> -->
                                             <a href="javascript:void(0)" tooltip="qtip" data-file="<?= $doc->nama_file ?>" data-id="<?= $doc->id ?>" data-table="gambar" class="btn btn-icon btn-primary btn-xs btn-shadow ml-2 edit" title="Revisi Dokumen"><i class="fa fa-pen"></i></a>
-                                            <a href="javascript:void(0)" tooltip="qtip" data-table="gambar1" class="download btn btn-icon btn-danger btn-xs btn-shadow ml-2" title="Hapus Dokumen"><i class="fa fa-trash"></i></a>
+                                            <a href="javascript:void(0)" onclick="delData('<?= $doc->id ?>')" tooltip="qtip" data-table="gambar1" class="download btn btn-icon btn-danger btn-xs btn-shadow ml-2" title="Hapus Dokumen"><i class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -67,14 +70,15 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
                     <h4>Folder</h4>
                     <input type="hidden" id="id_master" value="<?= $id_master; ?>">
                     <div class="row">
-                        <?php if ($row) :
-                            foreach ($row as $data) :
+                        <?php if ($folders) :
+                            foreach ($folders as $data) :
                         ?>
                                 <div class="col-lg-3 col-xl-2 col-md-3 col-sm-6 col-xs-6 m-0 px-2">
-                                    <button type="button" ondblclick="location.href = base_url+active_controller+'subfolder/<?= $nama_master . '/' . str_replace(' ', '-', strtolower($data->deskripsi)); ?>'" data-id="<?= $data->id_master; ?>" class="h-99px p-0 btn btn-block btn-text-dark-50 btn-icon-primary btn-bg-transparent font-weight-bold btn-hover-bg-secondary my-2 button-master">
+                                    <label ondblclick="location.href = base_url+active_controller+'subfolder/<?= $nama_master . '/' . str_replace(' ', '-', strtolower($data->deskripsi)); ?>'" data-id="<?= $data->id_master; ?>" class="h-99px p-0 btn btn-block btn-text-dark-50 btn-icon-primary font-weight-bold btn-hover-bg-secondary my-2 button-master">
                                         <i class="fa fa-folder" style="font-size:7rem;"></i><br>
+                                        <input class="d-none" type="checkbox" data-id="<?= $data->id; ?>" data-name="<?= $data->deskripsi; ?>" name="folder[]" value="folder">
                                         <?= $data->deskripsi; ?>
-                                    </button>
+                                    </label>
                                 </div>
                             <?php endforeach; ?>
                         <?php else : ?>
@@ -187,62 +191,81 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
         $("#ModalView").modal('show');
     }
 
-    $(document).on('focus', '.button-master', function() {
-        $('.button-master').removeClass('active');
-        $(this).toggleClass('active');
-        $('#btn-rename').attr('data-id', $(this).data('id'))
-        $('#btn-delete').attr('data-id', $(this).data('id'))
-    })
+    $("input:checkbox").on('click', function() {
+        // in the handler, 'this' refers to the box clicked on
+        var $box = $(this);
+        var group = "input:checkbox[name='" + $box.attr("name") + "']";
+        $(group).parents('label').removeClass('btn-bg-secondary');
+        if ($box.is(":checked")) {
+            $(group).prop("checked", false);
+            $box.prop("checked", true);
+            $box.parents('label').addClass('btn-bg-secondary');
+            $('#btn-rename').attr('data-id', $(this).data('id'))
+            $('#btn-rename').attr('data-name', $(this).data('name'))
+            $('#btn-rename').prop('disabled', false)
+            $('#btn-delete').attr('data-id', $(this).data('id'))
+            $('#btn-delete').prop('disabled', false)
+        } else {
+            $box.prop("checked", false);
+            $('#btn-rename').attr('data-id', '')
+            $('#btn-rename').attr('data-name', '')
+            $('#btn-rename').prop('disabled', true)
+            $('#btn-delete').attr('data-id', '')
+            $('#btn-delete').prop('disabled', true)
+        }
+    });
 
-    $(document).on('blur', 'body', function() {
-
-        $('.button-master').removeClass('active');
-        $('#btn-rename').attr('data-id', '')
-        $('#btn-delete').attr('data-id', '')
-    })
-
-
-    function delData(id) {
+    function delete_folder() {
+        let id = $('#btn-delete').data('id');
+        // alert(id)
+        console.log(id);
         Swal.fire({
             title: "Are you sure?",
             text: "You will not be able to process again this data!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Yes, Process it!",
-            cancelButtonText: "No, cancel process!",
+            confirmButtonText: "Yes, Delete!",
+            cancelButtonText: "No",
         }).then((value) => {
-            if (value.isConfrimed) {
+            if (value.isConfirmed) {
                 loading_spinner();
                 $.ajax({
-                    url: siteurl + active_controller + '/delete/' + id,
-                    type: 'GET',
+                    url: base_url + active_controller + 'delete_subfolder',
+                    type: 'POST',
                     dataType: 'JSON',
-                    sussess: function(result) {
+                    data: {
+                        id
+                    },
+                    success: function(result) {
                         if (result.status == 1) {
                             Swal.fire({
                                 title: "Success!",
                                 text: result.msg,
                                 icon: "success",
-                            }).then(function() {
+                                timer: 1500
+                            }).then(() => {
                                 location.reload();
                             })
                         } else {
                             Swal.fire({
-                                title: "Failed!",
+                                title: "Gagal!",
                                 text: result.msg,
-                                icon: "error",
+                                icon: "warning",
+                                timer: 3000
                             })
                         }
                     },
                     error: function(result) {
                         Swal.fire({
-                            title: "Error!",
-                            text: result.msg,
+                            title: "Error",
+                            text: "Server Timeout!",
                             icon: "error",
+                            timer: 3000
                         })
                     }
                 })
             }
+
         })
 
     }
@@ -289,4 +312,70 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
             }
         })
     });
+
+    function rename_folder() {
+        let id = $('#btn-rename').data('id');
+        let folder_name = $('#btn-rename').data('name');
+        Swal.fire({
+            title: 'Rename Folder',
+            html: `<input id='folder_name' required class='form-control ' name='rename-folder' placeholder='New Folder' value='` + folder_name + `'>
+			<div id="feedback" class="invalid-feedback d-none">Mohon mengisi nama folder terlebih dahulu.</div>
+			<style>
+			.swal2-content{
+				text-align:left;
+			}
+			</style>`,
+            showCancelButton: true,
+            confirmButtonText: 'Save',
+            showLoaderOnConfirm: true,
+            allowOutsideClick: false,
+            preConfirm: (create) => {
+                let folder_name = $('#folder_name').val()
+                if (folder_name == '') {
+                    $('#folder_name').addClass('is-invalid');
+                    $('#feedback').removeClass('d-none');
+                    return false;
+                } else {
+                    console.log(folder_name);
+                    return $.ajax({
+                        url: base_url + active_controller + 'rename_subfolder',
+                        type: 'POST',
+                        dataType: 'JSON',
+                        data: {
+                            id,
+                            folder_name
+                        },
+                        success: function(res) {
+                            console.log(res)
+                            if (res.status == '1') {
+                                Swal.fire({
+                                    title: res.msg,
+                                    icon: 'success',
+                                    timer: 1500
+                                }).then(function() {
+                                    location.reload()
+                                })
+                            } else {
+                                Swal.fire({
+                                    title: 'Gagal!',
+                                    icon: 'warning',
+                                    text: res.msg,
+                                    timer: 1500
+                                })
+                            }
+                        },
+                        error: function(res) {
+                            Swal.fire({
+                                title: 'Error!',
+                                icon: 'error',
+                                text: res.msg,
+                                timer: 3000
+                            })
+                        }
+                    })
+                }
+            }
+
+        })
+    }
 </script>

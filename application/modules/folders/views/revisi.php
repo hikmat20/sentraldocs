@@ -1,6 +1,6 @@
 <div class="row">
 
-	<div class="col-md-3">
+	<div class="col-md-4">
 		<form id="form_proses_bro" method="post">
 			<input type="hidden" id="id" name="id" value="<?= (isset($row->id) ? $row->id : '') ?>" />
 			<input type="hidden" id="id_master" name="id_master" value="<?= (isset($row->id_master) ? $row->id_master : '') ?>" />
@@ -36,7 +36,7 @@
 			</div>
 		</form>
 	</div>
-	<div class="col-md-9">
+	<div class="col-md-8">
 		<iframe src='<?php echo site_url(); ?>assets/files/<?php echo "$nama_file"; ?>' width='100%' height='565px' frameborder='0'> </iframe>
 	</div>
 </div>
