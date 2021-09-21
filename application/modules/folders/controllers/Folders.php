@@ -631,7 +631,7 @@ class Folders extends Admin_Controller
 		if (!$detail) {
 			$folders		= $this->db->get_where('gambar', ['id_master' => $id_master, 'nama_file' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->result();
 			$files			= $this->db->get_where('gambar', ['id_master' => $id_master, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->result();
-			$get_Data		= $this->Folders_model->getData('gambar', 'id_master', $id_master,);
+			$get_Data		= $this->Folders_model->getData('gambar', 'id_master', $id_master);
 			// $get_Master		= $this->Folders_model->getData('gambar', 'id', $id_sub);
 
 			$this->template->set('list', false);
