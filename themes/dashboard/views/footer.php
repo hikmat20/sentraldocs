@@ -225,6 +225,12 @@
              }
          })
      }
+
+     $('.select2').select2({
+         placeholder: 'Choose an options',
+         width: '100%',
+         allowClear: true
+     })
  </script>
  </body>
 

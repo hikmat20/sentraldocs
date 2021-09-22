@@ -125,7 +125,9 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 <script>
 	$(document).ready(function() {
 		$('.select2').select2({
-			placeholder: 'Choose an option'
+			placeholder: 'Choose an option',
+			width: '100%',
+			allowClear: true
 		});
 
 		// get_approval();
