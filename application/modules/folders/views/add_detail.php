@@ -63,7 +63,7 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 						<i class="fa fa-check"></i>
 					</span>
 				</div>
-				<select class="form-select select2" name="id_review" id="id_review">
+				<select class="form-control select2" name="id_review" id="id_review">
 					<option value=""></option>
 					<?php foreach ($jabatan as $jbt) : ?>
 						<option value="<?= $jbt->id; ?>"><?= $jbt->nm_jabatan; ?></option>
@@ -79,7 +79,7 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 						<i class="fa fa-check"></i>
 					</span>
 				</div>
-				<select class="form-select select2" name="id_approval" id="id_approval">
+				<select class="form-control select2" name="id_approval" id="id_approval">
 					<option value=""></option>
 					<?php foreach ($jabatan as $jbt) : ?>
 						<option value="<?= $jbt->id; ?>"><?= $jbt->nm_jabatan; ?></option>
@@ -99,7 +99,7 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 						<i class="fa fa-check"></i>
 					</span>
 				</div>
-				<select class="form-select select2" multiple name="id_distribusi[]" id="id_distribusi">
+				<select class="form-control select2" multiple name="id_distribusi[]" id="id_distribusi">
 					<option value=""></option>
 					<?php foreach ($jabatan as $jbt) : ?>
 						<option value="<?= $jbt->id; ?>"><?= $jbt->nm_jabatan; ?></option>
