@@ -145,3 +145,7 @@ ERROR - 2021-09-22 15:23:23 --> Severity: Notice --> Trying to get property 'id_
 ERROR - 2021-09-22 15:23:23 --> Severity: Notice --> Trying to get property 'id' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 723
 ERROR - 2021-09-22 10:37:22 --> 404 Page Not Found: /index
 ERROR - 2021-09-22 10:37:32 --> 404 Page Not Found: /index
+ERROR - 2021-09-22 22:07:14 --> 404 Page Not Found: /index
+ERROR - 2021-09-22 22:07:21 --> 404 Page Not Found: /index
+ERROR - 2021-09-22 22:07:21 --> 404 Page Not Found: /index
+ERROR - 2021-09-22 22:07:30 --> 404 Page Not Found: /index

@@ -45,8 +45,6 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 							<option value="0">Pilih User</option><?= $results['users'] ?>
 						</select>
 					</div>
-
-
 				</div>
 			</div>
 			<div class='form-group row'>

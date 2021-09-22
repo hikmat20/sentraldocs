@@ -57,13 +57,13 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 	<div class='form-group row'>
 		<label class='label-control col-sm-2'><b>Review<span class='text-red'></span></b></label>
 		<div class='col-sm-4'>
-			<div class="input-group" id="select_review">
+			<div class="input-group">
 				<div class="input-group-prepend">
 					<span class="input-group-text">
-						<i class="fa fa-check"></i>
+						<i class="fa fa-user"></i>
 					</span>
 				</div>
-				<select class="form-control select2" name="id_review" id="id_review">
+				<select name="id_review" id="id_review" class="form-control select2">;
 					<option value=""></option>
 					<?php foreach ($jabatan as $jbt) : ?>
 						<option value="<?= $jbt->id; ?>"><?= $jbt->nm_jabatan; ?></option>
@@ -73,13 +73,13 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 		</div>
 		<label class='label-control col-sm-2'><b>Approval <span class='text-red'>*</span></b></label>
 		<div class='col-sm-4'>
-			<div class="input-group" id="select_approval">
+			<div class="input-group">
 				<div class="input-group-prepend">
 					<span class="input-group-text">
-						<i class="fa fa-check"></i>
+						<i class="fa fa-user"></i>
 					</span>
 				</div>
-				<select class="form-control select2" name="id_approval" id="id_approval">
+				<select name="id_approval" id="id_approval" class="form-control select2">;
 					<option value=""></option>
 					<?php foreach ($jabatan as $jbt) : ?>
 						<option value="<?= $jbt->id; ?>"><?= $jbt->nm_jabatan; ?></option>
@@ -93,19 +93,25 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 	<div class='form-group row'>
 		<label class='label-control col-sm-2'><b>Distribusi<span class='text-red'></span></b></label>
 		<div class='col-sm-4'>
-			<div class="input-group" id="select_distribusi">
+			<div class="input-group">
 				<div class="input-group-prepend">
 					<span class="input-group-text">
-						<i class="fa fa-check"></i>
+						<i class="fa fa-user"></i>
 					</span>
 				</div>
-				<select class="form-control select2" multiple name="id_distribusi[]" id="id_distribusi">
+				<select name="id_distribusi[]" multiple id="id_distribusi" class="form-control select2">;
 					<option value=""></option>
 					<?php foreach ($jabatan as $jbt) : ?>
 						<option value="<?= $jbt->id; ?>"><?= $jbt->nm_jabatan; ?></option>
 					<?php endforeach; ?>
 				</select>
 			</div>
+			<!-- <select class="form-control select2" multiple name="id_distribusi[]" id="id_distribusi">
+				<option value=""></option>
+				<?php foreach ($jabatan as $jbt) : ?>
+					<option value="<?= $jbt->id; ?>"><?= $jbt->nm_jabatan; ?></option>
+				<?php endforeach; ?>
+			</select> -->
 		</div>
 	</div>
 	<hr>
