@@ -143,3 +143,5 @@ ERROR - 2021-09-22 14:57:38 --> Severity: Notice --> Trying to get property 'des
 ERROR - 2021-09-22 15:03:27 --> Query error: Table 'sentraldocs_db.xgambar1' doesn't exist - Invalid query: INSERT INTO `xgambar1` (`created_by`, `created`, `id_master`, `id_detail`, `deskripsi`, `id_perusahaan`, `id_cabang`) VALUES ('69', '2021-09-22 15:03:27', '1', '91', 'sdsd', '1', '1')
 ERROR - 2021-09-22 15:23:23 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 722
 ERROR - 2021-09-22 15:23:23 --> Severity: Notice --> Trying to get property 'id' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 723
+ERROR - 2021-09-22 10:37:22 --> 404 Page Not Found: /index
+ERROR - 2021-09-22 10:37:32 --> 404 Page Not Found: /index
