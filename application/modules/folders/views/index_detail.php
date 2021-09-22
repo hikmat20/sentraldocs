@@ -9,18 +9,32 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
     <div class="d-flex flex-column-fluid">
         <div class="container">
             <div class="card card-stretch shadow card-custom">
+                <div class="card-header">
+                    <h4 class="card-title text-muted"><i class="fa fa-file"></i>
+                        &nbsp <a href="<?= base_url('folders/subfolder/'); ?><?= $nama_master; ?>"><?= str_replace("-", " ", ucfirst($nama_master)); ?></a>
+                        &nbsp <i class="fa fa-angle-right"></i> &nbsp <a href="<?= base_url('folders/subfolder/'); ?><?= $nama_master . "/" . $nama_subfolder; ?>"><?= str_replace("-", " ", ucfirst($nama_subfolder)); ?></a>
+                    </h4>
+                </div>
                 <div class="card-body">
+                    <input type="hidden" id="id_master" value="<?= $id_master; ?>">
+                    <input type="hidden" id="id_subfolder" value="<?= $id_sub; ?>">
                     <button type="button" onclick="history.go(-1)" class="btn btn-icon btn-secondary" title="Kembali">
                         <i class="fa fa-arrow-left"></i>
                     </button>
-                    <!-- <button type="button" onclick="new_folder()" class="btn btn-icon btn-secondary m-1 " title="New Folder">
-                        <i class="far fa-folder"></i>
-                    </button> -->
+                    <button type="button" onclick="new_folder()" class="btn btn-icon btn-secondary m-1 " title="New Folder">
+                        <i class="fas fa-folder-plus"></i>
+                    </button>
                     <button type="button" onclick="add_file('<?= $id_master; ?>','<?= $id_sub; ?>')" id="btn-file" class="btn btn-icon btn-secondary m-1" title="New File">
-                        <i class="far fa-file"></i>
+                        <i class="fas fa-file-medical"></i>
+                    </button>
+                    <button type="button" onclick="rename_folder()" id="btn-rename" class="btn btn-icon btn-secondary m-1" disabled title="Rename">
+                        <i class="fa fa-pen"></i>
+                    </button>
+                    <button type="button" onclick="delete_folder()" id="btn-delete" class="btn btn-icon btn-secondary m-1" disabled title="Delete">
+                        <i class="fa fa-trash"></i>
                     </button>
                     <hr class="my-5">
-                    <h4 for="">Lampiran Dokumen</h4>
+                    <h4 for="">Dokumen</h4>
                     <table id="example1" class="table table-borderless table-condensed table-hover">
                         <thead class="bg-light">
                             <tr>
@@ -36,8 +50,8 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
                             </tr>
                         </thead>
                         <tbody>
-                            <?php if ($row) : $n = 0;
-                                foreach ($row as $doc) : $n++
+                            <?php if ($files) : $n = 0;
+                                foreach ($files as $doc) : $n++
                             ?>
                                     <tr>
                                         <th scope="row"><?= $n; ?></th>
@@ -58,6 +72,27 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
                             <?php endif; ?>
                         </tbody>
                     </table>
+                    <hr class="mt-5 mb-8">
+                    <h4>Folder</h4>
+                    <div class="row">
+                        <?php if ($folders) :
+                            foreach ($folders as $data) :
+                        ?>
+                                <div class="col-lg-3 col-xl-2 col-md-3 col-sm-6 col-xs-6 m-0 px-2">
+                                    <label ondblclick="location.href = base_url+active_controller+'subfolder/<?= $nama_master . '/' . str_replace(' ', '-', strtolower($data->deskripsi)) . '/' . str_replace(' ', '-', strtolower($data->deskripsi)); ?>'" data-id="<?= $data->id_master; ?>" class="h-99px p-0 btn btn-block btn-text-dark-50 btn-icon-primary font-weight-bold btn-hover-bg-secondary my-2 button-master">
+                                        <!-- <label data-id="<?= $data->id_master; ?>" class="h-99px p-0 btn btn-block btn-text-dark-50 btn-icon-primary font-weight-bold btn-hover-bg-secondary my-2 button-master"> -->
+                                        <i class="fa fa-folder" style="font-size:7rem;"></i><br>
+                                        <input class="d-none" type="checkbox" data-id="<?= $data->id; ?>" data-name="<?= $data->deskripsi; ?>" name="folder[]" value="folder">
+                                        <?= $data->deskripsi; ?>
+                                    </label>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <div class="d-flex justify-content-center col-md-12" style="padding:10rem 0">
+                                <h5 class="text-muted">--Empty data--</h5>
+                            </div>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </div>
@@ -100,26 +135,39 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
 
     function new_folder() {
         Swal.fire({
-            html: "<input id='folder_name' required class='form-control' name='new-folder' placeholder='New Folder'>",
-            showCancelButton: true
-        }).then(function(result) {
-            if (result.value) {
+            title: 'Create Folder',
+            html: `<input id='folder_name' required class='form-control ' name='new-folder' placeholder='New Folder'>
+			<div id="feedback" class="invalid-feedback d-none">Mohon mengisi nama folder terlebih dahulu.</div>
+			<style>
+			.swal2-content{
+				text-align:left;
+			}
+			</style>`,
+            showCancelButton: true,
+            confirmButtonText: 'Save',
+            showLoaderOnConfirm: true,
+            preConfirm: (create) => {
+                let id_subfolder = $('#id_subfolder').val()
+                let id_master = $('#id_master').val()
                 let folder_name = $('#folder_name').val()
                 if (folder_name == '') {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Nama tidak boleh kosong!',
-                    })
+                    $('#folder_name').addClass('is-invalid');
+                    $('#feedback').removeClass('d-none');
+                    return false;
                 } else {
-                    $.ajax({
-                        url: base_url + active_controller + 'add',
+                    // console.log(folder_name);
+                    return $.ajax({
+                        url: base_url + active_controller + 'add_endfolder',
                         type: 'POST',
                         dataType: 'JSON',
                         data: {
+                            id_subfolder,
+                            id_master,
                             folder_name
                         },
-                        success: function(result) {
-                            if (result.status == '1') {
+                        success: function(res) {
+                            // console.log(res)
+                            if (res.status == '1') {
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Folder baru berhasil dibuat!',
@@ -129,24 +177,24 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
                             } else {
                                 Swal.fire({
                                     icon: 'error',
-                                    title: 'Terjssadi kesalahan tidak terduga!',
-                                    text: result.pesan
+                                    title: 'Terjadi Kesalahan!',
+                                    text: res.pesan
                                 })
                             }
                         },
-                        error: function(result) {
+                        error: function(res) {
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Terjadiaa kesalahan tidak terduga!',
-                                text: result.pesan
+                                title: 'Terjadi kesalahan!',
+                                text: res.pesan
                             })
                         }
                     })
                 }
-            }
-        });
+            },
+            allowOutsideClick: false,
+        })
     }
-
 
     function add_file(id_master, id_sub) {
         $("#viewData").html('');
@@ -156,44 +204,149 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
         $("#ModalView").modal('show');
     }
 
-    $(document).on('focus', '.button-master', function() {
-        $('.button-master').removeClass('active');
-        $(this).toggleClass('active');
-        $('#btn-rename').attr('data-id', $(this).data('id'))
-        $('#btn-delete').attr('data-id', $(this).data('id'))
-    })
+    $("input:checkbox").on('click', function() {
+        // in the handler, 'this' refers to the box clicked on
+        var $box = $(this);
+        var group = "input:checkbox[name='" + $box.attr("name") + "']";
+        $(group).parents('label').removeClass('btn-bg-secondary');
+        if ($box.is(":checked")) {
+            $(group).prop("checked", false);
+            $box.prop("checked", true);
+            $box.parents('label').addClass('btn-bg-secondary');
+            $('#btn-rename').attr('data-id', $(this).data('id'))
+            $('#btn-rename').attr('data-name', $(this).data('name'))
+            $('#btn-rename').prop('disabled', false)
+            $('#btn-delete').attr('data-id', $(this).data('id'))
+            $('#btn-delete').prop('disabled', false)
+        } else {
+            $box.prop("checked", false);
+            $('#btn-rename').attr('data-id', '')
+            $('#btn-rename').attr('data-name', '')
+            $('#btn-rename').prop('disabled', true)
+            $('#btn-delete').attr('data-id', '')
+            $('#btn-delete').prop('disabled', true)
+        }
+    });
 
-    $(document).on('blur', 'body', function() {
+    function delete_folder() {
+        let id = $('#btn-delete').data('id');
+        // alert(id)
+        console.log(id);
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You will not be able to process again this data!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, Delete!",
+            cancelButtonText: "No",
+        }).then((value) => {
+            if (value.isConfirmed) {
+                loading_spinner();
+                $.ajax({
+                    url: base_url + active_controller + 'delete_endfolder',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: {
+                        id
+                    },
+                    success: function(result) {
+                        if (result.status == 1) {
+                            Swal.fire({
+                                title: "Success!",
+                                text: result.msg,
+                                icon: "success",
+                                timer: 1500
+                            }).then(() => {
+                                location.reload();
+                            })
+                        } else {
+                            Swal.fire({
+                                title: "Gagal!",
+                                text: result.msg,
+                                icon: "warning",
+                                timer: 3000
+                            })
+                        }
+                    },
+                    error: function(result) {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Server Timeout!",
+                            icon: "error",
+                            timer: 3000
+                        })
+                    }
+                })
+            }
 
-        $('.button-master').removeClass('active');
-        $('#btn-rename').attr('data-id', '')
-        $('#btn-delete').attr('data-id', '')
-    })
+        })
 
+    }
 
-    function delData(id) {
-        swal({
-                title: "Are you sure?",
-                text: "You will not be able to process again this data!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonClass: "btn-danger",
-                confirmButtonText: "Yes, Process it!",
-                cancelButtonText: "No, cancel process!",
-                closeOnConfirm: true,
-                closeOnCancel: false
-            },
-            function(isConfirm) {
-                if (isConfirm) {
-                    loading_spinner();
-                    window.location.href = base_url + active_controller + '/delete/' + id;
-
-                } else {
-                    swal("Cancelled", "Data can be process again :)", "error");
+    function rename_folder() {
+        let id = $('#btn-rename').data('id');
+        let folder_name = $('#btn-rename').data('name');
+        Swal.fire({
+            title: 'Rename Folder',
+            html: `<input id='folder_name' required class='form-control ' name='rename-folder' placeholder='New Folder' value='` + folder_name + `'>
+			<div id="feedback" class="invalid-feedback d-none">Mohon mengisi nama folder terlebih dahulu.</div>
+			<style>
+			.swal2-content{
+				text-align:left;
+			}
+			</style>`,
+            showCancelButton: true,
+            confirmButtonText: 'Save',
+            showLoaderOnConfirm: true,
+            allowOutsideClick: false,
+            preConfirm: (create) => {
+                let folder_name = $('#folder_name').val()
+                if (folder_name == '') {
+                    $('#folder_name').addClass('is-invalid');
+                    $('#feedback').removeClass('d-none');
                     return false;
+                } else {
+                    console.log(folder_name);
+                    return $.ajax({
+                        url: base_url + active_controller + 'rename_endfolder',
+                        type: 'POST',
+                        dataType: 'JSON',
+                        data: {
+                            id,
+                            folder_name
+                        },
+                        success: function(res) {
+                            console.log(res)
+                            if (res.status == '1') {
+                                Swal.fire({
+                                    title: res.msg,
+                                    icon: 'success',
+                                    timer: 1500
+                                }).then(function() {
+                                    location.reload()
+                                })
+                            } else {
+                                Swal.fire({
+                                    title: 'Gagal!',
+                                    icon: 'warning',
+                                    text: res.msg,
+                                    timer: 1500
+                                })
+                            }
+                        },
+                        error: function(res) {
+                            Swal.fire({
+                                title: 'Error!',
+                                icon: 'error',
+                                text: res.msg,
+                                timer: 3000
+                            })
+                        }
+                    })
                 }
-            });
+            }
 
+        })
     }
 
     $(document).on('click', '.view', function(e) {

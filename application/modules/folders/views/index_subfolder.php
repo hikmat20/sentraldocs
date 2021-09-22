@@ -9,6 +9,12 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
     <div class="d-flex flex-column-fluid">
         <div class="container">
             <div class="card card-stretch shadow-lg card-custom">
+                <div class="card-header">
+                    <h4 class="card-title text-muted">
+                        <a href="<?= base_url('folders'); ?>"><i class="fa fa-home"></i></a>
+                        &nbsp<a href=" <?= base_url('folders/subfolder/'); ?><?= $nama_master; ?>"><?= str_replace("-", " ", ucfirst($nama_master)); ?></a>
+                    </h4>
+                </div>
                 <div class="card-body">
                     <button type="button" onclick="history.go(-1)" class="btn btn-icon btn-secondary m-1" title="Kembali">
                         <i class="fa fa-arrow-left"></i>
