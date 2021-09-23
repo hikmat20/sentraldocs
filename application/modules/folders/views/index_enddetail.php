@@ -92,7 +92,8 @@ function Size($bytes)
                                         <td><?= $doc->nm_lengkap; ?></td>
                                         <td>
                                             <a href="javascript:void(0)" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="view btn btn-icon btn-warning btn-xs btn-shadow" title="View Dokumen"><i class="fa fa-eye"></i></a>
-                                            <a href="javascript:void(0)" tooltip="qtip" onclick="location.href = siteurl+'dokumen/download_detail1/<?= $doc->id; ?>'" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="download btn btn-icon btn-info btn-xs btn-shadow ml-2" title="Download Dokumen"><i class="fa fa-download"></i></a>
+                                            <!-- <a href="javascript:void(0)" tooltip="qtip" onclick="location.href = siteurl+'dokumen/download_detail1/<?= $doc->id; ?>'" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="download btn btn-icon btn-info btn-xs btn-shadow ml-2" title="Download Dokumen"><i class="fa fa-download"></i></a> -->
+                                            <a href="javascript:void(0)" tooltip="qtip" data-file="<?= $doc->nama_file ?>" data-id="<?= $doc->id ?>" data-table="gambar1" class="btn btn-icon btn-primary btn-xs btn-shadow ml-2 edit" title="Revisi Dokumen"><i class="fa fa-pen"></i></a>
                                             <a href="javascript:void(0)" tooltip="qtip" onclick="delete_file(<?= $doc->id; ?>)" class="download btn btn-icon btn-danger btn-xs btn-shadow ml-2" title="Delete Dokumen"><i class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>

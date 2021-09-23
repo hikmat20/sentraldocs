@@ -69,9 +69,9 @@
 			<thead>
 				<tr>
 					<th width="30px">No</th>
-					<th>Jabatan</th>
-					<th>User</th>
+					<th width="40%">Jabatan</th>
 					<th>Downloaded</th>
+					<th>User</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -87,8 +87,8 @@
 						<tr>
 							<td><?= $int; ?></td>
 							<td><?= $dst->nm_jabatan; ?></td>
-							<td><?= $dst->nm_lengkap; ?></td>
 							<td><?= $sts[$dst->status_download]; ?></td>
+							<td><?= ($dst->nm_lengkap) ? $dst->nm_lengkap : '-'; ?></td>
 						</tr>
 				<?php endforeach;
 				endif; ?>
@@ -149,7 +149,7 @@
 											title: "Save Success!",
 											text: data.pesan,
 											type: "success",
-											timer: 15000,
+											timer: 30000,
 											showCancelButton: false,
 											showConfirmButton: false,
 											allowOutsideClick: false
@@ -186,7 +186,7 @@
 										title: "Gagal!",
 										text: "Batal Proses, Data bisa diproses nanti",
 										type: "error",
-										timer: 1500,
+										timer: 3000,
 										showConfirmButton: false
 									});
 								}
@@ -215,7 +215,7 @@
 									title: 'Success!',
 									text: result.msg,
 									icon: 'success',
-									timer: 1500,
+									timer: 3000,
 									showConfirmButton: false
 								})
 							}
@@ -224,7 +224,7 @@
 								title: 'Failed!',
 								text: result.msg,
 								icon: 'warning',
-								timer: 1500,
+								timer: 3000,
 								showConfirmButton: false
 							})
 						}
@@ -234,7 +234,7 @@
 							title: 'Error!',
 							text: 'Internal server error',
 							icon: 'error',
-							timer: 1500,
+							timer: 3000,
 							showConfirmButton: false
 						})
 					}

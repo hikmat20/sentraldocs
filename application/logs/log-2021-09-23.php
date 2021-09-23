@@ -30,3 +30,11 @@ ERROR - 2021-09-23 11:17:22 --> Severity: Warning --> unlink(./assets/files/): I
 ERROR - 2021-09-23 04:31:18 --> 404 Page Not Found: ../modules/folders/controllers/Folders/delete_file1
 ERROR - 2021-09-23 11:32:09 --> Severity: Warning --> unlink(./assets/files/sentr): No such file or directory D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 1147
 ERROR - 2021-09-23 11:36:47 --> Severity: Warning --> unlink(./assets/files/sentr): No such file or directory D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 1147
+ERROR - 2021-09-23 11:43:56 --> Severity: Warning --> unlink(./assets/files/CV_Ri): No such file or directory D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 1147
+ERROR - 2021-09-23 11:47:14 --> Severity: Warning --> file_get_contents(http://localhost:98/assets/files/logo.pdf): failed to open stream: HTTP request failed! D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 676
+ERROR - 2021-09-23 12:31:20 --> Severity: Notice --> Undefined variable: row1 D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\history_revisi.php 46
+ERROR - 2021-09-23 12:46:04 --> Severity: Notice --> Trying to get property 'id_jabatan' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 324
+ERROR - 2021-09-23 12:46:21 --> Severity: Notice --> Trying to get property 'id_jabatan' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 324
+ERROR - 2021-09-23 13:14:27 --> Severity: error --> Exception: Call to undefined method CI_DB_mysqli_driver::row() D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 305
+ERROR - 2021-09-23 13:27:12 --> Severity: Warning --> unlink(./assets/files/sentr): No such file or directory D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 1158
+ERROR - 2021-09-23 13:27:26 --> Severity: Warning --> unlink(./assets/files/Manua): No such file or directory D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 1158

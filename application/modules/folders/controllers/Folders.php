@@ -294,7 +294,6 @@ class Folders extends Admin_Controller
 			$data['id_cabang']		= $cbg;
 			$dist 					= implode(",", $this->input->post('id_distribusi'));
 			$data['id_distribusi']	= $dist;
-
 			if ($this->input->post('id_review') != '') {
 				$data['status_approve']	= 3;
 				$data['id_review']		= $this->input->post('id_review');
@@ -302,8 +301,19 @@ class Folders extends Admin_Controller
 				$data['status_approve']	= 1;
 			}
 
+			$idMax = $this->db->select('max(id) as maxId')
+				->from('gambar')->get()->row();
+			foreach ($this->input->post('id_distribusi') as $key => $value) {
+				$arr_dist[$key] = [
+					'id_file' => $idMax->maxId + 1,
+					'id_jabatan' => $value
+				];
+			}
+
 			$this->db->trans_begin();
 			$this->Folders_model->simpan('gambar', $data);
+			$this->db->insert_batch('distribusi', $arr_dist);
+
 			if ($this->db->trans_status() === 0) {
 				$this->db->trans_rollback();
 				$Arr_Kembali		= array(
@@ -1142,6 +1152,7 @@ class Folders extends Admin_Controller
 
 		$this->db->trans_begin();
 		$this->db->delete($table, array('id' => $id));
+		$this->db->delete('distribusi', array('id_file' => $id));
 		if ($this->db->trans_status() === TRUE) {
 			$this->db->trans_commit();
 			unlink($file->lokasi_file);

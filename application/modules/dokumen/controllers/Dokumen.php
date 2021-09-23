@@ -317,23 +317,31 @@ class Dokumen extends Admin_Controller
 	public function confirm_download($id)
 	{
 		$session = $this->session->userdata('app_session');
-		$file = $this->db->get_where("distribusi", ['id_file' => $id, 'id_jabatan' => $session['id_jabatan']])->row();
+		$dist = $this->db->get_where('distribusi', ['id_file' => $id])->result();
 
-
-		if ($file) {
-			if ($file->id_jabatan == $session['id_jabatan'] && $file->id_user  == "") {
+		if ($dist) {
+			$file = $this->db->get_where("distribusi", ['id_file' => $id, 'id_jabatan' => $session['id_jabatan']])->row();
+			// echo '<pre>';
+			// print_r($file);
+			// echo '<pre>';
+			// exit;
+			if (isset($file->id_jabatan) == $session['id_jabatan'] && $file->id_user  == "") {
 				$this->db->trans_begin();
 				$this->db->where('id_file', $id)->update('distribusi', ['id_user' => $session['id_user'], 'status_download' => 'Y', 'downloaded_at' => date('Y-m-d H:i:s')]);
-			}
-
-			if ($this->db->trans_status() == FALSE) {
-				$this->db->trans_rollback();
-				$return = [
-					'status' => 0,
-					'msg' => 'Proses Download Gagal. Server timeout'
-				];
+				if ($this->db->trans_status() == FALSE) {
+					$this->db->trans_rollback();
+					$return = [
+						'status' => 0,
+						'msg' => 'Proses Download Gagal. Server timeout'
+					];
+				} else {
+					$this->db->trans_commit();
+					$return = [
+						'status' => 1,
+						'msg' => 'File Berhasil di download.'
+					];
+				}
 			} else {
-				$this->db->trans_commit();
 				$return = [
 					'status' => 1,
 					'msg' => 'File Berhasil di download.'
@@ -1301,12 +1309,14 @@ class Dokumen extends Admin_Controller
 		$session = $this->session->userdata('app_session');
 		$jabatan = $session['id_jabatan'];
 
+		$id    		= $this->input->post('id');
+		$table    	= $this->input->post('table');
+		$nama_file 	= $this->input->post('file');
 
-		$id    = $this->input->post('id');
-		$table    = $this->input->post('table');
-		$nama_file = $this->input->post('file');
-
-		if ($table == 'gambar1') {
+		if ($table == 'gambar2') {
+			$file = $this->db->get_where('gambar2', ['id' => $id])->row();
+			$exp = explode(",", ($file->id_distribusi));
+		} else if ($table == 'gambar1') {
 			$file = $this->db->get_where('gambar1', ['id' => $id])->row();
 			$exp = explode(",", ($file->id_distribusi));
 		} else {
@@ -1326,17 +1336,17 @@ class Dokumen extends Admin_Controller
 
 		$data = $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
 		$data1 = $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
-		$dist = $this->db->get_where("view_distribusi", ['id_file' => $id, 'id_jabatan' => $jabatan])->result();
+		$dist = $this->db->get_where("view_distribusi", ['id_file' => $id])->result();
 
-		$uri3 = $this->uri->segment(3);
-		$uri4 = $this->uri->segment(4);
-		$uri5 = $this->uri->segment(5);
-		$uri6 = $this->uri->segment(4);
+		// $uri3 = $this->uri->segment(3);
+		// $uri4 = $this->uri->segment(4);
+		// $uri5 = $this->uri->segment(5);
+		// $uri6 = $this->uri->segment(4);
 
-		$this->template->set('uri3', $uri3);
-		$this->template->set('uri4', $uri4);
-		$this->template->set('uri5', $uri5);
-		$this->template->set('uri6', $uri6);
+		// $this->template->set('uri3', $uri3);
+		// $this->template->set('uri4', $uri4);
+		// $this->template->set('uri5', $uri5);
+		// $this->template->set('uri6', $uri6);
 
 
 		$this->template->set('jabatan', $jabatan);
