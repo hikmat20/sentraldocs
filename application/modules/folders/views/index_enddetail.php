@@ -10,6 +10,7 @@ $sts = [
     '2' => 'Approval',
     '3' => 'Waiting Review',
 ];
+
 function Size($bytes)
 {
     if ($bytes >= 1073741824) {
@@ -28,6 +29,7 @@ function Size($bytes)
 
     return $bytes;
 }
+
 ?>
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <div class="d-flex flex-column-fluid">
@@ -37,26 +39,28 @@ function Size($bytes)
                     <h4 class="card-title text-muted"><i class="fa fa-file"></i>
                         &nbsp <a href="<?= base_url('folders/subfolder/'); ?><?= $nama_master; ?>"><?= str_replace("-", " ", ucfirst($nama_master)); ?></a>
                         &nbsp <i class="fa fa-angle-right"></i> &nbsp <a href="<?= base_url('folders/subfolder/'); ?><?= $nama_master . "/" . $nama_subfolder; ?>"><?= str_replace("-", " ", ucfirst($nama_subfolder)); ?></a>
+                        &nbsp <i class="fa fa-angle-right"></i> &nbsp <a href="<?= base_url('folders/subfolder/'); ?><?= $nama_master . "/" . $nama_subfolder . "/" . $nama_endfolder; ?>"><?= str_replace("-", " ", ucfirst($nama_endfolder)); ?></a>
                     </h4>
                 </div>
                 <div class="card-body">
                     <input type="hidden" id="id_master" value="<?= $id_master; ?>">
-                    <input type="hidden" id="id_subfolder" value="<?= $id_sub; ?>">
+                    <input type="hidden" id="id_subfolder" value="<?= $id_detail; ?>">
+                    <input type="hidden" id="id_endfolder" value="<?= $id_enddetail; ?>">
                     <button type="button" onclick="history.go(-1)" class="btn btn-icon btn-secondary" title="Kembali">
                         <i class="fa fa-arrow-left"></i>
                     </button>
-                    <button type="button" onclick="new_folder()" class="btn btn-icon btn-secondary m-1 " title="New Folder">
+                    <!-- <button type="button" onclick="new_folder()" class="btn btn-icon btn-secondary m-1 " title="New Folder">
                         <i class="fas fa-folder-plus"></i>
-                    </button>
-                    <button type="button" onclick="add_file('<?= $id_master; ?>','<?= $id_sub; ?>')" id="btn-file" class="btn btn-icon btn-secondary m-1" title="New File">
+                    </button> -->
+                    <button type="button" onclick="add_file('<?= $id_master; ?>','<?= $id_detail; ?>','<?= $id_enddetail; ?>')" id="btn-file" class="btn btn-icon btn-secondary m-1" title="New File">
                         <i class="fas fa-file-medical"></i>
                     </button>
-                    <button type="button" onclick="rename_folder()" id="btn-rename" class="btn btn-icon btn-secondary m-1" disabled title="Rename">
+                    <!-- <button type="button" onclick="rename_folder()" id="btn-rename" class="btn btn-icon btn-secondary m-1" disabled title="Rename">
                         <i class="fa fa-pen"></i>
                     </button>
                     <button type="button" onclick="delete_folder()" id="btn-delete" class="btn btn-icon btn-secondary m-1" disabled title="Delete">
                         <i class="fa fa-trash"></i>
-                    </button>
+                    </button> -->
                     <hr class="my-5">
                     <h4 for="">Dokumen</h4>
                     <table id="example1" class="table table-borderless table-condensed table-hover">
@@ -96,27 +100,6 @@ function Size($bytes)
                             <?php endif; ?>
                         </tbody>
                     </table>
-                    <hr class="mt-5 mb-8">
-                    <h4>Folder</h4>
-                    <div class="row">
-                        <?php if ($folders) :
-                            foreach ($folders as $data) :
-                        ?>
-                                <div class="col-lg-3 col-xl-2 col-md-3 col-sm-6 col-xs-6 m-0 px-2">
-                                    <label ondblclick="location.href = base_url+active_controller+'subfolder/<?= $nama_master . '/' . str_replace(' ', '-', strtolower($nama_subfolder)) . '/' . str_replace(' ', '-', strtolower($data->deskripsi)); ?>'" data-id="<?= $data->id_master; ?>" class="h-99px p-0 btn btn-block btn-text-dark-50 btn-icon-primary font-weight-bold btn-hover-bg-secondary my-2 button-master">
-                                        <!-- <label data-id="<?= $data->id_master; ?>" class="h-99px p-0 btn btn-block btn-text-dark-50 btn-icon-primary font-weight-bold btn-hover-bg-secondary my-2 button-master"> -->
-                                        <i class="fa fa-folder" style="font-size:7rem;"></i><br>
-                                        <input class="d-none" type="checkbox" data-id="<?= $data->id; ?>" data-name="<?= $data->deskripsi; ?>" name="folder[]" value="folder">
-                                        <?= $data->deskripsi; ?>
-                                    </label>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php else : ?>
-                            <div class="d-flex justify-content-center col-md-12" style="padding:10rem 0">
-                                <h5 class="text-muted">--Empty data--</h5>
-                            </div>
-                        <?php endif; ?>
-                    </div>
                 </div>
             </div>
         </div>
@@ -141,6 +124,7 @@ function Size($bytes)
         </div>
     </div>
 </div>
+
 <script>
     $('#example1').DataTable({
         orderCellsTop: false,
@@ -220,11 +204,11 @@ function Size($bytes)
         })
     }
 
-    function add_file(id_master, id_sub) {
+    function add_file(id_master, id_sub, id_enddetail) {
         $("#viewData").html('');
         // console.log(id);
         $(".modal-title").html("Add File");
-        $("#viewData").load(siteurl + active_controller + 'load_form_detail/' + id_master + '/' + id_sub);
+        $("#viewData").load(siteurl + active_controller + 'load_form_enddetail/' + id_master + '/' + id_sub + "/" + id_enddetail);
         $("#ModalView").modal('show');
     }
 

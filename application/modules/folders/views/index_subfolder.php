@@ -4,6 +4,31 @@ $ENABLE_MANAGE  = has_permission('Folders.Manage');
 $ENABLE_VIEW    = has_permission('Folders.View');
 $ENABLE_DELETE  = has_permission('Folders.Delete');
 $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
+$sts = [
+    '0' => 'Revisi',
+    '1' => 'Waiting Approval',
+    '2' => 'Approval',
+    '3' => 'Waiting Review',
+];
+
+function Size($bytes)
+{
+    if ($bytes >= 1073741824) {
+        $bytes = number_format($bytes / 1073741824, 2) . ' GB';
+    } elseif ($bytes >= 1048576) {
+        $bytes = number_format($bytes / 1048576, 2) . ' MB';
+    } elseif ($bytes >= 1024) {
+        $bytes = number_format($bytes / 1024, 2) . ' KB';
+    } elseif ($bytes > 1) {
+        $bytes = $bytes . ' bytes';
+    } elseif ($bytes == 1) {
+        $bytes = $bytes . ' byte';
+    } else {
+        $bytes = '0 bytes';
+    }
+
+    return $bytes;
+}
 ?>
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <div class="d-flex flex-column-fluid">
@@ -54,12 +79,12 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
                                     <tr>
                                         <th scope="row"><?= $n; ?></th>
                                         <td><?= $doc->nama_file; ?></td>
-                                        <td><?= $doc->ukuran_file; ?></td>
-                                        <td><?= $doc->status_approve; ?></td>
+                                        <td><?= Size($doc->ukuran_file); ?></td>
+                                        <td><?= $sts[$doc->status_approve]; ?></td>
                                         <td><?= $doc->approval_on; ?></td>
                                         <td><?= $doc->revisi; ?></td>
-                                        <td><?= $doc->status_revisi; ?></td>
-                                        <td><?= $doc->prepared_by; ?></td>
+                                        <td><?= $sts[$doc->status_revisi]; ?></td>
+                                        <td><?= $doc->nm_lengkap; ?></td>
                                         <td>
                                             <a href="javascript:void(0)" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="view btn btn-icon btn-warning btn-xs btn-shadow" title="View Dokumen"><i class="fa fa-eye"></i></a>
                                             <!-- <a href="javascript:void(0)" tooltip="qtip" onclick="location.href = siteurl+'dokumen/download_detail1/<?= $doc->id; ?>'" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="download btn btn-icon btn-info btn-xs btn-shadow ml-2" title="Download Dokumen"><i class="fa fa-download"></i></a> -->

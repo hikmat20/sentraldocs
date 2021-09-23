@@ -61,7 +61,7 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 			<div class="input-group" id="select_review">
 				<div class="input-group-prepend">
 					<span class="input-group-text">
-						<i class="fa fa-check"></i>
+						<i class="fa fa-user"></i>
 					</span>
 				</div>
 				<select class="form-control select2" name="id_review" id="id_review">
@@ -77,7 +77,7 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 			<div class="input-group" id="select_approval">
 				<div class="input-group-prepend">
 					<span class="input-group-text">
-						<i class="fa fa-check"></i>
+						<i class="fa fa-user"></i>
 					</span>
 				</div>
 				<select class="form-control select2" name="id_approval" id="id_approval">
@@ -97,7 +97,7 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 			<div class="input-group" id="select_distribusi">
 				<div class="input-group-prepend">
 					<span class="input-group-text">
-						<i class="fa fa-check"></i>
+						<i class="fas fa-user"></i>
 					</span>
 				</div>
 				<select class="form-control select2" multiple name="id_distribusi[]" id="id_distribusi">
@@ -126,7 +126,7 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 	$(document).ready(function() {
 		$('.select2').select2({
 			placeholder: 'Choose an option',
-			// width: '100%',
+			width: '90%',
 			allowClear: true
 		});
 

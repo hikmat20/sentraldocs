@@ -626,21 +626,13 @@ class Folders extends Admin_Controller
 			$data['status_approve']	= 1;
 			$dist 					= implode(",", $this->input->post('id_distribusi'));
 			$data['id_distribusi']	= $dist;
-			// echo '<pre>';
-			// print_r($data);
-			// echo '<pre>';
-			// exit;
+
 
 			foreach ($this->input->post('id_distribusi') as $key => $value) {
 				$arr_dist[$key] = [
 					'id_file' => $value
 				];
 			}
-
-			// echo '<pre>';
-			// print_r($arr_dist);
-			// echo '<pre>';
-			// exit;
 
 			$this->db->trans_begin();
 			$this->Folders_model->simpan('gambar1', $data);
@@ -691,7 +683,7 @@ class Folders extends Admin_Controller
 
 	// SUB FOLDER
 
-	public function subfolder($subfolder = '', $detail = '')
+	public function subfolder($subfolder = '', $detail = '', $enddetail = '')
 	{
 		$this->auth->restrict($this->viewPermission);
 		$this->template->page_icon('fa fa-folder-open');
@@ -703,10 +695,10 @@ class Folders extends Admin_Controller
 		$session = $this->session->userdata('app_session');
 		$prsh    = $session['id_perusahaan'];
 		$cbg     = $session['id_cabang'];
-		if (!$detail) {
-			$folders		= $this->db->get_where('gambar', ['id_master' => $id_master, 'nama_file' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->result();
-			$files			= $this->db->get_where('gambar', ['id_master' => $id_master, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->result();
-			$get_Data		= $this->Folders_model->getData('gambar', 'id_master', $id_master);
+		if (!$detail && !$enddetail) {
+			$folders		= $this->db->get_where('view_gambar', ['id_master' => $id_master, 'nama_file' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->result();
+			$files			= $this->db->get_where('view_gambar', ['id_master' => $id_master, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->result();
+			$get_Data		= $this->Folders_model->getData('view_gambar', 'id_master', $id_master);
 			// $get_Master		= $this->Folders_model->getData('gambar', 'id', $id_sub);
 
 			$this->template->set('list', false);
@@ -717,12 +709,12 @@ class Folders extends Admin_Controller
 			$this->template->set('id_master', $id_master);
 			// $this->template->set('masDoc', $get_Master);
 			$this->template->render('index_subfolder');
-		} else {
+		} else if ($detail && !$enddetail) {
 			$sub_folder 	= $this->db->get_where('gambar', ['deskripsi' => str_replace('-', ' ', $detail)])->row();
 			$id_master 		= $sub_folder->id_master;
 			$id_sub 		= $sub_folder->id;
-			$folders		= $this->db->get_where('gambar1', ['id_detail' => $id_sub, 'nama_file' => null])->result();
-			$files			= $this->db->get_where('gambar1', ['id_detail' => $id_sub, 'nama_file !=' => null])->result();
+			$folders		= $this->db->get_where('view_gambar1', ['id_detail' => $id_sub, 'nama_file' => null])->result();
+			$files			= $this->db->get_where('view_gambar1', ['id_detail' => $id_sub, 'nama_file !=' => null])->result();
 
 			$this->template->set('list', true);
 			$this->template->set('files', $files);
@@ -732,6 +724,25 @@ class Folders extends Admin_Controller
 			$this->template->set('nama_subfolder', $detail);
 			$this->template->set('nama_master', $nama_master);
 			$this->template->render('index_detail');
+		} else {
+			$endfolder 	= $this->db->get_where('gambar1', ['deskripsi' => str_replace('-', ' ', $enddetail)])->row();
+			$id_master 		= $endfolder->id_master;
+			$id_detail 		= $endfolder->id_detail;
+			$id_enddetail	= $endfolder->id;
+
+			$folders		= $this->db->get_where('view_gambar2', ['id_detail1' => $id_enddetail, 'nama_file' => null])->result();
+			$files			= $this->db->get_where('view_gambar2', ['id_detail1' => $id_enddetail, 'nama_file !=' => null])->result();
+
+			$this->template->set('list', true);
+			$this->template->set('files', $files);
+			$this->template->set('folders', $folders);
+			$this->template->set('id_detail', $id_detail);
+			$this->template->set('id_master', $id_master);
+			$this->template->set('id_enddetail', $id_enddetail);
+			$this->template->set('nama_subfolder', $detail);
+			$this->template->set('nama_endfolder', $enddetail);
+			$this->template->set('nama_master', $nama_master);
+			$this->template->render('index_enddetail');
 		}
 	}
 
@@ -760,6 +771,22 @@ class Folders extends Admin_Controller
 		$this->template->set('id_sub', $id_sub);
 		$this->template->set('id_master', $id_master);
 		$this->template->render('add_subdetail1');
+	}
+
+	public function load_form_enddetail($id_master = "", $id_detail = "", $id_enddetail)
+	{
+
+		$session 	= $this->session->userdata('app_session');
+		$prsh    	= $session['id_perusahaan'];
+		$cbg     	= $session['id_cabang'];
+		$users		= $this->db->query("SELECT * FROM users WHERE nm_lengkap != 'Administrator' AND id_perusahaan='$prsh' AND id_cabang='$cbg' ORDER BY nm_lengkap ASC")->result();
+		$jabatan	= $this->db->query("SELECT * FROM tbl_jabatan WHERE id_perusahaan='$prsh' AND id_cabang='$cbg'")->result();
+		$this->template->set('users', $users);
+		$this->template->set('jabatan', $jabatan);
+		$this->template->set('id_detail', $id_detail);
+		$this->template->set('id_master', $id_master);
+		$this->template->set('id_enddetail', $id_enddetail);
+		$this->template->render('add_subdetail2');
 	}
 
 	public function add_subfolder()
@@ -1167,10 +1194,6 @@ class Folders extends Admin_Controller
 			$lokasi = './assets/files/' . $gbr['file_name'] . '.' . $ext;
 		}
 		if ($this->input->post()) {
-			$id_master 	= $this->input->post('id_master');
-			$id_detail 	= $this->input->post('id_detail');
-			// echo"<pre>";print_r($id_master);exit;	        
-
 
 			$Arr_Kembali			= array();
 			$data					= $this->input->post();
@@ -1178,20 +1201,29 @@ class Folders extends Admin_Controller
 			$data['ukuran_file']	= (isset($ukuran)) ? $ukuran : '';
 			$data['tipe_file']		= (isset($ext)) ? $ext : '';
 			$data['lokasi_file']	= (isset($lokasi)) ? $lokasi : '';
-			$data_session			= $this->session->userdata;
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
-			$data['id_master']		= $id_master;
-			$data['id_detail']		= $id_detail;
 			$data['id_perusahaan']  = $prsh;
 			$data['id_cabang']		= $cbg;
 			$data['id_approval']	= $this->input->post('id_approval');
 			$data['status_approve']	= 1;
+			$dist 					= implode(",", $this->input->post('id_distribusi'));
+			$data['id_distribusi']	= $dist;
 
-			if ($this->Folders_model->simpan('gambar1', $data)) {
+			foreach ($this->input->post('id_distribusi') as $key => $value) {
+				$arr_dist[$key] = [
+					'id_file' => $value
+				];
+			}
+
+			$this->db->trans_begin();
+			$this->Folders_model->simpan('gambar2', $data);
+			$this->db->insert_batch('distribusi', $arr_dist);
+			if ($this->db->trans_status() === TRUE) {
+				$this->db->trans_commit();
 				$Arr_Kembali		= array(
 					'status'		=> 1,
-					'pesan'			=> 'Add gambar Success. Thank you & have a nice day.......'
+					'msg'			=> 'Add File Success. Thank you & have a nice day.......'
 				);
 				$keterangan = 'Berhasil Simpan Dokumen';
 				$status = 1;
@@ -1201,9 +1233,10 @@ class Folders extends Admin_Controller
 				$sql = $this->db->last_query();
 				simpan_aktifitas($nm_hak_akses, $kode_universal, $keterangan, $jumlah, $sql, $status);
 			} else {
+				$this->db->trans_rollback();
 				$Arr_Kembali		= array(
-					'status'		=> 2,
-					'pesan'			=> 'Add gambar failed. Please try again later......'
+					'status'		=> 0,
+					'msg'			=> 'Add File failed. Please try again later......'
 				);
 			}
 			echo json_encode($Arr_Kembali);
