@@ -19,7 +19,7 @@ $ENABLE_DOWNLOAD  = has_permission('Folders.Download');
 						<i class="fa fa-arrow-left"></i>
 					</button>
 					<button type="button" onclick="new_folder()" class="btn btn-icon btn-secondary m-1 " title="New Folder">
-						<i class="far fa-folder"></i>
+						<i class="fas fa-folder-plus"></i>
 					</button>
 					<button type="button" onclick="rename_folder()" id="btn-rename" class="btn btn-icon btn-secondary m-1" disabled title="Rename">
 						<i class="fa fa-pen"></i>
