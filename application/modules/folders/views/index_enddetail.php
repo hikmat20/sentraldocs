@@ -93,6 +93,7 @@ function Size($bytes)
                                         <td>
                                             <a href="javascript:void(0)" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="view btn btn-icon btn-warning btn-xs btn-shadow" title="View Dokumen"><i class="fa fa-eye"></i></a>
                                             <a href="javascript:void(0)" tooltip="qtip" onclick="location.href = siteurl+'dokumen/download_detail1/<?= $doc->id; ?>'" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="download btn btn-icon btn-info btn-xs btn-shadow ml-2" title="Download Dokumen"><i class="fa fa-download"></i></a>
+                                            <a href="javascript:void(0)" tooltip="qtip" onclick="delete_file(<?= $doc->id; ?>)" class="download btn btn-icon btn-danger btn-xs btn-shadow ml-2" title="Delete Dokumen"><i class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -235,6 +236,60 @@ function Size($bytes)
             $('#btn-delete').prop('disabled', true)
         }
     });
+
+    function delete_file(id) {
+        let table = 'gambar2';
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You will not be able to process again this data!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, Delete!",
+            cancelButtonText: "No",
+        }).then((value) => {
+            if (value.isConfirmed) {
+                loading_spinner();
+                $.ajax({
+                    url: base_url + active_controller + 'delete_file',
+                    type: 'POST',
+                    dataType: 'JSON',
+                    data: {
+                        id,
+                        table
+                    },
+                    success: function(result) {
+                        if (result.status == 1) {
+                            Swal.fire({
+                                title: "Success!",
+                                text: result.msg,
+                                icon: "success",
+                                timer: 1500
+                            }).then(() => {
+                                location.reload();
+                            })
+                        } else {
+                            Swal.fire({
+                                title: "Gagal!",
+                                text: result.msg,
+                                icon: "warning",
+                                timer: 3000
+                            })
+                        }
+                    },
+                    error: function(result) {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Server Timeout!",
+                            icon: "error",
+                            timer: 3000
+                        })
+                    }
+                })
+            }
+
+        })
+
+    }
 
     function delete_folder() {
         let id = $('#btn-delete').data('id');

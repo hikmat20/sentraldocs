@@ -1130,6 +1130,44 @@ class Folders extends Admin_Controller
 		redirect(site_url('folders/detail1?id_detail=' . $iddetail));
 	}
 
+	function delete_file()
+	{
+
+		$session 	= $this->session->userdata('app_session');
+		$prsh    	= $session['id_perusahaan'];
+		$cbg     	= $session['id_cabang'];
+		$id 		= $this->input->post('id');
+		$table 		= $this->input->post('table');
+		$file = $this->db->where('id', $id)->get($table)->row();
+
+		$this->db->trans_begin();
+		$this->db->delete($table, array('id' => $id));
+		if ($this->db->trans_status() === TRUE) {
+			$this->db->trans_commit();
+			unlink($file->lokasi_file);
+			$return = [
+				'status' => 1,
+				'msg' => 'Hapus file berhasil'
+			];
+			$this->session->set_flashdata("alert_data", "<div class=\"alert alert-success\" id=\"flash-message\">Data has been successfully deleted...........!!</div>");
+			$keterangan = 'Berhasil Hapus Dokumen';
+			$status = 1;
+			$nm_hak_akses = $this->addPermission;
+			$kode_universal = $id;
+			$jumlah = 1;
+			$sql = $this->db->last_query();
+			simpan_aktifitas($nm_hak_akses, $kode_universal, $keterangan, $jumlah, $sql, $status);
+			// redirect(site_url('folders/detail1?id_detail=' . $iddetail));
+		} else {
+			$this->db->trans_rollback();
+			$return = [
+				'status' => 0,
+				'msg' => 'Hapus file gagal'
+			];
+		}
+
+		echo json_encode($return);
+	}
 
 
 	function delete_detail1($id)
