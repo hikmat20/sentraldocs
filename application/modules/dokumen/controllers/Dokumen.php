@@ -320,7 +320,7 @@ class Dokumen extends Admin_Controller
 		$dist 		= $this->db->get_where('distribusi', ['id_file' => $id])->result();
 		$nama_file 	= $this->db->get_where($table, ['id' => $id])->row();
 		echo '<pre>';
-		print_r($nama_file);
+		print_r($id . ", " . $table);
 		echo '<pre>';
 		exit;
 		if ($nama_file) {
