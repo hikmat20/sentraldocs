@@ -1324,6 +1324,10 @@ class Dokumen extends Admin_Controller
 			$exp = explode(",", ($file->id_distribusi));
 		} else if ($table == 'gambar1') {
 			$file = $this->db->get_where('gambar1', ['id' => $id])->row();
+			echo '<pre>';
+			print_r($file);
+			echo '<pre>';
+			exit;
 			$exp = explode(",", ($file->id_distribusi));
 		} else {
 			$file = $this->db->get_where('gambar', ['id' => $id])->row();
