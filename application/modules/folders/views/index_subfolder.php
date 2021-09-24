@@ -88,7 +88,7 @@ function Size($bytes)
                                             <td><?= $doc->revisi; ?></td>
                                             <td><?= $doc->approval_on; ?></td>
                                             <td>
-                                                <a href="javascript:void(0)" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="view btn btn-icon btn-warning btn-xs btn-shadow" title="View Dokumen"><i class="fa fa-eye"></i></a>
+                                                <a href="javascript:void(0)" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar" class="view btn btn-icon btn-warning btn-xs btn-shadow" title="View Dokumen"><i class="fa fa-eye"></i></a>
                                                 <a href="javascript:void(0)" tooltip="qtip" data-file="<?= $doc->nama_file ?>" data-id="<?= $doc->id ?>" data-table="gambar" class="btn btn-icon btn-primary btn-xs btn-shadow ml-2 edit" title="Revisi Dokumen"><i class="fa fa-pen"></i></a>
                                                 <a href="javascript:void(0)" type="button" onclick="download_file('<?= $doc->id; ?>')" class="btn btn-xs btn-info btn-icon btn-shadow ml-2" title="Download Dokumen" data-id="<?= $doc->id; ?>"><i class="fa fa-download"></i></a>
                                                 <a href="javascript:void(0)" onclick="delete_file('<?= $doc->id ?>')" tooltip="qtip" data-table="gambar" class="download btn btn-icon btn-danger btn-xs btn-shadow ml-2" title="Hapus Dokumen"><i class="fa fa-trash"></i></a>
