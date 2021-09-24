@@ -125,7 +125,7 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 
 			</div>
 			<div class="form-group">
-				<iframe id="doc" width="100%" height="300px" src="/<?= $row->lokasi_file; ?>" frameborder="0"></iframe>
+				<iframe id="doc" width="100%" height="300px" src="<?= base_url(); ?><?= $row->lokasi_file; ?>" frameborder="0"></iframe>
 			</div>
 		</div>
 	</div>
