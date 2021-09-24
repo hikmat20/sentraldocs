@@ -318,7 +318,7 @@ class Dokumen extends Admin_Controller
 	{
 		$session 	= $this->session->userdata('app_session');
 		$dist 		= $this->db->get_where('distribusi', ['id_file' => $id])->result();
-		$nama_file 	= $this->db->get_where($table, ['id_file' => $id])->row();
+		$nama_file 	= $this->db->get_where($table, ['id' => $id])->row();
 		if ($nama_file) {
 			$return = [
 				'status' => 0,
