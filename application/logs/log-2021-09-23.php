@@ -38,3 +38,54 @@ ERROR - 2021-09-23 12:46:21 --> Severity: Notice --> Trying to get property 'id_
 ERROR - 2021-09-23 13:14:27 --> Severity: error --> Exception: Call to undefined method CI_DB_mysqli_driver::row() D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 305
 ERROR - 2021-09-23 13:27:12 --> Severity: Warning --> unlink(./assets/files/sentr): No such file or directory D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 1158
 ERROR - 2021-09-23 13:27:26 --> Severity: Warning --> unlink(./assets/files/Manua): No such file or directory D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 1158
+ERROR - 2021-09-23 16:34:34 --> Severity: Warning --> unlink(./assets/files/test_dokumen8.pdf.pdf): No such file or directory D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 1158
+ERROR - 2021-09-23 16:07:13 --> 404 Page Not Found: ../modules/folders/controllers/Folders/edit_detail
+ERROR - 2021-09-23 16:07:17 --> 404 Page Not Found: ../modules/folders/controllers/Folders/edit_detail
+ERROR - 2021-09-23 16:07:30 --> 404 Page Not Found: ../modules/folders/controllers/Folders/edit_detail
+ERROR - 2021-09-23 16:12:55 --> 404 Page Not Found: ../modules/folders/controllers/Folders/edit_detail
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'deskripsi' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 8
+ERROR - 2021-09-23 23:16:10 --> Severity: Notice --> Trying to get property 'id_master' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\views\edit_detail.php 9

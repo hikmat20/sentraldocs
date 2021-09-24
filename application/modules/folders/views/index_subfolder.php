@@ -57,47 +57,49 @@ function Size($bytes)
                         <i class="fa fa-trash"></i>
                     </button>
                     <hr>
-                    <h4>Dokumen</h4>
-                    <table id="example1" class="table table-borderless table-condensed table-hover">
-                        <thead class="bg-light">
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Nama File</th>
-                                <th scope="col">Ukuran</th>
-                                <th scope="col">Sts. Approve</th>
-                                <th scope="col">Tgl. Approve</th>
-                                <th scope="col">Revisi</th>
-                                <th scope="col">Sts. Revisi</th>
-                                <th scope="col">Prepered By</th>
-                                <th scope="col">Opsi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if ($files) : $n = 0;
-                                foreach ($files as $doc) : $n++
-                            ?>
+                    <?php if ($files) : ?>
+                        <h4>Dokumen</h4>
+                        <div class="table-responsive">
+                            <table id="example1" class="table table-borderless table-condensed table-hover">
+                                <thead class="bg-light">
                                     <tr>
-                                        <th scope="row"><?= $n; ?></th>
-                                        <td><?= $doc->nama_file; ?></td>
-                                        <td><?= Size($doc->ukuran_file); ?></td>
-                                        <td><?= $sts[$doc->status_approve]; ?></td>
-                                        <td><?= $doc->approval_on; ?></td>
-                                        <td><?= $doc->revisi; ?></td>
-                                        <td><?= $sts[$doc->status_revisi]; ?></td>
-                                        <td><?= $doc->nm_lengkap; ?></td>
-                                        <td>
-                                            <a href="javascript:void(0)" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="view btn btn-icon btn-warning btn-xs btn-shadow" title="View Dokumen"><i class="fa fa-eye"></i></a>
-                                            <!-- <a href="javascript:void(0)" tooltip="qtip" onclick="location.href = siteurl+'dokumen/download_detail1/<?= $doc->id; ?>'" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="download btn btn-icon btn-info btn-xs btn-shadow ml-2" title="Download Dokumen"><i class="fa fa-download"></i></a> -->
-                                            <a href="javascript:void(0)" tooltip="qtip" data-file="<?= $doc->nama_file ?>" data-id="<?= $doc->id ?>" data-table="gambar" class="btn btn-icon btn-primary btn-xs btn-shadow ml-2 edit" title="Revisi Dokumen"><i class="fa fa-pen"></i></a>
-                                            <a href="javascript:void(0)" onclick="delete_file('<?= $doc->id ?>')" tooltip="qtip" data-table="gambar" class="download btn btn-icon btn-danger btn-xs btn-shadow ml-2" title="Hapus Dokumen"><i class="fa fa-trash"></i></a>
-                                        </td>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Nama File</th>
+                                        <th scope="col">Sts. Approve</th>
+                                        <th scope="col">Prepered By</th>
+                                        <th scope="col">Review By</th>
+                                        <th scope="col">Approved By</th>
+                                        <th scope="col">Revisi</th>
+                                        <th scope="col">Tgl. Terbit</th>
+                                        <th scope="col">Opsi</th>
                                     </tr>
-                                <?php endforeach; ?>
-                            <?php else : ?>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-                    <hr class="mt-5 mb-8">
+                                </thead>
+                                <tbody>
+                                    <?php $n = 0;
+                                    foreach ($files as $doc) : $n++
+                                    ?>
+                                        <tr>
+                                            <th scope="row"><?= $n; ?></th>
+                                            <td><?= $doc->nama_file; ?></td>
+                                            <td><?= $sts[$doc->status_approve]; ?></td>
+                                            <td><?= $doc->nm_lengkap; ?></td>
+                                            <td><?= $doc->nm_review; ?></td>
+                                            <td><?= $doc->nm_approval; ?></td>
+                                            <td><?= $doc->revisi; ?></td>
+                                            <td><?= $doc->approval_on; ?></td>
+                                            <td>
+                                                <a href="javascript:void(0)" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="view btn btn-icon btn-warning btn-xs btn-shadow" title="View Dokumen"><i class="fa fa-eye"></i></a>
+                                                <a href="javascript:void(0)" tooltip="qtip" data-file="<?= $doc->nama_file ?>" data-id="<?= $doc->id ?>" data-table="gambar" class="btn btn-icon btn-primary btn-xs btn-shadow ml-2 edit" title="Revisi Dokumen"><i class="fa fa-pen"></i></a>
+                                                <a href="javascript:void(0)" type="button" onclick="download_file('<?= $doc->id; ?>')" class="btn btn-xs btn-info btn-icon btn-shadow ml-2" title="Download Dokumen" data-id="<?= $doc->id; ?>"><i class="fa fa-download"></i></a>
+                                                <a href="javascript:void(0)" onclick="delete_file('<?= $doc->id ?>')" tooltip="qtip" data-table="gambar" class="download btn btn-icon btn-danger btn-xs btn-shadow ml-2" title="Hapus Dokumen"><i class="fa fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                        <hr class="mt-5 mb-8">
+                    <?php endif; ?>
                     <h4>Folder</h4>
                     <input type="hidden" id="id_master" value="<?= $id_master; ?>">
                     <div class="row">
@@ -383,7 +385,7 @@ function Size($bytes)
         $("#view").html('');
         $.ajax({
             type: "post",
-            url: siteurl + active_controller + 'revisi/',
+            url: siteurl + active_controller + 'edit_file',
             data: {
                 id,
                 table,
@@ -463,5 +465,52 @@ function Size($bytes)
             }
 
         })
+    }
+
+    function download_file(id) {
+        let table = 'gambar';
+        if (id) {
+            $.ajax({
+                url: siteurl + 'dokumen/confirm_download/' + id + '/' + table,
+                type: 'GET',
+                dataType: 'JSON',
+                async: false,
+                data: {
+                    id
+                },
+                success: function(result) {
+                    if (result.status == 1) {
+                        console.log(result);
+                        if (location.href = siteurl + 'dokumen/download/' + id + '/' + table) {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: result.msg,
+                                icon: 'success',
+                                timer: 3000,
+                                showConfirmButton: false
+                            })
+                        }
+                    } else {
+                        Swal.fire({
+                            title: 'Failed!',
+                            text: result.msg,
+                            icon: 'warning',
+                            timer: 3000,
+                            showConfirmButton: false
+                        })
+                    }
+                },
+                error: function(result) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Internal server error',
+                        icon: 'error',
+                        timer: 3000,
+                        showConfirmButton: false
+                    })
+                }
+            })
+
+        }
     }
 </script>

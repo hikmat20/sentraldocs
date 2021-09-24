@@ -314,20 +314,26 @@ class Dokumen extends Admin_Controller
 		}
 	}
 
-	public function confirm_download($id)
+	public function confirm_download($id, $table)
 	{
-		$session = $this->session->userdata('app_session');
-		$dist = $this->db->get_where('distribusi', ['id_file' => $id])->result();
+		$session 	= $this->session->userdata('app_session');
+		$dist 		= $this->db->get_where('distribusi', ['id_file' => $id])->result();
+		$nama_file 	= $this->db->get_where($table, ['id_file' => $id])->row();
+		if ($nama_file) {
+			$return = [
+				'status' => 0,
+				'msg' => 'File Tidak di distribusikan.'
+			];
+			echo json_encode($return);
+			return false;
+		}
 
 		if ($dist) {
 			$file = $this->db->get_where("distribusi", ['id_file' => $id, 'id_jabatan' => $session['id_jabatan']])->row();
-			// echo '<pre>';
-			// print_r($file);
-			// echo '<pre>';
-			// exit;
-			if (isset($file->id_jabatan) == $session['id_jabatan'] && $file->id_user  == "") {
+
+			if ((isset($file->id_jabatan) == $session['id_jabatan']) && ($file->id_user  == "")) {
 				$this->db->trans_begin();
-				$this->db->where('id_file', $id)->update('distribusi', ['id_user' => $session['id_user'], 'status_download' => 'Y', 'downloaded_at' => date('Y-m-d H:i:s')]);
+				$this->db->where(['id_file' => $id, 'id_jabatan' => $session['id_jabatan']])->update('distribusi', ['id_user' => $session['id_user'], 'status_download' => 'Y', 'downloaded_at' => date('Y-m-d H:i:s')]);
 				if ($this->db->trans_status() == FALSE) {
 					$this->db->trans_rollback();
 					$return = [
@@ -359,16 +365,16 @@ class Dokumen extends Admin_Controller
 		echo json_encode($return);
 	}
 
-	public function download($id)
+	public function download($id, $table)
 	{
-		$file 	= $this->db->get_where('gambar', ['id' => $id])->row();
+
+		$file 	= $this->db->get_where($table, ['id' => $id])->row();
+
 		if ($file) {
 			$path   	= file_get_contents("./assets/files/$file->nama_file");
 			force_download($file->nama_file, $path);
 		}
 	}
-
-
 
 	function delete_detail($id)
 	{
@@ -1334,9 +1340,9 @@ class Dokumen extends Admin_Controller
 			}
 		}
 
-		$data = $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
-		$data1 = $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
-		$dist = $this->db->get_where("view_distribusi", ['id_file' => $id])->result();
+		$data 	= $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
+		$data1 	= $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
+		$dist 	= $this->db->get_where("view_distribusi", ['id_file' => $id])->result();
 
 		// $uri3 = $this->uri->segment(3);
 		// $uri4 = $this->uri->segment(4);
