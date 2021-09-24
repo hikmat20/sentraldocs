@@ -104,7 +104,13 @@
 	</div>
 
 	<div class="col-md-5 p-2" style="border:1px solid #eaeaea ;">
-		<iframe src='<?php echo site_url(); ?>assets/files/<?php echo "$nama_file"; ?>' width='100%' height='565px' frameborder='0'></iframe>
+		<?php if ($nama_file) : ?>
+			<iframe src='<?= site_url(); ?>assets/files/<?php echo "$nama_file"; ?>' width='100%' height='565px' frameborder='0'></iframe>
+		<?php else : ?>
+			<div class="text-center">
+				<h5 class="text-muted">no file to load</h5>
+			</div>
+		<?php endif; ?>
 	</div>
 
 </div>
