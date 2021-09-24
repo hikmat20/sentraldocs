@@ -1318,16 +1318,16 @@ class Dokumen extends Admin_Controller
 		$id    		= $this->input->post('id');
 		$table    	= $this->input->post('table');
 		$nama_file 	= $this->input->post('file');
-
+		echo '<pre>';
+		print_r($id);
+		echo '<pre>';
+		exit;
 		if ($table == 'gambar2') {
 			$file = $this->db->get_where('gambar2', ['id' => $id])->row();
 			$exp = explode(",", ($file->id_distribusi));
 		} else if ($table == 'gambar1') {
 			$file = $this->db->get_where('gambar1', ['id' => $id])->row();
-			echo '<pre>';
-			print_r($file);
-			echo '<pre>';
-			exit;
+
 			$exp = explode(",", ($file->id_distribusi));
 		} else {
 			$file = $this->db->get_where('gambar', ['id' => $id])->row();
