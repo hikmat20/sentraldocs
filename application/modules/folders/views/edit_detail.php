@@ -125,7 +125,13 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 
 			</div>
 			<div class="form-group">
-				<iframe id="doc" width="100%" height="300px" src="<?= base_url(); ?><?= $row->lokasi_file; ?>" frameborder="0"></iframe>
+				<?php if ($row->lokasi_file) : ?>
+					<iframe id="doc" width="100%" height="300px" src="<?= base_url(); ?><?= $row->lokasi_file; ?>" frameborder="0"></iframe>
+				<?php else : ?>
+					<div class="text-center">
+						<h5 class="text-muted">no file to load</h5>
+					</div>
+				<?php endif; ?>
 			</div>
 		</div>
 	</div>
