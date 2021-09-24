@@ -319,11 +319,8 @@ class Dokumen extends Admin_Controller
 		$session 	= $this->session->userdata('app_session');
 		$dist 		= $this->db->get_where('distribusi', ['id_file' => $id])->result();
 		$nama_file 	= $this->db->get_where($table, ['id' => $id])->row();
-		echo '<pre>';
-		print_r($id . ", " . $table);
-		echo '<pre>';
-		exit;
-		if ($nama_file) {
+
+		if (!$nama_file) {
 			$return = [
 				'status' => 0,
 				'msg' => 'File Tidak di distribusikan.'
