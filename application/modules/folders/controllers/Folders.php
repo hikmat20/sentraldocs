@@ -360,6 +360,7 @@ class Folders extends Admin_Controller
 
 	public function edit()
 	{
+		$data					= $this->input->post();
 		if ($this->input->post()) {
 			if ($_FILES['nama_file']['name']) {
 				$config['upload_path'] = './assets/files/'; //path folder
@@ -391,8 +392,11 @@ class Folders extends Admin_Controller
 				if ($this->input->post('old_file')) {
 					unlink('./assets/files/' . $this->input->post('old_file'));
 				}
+				$data['nama_file']	    = ($gambar) ? $gambar : '';
+				$data['ukuran_file']	= ($ukuran) ? $ukuran : '';
+				$data['tipe_file']		= ($ext) ? $ext : '';
+				$data['lokasi_file']	= ($lokasi) ? $lokasi : '';
 			} else {
-
 				$error = $this->upload->display_errors();
 				if ($error) {
 					$Return		= array(
@@ -404,13 +408,7 @@ class Folders extends Admin_Controller
 				}
 			}
 
-			$data					= $this->input->post();
 			$table 					= $data['table'];
-			$data['nama_file']	    = (isset($gambar)) ? $gambar : '';
-			$data['ukuran_file']	= (isset($ukuran)) ? $ukuran : '';
-			$data['tipe_file']		= (isset($ext)) ? $ext : '';
-			$data['lokasi_file']	= (isset($lokasi)) ? $lokasi : '';
-
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
 			$dist 					= implode(",", $this->input->post('id_distribusi'));
@@ -422,12 +420,6 @@ class Folders extends Admin_Controller
 			$this->Folders_model->getUpdate($table, $data, 'id', $this->input->post('id'));
 			$id_dist = $this->db->get_where('distribusi', ['id_file' => $this->input->post('id')])->result();
 
-			// foreach ($this->input->post('id_distribusi') as $key => $value) {
-			// 	$arr_dist[$key] = [
-			// 		'id_file' => $this->input->post('id'),
-			// 		'id_jabatan' => $value
-			// 	];
-			// }
 			foreach ($this->input->post('id_distribusi') as $key => $value) {
 				$cek = $this->db->where(['id_jabatan' => $value, 'id_file' => $this->input->post('id')])->get('distribusi')->row();
 				$arr_dist = [
@@ -436,21 +428,43 @@ class Folders extends Admin_Controller
 				];
 				if ($cek) {
 					$this->db->update('distribusi', $arr_dist, ['id' => $cek->id]);
-				} else {
+				} else if (!$cek) {
 					$this->db->insert('distribusi', $arr_dist);
+				} else {
+					$this->db->delete('distribusi', ['id' => $cek->id]);
 				}
 			}
 
-			// foreach ($id_dist as $key => $idD) {
-			// 	$arr_dist[$key]['id'] = $idD->id;
+			// foreach ($this->input->post('id_distribusi') as $key => $value) {
+			// 	$cek = $this->db->where(['id_file' => $this->input->post('id')])->get('distribusi')->result();
+			// 	foreach ($cek as $jab) {
+			// 		if ($value == $jab->id_jabatan) {
+			// 			$arr_dist = [
+			// 				'id_file' => $this->input->post('id'),
+			// 				'id_jabatan' => $value
+			// 			];
+			// 			$this->db->update('distribusi', $arr_dist, ['id' => $jab->id]);
+			// 		} else {
+			// 			$this->db->delete('distribusi', ['id_file' => $this->input->post('id')]);
+			// 			$arr_dist = [
+			// 				'id_file' => $this->input->post('id'),
+			// 				'id_jabatan' => $value
+			// 			];
+			// 			$this->db->insert('distribusi', $arr_dist);
+			// 		}
+			// 	}
+
+			// if ($cek) {
+			// } else if (!$cek) {
+			// } else {
+			// 	$this->db->delete('distribusi', ['id' => $cek->id]);
+			// }
 			// }
 
 			// echo '<pre>';
-			// print_r($id_dist);
+			// print_r($arr_dist);
 			// echo '<pre>';
 			// exit;
-
-			// $this->db->update_batch('distribusi', $arr_dist, 'id');
 
 			if ($this->db->trans_status() === TRUE) {
 				$this->db->trans_commit();
