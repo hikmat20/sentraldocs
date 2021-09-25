@@ -360,22 +360,16 @@ class Folders extends Admin_Controller
 
 	public function edit()
 	{
-
-		// echo '<pre>';
-		// print_r($this->input->post());
-		// echo '<pre>';
-		// exit;
-
 		if ($this->input->post()) {
-			$config['upload_path'] = './assets/files/'; //path folder
-			$config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|pdf'; //type yang dapat diakses bisa anda sesuaikan
-			$config['encrypt_name'] = false; //Enkripsi nama yang terupload
-			$session = $this->session->userdata('app_session');
-			$prsh    = $session['id_perusahaan'];
-			$cbg     = $session['id_cabang'];
-
-			$this->upload->initialize($config);
 			if ($_FILES['nama_file']['name']) {
+				$config['upload_path'] = './assets/files/'; //path folder
+				$config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|pdf'; //type yang dapat diakses bisa anda sesuaikan
+				$config['encrypt_name'] = false; //Enkripsi nama yang terupload
+				$session = $this->session->userdata('app_session');
+				$prsh    = $session['id_perusahaan'];
+				$cbg     = $session['id_cabang'];
+
+				$this->upload->initialize($config);
 				$this->upload->do_upload('nama_file');
 				$gbr = $this->upload->data();
 				//Compress Image
@@ -398,13 +392,16 @@ class Folders extends Admin_Controller
 					unlink('./assets/files/' . $this->input->post('old_file'));
 				}
 			} else {
+
 				$error = $this->upload->display_errors();
-				$Return		= array(
-					'status'		=> 0,
-					'pesan'			=> $error
-				);
-				echo json_encode($Return);
-				return false;
+				if ($error) {
+					$Return		= array(
+						'status'		=> 0,
+						'pesan'			=> 'Error' . $error
+					);
+					echo json_encode($Return);
+					return false;
+				}
 			}
 
 			$data					= $this->input->post();
@@ -424,17 +421,36 @@ class Folders extends Admin_Controller
 			$this->db->trans_begin();
 			$this->Folders_model->getUpdate($table, $data, 'id', $this->input->post('id'));
 			$id_dist = $this->db->get_where('distribusi', ['id_file' => $this->input->post('id')])->result();
+
+			// foreach ($this->input->post('id_distribusi') as $key => $value) {
+			// 	$arr_dist[$key] = [
+			// 		'id_file' => $this->input->post('id'),
+			// 		'id_jabatan' => $value
+			// 	];
+			// }
 			foreach ($this->input->post('id_distribusi') as $key => $value) {
-				$arr_dist[$key] = [
+				$cek = $this->db->where(['id_jabatan' => $value, 'id_file' => $this->input->post('id')])->get('distribusi')->row();
+				$arr_dist = [
 					'id_file' => $this->input->post('id'),
 					'id_jabatan' => $value
 				];
-			}
-			foreach ($id_dist as $key => $idD) {
-				$arr_dist[$key]['id'] = $idD->id;
+				if ($cek) {
+					$this->db->update('distribusi', $arr_dist, ['id' => $cek->id]);
+				} else {
+					$this->db->insert('distribusi', $arr_dist);
+				}
 			}
 
-			$this->db->update_batch('distribusi', $arr_dist, 'id');
+			// foreach ($id_dist as $key => $idD) {
+			// 	$arr_dist[$key]['id'] = $idD->id;
+			// }
+
+			// echo '<pre>';
+			// print_r($id_dist);
+			// echo '<pre>';
+			// exit;
+
+			// $this->db->update_batch('distribusi', $arr_dist, 'id');
 
 			if ($this->db->trans_status() === TRUE) {
 				$this->db->trans_commit();

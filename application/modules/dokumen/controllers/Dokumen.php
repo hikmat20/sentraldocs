@@ -323,7 +323,7 @@ class Dokumen extends Admin_Controller
 		if (!$nama_file) {
 			$return = [
 				'status' => 0,
-				'msg' => 'File Tidak di distribusikan.'
+				'msg' => 'File Tidak ditemukan.'
 			];
 			echo json_encode($return);
 			return false;
@@ -331,7 +331,6 @@ class Dokumen extends Admin_Controller
 
 		if ($dist) {
 			$file = $this->db->get_where("distribusi", ['id_file' => $id, 'id_jabatan' => $session['id_jabatan']])->row();
-
 			if ((isset($file->id_jabatan) == $session['id_jabatan']) && ($file->id_user  == "")) {
 				$this->db->trans_begin();
 				$this->db->where(['id_file' => $id, 'id_jabatan' => $session['id_jabatan']])->update('distribusi', ['id_user' => $session['id_user'], 'status_download' => 'Y', 'downloaded_at' => date('Y-m-d H:i:s')]);
@@ -368,12 +367,13 @@ class Dokumen extends Admin_Controller
 
 	public function download($id, $table)
 	{
-
 		$file 	= $this->db->get_where($table, ['id' => $id])->row();
 
-		if ($file) {
+		if ($file->nama_file) {
 			$path   	= file_get_contents("./assets/files/$file->nama_file");
 			force_download($file->nama_file, $path);
+		} else {
+			return false;
 		}
 	}
 

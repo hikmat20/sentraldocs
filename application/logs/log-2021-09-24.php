@@ -145,3 +145,21 @@ ERROR - 2021-09-24 17:10:48 --> Severity: Warning --> unlink(./assets/files/0002
 ERROR - 2021-09-24 17:20:17 --> Severity: Warning --> unlink(./assets/files/00028 Mudita Lestari (Edwin Hanafi) Ref_R6-380.pdf): No such file or directory D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 398
 ERROR - 2021-09-24 12:45:56 --> 404 Page Not Found: /index
 ERROR - 2021-09-24 12:46:05 --> 404 Page Not Found: /index
+ERROR - 2021-09-24 14:57:37 --> 404 Page Not Found: /index
+ERROR - 2021-09-24 14:57:48 --> 404 Page Not Found: /index
+ERROR - 2021-09-24 22:04:01 --> Severity: Warning --> unlink(./assets/files/Berita_Acara_Quotation_Proses.pdf): No such file or directory D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 393
+ERROR - 2021-09-24 22:18:14 --> Severity: Warning --> unlink(./assets/files/Berita_Acara_Quotation_Proses.pdf): No such file or directory D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 393
+ERROR - 2021-09-24 22:18:14 --> Query error: No tables used - Invalid query: SELECT *
+WHERE `id_jabatan` = '7'
+ERROR - 2021-09-24 22:19:01 --> Severity: Warning --> unlink(./assets/files/Berita_Acara_Quotation_Proses.pdf): No such file or directory D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 393
+ERROR - 2021-09-24 22:19:01 --> Severity: Notice --> Array to string conversion D:\SENTRAL\SENTRALDOCS\sentraldocs\system\database\DB_driver.php 1519
+ERROR - 2021-09-24 22:19:01 --> Query error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '0 = Array
+WHERE `id` = '3'' at line 1 - Invalid query: UPDATE `distribusi` SET 0 = Array
+WHERE `id` = '3'
+ERROR - 2021-09-24 22:19:41 --> Severity: Warning --> unlink(./assets/files/Berita_Acara_Quotation_Proses.pdf): No such file or directory D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 393
+ERROR - 2021-09-24 22:35:16 --> Severity: Warning --> file_get_contents(./assets/files/): failed to open stream: No such file or directory D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 374
+ERROR - 2021-09-24 22:35:24 --> Severity: Warning --> file_get_contents(./assets/files/): failed to open stream: No such file or directory D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 374
+ERROR - 2021-09-24 22:38:00 --> Query error: Unknown column 'xid' in 'where clause' - Invalid query: SELECT *
+FROM `gambar2`
+WHERE `xid` = '58'
+ERROR - 2021-09-24 22:42:14 --> Severity: Warning --> unlink(): Invalid argument D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\folders\controllers\Folders.php 1201

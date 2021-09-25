@@ -229,7 +229,7 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 			}).then((value) => {
 				if (value.isConfirmed) {
 					var formData = new FormData($('#form_proses_bro')[0]);
-					var baseurl = siteurl + active_controller + '/edit';
+					var baseurl = siteurl + active_controller + 'edit';
 					$.ajax({
 						url: baseurl,
 						type: "POST",
@@ -253,27 +253,16 @@ $ENABLE_DELETE  = has_permission('Folders.Delete');
 								});
 								location.reload();
 							} else {
-
-								if (data.status == 2) {
-									Swal.fire({
-										title: "Save Failed!",
-										text: data.pesan,
-										icon: "warning",
-										timer: 3000,
-									});
-								} else {
-									Swal.fire({
-										title: "Save Failed!",
-										text: data.pesan,
-										icon: "warning",
-										timer: 3000,
-									});
-								}
+								Swal.fire({
+									title: "Save Failed!",
+									text: data.pesan,
+									icon: "warning",
+									timer: 3000,
+								});
 
 							}
 						},
 						error: function() {
-
 							Swal.fire({
 								title: "Error Message !",
 								text: 'An Error Occured During Process. Please try again..',
