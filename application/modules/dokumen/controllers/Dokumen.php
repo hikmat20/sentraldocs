@@ -1150,9 +1150,9 @@ class Dokumen extends Admin_Controller
 		$jabatan 	= $session['id_jabatan'];
 		$user    	= $session['id_user'];
 
-		$doc1		= $this->db->or_where(['status_approve' => 1, 'status_approve' => 3])->where(['nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar')->result();
-		$doc2		= $this->db->or_where(['status_approve' => 1, 'status_approve' => 3])->where(['nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar1')->result();
-		$doc3		= $this->db->or_where(['status_approve' => 1, 'status_approve' => 3])->where(['nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar2')->result();
+		$doc1		= $this->db->or_where(['status_approve' => 1])->where(['nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar')->result();
+		$doc2		= $this->db->or_where(['status_approve' => 1])->where(['nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar1')->result();
+		$doc3		= $this->db->or_where(['status_approve' => 1])->where(['nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar2')->result();
 
 		$this->template->set([
 			'doc1' 		=> $doc1,

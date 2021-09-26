@@ -16,6 +16,8 @@ class Dashboard extends Admin_Controller
 		$this->load->model('dashboard/dashboard_model');
 		$this->template->set_theme('dashboard');
 		$this->template->page_icon('fa fa-dashboard');
+		$this->prsh = $this->session->app_session['id_perusahaan'];
+		$this->cbg = $this->session->app_session['id_cabang'];
 	}
 
 	public function index()
@@ -42,14 +44,15 @@ class Dashboard extends Admin_Controller
 	{
 		$this->template->set('title', 'Create Document');
 		$doc = $this->db->get('master_gambar')->num_rows();
-		$cor1 = $this->db->get_where('gambar', ['status_approve' => 0])->num_rows();
-		$cor2 = $this->db->get_where('gambar1', ['status_approve' => 0])->num_rows();
-		$cor3 = $this->db->get_where('gambar2', ['status_approve' => 0])->num_rows();
-		$apv1 = $this->db->get_where('gambar', ['status_approve' => 1])->num_rows();
-		$apv2 = $this->db->get_where('gambar1', ['status_approve' => 1])->num_rows();
-		$apv3 = $this->db->get_where('gambar2', ['status_approve' => 1])->num_rows();
+		$cor1 = $this->db->get_where('gambar', ['status_approve' => 0, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+		$cor2 = $this->db->get_where('gambar1', ['status_approve' => 0, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+		$cor3 = $this->db->get_where('gambar2', ['status_approve' => 0, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+		$apv1 = $this->db->get_where('gambar', ['status_approve' => 1, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+		$apv2 = $this->db->get_where('gambar1', ['status_approve' => 1, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+		$apv3 = $this->db->get_where('gambar2', ['status_approve' => 1, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
 		$allCorr = $cor1 + $cor2 + $cor3;
 		$allApv = $apv1 + $apv2 + $apv3;
+
 		$pictures = $this->db->get('pictures')->result();
 		$this->template->set('pictures', $pictures);
 		$this->template->set('doc', $doc);
