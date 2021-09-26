@@ -1144,15 +1144,26 @@ class Dokumen extends Admin_Controller
 	public function approve()
 	{
 		$this->auth->restrict($this->viewPermission);
-		$session = $this->session->userdata('app_session');
-		$jabatan = $session['id_jabatan'];
-		$user    = $session['id_user'];
+		$session 	= $this->session->userdata('app_session');
+		$prsh 		=  $session['id_perusahaan'];
+		$cbg 		=  $session['id_cabang'];
+		$jabatan 	= $session['id_jabatan'];
+		$user    	= $session['id_user'];
+
+		$doc1		= $this->db->or_where(['status_approve' => 1, 'status_approve' => 3])->where(['nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar')->result();
+		$doc2		= $this->db->or_where(['status_approve' => 1, 'status_approve' => 3])->where(['nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar1')->result();
+		$doc3		= $this->db->or_where(['status_approve' => 1, 'status_approve' => 3])->where(['nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar2')->result();
+
+		$this->template->set([
+			'doc1' 		=> $doc1,
+			'doc2' 		=> $doc2,
+			'doc3' 		=> $doc3,
+			'title'		=> 'Index Approval Dokumen',
+			'jabatan' 	=> $jabatan,
+			'user' 		=> $user,
+		]);
+		$this->template->set_theme('dashboard');
 		$this->template->page_icon('fa fa-folder-open');
-		$get_Data		= $this->Folders_model->getData('master_gambar');
-		$this->template->set('row', $get_Data);
-		$this->template->set('title', 'Index Of Dokumen');
-		$this->template->set('jabatan', $jabatan);
-		$this->template->set('user', $user);
 		$this->template->render('index_approve');
 	}
 
@@ -1373,13 +1384,25 @@ class Dokumen extends Admin_Controller
 	public function koreksi()
 	{
 		$this->auth->restrict($this->viewPermission);
-		$session = $this->session->userdata('app_session');
-		$jabatan = $session['id_jabatan'];
+		$this->template->set_theme('dashboard');
 		$this->template->page_icon('fa fa-folder-open');
-		$get_Data		= $this->Folders_model->getData('master_gambar');
-		$this->template->set('row', $get_Data);
-		$this->template->set('title', 'Index Of Dokumen');
-		$this->template->set('jabatan', $jabatan);
+
+		$session 			= $this->session->userdata('app_session');
+		$jabatan 			= $session['id_jabatan'];
+		$get_Data			= $this->Folders_model->getData('master_gambar');
+		$doc1				= $this->db->get_where('gambar', ['status_approve' => 0, 'nama_file !=' => null])->result();
+		$doc2				= $this->db->get_where('gambar1', ['status_approve' => 0, 'nama_file !=' => null])->result();
+		$doc3				= $this->db->get_where('gambar2', ['status_approve' => 0, 'nama_file !=' => null])->result();
+
+		$this->template->set([
+			'title' 	=> 'Index Koreksi Dokumen',
+			'row' 		=> $get_Data,
+			'jabatan' 	=> $jabatan,
+			'doc1' 		=> $doc1,
+			'doc2' 		=> $doc2,
+			'doc3' 		=> $doc3,
+		]);
+
 		$this->template->render('index_koreksi');
 	}
 
@@ -1407,9 +1430,9 @@ class Dokumen extends Admin_Controller
 		$this->template->set('uri5', $uri5);
 		$this->template->set('uri6', $uri6);
 
-		$id    = $this->input->post('id');
-		$table    = $this->input->post('table');
-		$nama_file = $this->input->post('file');
+		$id    		= $this->input->post('id');
+		$table    	= $this->input->post('table');
+		$nama_file 	= $this->input->post('file');
 
 		if ($table == 'gambar') {
 			$detail				= $this->Folders_model->getData('gambar', 'id', $id);
@@ -1418,8 +1441,7 @@ class Dokumen extends Admin_Controller
 		} else if ($table == 'gambar2') {
 			$detail				= $this->Folders_model->getData('gambar2', 'id', $id);
 		}
-		// print_r($detail);
-		// exit;	
+
 
 		$this->template->set('jabatan', $jabatan);
 		$this->template->set('id', $id);
@@ -1464,12 +1486,13 @@ class Dokumen extends Admin_Controller
 
 	public function simpan_koreksi()
 	{
+
+
 		$config['upload_path'] = './assets/files/'; //path folder
 		$config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
 		$config['encrypt_name'] = false; //Enkripsi nama yang terupload
-
-
 		$this->upload->initialize($config);
+
 		if ($this->upload->do_upload('image')) {
 			$gbr = $this->upload->data();
 			//Compress Image
@@ -1489,7 +1512,7 @@ class Dokumen extends Admin_Controller
 			$ukuran  = $gbr['file_size'];
 			$ext1    = explode('.', $gambar);
 			$ext     = $ext1[1];
-			$lokasi = './assets/files/' . $gbr['file_name'] . '.' . $ext;
+			$lokasi = './assets/files/' . $gbr['file_name'];
 		}
 
 		$id_master 	= $this->input->post('id_master');
@@ -1508,26 +1531,17 @@ class Dokumen extends Admin_Controller
 		}
 
 		if ($ukuran > 0) {
-			//$data					= $this->input->post();
-			$data['nama_file']	    = $gambar;
-			$data['ukuran_file']	= $ukuran;
-			$data['tipe_file']		= $ext;
-			$data['lokasi_file']	= $lokasi;
-			$data_session			= $this->session->userdata;
-			$data['created_by']		= $this->auth->user_id();
-			$data['created']		= date('Y-m-d H:i:s');
+
 			$data['id_master']		= $id_master;
 			$data['nama_file']	    = $gambar;
 			$data['ukuran_file']	= $ukuran;
 			$data['tipe_file']		= $ext;
 			$data['lokasi_file']	= $lokasi;
-			$data_session			= $this->session->userdata;
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['status_approve']	= $approve;
 
 			$data_insert = array(
-
 				'deskripsi'	        => $insert->deskripsi,
 				'nama_file'        	=> $insert->nama_file,
 				'ukuran_file'       => $insert->ukuran_file,
@@ -1549,8 +1563,6 @@ class Dokumen extends Admin_Controller
 				$this->db->insert("tbl_history", $data_insert);
 			}
 		} else {
-			//$data					= $this->input->post();
-			$data_session			= $this->session->userdata;
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['id_master']		= $id_master;
@@ -1625,7 +1637,6 @@ class Dokumen extends Admin_Controller
 		} else {
 			$approve	= '1';
 		}
-
 
 		$insert = $this->db->query("SELECT * FROM $table  WHERE id='$id_detail'")->row();
 		$norev  = $insert->revisi;
@@ -1836,45 +1847,42 @@ class Dokumen extends Admin_Controller
 		$session = $this->session->userdata('app_session');
 		$jabatan = $session['id_jabatan'];
 
-
-		$id    = $this->input->post('id');
-		$table    = $this->input->post('table');
-		$nama_file = $this->input->post('file');
+		$id    		= $this->input->post('id');
+		$table    	= $this->input->post('table');
+		$nama_file 	= $this->input->post('file');
 		// print_r($nama_file);
 		// exit;
 
-		$data = $this->db->query("SELECT * FROM tbl_approval WHERE nm_table='$table' AND id_dokumen='$id'")->result();
-		$data1 = $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
-		$data2 = $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
+		$doc1 = $this->db->query("SELECT * FROM tbl_approval WHERE nm_table='$table' AND id_dokumen='$id'")->result();
+		$doc2 = $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
+		$doc3 = $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
 
-		$uri3 = $this->uri->segment(3);
-		$uri4 = $this->uri->segment(4);
-		$uri5 = $this->uri->segment(5);
-		$uri6 = $this->uri->segment(4);
+		// $uri3 = $this->uri->segment(3);
+		// $uri4 = $this->uri->segment(4);
+		// $uri5 = $this->uri->segment(5);
+		// $uri6 = $this->uri->segment(4);
 
-		$this->template->set('uri3', $uri3);
-		$this->template->set('uri4', $uri4);
-		$this->template->set('uri5', $uri5);
-		$this->template->set('uri6', $uri6);
+		// $this->template->set('uri3', $uri3);
+		// $this->template->set('uri4', $uri4);
+		// $this->template->set('uri5', $uri5);
+		// $this->template->set('uri6', $uri6);
 
 
 		$this->template->set('jabatan', $jabatan);
 		$this->template->set('id', $id);
 		$this->template->set('table', $table);
 		$this->template->set('nama_file', $nama_file);
-		$this->template->set('row', $data);
-		$this->template->set('row1', $data1);
-		$this->template->set('row2', $data2);
+		$this->template->set('row', $doc1);
+		$this->template->set('row1', $doc2);
+		$this->template->set('row2', $doc3);
 		$this->template->render('review');
 	}
 
 	public function saveReview()
 	{
-
-
-		$status = $this->input->post('status');
-		$id = $this->input->post('id');
-		$table = $this->input->post('table');
+		$status 	= $this->input->post('status');
+		$id 		= $this->input->post('id');
+		$table 		= $this->input->post('table');
 
 		// print_r($this->input->post());
 		// exit;

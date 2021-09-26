@@ -206,11 +206,11 @@
  <div id="ajaxFailed"></div>
  <!-- REQUIRED JS SCRIPTS -->
  <script src="<?= base_url('assets/plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
- <script src="<?= base_url(); ?>themes/dashboard/assets/plugins/global/plugins.bundle1036.js?v=2.1.1"></script>
- <script src="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/prismjs/prismjs.bundle1036.js?v=2.1.1"></script>
- <script src="<?= base_url(); ?>themes/dashboard/assets/js/scripts.bundle1036.js?v=2.1.1"></script>
- <script src="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/fullcalendar/fullcalendar.bundle1036.js?v=2.1.1"></script>
- <script src="<?= base_url(); ?>themes/dashboard/assets/js/pages/widgets1036.js?v=2.1.1"></script>
+ <script src="<?= base_url(); ?>themes/dashboard/assets/plugins/global/plugins.bundle1036.js?"></script>
+ <script src="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/prismjs/prismjs.bundle1036.js?"></script>
+ <script src="<?= base_url(); ?>themes/dashboard/assets/js/scripts.bundle1036.js?"></script>
+ <script src="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/fullcalendar/fullcalendar.bundle1036.js?"></script>
+ <script src="<?= base_url(); ?>themes/dashboard/assets/js/pages/widgets1036.js?"></script>
  <!-- <script src="<?= base_url('assets/plugins/select2/select2.full.min.js'); ?>"></script> -->
  <script src="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/datatables/datatables.bundle1036.js"></script>
  <script>
