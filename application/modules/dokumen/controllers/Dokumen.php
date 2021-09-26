@@ -56,7 +56,70 @@ class Dokumen extends Admin_Controller
 		$this->template->render('index_new');
 	}
 
-	public function subfolder()
+	public function subfolder($subfolder = '', $detail = '', $enddetail = '')
+	{
+		$this->auth->restrict($this->viewPermission);
+		$this->template->page_icon('fa fa-folder-open');
+		$this->template->set('title', 'Index Of Folders');
+		$this->template->set_theme('dashboard');
+		$master 			= $this->db->get_where('master_gambar', ['nama_master' => str_replace('-', ' ', $subfolder)])->row();
+		$id_master 			= $master->id_master;
+		$nama_master 		= str_replace(' ', '-', strtolower($master->nama_master));
+		$session = $this->session->userdata('app_session');
+		$prsh    = $session['id_perusahaan'];
+		$cbg     = $session['id_cabang'];
+		if (!$detail && !$enddetail) {
+			$folders		= $this->db->get_where('view_gambar', ['id_master' => $id_master, 'nama_file' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->result();
+			$files			= $this->db->get_where('view_gambar', ['id_master' => $id_master, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->result();
+			$get_Data		= $this->Folders_model->getData('view_gambar', 'id_master', $id_master);
+			// $get_Master		= $this->Folders_model->getData('gambar', 'id', $id_sub);
+
+			$this->template->set('list', false);
+			$this->template->set('row', $get_Data);
+			$this->template->set('folders', $folders);
+			$this->template->set('files', $files);
+			$this->template->set('nama_master', $nama_master);
+			$this->template->set('id_master', $id_master);
+			// $this->template->set('masDoc', $get_Master);
+			$this->template->render('index_subfolder');
+		} else if ($detail && !$enddetail) {
+			$sub_folder 	= $this->db->get_where('gambar', ['deskripsi' => str_replace('-', ' ', $detail)])->row();
+			$id_master 		= $sub_folder->id_master;
+			$id_sub 		= $sub_folder->id;
+			$folders		= $this->db->get_where('view_gambar1', ['id_detail' => $id_sub, 'nama_file' => null])->result();
+			$files			= $this->db->get_where('view_gambar1', ['id_detail' => $id_sub, 'nama_file !=' => null])->result();
+
+			$this->template->set('list', true);
+			$this->template->set('files', $files);
+			$this->template->set('folders', $folders);
+			$this->template->set('id_sub', $id_sub);
+			$this->template->set('id_master', $id_master);
+			$this->template->set('nama_subfolder', $detail);
+			$this->template->set('nama_master', $nama_master);
+			$this->template->render('index_detail');
+		} else {
+			$endfolder 	= $this->db->get_where('gambar1', ['deskripsi' => str_replace('-', ' ', $enddetail)])->row();
+			$id_master 		= $endfolder->id_master;
+			$id_detail 		= $endfolder->id_detail;
+			$id_enddetail	= $endfolder->id;
+
+			$folders		= $this->db->get_where('view_gambar2', ['id_detail1' => $id_enddetail, 'nama_file' => null])->result();
+			$files			= $this->db->get_where('view_gambar2', ['id_detail1' => $id_enddetail, 'nama_file !=' => null])->result();
+
+			$this->template->set('list', true);
+			$this->template->set('files', $files);
+			$this->template->set('folders', $folders);
+			$this->template->set('id_detail', $id_detail);
+			$this->template->set('id_master', $id_master);
+			$this->template->set('id_enddetail', $id_enddetail);
+			$this->template->set('nama_subfolder', $detail);
+			$this->template->set('nama_endfolder', $enddetail);
+			$this->template->set('nama_master', $nama_master);
+			$this->template->render('index_enddetail');
+		}
+	}
+
+	public function _subfolder()
 	{
 		$this->auth->restrict($this->viewPermission);
 		$session = $this->session->userdata('app_session');
