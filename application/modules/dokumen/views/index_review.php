@@ -4,27 +4,12 @@ $ENABLE_MANAGE  = has_permission('Dokumen.Manage');
 $ENABLE_VIEW    = has_permission('Dokumen.View');
 $ENABLE_DELETE  = has_permission('Dokumen.Delete');
 $ENABLE_DOWNLOAD  = has_permission('Dokumen.Download');
-
-$session = $this->session->userdata('app_session');
-$prsh    = $session['id_perusahaan'];
-$cbg     = $session['id_cabang'];
-
-$sts = [
-	'0' => 'Revisi',
-	'1' => 'Waiting Approval',
-	'2' => 'Approve',
-	'3' => 'Waiting Review',
-]; ?>
-
+?>
 <div class="content d-flex flex-column flex-column-fluid">
 	<div class="container">
 		<div class="card card-stretch shadow card-custom">
 			<div class="card-header">
 				<h3 class="card-title"><a href="<?= base_url('dashboard/create_documents'); ?>"><i class="fa fa-arrow-left"></i></a>&nbsp <?= $title; ?></h3>
-				<input type="hidden" id="uri1" name="uri1" value="<?php echo $this->uri->segment(1) ?>" />
-				<input type="hidden" id="uri2" name="uri2" value="<?php echo $this->uri->segment(2) ?>" />
-				<input type="hidden" id="uri3" name="uri3" value="<?php echo $this->uri->segment(3) ?>" />
-				<input type="hidden" id="uri4" name="uri4" value="<?php echo $this->uri->segment(4) ?>" />
 			</div>
 			<!-- /.card-header -->
 			<div class="card-body">
@@ -34,9 +19,9 @@ $sts = [
 							<th>Deskripsi</th>
 							<th>Nama File</th>
 							<th>Revisi</th>
-							<th>Review By</th>
+							<th>Review</th>
 							<th>Approve By</th>
-							<th>Status Approval</th>
+							<th>Status</th>
 							<th>Created On</th>
 							<th>Option</th>
 						</tr>
@@ -44,15 +29,12 @@ $sts = [
 					<tbody>
 						<?php
 						// doc1
-						$idjabatan = $jabatan;
-						$iduser    = $user;
-
 						if ($doc1) :
 							$n	= 0;
 							foreach ($doc1 as $dc1) :
 								$jabreview1 	= $dc1->id_review;
 								$jabapprove1 	= $dc1->id_approval;
-								$approve_by 	= $dc1->id_approval;
+								$approve_by 	= $dc1->approval_by;
 								$carireview1 	= $this->db->query("SELECT * FROM tbl_pejabat WHERE id_user ='$iduser' AND id_jabatan='$jabreview1' AND id_perusahaan='$prsh' AND id_cabang='$cbg'")->num_rows();
 								$cariapproval1 	= $this->db->query("SELECT * FROM tbl_pejabat WHERE id_user ='$iduser' AND id_jabatan='$jabapprove1' AND id_perusahaan='$prsh' AND id_cabang='$cbg'")->num_rows();
 								$approveby 		= $this->db->query("SELECT * FROM users WHERE id_user ='$approve_by'")->row();;
@@ -61,13 +43,15 @@ $sts = [
 									<td><?= $dc1->deskripsi; ?></td>
 									<td><?= $dc1->nama_file; ?></td>
 									<td><?= $dc1->revisi; ?></td>
-									<td><?= $dc1->review_by_name; ?></td>
+									<td><?= $dc1->nm_review; ?></td>
 									<td><?= $dc1->approve_by_name; ?></td>
 									<td><?= $sts[$dc1->status_approve]; ?></td>
 									<td><?= $dc1->created; ?></td>
 									<td>
 										<?php
-										if (($dc1->status_approve == '1') && ($dc1->id_approval == $idjabatan)) :	?>
+										if (($dc1->status_approve == '3') && ($dc1->id_review == $idjabatan)) :	?>
+											<button type="button" class="btn btn-xs btn-shadow btn-icon btn-shadow btn-icon btn-primary review" title="Review Data" data-id="<?php echo $dc1->id ?>" data-file="<?php echo $dc1->nama_file ?>" data-table="gambar"> <i class="fa fa-eye"></i></button>
+										<?php elseif (($dc1->status_approve == '3') && ($dc1->id_approval == $idjabatan)) :	?>
 											<button type="button" class="btn btn-xs btn-shadow btn-icon btn-shadow btn-icon btn-warning approve" title="Approve Data" data-id="<?php echo $dc1->id ?>" data-file="<?php echo $dc1->nama_file ?>" data-table="gambar"> <i class="fa fa-check"></i></button>
 										<?php endif; ?>
 									</td>
@@ -92,7 +76,7 @@ $sts = [
 									<td><?= $dc2->deskripsi; ?></td>
 									<td><?= $dc2->nama_file; ?></td>
 									<td><?= $dc2->revisi; ?></td>
-									<td><?= $dc2->review_by_name; ?></td>
+									<td><?= $dc2->nm_review; ?></td>
 									<td><?= $dc2->approve_by_name; ?></td>
 									<td><?= $sts[$dc2->status_approve]; ?></td>
 									<td><?= $dc2->created; ?></td>
@@ -125,7 +109,7 @@ $sts = [
 									<td><?= $dc3->deskripsi; ?></td>
 									<td><?= $dc3->nama_file; ?></td>
 									<td><?= $dc3->revisi; ?></td>
-									<td><?= $dc3->review_by_name; ?></td>
+									<td><?= $dc3->nm_review; ?></td>
 									<td><?= $dc3->approve_by_name; ?></td>
 									<td><?= $sts[$dc3->status_approve]; ?></td>
 									<td><?= $dc3->created; ?></td>
@@ -145,11 +129,9 @@ $sts = [
 					</tbody>
 				</table>
 			</div>
-			<!-- /.card-body -->
 		</div>
 	</div>
 </div>
-<!-- /.card -->
 
 <form id="form-modal" action="" method="post">
 	<div class="modal fade" id="ModalView" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeSm" aria-hidden="true">
@@ -170,7 +152,6 @@ $sts = [
 			</div>
 		</div>
 	</div>
-	<!-- modal -->
 </form>
 
 <script>
@@ -189,63 +170,18 @@ $sts = [
 
 	});
 
-	function delData(id) {
-		Swal.fire({
-				title: "Are you sure?",
-				text: "You will not be able to process again this data!",
-				type: "warning",
-				showCancelButton: true,
-				confirmButtonClass: "btn-danger",
-				confirmButtonText: "Yes, Process it!",
-				cancelButtonText: "No, cancel process!",
-				closeOnConfirm: true,
-				closeOnCancel: false
-			},
-			function(isConfirm) {
-				if (isConfirm) {
-					loading_spinner();
-					window.location.href = base_url + 'index.php/' + active_controller + '/delete/' + id;
-				} else {
-					Swal.fire("Cancelled", "Data can be process again :)", "error");
-					return false;
-				}
-			});
-	}
-
 	$(document).on('click', '.review', function(e) {
 		var id = $(this).data('id');
 		var table = $(this).data('table');
 		var file = $(this).data('file');
-		var uri1 = $('#uri1').val();
-		var uri2 = $('#uri2').val();
-		var uri3 = $('#uri3').val();
-		var uri4 = $('#uri4').val();
 
 		$.ajax({
 			type: "post",
-			url: siteurl + active_controller + 'review/' + uri1 + '/' + uri2 + '/' + uri3 + '/' + uri4,
+			url: siteurl + active_controller + 'review_form',
 			data: "id=" + id + "&table=" + table + "&file=" + file,
 			success: function(result) {
 				$(".modal-dialog").css('width', '90%');
 				$("#head_title").html("<b>REVIEW</b>");
-				$("#view").html(result);
-				$("#ModalView").modal('show');
-			}
-		})
-	});
-
-	$(document).on('click', '.approve', function(e) {
-		var id = $(this).data('id');
-		var table = $(this).data('table');
-		var file = $(this).data('file');
-		$.ajax({
-			type: "post",
-			url: siteurl + active_controller + 'approval/',
-
-			data: "id=" + id + "&table=" + table + "&file=" + file,
-			success: function(result) {
-				$(".modal-dialog").css('width', '90%');
-				$("#head_title").html("<b>APPROVAL</b>");
 				$("#view").html(result);
 				$("#ModalView").modal('show');
 			}

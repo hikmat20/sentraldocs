@@ -170,11 +170,11 @@
 							</div>
 						</div>
 						<div class="card-body d-flex align-items-center justify-content-center p-1 flex-wrap">
-							<span class="font-weight-bolder display5 text-warning"><?= $docApv; ?></span>
+							<span class="font-weight-bolder display5 text-warning"><?= $docRev; ?></span>
 						</div>
 						<div class="card-footer text-center border-0 p-0 justify-content-center">
 							<h3 class="card-title p-5 m-0">
-								<a href="<?= base_url('dokumen/approve'); ?>" class="text-hover-primary" title="Review Documents">
+								<a href="<?= base_url('dokumen/review'); ?>" class="text-hover-primary" title="Review Documents">
 									<span class="card-label text-center text-warning m-0 font-weight-bolder">Review Documents</span>
 								</a>
 							</h3>

@@ -866,343 +866,6 @@ class Dokumen extends Admin_Controller
 
 	//END SUB DOKUMEN 1
 
-
-
-	//SUB DOKUMEN 2
-
-	public function detail2()
-	{
-		$this->auth->restrict($this->viewPermission);
-		$session = $this->session->userdata('app_session');
-
-		$id_detail1			= $this->input->get('id_detail1');
-		$get_Data		= $this->Folders_model->getData('gambar2', 'id_detail1', $id_detail1);
-		$get_Detail		= $this->Folders_model->getData('gambar1', 'id', $id_detail1);
-
-		foreach ($get_Detail as $detail);
-		$id_master      = $detail->id_master;
-		$id_detail      = $detail->id_detail;
-
-		$get_Master		= $this->Folders_model->getData('master_gambar', 'id_master', $id_master);
-		foreach ($get_Master as $folder);
-
-		$get_1		= $this->Folders_model->getData('gambar', 'id', $id_detail);
-		foreach ($get_1 as $dt);
-
-		$this->template->page_icon('fa fa-folder-open');
-		$this->template->set('mtr', $id_master);
-		$this->template->set('dtl1', $id_detail1);
-		$this->template->set('dtl', $id_detail);
-		$this->template->set('row', $get_Data);
-		$this->template->title($folder->nama_master . '/' . $dt->deskripsi . '/' . $detail->deskripsi . '/');
-		$this->template->render('detail2');
-	}
-
-	public function add_detail2()
-	{
-		$config['upload_path'] = './assets/files/'; //path folder
-		$config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
-		$config['encrypt_name'] = false; //Enkripsi nama yang terupload
-
-
-		$this->upload->initialize($config);
-		if ($this->upload->do_upload('image')) {
-			$gbr = $this->upload->data();
-			//Compress Image
-			$config['image_library'] = 'gd2';
-			$config['source_image'] = './assets/files/' . $gbr['file_name'];
-			$config['create_thumb'] = FALSE;
-			$config['maintain_ratio'] = FALSE;
-			$config['umum'] = '50%';
-			$config['width'] = 260;
-			$config['height'] = 350;
-			$config['new_image'] = './assets/files/' . $gbr['file_name'];
-			$this->load->library('image_lib', $config);
-			$this->image_lib->resize();
-
-			$gambar  = $gbr['file_name'];
-			$type    = $gbr['file_type'];
-			$ukuran  = $gbr['file_size'];
-			$ext1    = explode('.', $gambar);
-			$ext     = $ext1[1];
-			$lokasi = './assets/files/' . $gbr['file_name'] . '.' . $ext;
-		}
-		if ($this->input->post()) {
-			$id_master 	= $this->input->post('id_master');
-			$id_detail 	= $this->input->post('id_detail');
-			$id_detail1 	= $this->input->post('id_detail1');
-			// echo"<pre>";print_r($id_master);exit;	        
-
-
-			$Arr_Kembali			= array();
-			$data					= $this->input->post();
-			$data['nama_file']	    = $gambar;
-			$data['ukuran_file']	= $ukuran;
-			$data['tipe_file']		= $ext;
-			$data['lokasi_file']	= $lokasi;
-			$data_session			= $this->session->userdata;
-			$data['created_by']		= $this->auth->user_id();
-			$data['created']		= date('Y-m-d H:i:s');
-			$data['id_master']		= $id_master;
-			$data['id_detail']		= $id_detail;
-			$data['id_detail1']		= $id_detail1;
-
-
-			if ($this->Folders_model->simpan('gambar2', $data)) {
-				$Arr_Kembali		= array(
-					'status'		=> 1,
-					'pesan'			=> 'Add gambar Success. Thank you & have a nice day.......'
-				);
-				$keterangan = 'Berhasil Simpan Dokumen';
-				$status = 1;
-				$nm_hak_akses = $this->addPermission;
-				$kode_universal = $this->input->post('id_master');
-				$jumlah = 1;
-				$sql = $this->db->last_query();
-				simpan_aktifitas($nm_hak_akses, $kode_universal, $keterangan, $jumlah, $sql, $status);
-			} else {
-				$Arr_Kembali		= array(
-					'status'		=> 2,
-					'pesan'			=> 'Add gambar failed. Please try again later......'
-				);
-			}
-			echo json_encode($Arr_Kembali);
-		} else {
-			$id_detail1 	= $this->input->get('id_detail1');
-			$id_detail      = $this->db->query("SELECT id_detail FROM gambar1 WHERE id='$id_detail1'")->row();
-			$id_master      = $this->db->query("SELECT id_master FROM gambar1 WHERE id='$id_detail1'")->row();
-			$this->template->page_icon('fa fa-folder-open');
-			$this->template->set('iddetail1', $id_detail1);
-			$this->template->set('iddetail', $id_detail->id_detail);
-			$this->template->set('idmaster', $id_master->id_master);
-			$this->template->set('action', 'add');
-			$this->template->title('Add Sub Documents II');
-			$this->template->render('add_subdetail2');
-		}
-	}
-
-	public function edit_detail2($id = '')
-	{
-
-		$config['upload_path'] = './assets/files/'; //path folder
-		$config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
-		$config['encrypt_name'] = false; //Enkripsi nama yang terupload
-
-
-		$this->upload->initialize($config);
-		if ($this->upload->do_upload('image')) {
-			$gbr = $this->upload->data();
-			//Compress Image
-			$config['image_library'] = 'gd2';
-			$config['source_image'] = './assets/files/' . $gbr['file_name'];
-			$config['create_thumb'] = FALSE;
-			$config['maintain_ratio'] = FALSE;
-			$config['umum'] = '50%';
-			$config['width'] = 260;
-			$config['height'] = 350;
-			$config['new_image'] = './assets/files/' . $gbr['file_name'];
-			$this->load->library('image_lib', $config);
-			$this->image_lib->resize();
-
-			$gambar  = $gbr['file_name'];
-			$type    = $gbr['file_type'];
-			$ukuran  = $gbr['file_size'];
-			$ext1    = explode('.', $gambar);
-			$ext     = $ext1[1];
-			$lokasi = './assets/files/' . $gbr['file_name'] . '.' . $ext;
-		}
-		if ($this->input->post()) {
-			$id_master 	= $this->input->post('id_master');
-			$id_detail 	= $this->input->post('id_detail');
-			$id_detail1 	= $this->input->post('id_detail1');
-			// echo"<pre>";print_r($id_master);exit;
-
-			$Arr_Kembali			= array();
-
-			if ($ukuran > 0) {
-				$data					= $this->input->post();
-				$data['nama_file']	    = $gambar;
-				$data['ukuran_file']	= $ukuran;
-				$data['tipe_file']		= $ext;
-				$data['lokasi_file']	= $lokasi;
-				$data_session			= $this->session->userdata;
-				$data['created_by']		= $this->auth->user_id();
-				$data['created']		= date('Y-m-d H:i:s');
-				$data['id_master']		= $id_master;
-				$data['id_detail']		= $id_detail;
-				$data['id_detail1']		= $id_detail1;
-			} else {
-				$data					= $this->input->post();
-				$data_session			= $this->session->userdata;
-				$data['created_by']		= $this->auth->user_id();
-				$data['created']		= date('Y-m-d H:i:s');
-				$data['id_master']		= $id_master;
-				$data['id_detail']		= $id_detail;
-				$data['id_detail1']		= $id_detail1;
-			}
-
-
-
-			$update = $this->Folders_model->getUpdate('gambar2', $data, 'id', $this->input->post('id'));
-
-
-			if ($update) {
-				$Arr_Kembali		= array(
-					'status'		=> 1,
-					'pesan'			=> 'Update Document Success. Thank you & have a nice day.......'
-				);
-				$keterangan = 'Berhasil Update Dokumen';
-				$status = 1;
-				$nm_hak_akses = $this->addPermission;
-				$kode_universal = $this->input->post('id_master');
-				$jumlah = 1;
-				$sql = $this->db->last_query();
-				simpan_aktifitas($nm_hak_akses, $kode_universal, $keterangan, $jumlah, $sql, $status);
-			} else {
-				$Arr_Kembali		= array(
-					'status'		=> 2,
-					'pesan'			=> 'Add gambar failed. Please try again later......'
-				);
-			}
-			echo json_encode($Arr_Kembali);
-		} else {
-
-
-			$detail				= $this->Folders_model->getData('gambar2', 'id', $id);
-
-
-
-			$this->template->page_icon('fa fa-folder-open');
-			$this->template->set('id', $id);
-			$this->template->set('row', $detail);
-			$this->template->set('action', 'edit');
-			$this->template->title('Edit Sub Documents II');
-			$this->template->render('edit_detail2');
-		}
-	}
-
-	public function download_detail2($id)
-	{
-		//echo"<pre>";print_r($id);exit;
-		$id_master = $this->db->query("SELECT * FROM gambar2 WHERE id='$id'")->row();
-		$iddetail = $id_master->id_detail;
-		$nme    =   $id_master->nama_file;
-		$pth    =   file_get_contents(base_url() . "./assets/files/" . $nme);
-
-		force_download($nme, $pth);
-
-		redirect(site_url('dokumen'));
-	}
-
-
-
-	function delete_detail2($id)
-	{
-		$id_master = $this->db->query("SELECT * FROM gambar2 WHERE id='$id'")->row();
-		$iddetail   = $id_master->id_detail;
-		$iddetail1  = $id_master->id_detail1;
-		// print_r($idmaster);
-		// exit;
-		$this->db->where('id', $id);
-		$query = $this->db->get('gambar2');
-		$path = $query->row();
-		unlink("./assets/files/$path->nama_file");
-		$this->db->delete("gambar2", array('id' => $id));
-		if ($this->db->affected_rows() > 0) {
-			$this->session->set_flashdata("alert_data", "<div class=\"alert alert-success\" id=\"flash-message\">Data has been successfully deleted...........!!</div>");
-			$keterangan = 'Berhasil Hapus Dokumen';
-			$status = 1;
-			$nm_hak_akses = $this->addPermission;
-			$kode_universal = $id;
-			$jumlah = 1;
-			$sql = $this->db->last_query();
-			simpan_aktifitas($nm_hak_akses, $kode_universal, $keterangan, $jumlah, $sql, $status);
-			redirect(site_url('Folders/detail2?id_detail1=' . $iddetail1));
-		}
-	}
-
-
-	public function add_subdetail3()
-	{
-		$config['upload_path'] = './assets/files/'; //path folder
-		$config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
-		$config['encrypt_name'] = false; //Enkripsi nama yang terupload
-
-
-		$this->upload->initialize($config);
-		if ($this->upload->do_upload('image')) {
-			$gbr = $this->upload->data();
-			//Compress Image
-			$config['image_library'] = 'gd2';
-			$config['source_image'] = './assets/files/' . $gbr['file_name'];
-			$config['create_thumb'] = FALSE;
-			$config['maintain_ratio'] = FALSE;
-			$config['umum'] = '50%';
-			$config['width'] = 260;
-			$config['height'] = 350;
-			$config['new_image'] = './assets/files/' . $gbr['file_name'];
-			$this->load->library('image_lib', $config);
-			$this->image_lib->resize();
-
-			$gambar  = $gbr['file_name'];
-			$type    = $gbr['file_type'];
-			$ukuran  = $gbr['file_size'];
-			$ext1    = explode('.', $gambar);
-			$ext     = $ext1[1];
-			$lokasi = './assets/files/' . $gbr['file_name'] . '.' . $ext;
-		}
-		if ($this->input->post()) {
-			$id_master 	= $this->input->post('id_master');
-			$id_detail 	= $this->input->post('id_detail');
-			// echo"<pre>";print_r($id_master);exit;	        
-
-
-			$Arr_Kembali			= array();
-			$data					= $this->input->post();
-			$data['nama_file']	    = $gambar;
-			$data['ukuran_file']	= $ukuran;
-			$data['tipe_file']		= $ext;
-			$data['lokasi_file']	= $lokasi;
-			$data_session			= $this->session->userdata;
-			$data['created_by']		= $this->auth->user_id();
-			$data['created']		= date('Y-m-d H:i:s');
-			$data['id_master']		= $id_master;
-			$data['id_detail']		= $id_detail;
-
-
-			if ($this->Folders_model->simpan('gambar1', $data)) {
-				$Arr_Kembali		= array(
-					'status'		=> 1,
-					'pesan'			=> 'Add gambar Success. Thank you & have a nice day.......'
-				);
-				$keterangan = 'Berhasil Simpan Dokumen';
-				$status = 1;
-				$nm_hak_akses = $this->addPermission;
-				$kode_universal = $this->input->post('id_master');
-				$jumlah = 1;
-				$sql = $this->db->last_query();
-				simpan_aktifitas($nm_hak_akses, $kode_universal, $keterangan, $jumlah, $sql, $status);
-			} else {
-				$Arr_Kembali		= array(
-					'status'		=> 2,
-					'pesan'			=> 'Add gambar failed. Please try again later......'
-				);
-			}
-			echo json_encode($Arr_Kembali);
-		} else {
-			$id_master 	= $this->uri->segment('4');
-			$id_detail 	= $this->uri->segment('3');
-			$this->template->page_icon('fa fa-folder-open');
-			$this->template->set('idmaster', $id_master);
-			$this->template->set('iddetail', $id_detail);
-			$this->template->set('action', 'add');
-			$this->template->title('Add Sub Dokumen');
-			$this->template->render('add_subdetail1');
-		}
-	}
-
-	//END SUB DOKUMEN 2
-
 	//APPROVE
 	public function approve()
 	{
@@ -1252,23 +915,10 @@ class Dokumen extends Admin_Controller
 		$id    = $this->input->post('id');
 		$table    = $this->input->post('table');
 		$nama_file = $this->input->post('file');
-		// print_r($nama_file);
-		// exit;
 
 		$data = $this->db->query("SELECT * FROM tbl_approval WHERE nm_table='$table' AND id_dokumen='$id'")->result();
 		$data1 = $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
 		$data2 = $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
-
-		$uri3 = $this->uri->segment(3);
-		$uri4 = $this->uri->segment(4);
-		$uri5 = $this->uri->segment(5);
-		$uri6 = $this->uri->segment(4);
-
-		$this->template->set('uri3', $uri3);
-		$this->template->set('uri4', $uri4);
-		$this->template->set('uri5', $uri5);
-		$this->template->set('uri6', $uri6);
-
 
 		$this->template->set('jabatan', $jabatan);
 		$this->template->set('id', $id);
@@ -1279,7 +929,6 @@ class Dokumen extends Admin_Controller
 		$this->template->set('row2', $data2);
 		$this->template->render('approval');
 	}
-
 
 	public function saveApproval()
 	{
@@ -1442,8 +1091,7 @@ class Dokumen extends Admin_Controller
 		$this->template->render('history_revisi');
 	}
 
-
-	//APPROVE
+	//KOREKSI
 	public function koreksi()
 	{
 		$this->auth->restrict($this->viewPermission);
@@ -1472,14 +1120,12 @@ class Dokumen extends Admin_Controller
 	public function addkoreksi()
 	{
 		$this->auth->restrict($this->viewPermission);
-		$session = $this->session->userdata('app_session');
-		$jabatan = $session['id_jabatan'];
+		$session 	= $this->session->userdata('app_session');
+		$jabatan 	= $session['id_jabatan'];
 
-		$id    = $this->input->post('id');
-		$table    = $this->input->post('table');
-		$nama_file = $this->input->post('file');
-		// print_r($nama_file);
-		// exit;
+		$id    		= $this->input->post('id');
+		$table    	= $this->input->post('table');
+		$nama_file 	= $this->input->post('file');
 
 		$data = $this->db->query("SELECT * FROM tbl_approval WHERE nm_table='$table' AND id_dokumen='$id'")->result();
 
@@ -1521,21 +1167,10 @@ class Dokumen extends Admin_Controller
 		$id = $this->input->post('id');
 		$table = $this->input->post('table');
 
-		// print_r($table);
-		// exit;
-
-		//$this->db->trans_begin();
-
-
-
 		$getRevisi = $this->db->query("SELECT revisi FROM $table WHERE id='$id' ")->row();
 		$revisi    = $getRevisi->revisi + 1;
 
-		// print_r($revisi);
-		// exit;
-
 		$data_update = array(
-
 			'status_approve'    => 1,
 			'modified_on'	    => date('Y-m-d H:i:s'),
 			'modified_by'		=> $this->auth->user_id()
@@ -1658,7 +1293,6 @@ class Dokumen extends Admin_Controller
 		}
 		echo json_encode($Arr_Kembali);
 	}
-
 
 	public function simpan_koreksi1()
 	{
@@ -1907,33 +1541,73 @@ class Dokumen extends Admin_Controller
 	public function review()
 	{
 		$this->auth->restrict($this->viewPermission);
-		$session = $this->session->userdata('app_session');
-		$jabatan = $session['id_jabatan'];
+		$session 	= $this->session->userdata('app_session');
+		$prsh 		= $session['id_perusahaan'];
+		$cbg 		= $session['id_cabang'];
+		$jabatan 	= $session['id_jabatan'];
+		$user    	= $session['id_user'];
+
+		$sts = [
+			'0' => 'Revisi',
+			'1' => 'Waiting Approval',
+			'2' => 'Approve',
+			'3' => 'Waiting Review',
+		];
+
+		$doc1		= $this->db->or_where(['status_approve' => 3])->where(['nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar')->result();
+		$doc2		= $this->db->or_where(['status_approve' => 3])->where(['nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar1')->result();
+		$doc3		= $this->db->or_where(['status_approve' => 3])->where(['nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar2')->result();
+
+		$this->template->set([
+			'doc1' 			=> $doc1,
+			'doc2' 			=> $doc2,
+			'doc3' 			=> $doc3,
+			'prsh' 			=> $prsh,
+			'cbg' 			=> $cbg,
+			'sts' 			=> $sts,
+			'title'			=> 'Index Approval Dokumen',
+			'idjabatan' 	=> $jabatan,
+			'iduser' 		=> $user,
+		]);
+
+		$this->template->set_theme('dashboard');
+		$this->template->page_icon('fa fa-folder-open');
+		$this->template->render('index_review');
+	}
+
+	public function review_form()
+	{
+		$this->auth->restrict($this->viewPermission);
+		$session 	= $this->session->userdata('app_session');
+		$jabatan 	= $session['id_jabatan'];
 
 		$id    		= $this->input->post('id');
 		$table    	= $this->input->post('table');
 		$nama_file 	= $this->input->post('file');
-		// print_r($nama_file);
-		// exit;
+
+		$data = $this->db->query("SELECT * FROM tbl_approval WHERE nm_table='$table' AND id_dokumen='$id'")->result();
+
+		$id    		= $this->input->post('id');
+		$table    	= $this->input->post('table');
+		$nama_file 	= $this->input->post('file');
+
+		if ($table == 'gambar') {
+			$detail				= $this->Folders_model->getData('gambar', 'id', $id);
+		} else if ($table == 'gambar1') {
+			$detail				= $this->Folders_model->getData('gambar1', 'id', $id);
+		} else if ($table == 'gambar2') {
+			$detail				= $this->Folders_model->getData('gambar2', 'id', $id);
+		}
 
 		$doc1 = $this->db->query("SELECT * FROM tbl_approval WHERE nm_table='$table' AND id_dokumen='$id'")->result();
 		$doc2 = $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
 		$doc3 = $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
 
-		// $uri3 = $this->uri->segment(3);
-		// $uri4 = $this->uri->segment(4);
-		// $uri5 = $this->uri->segment(5);
-		// $uri6 = $this->uri->segment(4);
-
-		// $this->template->set('uri3', $uri3);
-		// $this->template->set('uri4', $uri4);
-		// $this->template->set('uri5', $uri5);
-		// $this->template->set('uri6', $uri6);
-
 
 		$this->template->set('jabatan', $jabatan);
 		$this->template->set('id', $id);
 		$this->template->set('table', $table);
+		$this->template->set('data', $detail);
 		$this->template->set('nama_file', $nama_file);
 		$this->template->set('row', $doc1);
 		$this->template->set('row1', $doc2);
@@ -1947,10 +1621,6 @@ class Dokumen extends Admin_Controller
 		$id 		= $this->input->post('id');
 		$table 		= $this->input->post('table');
 
-		// print_r($this->input->post());
-		// exit;
-
-		//$this->db->trans_begin();
 
 		if ($status == 'approve') {
 
@@ -1958,26 +1628,25 @@ class Dokumen extends Admin_Controller
 			$revisi    = $getRevisi->revisi;
 
 			$data_update = array(
-
 				'status_approve'    => 1,
-				'approval_on'	    => date('Y-m-d H:i:s'),
-				'approval_by'		=> $this->auth->user_id()
+				'review_on'	    => date('Y-m-d H:i:s'),
+				'review_by'		=> $this->auth->user_id()
 			);
 			$where      = array(
 				'id' => $this->input->post('id'),
 			);
 
+			$this->db->trans_begin();
 			$this->Folders_model->getUpdateData($table, $data_update, $where);
 
 			if ($this->input->post('keterangan') != '') {
 				$data_insert = array(
-
 					'keterangan'        => $this->input->post('keterangan'),
 					'id_dokumen'        => $this->input->post('id'),
 					'nm_table'          => $this->input->post('table'),
 					'revisi'           => $revisi,
-					'approval_on'	    => date('Y-m-d H:i:s'),
-					'approval_by'		=> $this->auth->user_id()
+					'created_on'	    => date('Y-m-d H:i:s'),
+					'created_by'		=> $this->auth->user_id()
 				);
 
 				$this->db->insert("tbl_approval", $data_insert);
@@ -1987,13 +1656,10 @@ class Dokumen extends Admin_Controller
 			$getRevisi = $this->db->query("SELECT revisi FROM $table WHERE id='$id' ")->row();
 			$revisi    = $getRevisi->revisi;
 
-			// print_r($revisi);
-			// exit;
-
 			$data_update = array(
 				'status_approve'    => 0,
-				'approval_on'	    => date('Y-m-d H:i:s'),
-				'approval_by'		=> $this->auth->user_id()
+				'modified'	    	=> date('Y-m-d H:i:s'),
+				'modified_by'		=> $this->auth->user_id()
 			);
 			$where      = array(
 				'id' => $this->input->post('id'),
@@ -2004,8 +1670,8 @@ class Dokumen extends Admin_Controller
 				'id_dokumen'        => $this->input->post('id'),
 				'nm_table'          => $this->input->post('table'),
 				'revisi'            => $revisi,
-				'approval_on'	    => date('Y-m-d H:i:s'),
-				'approval_by'		=> $this->auth->user_id()
+				'created_on'	    	=> date('Y-m-d H:i:s'),
+				'created_by'		=> $this->auth->user_id()
 			);
 
 			$this->Folders_model->getUpdateData($table, $data_update, $where);

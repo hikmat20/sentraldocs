@@ -1,8 +1,3 @@
-<style>
-	#toolbar>#end {
-		display: none !important;
-	}
-</style>
 <div class="row">
 	<div class="col-md-7">
 		<h5>History Revisi</h5>

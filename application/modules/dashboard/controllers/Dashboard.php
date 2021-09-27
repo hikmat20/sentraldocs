@@ -50,14 +50,20 @@ class Dashboard extends Admin_Controller
 		$apv1 = $this->db->get_where('gambar', ['status_approve' => 1, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
 		$apv2 = $this->db->get_where('gambar1', ['status_approve' => 1, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
 		$apv3 = $this->db->get_where('gambar2', ['status_approve' => 1, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
-		$allCorr = $cor1 + $cor2 + $cor3;
-		$allApv = $apv1 + $apv2 + $apv3;
+		$rev1 = $this->db->get_where('gambar', ['status_approve' => 3, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+		$rev2 = $this->db->get_where('gambar1', ['status_approve' => 3, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+		$rev3 = $this->db->get_where('gambar2', ['status_approve' => 3, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+
+		$allCorr 	= $cor1 + $cor2 + $cor3;
+		$allApv 	= $apv1 + $apv2 + $apv3;
+		$allRev 	= $rev1 + $rev2 + $rev3;
 
 		$pictures = $this->db->get('pictures')->result();
 		$this->template->set('pictures', $pictures);
 		$this->template->set('doc', $doc);
 		$this->template->set('docCor', $allCorr);
 		$this->template->set('docApv', $allApv);
+		$this->template->set('docRev', $allRev);
 		$this->template->render('create-document');
 	}
 

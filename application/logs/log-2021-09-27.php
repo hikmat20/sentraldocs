@@ -177,3 +177,55 @@ ERROR - 2021-09-27 04:07:17 --> Severity: Notice --> Undefined variable: ukuran 
 ERROR - 2021-09-27 04:08:28 --> The upload path does not appear to be valid.
 ERROR - 2021-09-27 04:08:28 --> Severity: Notice --> Undefined variable: ukuran D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 1536
 ERROR - 2021-09-27 04:16:43 --> Severity: Notice --> Undefined property: stdClass::$created D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\review.php 43
+ERROR - 2021-09-27 02:26:41 --> 404 Page Not Found: /index
+ERROR - 2021-09-27 02:26:49 --> 404 Page Not Found: /index
+ERROR - 2021-09-27 10:14:43 --> Severity: Notice --> Undefined variable: user D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_review.php 47
+ERROR - 2021-09-27 10:14:43 --> Severity: Notice --> Undefined variable: doc1 D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_review.php 49
+ERROR - 2021-09-27 10:14:43 --> Severity: Notice --> Undefined variable: doc2 D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_review.php 82
+ERROR - 2021-09-27 10:14:43 --> Severity: Notice --> Undefined variable: doc3 D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_review.php 115
+ERROR - 2021-09-27 10:47:29 --> Severity: Notice --> Undefined variable: row1 D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\review.php 69
+ERROR - 2021-09-27 10:47:29 --> Severity: Notice --> Undefined variable: row2 D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\review.php 101
+ERROR - 2021-09-27 10:48:48 --> Severity: Notice --> Undefined variable: row D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\review.php 39
+ERROR - 2021-09-27 10:48:48 --> Severity: Notice --> Undefined variable: row1 D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\review.php 69
+ERROR - 2021-09-27 10:48:48 --> Severity: Notice --> Undefined variable: row2 D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\review.php 101
+ERROR - 2021-09-27 10:49:59 --> Query error: Table 'sentraldocs_db.xtbl_approval' doesn't exist - Invalid query: SELECT * FROM xtbl_approval WHERE nm_table='gambar' AND id_dokumen='107'
+ERROR - 2021-09-27 10:51:21 --> Query error: Table 'sentraldocs_db.xtbl_replace' doesn't exist - Invalid query: SELECT * FROM xtbl_replace WHERE nm_table='gambar' AND id_dokumen='107'
+ERROR - 2021-09-27 11:44:43 --> Severity: Notice --> Undefined property: stdClass::$id_reveiw D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 70
+ERROR - 2021-09-27 11:44:43 --> Severity: Notice --> Undefined property: stdClass::$id_approve D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 72
+ERROR - 2021-09-27 11:44:43 --> Severity: Notice --> Undefined property: stdClass::$id_reveiw D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 70
+ERROR - 2021-09-27 11:44:43 --> Severity: Notice --> Undefined property: stdClass::$id_approve D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 72
+ERROR - 2021-09-27 11:44:43 --> Severity: Notice --> Undefined property: stdClass::$id_reveiw D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 70
+ERROR - 2021-09-27 11:44:43 --> Severity: Notice --> Undefined property: stdClass::$id_approve D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 72
+ERROR - 2021-09-27 11:44:43 --> Severity: Notice --> Undefined property: stdClass::$id_reveiw D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 70
+ERROR - 2021-09-27 11:44:43 --> Severity: Notice --> Undefined property: stdClass::$id_approve D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 72
+ERROR - 2021-09-27 11:44:43 --> Severity: Notice --> Undefined property: stdClass::$id_reveiw D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 70
+ERROR - 2021-09-27 11:44:43 --> Severity: Notice --> Undefined property: stdClass::$id_approve D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 72
+ERROR - 2021-09-27 11:44:43 --> Severity: Notice --> Undefined property: stdClass::$id_reveiw D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 70
+ERROR - 2021-09-27 11:44:43 --> Severity: Notice --> Undefined property: stdClass::$id_approve D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 72
+ERROR - 2021-09-27 11:44:43 --> Severity: Notice --> Undefined property: stdClass::$id_reveiw D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 70
+ERROR - 2021-09-27 11:44:43 --> Severity: Notice --> Undefined property: stdClass::$id_approve D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 72
+ERROR - 2021-09-27 11:44:43 --> Severity: Notice --> Undefined property: stdClass::$id_reveiw D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 70
+ERROR - 2021-09-27 11:44:43 --> Severity: Notice --> Undefined property: stdClass::$id_approve D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 72
+ERROR - 2021-09-27 11:45:03 --> Severity: Notice --> Undefined property: stdClass::$id_approve D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 72
+ERROR - 2021-09-27 11:45:03 --> Severity: Notice --> Undefined property: stdClass::$id_approve D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 72
+ERROR - 2021-09-27 11:45:03 --> Severity: Notice --> Undefined property: stdClass::$id_approve D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 72
+ERROR - 2021-09-27 11:45:03 --> Severity: Notice --> Undefined property: stdClass::$id_approve D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 72
+ERROR - 2021-09-27 11:45:03 --> Severity: Notice --> Undefined property: stdClass::$id_approve D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 72
+ERROR - 2021-09-27 11:45:03 --> Severity: Notice --> Undefined property: stdClass::$id_approve D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 72
+ERROR - 2021-09-27 11:45:03 --> Severity: Notice --> Undefined property: stdClass::$id_approve D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 72
+ERROR - 2021-09-27 11:48:56 --> Severity: Notice --> Undefined property: stdClass::$created D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\approval.php 85
+ERROR - 2021-09-27 11:48:56 --> Severity: Notice --> Undefined property: stdClass::$created D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\approval.php 85
+ERROR - 2021-09-27 11:52:25 --> Severity: Notice --> Undefined property: stdClass::$created D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\approval.php 48
+ERROR - 2021-09-27 11:52:25 --> Severity: Notice --> Undefined property: stdClass::$created D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\approval.php 48
+ERROR - 2021-09-27 08:36:06 --> 404 Page Not Found: /index
+ERROR - 2021-09-27 08:36:15 --> 404 Page Not Found: /index
+ERROR - 2021-09-27 15:47:24 --> Severity: Notice --> Undefined property: stdClass::$review_by_name D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 128
+ERROR - 2021-09-27 15:47:24 --> Severity: Notice --> Undefined property: stdClass::$review_by_name D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 128
+ERROR - 2021-09-27 15:47:47 --> Severity: Notice --> Undefined property: stdClass::$review_by_name D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 95
+ERROR - 2021-09-27 15:47:47 --> Severity: Notice --> Undefined property: stdClass::$review_by_name D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 95
+ERROR - 2021-09-27 15:47:47 --> Severity: Notice --> Undefined property: stdClass::$review_by_name D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 95
+ERROR - 2021-09-27 15:47:47 --> Severity: Notice --> Undefined property: stdClass::$review_by_name D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 95
+ERROR - 2021-09-27 15:47:47 --> Severity: Notice --> Undefined property: stdClass::$review_by_name D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 95
+ERROR - 2021-09-27 15:47:47 --> Severity: Notice --> Undefined property: stdClass::$review_by_name D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 95
+ERROR - 2021-09-27 15:47:47 --> Severity: Notice --> Undefined property: stdClass::$review_by_name D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 128
+ERROR - 2021-09-27 15:47:47 --> Severity: Notice --> Undefined property: stdClass::$review_by_name D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\index_approve.php 128
