@@ -116,8 +116,8 @@
 						</div>
 						<div class="card-footer text-center border-0 justify-content-center p-0">
 							<h3 class="card-title p-5 m-0">
-								<a href="<?= base_url('dokumen/koreksi'); ?>" class="text-hover-primary" title="Documents Correction">
-									<span class="card-label m-0 text-danger text-center font-weight-bolder">Documents Correction</span>
+								<a href="<?= base_url('dokumen/koreksi'); ?>" class="text-hover-primary" title="Correction Documents">
+									<span class="card-label m-0 text-danger text-center font-weight-bolder">Correction Documents</span>
 								</a>
 							</h3>
 						</div>

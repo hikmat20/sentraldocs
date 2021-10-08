@@ -34,10 +34,6 @@ $ENABLE_DOWNLOAD  = has_permission('Dokumen.Download');
 							foreach ($doc1 as $dc1) :
 								$jabreview1 	= $dc1->id_review;
 								$jabapprove1 	= $dc1->id_approval;
-								$approve_by 	= $dc1->approval_by;
-								$carireview1 	= $this->db->query("SELECT * FROM tbl_pejabat WHERE id_user ='$iduser' AND id_jabatan='$jabreview1' AND id_perusahaan='$prsh' AND id_cabang='$cbg'")->num_rows();
-								$cariapproval1 	= $this->db->query("SELECT * FROM tbl_pejabat WHERE id_user ='$iduser' AND id_jabatan='$jabapprove1' AND id_perusahaan='$prsh' AND id_cabang='$cbg'")->num_rows();
-								$approveby 		= $this->db->query("SELECT * FROM users WHERE id_user ='$approve_by'")->row();;
 								$n++; ?>
 								<tr>
 									<td><?= $dc1->deskripsi; ?></td>
@@ -49,10 +45,8 @@ $ENABLE_DOWNLOAD  = has_permission('Dokumen.Download');
 									<td><?= $dc1->created; ?></td>
 									<td>
 										<?php
-										if (($dc1->status_approve == '3') && ($dc1->id_review == $idjabatan)) :	?>
+										if (($dc1->status_approve == '1') && ($dc1->id_review == $idjabatan)) :	?>
 											<button type="button" class="btn btn-xs btn-shadow btn-icon btn-shadow btn-icon btn-primary review" title="Review Data" data-id="<?php echo $dc1->id ?>" data-file="<?php echo $dc1->nama_file ?>" data-table="gambar"> <i class="fa fa-eye"></i></button>
-										<?php elseif (($dc1->status_approve == '3') && ($dc1->id_approval == $idjabatan)) :	?>
-											<button type="button" class="btn btn-xs btn-shadow btn-icon btn-shadow btn-icon btn-warning approve" title="Approve Data" data-id="<?php echo $dc1->id ?>" data-file="<?php echo $dc1->nama_file ?>" data-table="gambar"> <i class="fa fa-check"></i></button>
 										<?php endif; ?>
 									</td>
 								</tr>
@@ -65,12 +59,6 @@ $ENABLE_DOWNLOAD  = has_permission('Dokumen.Download');
 						if ($doc2) :
 							$n	= 0;
 							foreach ($doc2 as $dc2) :
-								$jabreview1 	= $dc2->id_review;
-								$jabapprove1 	= $dc2->id_approval;
-								$approve_by 	= $dc2->id_approval;
-								$carireview1 	= $this->db->query("SELECT * FROM tbl_pejabat WHERE id_user ='$iduser' AND id_jabatan='$jabreview1' AND id_perusahaan='$prsh' AND id_cabang='$cbg'")->num_rows();
-								$cariapproval1 	= $this->db->query("SELECT * FROM tbl_pejabat WHERE id_user ='$iduser' AND id_jabatan='$jabapprove1' AND id_perusahaan='$prsh' AND id_cabang='$cbg'")->num_rows();
-								$approveby 		= $this->db->query("SELECT * FROM users WHERE id_user ='$approve_by'")->row();;
 								$n++; ?>
 								<tr>
 									<td><?= $dc2->deskripsi; ?></td>
@@ -82,10 +70,8 @@ $ENABLE_DOWNLOAD  = has_permission('Dokumen.Download');
 									<td><?= $dc2->created; ?></td>
 									<td>
 										<?php
-										if ($dc2->status_approve == '3' && $carireview1 > 0) :	?>
+										if ($dc2->status_approve == '1' && ($dc2->id_review == $idjabatan)) :	?>
 											<button type="button" class="btn btn-xs btn-shadow btn-icon btn-primary review" title="Review Data" data-id="<?php echo $dc2->id ?>" data-file="<?php echo $dc2->nama_file ?>" data-table="gambar"> <i class="fa fa-eye"></i></button>
-										<?php elseif ($dc2->status_approve == '3' && $carireview1 > 0) :	?>
-											<button type="button" class="btn btn-xs btn-shadow btn-icon btn-warning approve" title="Approve Data" data-id="<?php echo $dc2->id ?>" data-file="<?php echo $dc2->nama_file ?>" data-table="gambar"> <i class="fa fa-check"></i></button>
 										<?php endif; ?>
 									</td>
 								</tr>

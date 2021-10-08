@@ -1,9 +1,9 @@
 <?php
 $sts = [
 	'0' => 'Revisi',
-	'1' => 'Waiting Approval',
-	'2' => 'Approve',
-	'3' => 'Waiting Review',
+	'1' => 'Waiting Review',
+	'2' => 'Waiting Approval',
+	'3' => 'Approve',
 ]; ?>
 <div class="content d-flex flex-column flex-column-fluid">
 	<div class="container">

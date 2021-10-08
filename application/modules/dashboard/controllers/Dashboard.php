@@ -43,20 +43,31 @@ class Dashboard extends Admin_Controller
 	public function create_documents()
 	{
 		$this->template->set('title', 'Create Document');
-		$doc = $this->db->get('master_gambar')->num_rows();
-		$cor1 = $this->db->get_where('gambar', ['status_approve' => 0, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
-		$cor2 = $this->db->get_where('gambar1', ['status_approve' => 0, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
-		$cor3 = $this->db->get_where('gambar2', ['status_approve' => 0, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
-		$apv1 = $this->db->get_where('gambar', ['status_approve' => 1, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
-		$apv2 = $this->db->get_where('gambar1', ['status_approve' => 1, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
-		$apv3 = $this->db->get_where('gambar2', ['status_approve' => 1, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
-		$rev1 = $this->db->get_where('gambar', ['status_approve' => 3, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
-		$rev2 = $this->db->get_where('gambar1', ['status_approve' => 3, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
-		$rev3 = $this->db->get_where('gambar2', ['status_approve' => 3, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+		$id_jabatan = $this->session->app_session['id_jabatan'];
+		$id_user 	= $this->session->app_session['id_user'];
+		$doc1 = $this->db->get_where('gambar', ['nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+		$doc2 = $this->db->get_where('gambar1', ['nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+		$doc3 = $this->db->get_where('gambar2', ['nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+		$doc = $doc1 + $doc2 + $doc3;
+
+		// koreksi
+		$cor1 = $this->db->get_where('gambar', ['status_approve' => 0, 'prepared_by' => $id_user, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+		$cor2 = $this->db->get_where('gambar1', ['status_approve' => 0, 'prepared_by' => $id_user, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+		$cor3 = $this->db->get_where('gambar2', ['status_approve' => 0, 'prepared_by' => $id_user, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+
+		// revisi
+		$rev1 = $this->db->get_where('gambar', ['status_approve' => 1, 'id_review' => $id_jabatan, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+		$rev2 = $this->db->get_where('gambar1', ['status_approve' => 1, 'id_review' => $id_jabatan, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+		$rev3 = $this->db->get_where('gambar2', ['status_approve' => 1, 'id_review' => $id_jabatan, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+
+		// approve
+		$apv1 = $this->db->get_where('gambar', ['status_approve' => 2, 'id_approval' => $id_jabatan, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+		$apv2 = $this->db->get_where('gambar1', ['status_approve' => 2, 'id_approval' => $id_jabatan, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
+		$apv3 = $this->db->get_where('gambar2', ['status_approve' => 2, 'id_approval' => $id_jabatan, 'nama_file !=' => null, 'id_perusahaan' => $this->prsh, 'id_cabang' => $this->cbg])->num_rows();
 
 		$allCorr 	= $cor1 + $cor2 + $cor3;
-		$allApv 	= $apv1 + $apv2 + $apv3;
 		$allRev 	= $rev1 + $rev2 + $rev3;
+		$allApv 	= $apv1 + $apv2 + $apv3;
 
 		$pictures = $this->db->get('pictures')->result();
 		$this->template->set('pictures', $pictures);

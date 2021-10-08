@@ -871,14 +871,14 @@ class Dokumen extends Admin_Controller
 	{
 		$this->auth->restrict($this->viewPermission);
 		$session 	= $this->session->userdata('app_session');
-		$prsh 		=  $session['id_perusahaan'];
-		$cbg 		=  $session['id_cabang'];
+		$prsh 		= $session['id_perusahaan'];
+		$cbg 		= $session['id_cabang'];
 		$jabatan 	= $session['id_jabatan'];
 		$user    	= $session['id_user'];
 
-		$doc1		= $this->db->or_where(['status_approve' => 1])->where(['nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar')->result();
-		$doc2		= $this->db->or_where(['status_approve' => 1])->where(['nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar1')->result();
-		$doc3		= $this->db->or_where(['status_approve' => 1])->where(['nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar2')->result();
+		$doc1		= $this->db->where(['status_approve' => 2, 'id_approval' => $jabatan, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar')->result();
+		$doc2		= $this->db->where(['status_approve' => 2, 'id_approval' => $jabatan, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar1')->result();
+		$doc3		= $this->db->where(['status_approve' => 2, 'id_approval' => $jabatan, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar2')->result();
 
 		$this->template->set([
 			'doc1' 		=> $doc1,
@@ -968,7 +968,6 @@ class Dokumen extends Admin_Controller
 			$data_approval = $this->db->query("SELECT * FROM  tbl_approval WHERE id_dokumen ='$id' AND nm_table='$table' ")->result();
 
 			foreach ($data_approval as $val) {
-
 				$data_insert = array(
 
 					'id'                => $val->id,
@@ -990,12 +989,9 @@ class Dokumen extends Admin_Controller
 
 			$getRevisi = $this->db->query("SELECT revisi FROM $table WHERE id='$id' ")->row();
 			$revisi    = $getRevisi->revisi;
-
-			// print_r($revisi);
-			// exit;
-
 			$data_update = array(
 				'status_approve'    => 0,
+				// 'revisi'    		=> $revisi,
 				'approval_on'	    => date('Y-m-d H:i:s'),
 				'approval_by'		=> $this->auth->user_id()
 			);
@@ -1101,9 +1097,9 @@ class Dokumen extends Admin_Controller
 		$session 			= $this->session->userdata('app_session');
 		$jabatan 			= $session['id_jabatan'];
 		$get_Data			= $this->Folders_model->getData('master_gambar');
-		$doc1				= $this->db->get_where('gambar', ['status_approve' => 0, 'nama_file !=' => null])->result();
-		$doc2				= $this->db->get_where('gambar1', ['status_approve' => 0, 'nama_file !=' => null])->result();
-		$doc3				= $this->db->get_where('gambar2', ['status_approve' => 0, 'nama_file !=' => null])->result();
+		$doc1				= $this->db->get_where('gambar', ['status_approve' => 0, 'prepared_by' => $session['id_user'], 'nama_file !=' => null])->result();
+		$doc2				= $this->db->get_where('gambar1', ['status_approve' => 0, 'prepared_by' => $session['id_user'], 'nama_file !=' => null])->result();
+		$doc3				= $this->db->get_where('gambar2', ['status_approve' => 0, 'prepared_by' => $session['id_user'], 'nama_file !=' => null])->result();
 
 		$this->template->set([
 			'title' 	=> 'Index Koreksi Dokumen',
@@ -1184,8 +1180,6 @@ class Dokumen extends Admin_Controller
 
 	public function simpan_koreksi()
 	{
-
-
 		$config['upload_path'] = './assets/files/'; //path folder
 		$config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
 		$config['encrypt_name'] = false; //Enkripsi nama yang terupload
@@ -1216,20 +1210,18 @@ class Dokumen extends Admin_Controller
 		$id_master 	= $this->input->post('id_master');
 		$id_detail 	= $this->input->post('id');
 		$table      = $this->input->post('table');
-		// echo"<pre>";print_r($this->input->post());exit;
 
 		$Arr_Kembali			= array();
 		$insert = $this->db->query("SELECT * FROM $table WHERE id='$id_detail' ")->row();
 		$norev  = $insert->revisi;
 
-		if ($insert->id_review != '0') {
-			$approve	= '3';
-		} else {
+		if ($insert->id_review != '') {
 			$approve	= '1';
+		} else {
+			$approve	= '2';
 		}
 
 		if ($ukuran > 0) {
-
 			$data['id_master']		= $id_master;
 			$data['nama_file']	    = $gambar;
 			$data['ukuran_file']	= $ukuran;
@@ -1265,10 +1257,10 @@ class Dokumen extends Admin_Controller
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['id_master']		= $id_master;
 			$data['id']		        = $id_detail;
-			if ($insert->id_review != '0') {
-				$data['status_approve']	= 3;
-			} else {
+			if ($insert->id_review != '') {
 				$data['status_approve']	= 1;
+			} else {
+				$data['status_approve']	= 2;
 			}
 			$update = $this->Folders_model->getUpdate('gambar', $data, 'id', $this->input->post('id'));
 		}
@@ -1325,18 +1317,14 @@ class Dokumen extends Admin_Controller
 		$id_master 	= $this->input->post('id_master');
 		$id_detail 	= $this->input->post('id');
 		$table      = $this->input->post('table');
-		// echo"<pre>";print_r($this->input->post());exit;
 
 		$insert = $this->db->query("SELECT * FROM $table  WHERE id='$id_detail'")->row();
 		$norev  = $insert->revisi;
-		if ($insert->id_review != '0') {
-			$approve	= '3';
-		} else {
+		if ($insert->id_review != '') {
 			$approve	= '1';
+		} else {
+			$approve	= '2';
 		}
-
-		$insert = $this->db->query("SELECT * FROM $table  WHERE id='$id_detail'")->row();
-		$norev  = $insert->revisi;
 
 		$Arr_Kembali			= array();
 
@@ -1346,7 +1334,6 @@ class Dokumen extends Admin_Controller
 			$data['ukuran_file']	= $ukuran;
 			$data['tipe_file']		= $ext;
 			$data['lokasi_file']	= $lokasi;
-			$data_session			= $this->session->userdata;
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['id_master']		= $id_master;
@@ -1354,7 +1341,6 @@ class Dokumen extends Admin_Controller
 			$data['ukuran_file']	= $ukuran;
 			$data['tipe_file']		= $ext;
 			$data['lokasi_file']	= $lokasi;
-			$data_session			= $this->session->userdata;
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['status_approve']	= $approve;
@@ -1549,23 +1535,29 @@ class Dokumen extends Admin_Controller
 
 		$sts = [
 			'0' => 'Revisi',
-			'1' => 'Waiting Approval',
-			'2' => 'Approve',
-			'3' => 'Waiting Review',
+			'1' => 'Waiting Review',
+			'2' => 'Waiting Approval',
+			'3' => 'Approve',
 		];
 
-		$doc1		= $this->db->or_where(['status_approve' => 3])->where(['nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar')->result();
-		$doc2		= $this->db->or_where(['status_approve' => 3])->where(['nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar1')->result();
-		$doc3		= $this->db->or_where(['status_approve' => 3])->where(['nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar2')->result();
+		$doc1		= $this->db->order_by("CASE WHEN id_approval = '$jabatan' THEN 0 ELSE 1 END", "ASC")->where(['status_approve' => 1, 'id_review' => $jabatan, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar')->result();
+		$doc2		= $this->db->order_by("CASE WHEN id_approval = '$jabatan' THEN 0 ELSE 1 END", "ASC")->where(['status_approve' => 1, 'id_review' => $jabatan, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar1')->result();
+		$doc3		= $this->db->order_by("CASE WHEN id_approval = '$jabatan' THEN 0 ELSE 1 END", "ASC")->where(['status_approve' => 1, 'id_review' => $jabatan, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar2')->result();
+		$docN1		= $this->db->where(['status_approve' => 1, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar')->result();
+		$docN2		= $this->db->where(['status_approve' => 1, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar1')->result();
+		$docN3		= $this->db->where(['status_approve' => 1, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar2')->result();
 
 		$this->template->set([
 			'doc1' 			=> $doc1,
 			'doc2' 			=> $doc2,
 			'doc3' 			=> $doc3,
+			'docN1' 		=> $docN1,
+			'docN2' 		=> $docN2,
+			'docN3' 		=> $docN3,
 			'prsh' 			=> $prsh,
 			'cbg' 			=> $cbg,
 			'sts' 			=> $sts,
-			'title'			=> 'Index Approval Dokumen',
+			'title'			=> 'Index Review Dokumen',
 			'idjabatan' 	=> $jabatan,
 			'iduser' 		=> $user,
 		]);

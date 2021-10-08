@@ -288,20 +288,16 @@ class Folders extends Admin_Controller
 			$data['lokasi_file']	= (isset($lokasi)) ? $lokasi : '';
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
-			$data['id_master']		= $id_master;
-			$data['id_approval']	= $this->input->post('id_approval');
 			$data['id_perusahaan']  = $prsh;
 			$data['id_cabang']		= $cbg;
 			$dist 					= implode(",", $this->input->post('id_distribusi'));
 			$data['id_distribusi']	= $dist;
 
 			if ($this->input->post('id_review') != '') {
-				$data['status_approve']	= 3;
-				$data['id_review']		= $this->input->post('id_review');
+				$data['status_approve']	= 2;
 			} else {
 				$data['status_approve']	= 1;
 			}
-
 
 			$this->db->trans_begin();
 			$this->Folders_model->simpan('gambar', $data);
@@ -315,7 +311,6 @@ class Folders extends Admin_Controller
 			}
 
 			$this->db->insert_batch('distribusi', $arr_dist);
-
 			if ($this->db->trans_status() === 0) {
 				$this->db->trans_rollback();
 				$Arr_Kembali		= array(
@@ -679,14 +674,16 @@ class Folders extends Admin_Controller
 			$data['lokasi_file']	= (isset($lokasi)) ? $lokasi : '';
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
-			$data['id_master']		= $id_master;
-			$data['id_detail']		= $id_detail;
 			$data['id_perusahaan']  = $prsh;
 			$data['id_cabang']		= $cbg;
-			$data['id_approval']	= $this->input->post('id_approval');
-			$data['status_approve']	= 1;
 			$dist 					= implode(",", $this->input->post('id_distribusi'));
 			$data['id_distribusi']	= $dist;
+
+			if ($this->input->post('id_review') != '') {
+				$data['status_approve']	= 2;
+			} else {
+				$data['status_approve']	= 1;
+			}
 
 			$this->db->trans_begin();
 			$this->Folders_model->simpan('gambar1', $data);
@@ -778,7 +775,6 @@ class Folders extends Admin_Controller
 			$id_sub 		= $sub_folder->id;
 			$folders		= $this->db->get_where('view_gambar1', ['id_detail' => $id_sub, 'nama_file' => null])->result();
 			$files			= $this->db->get_where('view_gambar1', ['id_detail' => $id_sub, 'nama_file !=' => null])->result();
-
 			$this->template->set('list', true);
 			$this->template->set('files', $files);
 			$this->template->set('folders', $folders);
@@ -910,10 +906,6 @@ class Folders extends Admin_Controller
 			$data['deskripsi']		= $this->input->post('folder_name');
 			$data['id_perusahaan']  = $prsh;
 			$data['id_cabang']		= $cbg;
-			// echo '<pre>';
-			// print_r($data);
-			// echo '<pre>';
-			// exit;
 
 			$this->db->trans_begin();
 			$this->db->insert('gambar1', $data);
@@ -944,8 +936,6 @@ class Folders extends Admin_Controller
 
 
 	//SUB DOKUMEN 1
-
-
 	public function detail1()
 	{
 		$this->auth->restrict($this->viewPermission);
@@ -1019,19 +1009,14 @@ class Folders extends Admin_Controller
 			$data['lokasi_file']	= (isset($lokasi)) ? $lokasi : '';
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
-			$data['id_master']		= $id_master;
-			$data['id_detail']		= $id_detail;
 			$data['id_perusahaan']  = $prsh;
 			$data['id_cabang']		= $cbg;
-			$data['id_approval']	= $this->input->post('id_approval');
 
 			if ($this->input->post('id_review') != '') {
-				$data['status_approve']	= 3;
-				$data['id_review']	= $this->input->post('id_review');
+				$data['status_approve']	= 2;
 			} else {
 				$data['status_approve']	= 1;
 			}
-
 
 			if ($this->Folders_model->simpan('gambar', $data)) {
 				$Arr_Kembali		= array(
@@ -1441,8 +1426,6 @@ class Folders extends Admin_Controller
 			$id_master 	= $this->input->post('id_master');
 			$id_detail 	= $this->input->post('id_detail');
 			$id_detail1 	= $this->input->post('id_detail1');
-			// echo"<pre>";print_r($this->input->post());exit;	        
-
 
 			$Arr_Kembali			= array();
 			$data					= $this->input->post();
@@ -1452,20 +1435,14 @@ class Folders extends Admin_Controller
 			$data['lokasi_file']	= (isset($lokasi)) ? $lokasi : '';
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
-			$data['id_master']		= $id_master;
-			$data['id_detail']		= $id_detail;
-			$data['id_detail1']		= $id_detail1;
 			$data['id_perusahaan']  = $prsh;
 			$data['id_cabang']		= $cbg;
-			$data['id_approval']	= $this->input->post('id_approval');
 
 			if ($this->input->post('id_review') != '') {
-				$data['status_approve']	= 3;
-				$data['id_review']	= $this->input->post('id_review');
+				$data['status_approve']	= 2;
 			} else {
 				$data['status_approve']	= 1;
 			}
-
 
 			if ($this->Folders_model->simpan('gambar2', $data)) {
 				$Arr_Kembali		= array(

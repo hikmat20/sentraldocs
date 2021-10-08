@@ -11,9 +11,9 @@ $cbg     = $session['id_cabang'];
 
 $sts = [
 	'0' => 'Revisi',
-	'1' => 'Waiting Approval',
-	'2' => 'Approve',
-	'3' => 'Waiting Review',
+	'1' => 'Waiting Review',
+	'2' => 'Waiting Approval',
+	'3' => 'Approve',
 ]; ?>
 
 <div class="content d-flex flex-column flex-column-fluid">
@@ -53,22 +53,16 @@ $sts = [
 								$jabreview1 	= $dc1->id_review;
 								$jabapprove1 	= $dc1->id_approval;
 								$approve_by 	= $dc1->id_approval;
-								$carireview1 	= $this->db->query("SELECT * FROM tbl_pejabat WHERE id_user ='$iduser' AND id_jabatan='$jabreview1' AND id_perusahaan='$prsh' AND id_cabang='$cbg'")->num_rows();
-								$cariapproval1 	= $this->db->query("SELECT * FROM tbl_pejabat WHERE id_user ='$iduser' AND id_jabatan='$jabapprove1' AND id_perusahaan='$prsh' AND id_cabang='$cbg'")->num_rows();
-								$approveby 		= $this->db->query("SELECT * FROM users WHERE id_user ='$approve_by'")->row();;
 								$n++; ?>
 								<tr>
 									<td><?= $dc1->deskripsi; ?></td>
 									<td><?= $dc1->nama_file; ?></td>
 									<td><?= $dc1->revisi; ?></td>
-									<td><?= $dc1->review_by_name; ?></td>
+									<td><?= $dc1->nm_review; ?><br><?= $dc1->review_by_name; ?></td>
 									<td><?= $dc1->approve_by_name; ?></td>
 									<td><?= $sts[$dc1->status_approve]; ?></td>
 									<td><?= $dc1->created; ?></td>
 									<td>
-										<?php if ($dc1->status_approve == '3' && $carireview1 > 0) : ?>
-											<button type="button" class="btn btn-xs btn-shadow btn-icon btn-primary review" title="Review Data" data-id="<?php echo $dc1->id ?>" data-file="<?php echo $dc1->nama_file ?>" data-table="gambar"> <i class="fa fa-eye"></i></button>
-										<?php endif; ?>
 										<?php if (($dc1->status_approve == '1') && ($dc1->id_approval == $idjabatan)) : ?>
 											<button type="button" class="btn btn-xs btn-shadow btn-icon btn-shadow btn-icon btn-warning approve" title="Approve Data" data-id="<?php echo $dc1->id ?>" data-file="<?php echo $dc1->nama_file ?>" data-table="gambar"> <i class="fa fa-check"></i></button>
 										<?php endif; ?>
@@ -86,9 +80,6 @@ $sts = [
 								$jabreview1 	= $dc2->id_review;
 								$jabapprove1 	= $dc2->id_approval;
 								$approve_by 	= $dc2->id_approval;
-								$carireview1 	= $this->db->query("SELECT * FROM tbl_pejabat WHERE id_user ='$iduser' AND id_jabatan='$jabreview1' AND id_perusahaan='$prsh' AND id_cabang='$cbg'")->num_rows();
-								$cariapproval1 	= $this->db->query("SELECT * FROM tbl_pejabat WHERE id_user ='$iduser' AND id_jabatan='$jabapprove1' AND id_perusahaan='$prsh' AND id_cabang='$cbg'")->num_rows();
-								$approveby 		= $this->db->query("SELECT * FROM users WHERE id_user ='$approve_by'")->row();;
 								$n++; ?>
 								<tr>
 									<td><?= $dc2->deskripsi; ?></td>
@@ -100,9 +91,7 @@ $sts = [
 									<td><?= $dc2->created; ?></td>
 									<td>
 										<?php
-										if ($dc2->status_approve == '3' && $carireview1 > 0) :	?>
-											<button type="button" class="btn btn-xs btn-shadow btn-icon btn-primary review" title="Review Data" data-id="<?php echo $dc2->id ?>" data-file="<?php echo $dc2->nama_file ?>" data-table="gambar"> <i class="fa fa-eye"></i></button>
-										<?php elseif ($dc2->status_approve == '1' && ($dc2->id_approval == $idjabatan)) :	?>
+										if ($dc2->status_approve == '1' && ($dc2->id_approval == $idjabatan)) :	?>
 											<button type="button" class="btn btn-xs btn-shadow btn-icon btn-warning approve" title="Approve Data" data-id="<?php echo $dc2->id ?>" data-file="<?php echo $dc2->nama_file ?>" data-table="gambar"> <i class="fa fa-check"></i></button>
 										<?php endif; ?>
 									</td>
@@ -119,9 +108,6 @@ $sts = [
 								$jabreview1 	= $dc3->id_review;
 								$jabapprove1 	= $dc3->id_approval;
 								$approve_by 	= $dc3->id_approval;
-								$carireview1 	= $this->db->query("SELECT * FROM tbl_pejabat WHERE id_user ='$iduser' AND id_jabatan='$jabreview1' AND id_perusahaan='$prsh' AND id_cabang='$cbg'")->num_rows();
-								$cariapproval1 	= $this->db->query("SELECT * FROM tbl_pejabat WHERE id_user ='$iduser' AND id_jabatan='$jabapprove1' AND id_perusahaan='$prsh' AND id_cabang='$cbg'")->num_rows();
-								$approveby 		= $this->db->query("SELECT * FROM users WHERE id_user ='$approve_by'")->row();;
 								$n++; ?>
 								<tr>
 									<td><?= $dc3->deskripsi; ?></td>
@@ -133,10 +119,8 @@ $sts = [
 									<td><?= $dc3->created; ?></td>
 									<td>
 										<?php
-										if ($dc3->status_approve == '3' && $carireview1 > 0) :	?>
-											<button type="button" class="btn btn-sm btn-primary review" title="Review Data" data-id="<?php echo $dc3->id ?>" data-file="<?php echo $dc3->nama_file ?>" data-table="gambar"> <i class="fa fa-eye"></i></button>
-										<?php elseif ($dc3->status_approve == '1' && ($dc3->id_approval == $idjabatan)) :	?>
-											<button type="button" class="btn btn-sm btn-warning approve" title="Approve Data" data-id="<?php echo $dc3->id ?>" data-file="<?php echo $dc3->nama_file ?>" data-table="gambar"> <i class="fa fa-check"></i></button>
+										if ($dc3->status_approve == '1' && ($dc3->id_approval == $idjabatan)) :	?>
+											<button type="button" class="btn btn-xs btn-warning approve" title="Approve Data" data-id="<?php echo $dc3->id ?>" data-file="<?php echo $dc3->nama_file ?>" data-table="gambar"> <i class="fa fa-check"></i></button>
 										<?php endif; ?>
 									</td>
 								</tr>

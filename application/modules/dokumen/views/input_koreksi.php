@@ -73,11 +73,6 @@ foreach ($data as $dt) {
 	</div>
 </form>
 <div class="my-5">
-	<?php
-	// echo form_button(array('type' => 'button', 'class' => 'btn btn-md btn-primary', 'value' => 'save', 'content' => 'Save', 'id' => 'simpan-com')) . ' ';
-	// echo form_button(array('type' => 'button', 'class' => 'btn btn-md btn-danger', 'value' => 'back', 'content' => 'Back', 'onClick' => 'javascript:back()'));
-	?>
-
 	<button type="button" class="btn btn-success" id="simpan-com"><i class="fa fa-save"></i> Save</button>
 </div>
 
