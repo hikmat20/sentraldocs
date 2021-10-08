@@ -135,7 +135,7 @@ $sts = [
 										<?php
 										if ($dc3->status_approve == '3' && $carireview1 > 0) :	?>
 											<button type="button" class="btn btn-sm btn-primary review" title="Review Data" data-id="<?php echo $dc3->id ?>" data-file="<?php echo $dc3->nama_file ?>" data-table="gambar"> <i class="fa fa-eye"></i></button>
-										<?php elseif ($dc3->status_approve == '1' && ($dc1->id_approval == $idjabatan)) :	?>
+										<?php elseif ($dc3->status_approve == '1' && ($dc3->id_approval == $idjabatan)) :	?>
 											<button type="button" class="btn btn-sm btn-warning approve" title="Approve Data" data-id="<?php echo $dc3->id ?>" data-file="<?php echo $dc3->nama_file ?>" data-table="gambar"> <i class="fa fa-check"></i></button>
 										<?php endif; ?>
 									</td>
