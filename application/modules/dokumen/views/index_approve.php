@@ -66,8 +66,10 @@ $sts = [
 									<td><?= $sts[$dc1->status_approve]; ?></td>
 									<td><?= $dc1->created; ?></td>
 									<td>
-										<?php
-										if (($dc1->status_approve == '1') && ($dc1->id_approval == $idjabatan)) :	?>
+										<?php if ($dc1->status_approve == '3' && $carireview1 > 0) : ?>
+											<button type="button" class="btn btn-xs btn-shadow btn-icon btn-primary review" title="Review Data" data-id="<?php echo $dc1->id ?>" data-file="<?php echo $dc1->nama_file ?>" data-table="gambar"> <i class="fa fa-eye"></i></button>
+										<?php endif; ?>
+										<?php if (($dc1->status_approve == '1') && ($dc1->id_approval == $idjabatan)) : ?>
 											<button type="button" class="btn btn-xs btn-shadow btn-icon btn-shadow btn-icon btn-warning approve" title="Approve Data" data-id="<?php echo $dc1->id ?>" data-file="<?php echo $dc1->nama_file ?>" data-table="gambar"> <i class="fa fa-check"></i></button>
 										<?php endif; ?>
 									</td>
@@ -100,7 +102,7 @@ $sts = [
 										<?php
 										if ($dc2->status_approve == '3' && $carireview1 > 0) :	?>
 											<button type="button" class="btn btn-xs btn-shadow btn-icon btn-primary review" title="Review Data" data-id="<?php echo $dc2->id ?>" data-file="<?php echo $dc2->nama_file ?>" data-table="gambar"> <i class="fa fa-eye"></i></button>
-										<?php elseif ($dc2->status_approve == '3' && $carireview1 > 0) :	?>
+										<?php elseif ($dc2->status_approve == '1' && ($dc1->id_approval == $idjabatan)) :	?>
 											<button type="button" class="btn btn-xs btn-shadow btn-icon btn-warning approve" title="Approve Data" data-id="<?php echo $dc2->id ?>" data-file="<?php echo $dc2->nama_file ?>" data-table="gambar"> <i class="fa fa-check"></i></button>
 										<?php endif; ?>
 									</td>
@@ -133,7 +135,7 @@ $sts = [
 										<?php
 										if ($dc3->status_approve == '3' && $carireview1 > 0) :	?>
 											<button type="button" class="btn btn-sm btn-primary review" title="Review Data" data-id="<?php echo $dc3->id ?>" data-file="<?php echo $dc3->nama_file ?>" data-table="gambar"> <i class="fa fa-eye"></i></button>
-										<?php elseif ($dc3->status_approve == '3' && $carireview1 > 0) :	?>
+										<?php elseif ($dc3->status_approve == '1' && ($dc1->id_approval == $idjabatan)) :	?>
 											<button type="button" class="btn btn-sm btn-warning approve" title="Approve Data" data-id="<?php echo $dc3->id ?>" data-file="<?php echo $dc3->nama_file ?>" data-table="gambar"> <i class="fa fa-check"></i></button>
 										<?php endif; ?>
 									</td>
