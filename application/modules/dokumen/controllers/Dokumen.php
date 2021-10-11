@@ -70,7 +70,7 @@ class Dokumen extends Admin_Controller
 		$cbg     = $session['id_cabang'];
 		if (!$detail && !$enddetail) {
 			$folders		= $this->db->get_where('view_gambar', ['id_master' => $id_master, 'nama_file' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->result();
-			$files			= $this->db->get_where('view_gambar', ['id_master' => $id_master, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->result();
+			$files			= $this->db->get_where('view_gambar', ['id_master' => $id_master, 'status_approve' => '3', 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->result();
 			$get_Data		= $this->Folders_model->getData('view_gambar', 'id_master', $id_master);
 			// $get_Master		= $this->Folders_model->getData('gambar', 'id', $id_sub);
 
@@ -87,7 +87,7 @@ class Dokumen extends Admin_Controller
 			$id_master 		= $sub_folder->id_master;
 			$id_sub 		= $sub_folder->id;
 			$folders		= $this->db->get_where('view_gambar1', ['id_detail' => $id_sub, 'nama_file' => null])->result();
-			$files			= $this->db->get_where('view_gambar1', ['id_detail' => $id_sub, 'nama_file !=' => null])->result();
+			$files			= $this->db->get_where('view_gambar1', ['id_detail' => $id_sub, 'xstatus_approve' => '3', 'nama_file !=' => null])->result();
 
 			$this->template->set('list', true);
 			$this->template->set('files', $files);
@@ -104,7 +104,7 @@ class Dokumen extends Admin_Controller
 			$id_enddetail	= $endfolder->id;
 
 			$folders		= $this->db->get_where('view_gambar2', ['id_detail1' => $id_enddetail, 'nama_file' => null])->result();
-			$files			= $this->db->get_where('view_gambar2', ['id_detail1' => $id_enddetail, 'nama_file !=' => null])->result();
+			$files			= $this->db->get_where('view_gambar2', ['id_detail1' => $id_enddetail, 'status_approve' => '3', 'nama_file !=' => null])->result();
 
 			$this->template->set('list', true);
 			$this->template->set('files', $files);

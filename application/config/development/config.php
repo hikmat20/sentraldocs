@@ -166,7 +166,7 @@ $config['composer_autoload'] = FALSE;
 | DO NOT CHANGE THIS UNLESS YOU FULLY UNDERSTAND THE REPERCUSSIONS!!
 |
 */
-$config['permitted_uri_chars'] = 'a-z 0-9~%.:,\_\=+%\&\-\(\)';
+$config['permitted_uri_chars'] = 'a-z 0-9~%.:,\_\=+%\&\-\(\) ';
 
 /*
 |--------------------------------------------------------------------------
@@ -174,7 +174,7 @@ $config['permitted_uri_chars'] = 'a-z 0-9~%.:,\_\=+%\&\-\(\)';
 |--------------------------------------------------------------------------
 |
 | By default CodeIgniter uses search-engine friendly segment based URLs:
-| example.com/who/what/where/
+| example.com/who/what/where/ 
 |
 | By default CodeIgniter enables access to the $_GET array.  If for some
 | reason you would like to disable it, set 'allow_get_array' to FALSE.

@@ -307,7 +307,7 @@ $sts = [
 							Swal.fire({
 								title: "Gagal!",
 								text: "Batal Proses, Data bisa diproses nanti",
-								type: "error",
+								icon: "error",
 								timer: 3000,
 								showConfirmButton: false
 							});
