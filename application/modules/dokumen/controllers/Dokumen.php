@@ -1646,7 +1646,7 @@ class Dokumen extends Admin_Controller
 		} elseif ($status == 'revisi') {
 
 			$getRevisi = $this->db->query("SELECT revisi FROM $table WHERE id='$id' ")->row();
-			$revisi    = $getRevisi->revisi;
+			$revisi    = $getRevisi->revisi + 1;
 
 			$data_update = array(
 				'status_approve'    => 0,
@@ -1662,7 +1662,7 @@ class Dokumen extends Admin_Controller
 				'id_dokumen'        => $this->input->post('id'),
 				'nm_table'          => $this->input->post('table'),
 				'revisi'            => $revisi,
-				'created_on'	    	=> date('Y-m-d H:i:s'),
+				'created_on'	    => date('Y-m-d H:i:s'),
 				'created_by'		=> $this->auth->user_id()
 			);
 
