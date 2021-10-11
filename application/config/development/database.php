@@ -76,13 +76,13 @@ $query_builder = true;
 
 $db['default'] = array(
     'dsn' => '',
-    'hostname' => 'localhost',
+    'hostname' => '103.228.117.98',
     'username' => 'root',
-    'password' => 'adminroot',
+    'password' => 'Annabell2018',
     'database' => 'sentraldocs_db',
     'dbdriver' => 'mysqli',
     'dbprefix' => '',
-    'port' => '3307',
+    // 'port' => '3307',
     'pconnect' => false,
     'db_debug' => (ENVIRONMENT !== 'production'),
     'cache_on' => false,

@@ -14,3 +14,7 @@ ERROR - 2021-10-11 11:48:34 --> Severity: Notice --> Undefined variable: datas2 
 ERROR - 2021-10-11 11:48:34 --> Severity: Notice --> Trying to get property 'nama_file' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\review.php 109
 ERROR - 2021-10-11 11:48:34 --> Severity: Notice --> Undefined variable: datas2 D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\review.php 109
 ERROR - 2021-10-11 11:48:34 --> Severity: Notice --> Trying to get property 'nama_file' of non-object D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\review.php 109
+ERROR - 2021-10-11 06:31:21 --> Severity: Warning --> mysqli::real_connect(): (HY000/1045): Access denied for user 'root'@'https://sentral.dutastudy.com' (using password: YES) D:\SENTRAL\SENTRALDOCS\sentraldocs\system\database\drivers\mysqli\mysqli_driver.php 203
+ERROR - 2021-10-11 06:31:21 --> Unable to connect to the database
+ERROR - 2021-10-11 06:31:40 --> 404 Page Not Found: /index
+ERROR - 2021-10-11 06:31:49 --> 404 Page Not Found: /index

@@ -1540,9 +1540,9 @@ class Dokumen extends Admin_Controller
 			'3' => 'Approve',
 		];
 
-		$doc1		= $this->db->order_by("CASE WHEN id_approval = '$jabatan' THEN 0 ELSE 1 END", "ASC")->where(['status_approve' => 1, 'id_review' => $jabatan, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar')->result();
-		$doc2		= $this->db->order_by("CASE WHEN id_approval = '$jabatan' THEN 0 ELSE 1 END", "ASC")->where(['status_approve' => 1, 'id_review' => $jabatan, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar1')->result();
-		$doc3		= $this->db->order_by("CASE WHEN id_approval = '$jabatan' THEN 0 ELSE 1 END", "ASC")->where(['status_approve' => 1, 'id_review' => $jabatan, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar2')->result();
+		$doc1		= $this->db->order_by("CASE WHEN id_review = '$jabatan' THEN 0 ELSE 1 END", "ASC")->where(['status_approve' => 1, 'id_review' => $jabatan, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar')->result();
+		$doc2		= $this->db->order_by("CASE WHEN id_review = '$jabatan' THEN 0 ELSE 1 END", "ASC")->where(['status_approve' => 1, 'id_review' => $jabatan, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar1')->result();
+		$doc3		= $this->db->order_by("CASE WHEN id_review = '$jabatan' THEN 0 ELSE 1 END", "ASC")->where(['status_approve' => 1, 'id_review' => $jabatan, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar2')->result();
 		$docN1		= $this->db->where(['status_approve' => 1, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar')->result();
 		$docN2		= $this->db->where(['status_approve' => 1, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar1')->result();
 		$docN3		= $this->db->where(['status_approve' => 1, 'nama_file !=' => null, 'id_perusahaan' => $prsh, 'id_cabang' => $cbg])->get('view_gambar2')->result();
@@ -1572,17 +1572,10 @@ class Dokumen extends Admin_Controller
 		$this->auth->restrict($this->viewPermission);
 		$session 	= $this->session->userdata('app_session');
 		$jabatan 	= $session['id_jabatan'];
-
 		$id    		= $this->input->post('id');
 		$table    	= $this->input->post('table');
 		$nama_file 	= $this->input->post('file');
-
 		$data = $this->db->query("SELECT * FROM tbl_approval WHERE nm_table='$table' AND id_dokumen='$id'")->result();
-
-		$id    		= $this->input->post('id');
-		$table    	= $this->input->post('table');
-		$nama_file 	= $this->input->post('file');
-
 		if ($table == 'gambar') {
 			$detail				= $this->Folders_model->getData('gambar', 'id', $id);
 		} else if ($table == 'gambar1') {
@@ -1594,7 +1587,6 @@ class Dokumen extends Admin_Controller
 		$doc1 = $this->db->query("SELECT * FROM tbl_approval WHERE nm_table='$table' AND id_dokumen='$id'")->result();
 		$doc2 = $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
 		$doc3 = $this->db->query("SELECT * FROM tbl_replace WHERE nm_table='$table' AND id_dokumen='$id'")->result();
-
 
 		$this->template->set('jabatan', $jabatan);
 		$this->template->set('id', $id);
@@ -1613,9 +1605,7 @@ class Dokumen extends Admin_Controller
 		$id 		= $this->input->post('id');
 		$table 		= $this->input->post('table');
 
-
 		if ($status == 'approve') {
-
 			$getRevisi = $this->db->query("SELECT revisi FROM $table WHERE id='$id' ")->row();
 			$revisi    = $getRevisi->revisi;
 
