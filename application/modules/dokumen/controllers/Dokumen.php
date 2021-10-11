@@ -87,7 +87,7 @@ class Dokumen extends Admin_Controller
 			$id_master 		= $sub_folder->id_master;
 			$id_sub 		= $sub_folder->id;
 			$folders		= $this->db->get_where('view_gambar1', ['id_detail' => $id_sub, 'nama_file' => null])->result();
-			$files			= $this->db->get_where('view_gambar1', ['id_detail' => $id_sub, 'xstatus_approve' => '3', 'nama_file !=' => null])->result();
+			$files			= $this->db->get_where('view_gambar1', ['id_detail' => $id_sub, 'status_approve' => '3', 'nama_file !=' => null])->result();
 
 			$this->template->set('list', true);
 			$this->template->set('files', $files);
