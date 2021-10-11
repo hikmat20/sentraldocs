@@ -1671,7 +1671,6 @@ class Dokumen extends Admin_Controller
 			$Arr_Return		= array(
 				'status'		=> 1,
 				'pesan'			=> 'Save Process Success. ',
-				// 'kode'			=> $kode
 			);
 		}
 		echo json_encode($Arr_Return);
