@@ -109,7 +109,6 @@ foreach ($data as $dt) {
 				} else if (tabel == 'gambar2') {
 					var baseurl = base_url + active_controller + 'simpan_koreksi2';
 				}
-				console.log(tabel);
 				$.ajax({
 					url: baseurl,
 					type: "POST",

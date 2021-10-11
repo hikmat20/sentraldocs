@@ -63,7 +63,7 @@ $sts = [
 									<td><?= $sts[$dc1->status_approve]; ?></td>
 									<td><?= $dc1->created; ?></td>
 									<td>
-										<?php if (($dc1->status_approve == '1') && ($dc1->id_approval == $idjabatan)) : ?>
+										<?php if (($dc1->status_approve == '2') && ($dc1->id_approval == $idjabatan)) : ?>
 											<button type="button" class="btn btn-xs btn-shadow btn-icon btn-shadow btn-icon btn-warning approve" title="Approve Data" data-id="<?php echo $dc1->id ?>" data-file="<?php echo $dc1->nama_file ?>" data-table="gambar"> <i class="fa fa-check"></i></button>
 										<?php endif; ?>
 									</td>
@@ -91,8 +91,8 @@ $sts = [
 									<td><?= $dc2->created; ?></td>
 									<td>
 										<?php
-										if ($dc2->status_approve == '1' && ($dc2->id_approval == $idjabatan)) :	?>
-											<button type="button" class="btn btn-xs btn-shadow btn-icon btn-warning approve" title="Approve Data" data-id="<?php echo $dc2->id ?>" data-file="<?php echo $dc2->nama_file ?>" data-table="gambar"> <i class="fa fa-check"></i></button>
+										if ($dc2->status_approve == '2' && $dc2->id_approval == $idjabatan) :	?>
+											<button type="button" class="btn btn-xs btn-shadow btn-icon btn-warning approve" title="Approve Data" data-id="<?php echo $dc2->id ?>" data-file="<?php echo $dc2->nama_file ?>" data-table="gambar1"> <i class="fa fa-check"></i></button>
 										<?php endif; ?>
 									</td>
 								</tr>
@@ -119,8 +119,8 @@ $sts = [
 									<td><?= $dc3->created; ?></td>
 									<td>
 										<?php
-										if ($dc3->status_approve == '1' && ($dc3->id_approval == $idjabatan)) :	?>
-											<button type="button" class="btn btn-xs btn-warning approve" title="Approve Data" data-id="<?php echo $dc3->id ?>" data-file="<?php echo $dc3->nama_file ?>" data-table="gambar"> <i class="fa fa-check"></i></button>
+										if ($dc3->status_approve == '2' && ($dc3->id_approval == $idjabatan)) :	?>
+											<button type="button" class="btn btn-xs btn-warning approve" title="Approve Data" data-id="<?php echo $dc3->id ?>" data-file="<?php echo $dc3->nama_file ?>" data-table="gambar2"> <i class="fa fa-check"></i></button>
 										<?php endif; ?>
 									</td>
 								</tr>
@@ -131,11 +131,9 @@ $sts = [
 					</tbody>
 				</table>
 			</div>
-			<!-- /.card-body -->
 		</div>
 	</div>
 </div>
-<!-- /.card -->
 
 <form id="form-modal" action="" method="post">
 	<div class="modal fade" id="ModalView" tabindex="-1" role="dialog" aria-labelledby="exampleModalSizeSm" aria-hidden="true">
@@ -237,6 +235,89 @@ $sts = [
 			}
 		})
 	});
+
+	function saveapproval() {
+		if ($('#status').val() == "") {
+			Swal.fire({
+				title: "STATUS TIDAK BOLEH KOSONG!",
+				text: "ISI STATUS TERLEBIH DAHULU!",
+				icon: "warning",
+				timer: 3000,
+				showCancelButton: false,
+				showConfirmButton: false,
+				allowOutsideClick: false
+			});
+		} else {
+			Swal.fire({
+				title: "Peringatan !",
+				text: "Pastikan data sudah lengkap dan benar",
+				icon: "warning",
+				showCancelButton: true,
+				confirmButtonText: "Ya, simpan!",
+				cancelButtonText: "Batal!",
+			}).then((value) => {
+				if (value.isConfirmed == true) {
+					var formdata = $("#form-subsubject").serialize();
+					$.ajax({
+						url: siteurl + "dokumen/saveApproval",
+						dataType: "json",
+						type: 'POST',
+						data: formdata,
+						success: function(data) {
+							if (data.status == 1) {
+								Swal.fire({
+									title: "Save Success!",
+									text: data.pesan,
+									icon: "success",
+									timer: 3000,
+									showCancelButton: false,
+									showConfirmButton: false,
+									allowOutsideClick: false
+								}).then(() => {
+									location.reload();
+								})
+								// window.location.href = siteurl + active_controller + '/' + uri2 + '/' + uri3 + '/' + uri4;
+							} else {
+
+								if (data.status == 2) {
+									Swal.fire({
+										title: "Save Failed!",
+										text: data.pesan,
+										icon: "warning",
+										timer: 3000,
+										showCancelButton: false,
+										showConfirmButton: false,
+										allowOutsideClick: false
+									});
+								} else {
+									Swal.fire({
+										title: "Save Failed!",
+										text: data.pesan,
+										icon: "warning",
+										timer: 3000,
+										showCancelButton: false,
+										showConfirmButton: false,
+										allowOutsideClick: false
+									});
+								}
+
+							}
+						},
+						error: function() {
+							Swal.fire({
+								title: "Gagal!",
+								text: "Batal Proses, Data bisa diproses nanti",
+								type: "error",
+								timer: 3000,
+								showConfirmButton: false
+							});
+						}
+					});
+				}
+
+			})
+		}
+	}
 
 	$(document).on('click', '#save', function() {
 		if ($('#status').val() == "") {

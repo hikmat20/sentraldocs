@@ -932,31 +932,23 @@ class Dokumen extends Admin_Controller
 
 	public function saveApproval()
 	{
+		$id 		= $this->input->post('id');
+		$table 		= $this->input->post('table');
+		$status 	= $this->input->post('status');
 
-
-		$status = $this->input->post('status');
-		$id = $this->input->post('id');
-		$table = $this->input->post('table');
-
-		// print_r($table);
-		// exit;
-
-		//$this->db->trans_begin();
-
+		$this->db->trans_begin();
 		if ($status == 'approve') {
-
 			$getRevisi = $this->db->query("SELECT * FROM $table WHERE id='$id' ")->row();
-			if ($getRevisi->status_revisi == '1') {
-				$revisi    = $getRevisi->revisi + 1;
-				$statusrev = '0';
-			} else {
-				$revisi    = $getRevisi->revisi;
-				$statusrev = $getRevisi->status_revisi;
-			}
+			$statusrev = '0';
+			// if ($getRevisi->status_revisi == '1') {
+			// 	$revisi    = $getRevisi->revisi + 1;
+			// } else {
+			// 	$revisi    = $getRevisi->revisi;
+			// }
 
 			$data_update = array(
-				'revisi'           => $revisi,
-				'status_approve'    => 2,
+				// 'revisi'           => $revisi,
+				'status_approve'    => 3,
 				'status_revisi'     => $statusrev,
 				'approval_on'	    => date('Y-m-d H:i:s'),
 				'approval_by'		=> $this->auth->user_id()
@@ -966,10 +958,8 @@ class Dokumen extends Admin_Controller
 			);
 
 			$data_approval = $this->db->query("SELECT * FROM  tbl_approval WHERE id_dokumen ='$id' AND nm_table='$table' ")->result();
-
 			foreach ($data_approval as $val) {
 				$data_insert = array(
-
 					'id'                => $val->id,
 					'keterangan'        => $val->keterangan,
 					'id_dokumen'        => $val->id_dokumen,
@@ -983,15 +973,13 @@ class Dokumen extends Admin_Controller
 			}
 
 			$this->Folders_model->getUpdateData($table, $data_update, $where);
-
 			$this->db->delete("tbl_approval", array('id_dokumen' => $id, 'nm_table' => $table));
 		} elseif ($status == 'revisi') {
-
 			$getRevisi = $this->db->query("SELECT revisi FROM $table WHERE id='$id' ")->row();
-			$revisi    = $getRevisi->revisi;
+			$revisi    = $getRevisi->revisi + 1;
 			$data_update = array(
 				'status_approve'    => 0,
-				// 'revisi'    		=> $revisi,
+				'revisi'    		=> $revisi,
 				'approval_on'	    => date('Y-m-d H:i:s'),
 				'approval_by'		=> $this->auth->user_id()
 			);
@@ -1212,8 +1200,8 @@ class Dokumen extends Admin_Controller
 		$table      = $this->input->post('table');
 
 		$Arr_Kembali			= array();
-		$insert = $this->db->query("SELECT * FROM $table WHERE id='$id_detail' ")->row();
-		$norev  = $insert->revisi;
+		$insert = $this->db->query("SELECT * FROM $table WHERE id='$id_detail'")->row();
+		$norev  = $insert->revisi + 1;
 
 		if ($insert->id_review != '') {
 			$approve	= '1';
@@ -1319,7 +1307,7 @@ class Dokumen extends Admin_Controller
 		$table      = $this->input->post('table');
 
 		$insert = $this->db->query("SELECT * FROM $table  WHERE id='$id_detail'")->row();
-		$norev  = $insert->revisi;
+		$norev  = $insert->revisi + 1;
 		if ($insert->id_review != '') {
 			$approve	= '1';
 		} else {
@@ -1435,18 +1423,13 @@ class Dokumen extends Admin_Controller
 		$id_master 	= $this->input->post('id_master');
 		$id_detail 	= $this->input->post('id');
 		$table      = $this->input->post('table');
-		// echo"<pre>";print_r($this->input->post());exit;
-
 		$insert = $this->db->query("SELECT * FROM $table WHERE id='$id_detail' ")->row();
-		$norev  = $insert->revisi;
+		$norev  = $insert->revisi + 1;
 		if ($insert->id_review != '0') {
-			$approve	= '3';
-		} else {
 			$approve	= '1';
+		} else {
+			$approve	= '2';
 		}
-
-		$insert = $this->db->query("SELECT * FROM $table WHERE id='$id_detail' ")->row();
-		$norev  = $insert->revisi;
 
 		$Arr_Kembali			= array();
 
@@ -1456,7 +1439,6 @@ class Dokumen extends Admin_Controller
 			$data['ukuran_file']	= $ukuran;
 			$data['tipe_file']		= $ext;
 			$data['lokasi_file']	= $lokasi;
-			$data_session			= $this->session->userdata;
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['id_master']		= $id_master;
@@ -1610,7 +1592,7 @@ class Dokumen extends Admin_Controller
 			$revisi    = $getRevisi->revisi;
 
 			$data_update = array(
-				'status_approve'    => 1,
+				'status_approve'    => 2,
 				'review_on'	    => date('Y-m-d H:i:s'),
 				'review_by'		=> $this->auth->user_id()
 			);
@@ -1626,7 +1608,7 @@ class Dokumen extends Admin_Controller
 					'keterangan'        => $this->input->post('keterangan'),
 					'id_dokumen'        => $this->input->post('id'),
 					'nm_table'          => $this->input->post('table'),
-					'revisi'           => $revisi,
+					'revisi'            => $revisi,
 					'created_on'	    => date('Y-m-d H:i:s'),
 					'created_by'		=> $this->auth->user_id()
 				);
