@@ -2,20 +2,22 @@
 <table class="table table-bordered table-sm table-striped">
 	<thead>
 		<tr>
-			<th width="100px">No Revisi</th>
+			<th width="150px">User</th>
+			<th width="10%" class="text-center">Koreksi Ke</th>
 			<th>Keterangan</th>
+			<th width="150px" class="text-center">Terakhir di Update</th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php
 		$idjabatan = $jabatan;
 		if ($row) :
-			$int	= 0;
-			foreach ($row as $datas) :
-				$int++; ?>
+			foreach ($row as $dt) : ?>
 				<tr>
-					<td><?= $datas->revisi; ?></td>
-					<td><?= $datas->keterangan; ?></td>
+					<td><?= $dt->nm_lengkap; ?></td>
+					<td class="text-center"><?= $dt->revisi; ?></td>
+					<td><?= $dt->keterangan; ?></td>
+					<td class="text-center"><?= $dt->created_on; ?></td>
 				</tr>
 			<?php endforeach; ?>
 		<?php else : ?>
@@ -42,18 +44,11 @@ foreach ($data as $dt) {
 					<div class="input-group-prepend">
 						<span class="input-group-text"><i class="fa fa-file"></i></span>
 					</div>
-					<?php
-					// echo form_input(array('type' => 'hidden', 'id' => 'id', 'name' => 'id', 'class' => 'form-control input-sm', 'value' => $id, 'placeholder' => 'Id'));
-					// echo form_input(array('type' => 'hidden', 'id' => 'id_master', 'name' => 'id_master', 'class' => 'form-control input-sm', 'value' => $idmaster, 'placeholder' => 'Id Master'));
-					// echo form_input(array('id' => 'deskripsi', 'name' => 'deskripsi', 'class' => 'form-control input-sm', 'autocomplete' => 'off', 'placeholder' => 'Deskripsi', 'value' => $deskripsi,));
-					// echo form_input(array('type' => 'hidden', 'id' => 'table', 'name' => 'table', 'class' => 'form-control input-sm', 'autocomplete' => 'off', 'placeholder' => 'Table', 'value' => $table,));
-					?>
 					<input type="hidden" name="id" id="id" class="form-control" placeholder="form-control" value="<?= $id; ?>">
 					<input type="hidden" name="id_master" id="id_master" class="form-control" placeholder="form-control" value="<?= $idmaster; ?>">
 					<input type="hidden" name="table" id="table" class="form-control" placeholder="form-control" value="<?= $table; ?>">
 					<input type="text" name="deskripsi" id="deskripsi" class="form-control" placeholder="form-control" value="<?= $deskripsi; ?>">
 				</div>
-
 			</div>
 		</div>
 		<div class="col-md-6">
@@ -70,12 +65,17 @@ foreach ($data as $dt) {
 				</div>
 			</div>
 		</div>
+		<div class="col-md-6 mt-5">
+			<label class="form-lable col-md-2">Keterangan</label>
+			<div class="col-lg-8">
+				<textarea name="keterangan" id="keterangan" class="form-control" rows="3" placeholder="Keterangan"></textarea>
+			</div>
+		</div>
+	</div>
+	<div class="my-5">
+		<button type="button" class="btn btn-success" id="simpan-com"><i class="fa fa-save"></i> Save</button>
 	</div>
 </form>
-<div class="my-5">
-	<button type="button" class="btn btn-success" id="simpan-com"><i class="fa fa-save"></i> Save</button>
-</div>
-
 <script>
 	$(document).on('click', '#simpan-com', function(e) {
 		e.preventDefault();
@@ -92,6 +92,15 @@ foreach ($data as $dt) {
 			return false;
 		}
 
+		if (image == '' || image == null) {
+			Swal.fire({
+				title: "Error Message!",
+				text: 'Empty FILE, please input FILE first.....',
+				icon: "warning"
+			});
+			return false;
+		}
+
 		Swal.fire({
 			title: "Are you sure?",
 			text: "You will not be able to process again this data!",
@@ -102,6 +111,7 @@ foreach ($data as $dt) {
 		}).then((value) => {
 			if (value.isConfirmed == true) {
 				var formData = new FormData($('#form_proses')[0]);
+				console.log(tabel);
 				if (tabel == 'gambar') {
 					var baseurl = base_url + active_controller + 'simpan_koreksi';
 				} else if (tabel == 'gambar1') {

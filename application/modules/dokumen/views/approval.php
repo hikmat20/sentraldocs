@@ -26,17 +26,21 @@
 			<table id="example1" class="table table-bordered table-sm table-striped">
 				<thead>
 					<tr>
-						<th width="100px">No Rev</th>
+						<th width="150px">User</th>
+						<th width="10%" class="text-center">Koreksi Ke</th>
 						<th>Keterangan</th>
+						<th width="150px" class="text-center">Terakhir di Update</th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php if ($row) :
 						$int	= 0;
-						foreach ($row as $datas) : $int++; ?>
+						foreach ($row as $dt) : $int++; ?>
 							<tr>
-								<td><?= $datas->revisi; ?></td>
-								<td><?= $datas->keterangan; ?></td>
+								<td><?= $dt->nm_lengkap; ?></td>
+								<td class="text-center"><?= $dt->revisi; ?></td>
+								<td><?= $dt->keterangan; ?></td>
+								<td class="text-center"><?= $dt->created_on; ?></td>
 							</tr>
 						<?php endforeach;
 					else : ?>
@@ -54,15 +58,19 @@
 					<tr>
 						<th width="100px">No Rev</th>
 						<th>Keterangan</th>
+						<th>File</th>
+						<th class="text-center" width="100px">Waktu Pengajuan</th>
 					</tr>
 				</thead>
 				<tbody>
-					<?php if ($row1) :
+					<?php if ($rev) :
 						$int	= 0;
-						foreach ($row1 as $dc1) : $int++; ?>
+						foreach ($rev as $rv) : $int++; ?>
 							<tr>
-								<td><?= $dc1->revisi; ?></td>
-								<td><?= $dc1->keterangan_rev; ?></td>
+								<td><?= $rv->revisi; ?></td>
+								<td><?= $rv->keterangan_rev; ?></td>
+								<td class="text-center"><a href="<?= base_url('assets/files/') . $rv->nama_file; ?>" target="_blank" title="Lihat File" class="btn btn-hover-icon-danger"><i class="fa fa-2x fa-file-pdf"></i></a></td>
+								<td><?= $rv->created; ?></td>
 							</tr>
 						<?php endforeach;
 					else : ?>
@@ -73,14 +81,15 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="mb-3">
+		<!-- <div class="mb-3">
 			<h3>History Dokumen</h3>
 			<table id="example1" class="table table-bordered table-sm table-striped">
 				<thead>
 					<tr>
-						<th width="100px">No Rev</th>
-						<th>Nama File</th>
-						<th>Action</th>
+						<th width="150px">User</th>
+						<th width="10%" class="text-center">Koreksi Ke</th>
+						<th>Keterangan</th>
+						<th width="150px" class="text-center">Terakhir di Update</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -91,7 +100,7 @@
 								<td><?= $dc2->revisi; ?></td>
 								<td><?= $dc2->nama_file; ?></td>
 								<td>
-									<a href="#" onClick="window.open('<?php echo site_url(); ?>assets/files/<?php echo "$datas2->nama_file"; ?>', '_blank')" class="btn btn-sm btn-success" title="View Data"><i class="fa fa-eye"></i></a>
+									<a href="#" onClick="window.open('<?php echo site_url(); ?>assets/files/<?php echo "$dc2->nama_file"; ?>', '_blank')" class="btn btn-sm btn-success" title="View Data"><i class="fa fa-eye"></i></a>
 								</td>
 							</tr>
 						<?php endforeach;
@@ -102,7 +111,7 @@
 					<?php endif; ?>
 				</tbody>
 			</table>
-		</div>
+		</div> -->
 	</div>
 	<div class="col-md-6">
 		<iframe src='<?php echo site_url(); ?>assets/files/<?php echo "$nama_file"; ?>' width='100%' height='565px' frameborder='0'> </iframe></td>

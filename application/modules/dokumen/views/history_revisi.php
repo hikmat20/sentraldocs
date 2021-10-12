@@ -4,23 +4,24 @@
 		<table class="table table-condensed table-bordered table-striped">
 			<thead>
 				<tr>
-					<th width="30%">No Rev</th>
+					<th width="50px">No Rev</th>
 					<th>Keterangan</th>
+					<th>File</th>
+					<th>Waktu Pengajuan</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php
-				$idjabatan = $jabatan;
-
 				if ($row) :
 					$int	= 0;
 					foreach ($row as $datas) :
 						$int++;
-						$tgl = date_create($datas->created);
-				?>
+						$tgl = date_create($datas->created); ?>
 						<tr>
 							<td><?= $datas->revisi; ?></td>
 							<td><?= $datas->keterangan_rev; ?></td>
+							<td class="text-center"><a href="<?= base_url('assets/files/') . $datas->nama_file; ?>" target="_blank" title="Lihat File" class="btn btn-hover-icon-danger"><i class="fa fa-2x fa-file-pdf"></i></a></td>
+							<td><?= $datas->created; ?></td>
 						</tr>
 					<?php endforeach;
 				else : ?>
@@ -31,8 +32,8 @@
 			</tbody>
 		</table>
 
-		<h5>History Dokumen</h5>
-		<table class="table table-condensed table-bordered table-striped">
+		<!-- <h5>History Dokumen</h5> -->
+		<!-- <table class="table table-condensed table-bordered table-striped">
 			<thead>
 				<tr>
 					<th width="30%">No Rev</th>
@@ -62,7 +63,7 @@
 					</tr>
 				<?php endif; ?>
 			</tbody>
-		</table>
+		</table> -->
 
 		<h5>Download</h5>
 		<table class="table table-condensed table-bordered table-striped">

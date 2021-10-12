@@ -9,12 +9,7 @@ $sts = [
 	<div class="container">
 		<div class="card-stretch shadow card-custom">
 			<div class="card-header pb-0">
-
 				<h3 class="card-title"><a class="text-danger" href="<?= base_url('dashboard/create_documents'); ?>"><i class="fa fa-arrow-left"></i></a> &nbsp<?= $title; ?></h3>
-				<input type="hidden" id="uri1" name="uri1" value="<?php echo $this->uri->segment(1) ?>" />
-				<input type="hidden" id="uri2" name="uri2" value="<?php echo $this->uri->segment(2) ?>" />
-				<input type="hidden" id="uri3" name="uri3" value="<?php echo $this->uri->segment(3) ?>" />
-				<input type="hidden" id="uri4" name="uri4" value="<?php echo $this->uri->segment(4) ?>" />
 			</div>
 			<div class="card-body bg-white">
 				<table id="example1" class="table table-bordered table-striped">
@@ -82,7 +77,7 @@ $sts = [
 									<td><?= $dc3->created; ?></td>
 									<td>
 										<?php if ($dc3->status_approve == '1' && $dc3->id_approval == $idjabatan) : ?>
-											<button type="button" class="btn btn-xs btn-warning btn-icon btn-shadow edit" title="Edit Data" data-file="<?php echo $dc3->nama_file ?>" data-id="<?php echo $dc3->id ?>" data-table="gambar2"><i class="fa fa-check"></i></button>
+											<button type="button" class="btn btn-xs btn-warning btn-icon btn-shadow edit" title="Edit Data" data-file="<?php echo $dc3->nama_file ?>" data-id="<?php echo $dc3->id ?>" data-table="gambar2"><i class="fa fa-edit"></i></button>
 										<?php endif; ?>
 									</td>
 								</tr>
@@ -145,13 +140,11 @@ $sts = [
 				confirmButtonClass: "btn-danger",
 				confirmButtonText: "Yes, Process it!",
 				cancelButtonText: "No, cancel process!",
-				closeOnConfirm: true,
-				closeOnCancel: false
 			},
 			function(isConfirm) {
 				if (isConfirm) {
 					loading_spinner();
-					window.location.href = base_url + 'index.php/' + active_controller + '/delete/' + id;
+					window.location.href = base_url + active_controller + '/delete/' + id;
 				} else {
 					Swal.fire("Cancelled", "Data can be process again :)", "error");
 					return false;
@@ -163,7 +156,6 @@ $sts = [
 		var id = $(this).data('id');
 		var table = $(this).data('table');
 		var file = $(this).data('file');
-		// alert(id + ", " + table + ", " + file)
 		$.ajax({
 			url: siteurl + active_controller + 'addkoreksi',
 			type: "POST",

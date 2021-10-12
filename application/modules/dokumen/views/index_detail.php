@@ -35,8 +35,8 @@ function Size($bytes)
             <div class="card card-stretch shadow card-custom">
                 <div class="card-header">
                     <h4 class="card-title text-muted"><i class="fa fa-file"></i>
-                        &nbsp <a href="<?= base_url('folders/subfolder/'); ?><?= $nama_master; ?>"><?= str_replace("-", " ", ucfirst($nama_master)); ?></a>
-                        &nbsp <i class="fa fa-angle-right"></i> &nbsp <a href="<?= base_url('folders/subfolder/'); ?><?= $nama_master . "/" . $nama_subfolder; ?>"><?= str_replace("-", " ", ucfirst($nama_subfolder)); ?></a>
+                        &nbsp <a href="<?= base_url('dokumen/subfolder/'); ?><?= $nama_master; ?>"><?= str_replace("-", " ", ucfirst($nama_master)); ?></a>
+                        &nbsp <i class="fa fa-angle-right"></i> &nbsp <a href="<?= base_url('dokumen/subfolder/'); ?><?= $nama_master . "/" . $nama_subfolder; ?>"><?= str_replace("-", " ", ucfirst($nama_subfolder)); ?></a>
                     </h4>
                 </div>
                 <div class="card-body">

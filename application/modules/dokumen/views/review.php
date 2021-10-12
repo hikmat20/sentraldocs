@@ -1,5 +1,5 @@
 <div class="row">
-	<div class="col-lg-6">
+	<div class="col-lg-7">
 		<form id="form-subsubject" method="post">
 			<h3>Create Review</h3>
 			<input type="hidden" id="id" name="id" value="<?= (isset($id) ? $id : '0') ?>" />
@@ -23,69 +23,72 @@
 				<i class="fa fa-save"></i><b> Simpan</b>
 			</button>
 		</form>
-
-		<div class="mt-8 mb-3">
-			<h3>History Koreksi</h3>
-			<table class="table table-bordered table-condensed table-sm table-striped">
-				<thead>
-					<tr>
-						<th width="20%">No Rev</th>
-						<th>Keterangan</th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php
-					$idjabatan = $jabatan;
-					if ($row) :
-						$n	= 0;
-						foreach ($row as $dt) :
-							$n++; ?>
-							<tr>
-								<td><?= $dt->revisi; ?></td>
-								<td><?= $dt->keterangan; ?></td>
-							</tr>
-						<?php endforeach; ?>
-					<?php else : ?>
+		<br>
+		<h3 class="">History Koreksi</h3>
+		<table class="table table-bordered table-condensed table-sm table-striped">
+			<thead>
+				<tr>
+					<th width="150px">User</th>
+					<th width="10%" class="text-center">Koreksi Ke</th>
+					<th>Keterangan</th>
+					<th width="150px" class="text-center">Terakhir di Update</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php
+				$idjabatan = $jabatan;
+				if ($row) :
+					$n	= 0;
+					foreach ($row as $dt) :
+						$n++; ?>
 						<tr>
-							<td colspan="2" class="text-center">Tidak ada history</td>
+							<td><?= $dt->nm_lengkap; ?></td>
+							<td class="text-center"><?= $dt->revisi; ?></td>
+							<td><?= $dt->keterangan; ?></td>
+							<td class="text-center"><?= $dt->created_on; ?></td>
 						</tr>
-					<?php endif; ?>
-				</tbody>
-			</table>
-		</div>
-
+					<?php endforeach; ?>
+				<?php else : ?>
+					<tr>
+						<td colspan="4" class="text-center">Tidak ada history</td>
+					</tr>
+				<?php endif; ?>
+			</tbody>
+		</table>
 		<div class="my-5">
 			<h3>History Revisi</h3>
 			<table class="table table-bordered table-sm table-striped">
 				<thead>
 					<tr>
-						<th width="20%">No Rev</th>
-						<th>Keterangan</th>
+						<th class="text-center" width="50px">No Rev</th>
+						<th class="text-center">Keterangan</th>
+						<th class="text-center" width="100px">File</th>
+						<th class="text-center" width="100px">Waktu Pengajuan</th>
 					</tr>
 				</thead>
 				<tbody>
 					<?php
-					$idjabatan = $jabatan;
-					if ($row1) :
+					if ($rev) :
 						$n	= 0;
-						foreach ($row1 as $dt) :
+						foreach ($rev as $dt) :
 							$n++; ?>
-							<tr>
+							<tr style="vertical-align: middle;">
 								<td><?= $dt->revisi; ?></td>
 								<td><?= $dt->keterangan_rev; ?></td>
+								<td class="text-center"><a href="<?= base_url('assets/files/') . $dt->nama_file; ?>" target="_blank" title="Lihat File" class="btn btn-hover-icon-danger"><i class="fa fa-2x fa-file-pdf"></i></a></td>
+								<td class="text-center"><?= $dt->created; ?></td>
 							</tr>
 						<?php endforeach; ?>
 					<?php else : ?>
 						<tr>
-							<td colspan="2" class="text-center">Tidak ada history</td>
+							<td colspan="3" class="text-center">Tidak ada history</td>
 						</tr>
 					<?php endif; ?>
 				</tbody>
 			</table>
 		</div>
 
-
-		<div class="my-5">
+		<!-- <div class="my-5">
 			<h3>History Dokumen</h3>
 			<table class="table table-bordered table-sm table-striped">
 				<thead>
@@ -117,10 +120,10 @@
 					<?php endif; ?>
 				</tbody>
 			</table>
-		</div>
+		</div> -->
 	</div>
-	<div class="col-lg-6">
-		<iframe src='<?php echo site_url(); ?>assets/files/<?php echo "$nama_file"; ?>' width='100%' height='565px' frameborder='0'> </iframe></td>
+	<div class="col-lg-5">
+		<iframe src='<?php echo site_url(); ?>assets/files/<?php echo "$nama_file"; ?>' width='100%' height='665px' frameborder='0'> </iframe></td>
 	</div>
 </div>
 

@@ -37,7 +37,7 @@ function Size($bytes)
                 <div class="card-header">
                     <h4 class="card-title text-muted">
                         <a href="<?= base_url('folders'); ?>"><i class="fa fa-home"></i></a>
-                        &nbsp<a href=" <?= base_url('folders/subfolder/'); ?><?= $nama_master; ?>"><?= str_replace("-", " ", ucfirst($nama_master)); ?></a>
+                        &nbsp<a href=" <?= base_url('dokumen/subfolder/'); ?><?= $nama_master; ?>"><?= str_replace("-", " ", ucfirst($nama_master)); ?></a>
                     </h4>
                 </div>
                 <div class="card-body">
@@ -77,6 +77,7 @@ function Size($bytes)
                                             <td><?= $doc->approval_on; ?></td>
                                             <td>
                                                 <a href="javascript:void(0)" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar" class="view btn btn-icon btn-warning btn-xs btn-shadow" title="View Dokumen"><i class="fa fa-eye"></i></a>
+                                                <a href="javascript:void(0)" type="button" onclick="download_file('<?= $doc->id; ?>')" class="btn btn-xs btn-info btn-icon btn-shadow ml-2" title="Download Dokumen" data-id="<?= $doc->id; ?>"><i class="fa fa-download"></i></a>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
