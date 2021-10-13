@@ -7,7 +7,7 @@
  * This is controller for Folders
  */
 
-class Dokumen extends Front_Controller
+class Dokumen extends Admin_Controller
 {
 
 	//Permission
