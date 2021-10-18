@@ -165,7 +165,7 @@ $ENABLE_DOWNLOAD  = has_permission('Dokumen.Download');
 			data: "id=" + id + "&table=" + table + "&file=" + file,
 			success: function(result) {
 				$(".modal-dialog").css('width', '90%');
-				$("#head_title").html("<b>REVIEW</b>");
+				$("#head_title").html("<b>REVIEW DOKUMEN</b>");
 				$("#view").html(result);
 				$("#ModalView").modal('show');
 			}

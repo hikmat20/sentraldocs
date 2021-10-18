@@ -6,9 +6,9 @@ $ENABLE_DELETE  = has_permission('Dokumen.Delete');
 $ENABLE_DOWNLOAD  = has_permission('Dokumen.Download');
 $sts = [
     '0' => 'Revisi',
-    '1' => 'Waiting Approval',
-    '2' => 'Approval',
-    '3' => 'Waiting Review',
+    '1' => 'Waiting Review',
+    '2' => 'Waiting Approval',
+    '3' => 'Approval',
 ];
 
 function Size($bytes)
@@ -64,6 +64,7 @@ function Size($bytes)
                                 </thead>
                                 <tbody>
                                     <?php $n = 0;
+                                    $jabatan = $session = $this->session->app_session['id_jabatan'];
                                     foreach ($files as $doc) : $n++
                                     ?>
                                         <tr>
@@ -78,6 +79,9 @@ function Size($bytes)
                                             <td>
                                                 <a href="javascript:void(0)" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar" class="view btn btn-icon btn-warning btn-xs btn-shadow" title="View Dokumen"><i class="fa fa-eye"></i></a>
                                                 <a href="javascript:void(0)" type="button" onclick="_download('<?= $doc->id; ?>')" class="btn btn-xs btn-info btn-icon btn-shadow ml-2" title="Download Dokumen" data-id="<?= $doc->id; ?>"><i class="fa fa-download"></i></a>
+                                                <?php if ($doc->id_review == $jabatan) : ?>
+                                                    <a href="javascript:void(0)" type="button" class="btn btn-xs btn-success btn-icon btn-shadow ml-2" title="Revisi Dokumen" data-id="<?= $doc->id; ?>"><i class="fa fa-reply"></i></a>
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
@@ -356,7 +360,7 @@ function Size($bytes)
             data: "id=" + id + "&table=" + table + "&file=" + file,
             success: function(result) {
                 // $(".modal-dialog").css('max-width', '1360px !important');
-                $(".modal-title").html("<b>VIEW DATA</b>");
+                $(".modal-title").html("<b>VIEW DOKUMEN</b>");
                 $("#viewData").html(result);
                 $("#ModalView").modal('show');
                 Swal.close();
@@ -380,7 +384,7 @@ function Size($bytes)
             success: function(result) {
                 // console.log(result);
                 $(".modal-dialog").css('width', '90%');
-                $("#head_title").html("<b>REVISI</b>");
+                $(".modal-title").html("<b>REVISI DOKUMEN</b>");
                 $("#viewData").html(result);
                 $("#ModalView").modal('show');
             }

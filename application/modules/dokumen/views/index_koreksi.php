@@ -162,7 +162,7 @@ $sts = [
 			data: "id=" + id + "&table=" + table + "&file=" + file,
 			success: function(result) {
 				$(".modal-dialog").css('width', '90%');
-				$("#head_title").html("<b>KOREKSI</b>");
+				$("#head_title").html("<b>KOREKSI DOKUMEN</b>");
 				$("#view").html(result);
 				$("#ModalView").modal('show');
 			}

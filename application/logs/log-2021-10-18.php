@@ -58,3 +58,48 @@ ERROR - 2021-10-18 14:29:32 --> Severity: Notice --> Undefined variable: row2 D:
 ERROR - 2021-10-18 07:30:25 --> 404 Page Not Found: /index
 ERROR - 2021-10-18 07:30:34 --> 404 Page Not Found: /index
 ERROR - 2021-10-18 14:34:53 --> Severity: Warning --> file_get_contents(./assets/files/test-quotation-proses.pdf): failed to open stream: No such file or directory D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\controllers\Dokumen.php 437
+ERROR - 2021-10-18 15:30:25 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 15:30:30 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 15:30:55 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 15:31:02 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 15:32:12 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 15:32:17 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 15:39:55 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 15:40:04 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 15:41:01 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 15:41:08 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 15:41:41 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 15:41:47 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 22:48:00 --> Severity: Notice --> Undefined variable: row2 D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\review.php 104
+ERROR - 2021-10-18 15:48:33 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 15:48:40 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 15:50:08 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 15:50:32 --> 404 Page Not Found: /index
+                                                                                                                                                                   ERROR - 2021-10-18 23:05:11 --> Severity: Notice --> Undefined variable: row2 D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\review.php 104
+ERROR - 2021-10-18 16:37:30 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 16:37:33 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 16:38:38 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 16:38:45 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 23:38:59 --> Severity: Notice --> Undefined variable: row2 D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\review.php 104
+ERROR - 2021-10-18 16:41:04 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 16:41:10 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 16:54:04 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 16:54:15 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 16:54:26 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 16:54:33 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 23:54:45 --> Severity: Notice --> Undefined variable: row2 D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\review.php 104
+ERROR - 2021-10-18 16:55:12 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 16:55:19 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 16:56:48 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 16:56:55 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 16:57:55 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 16:58:01 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 23:58:15 --> Severity: Notice --> Undefined variable: row2 D:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\dokumen\views\review.php 104
+ERROR - 2021-10-18 16:59:44 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 16:59:51 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 17:22:04 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 17:22:12 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 18:49:25 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 18:49:37 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 18:52:31 --> 404 Page Not Found: /index
+ERROR - 2021-10-18 18:52:38 --> 404 Page Not Found: /index

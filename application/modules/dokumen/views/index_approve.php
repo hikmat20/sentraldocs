@@ -211,7 +211,7 @@ $sts = [
 			data: "id=" + id + "&table=" + table + "&file=" + file,
 			success: function(result) {
 				$(".modal-dialog").css('width', '90%');
-				$("#head_title").html("<b>REVIEW</b>");
+				$("#head_title").html("<b>REVIEW DOKUMEN</b>");
 				$("#view").html(result);
 				$("#ModalView").modal('show');
 			}
@@ -229,7 +229,7 @@ $sts = [
 			data: "id=" + id + "&table=" + table + "&file=" + file,
 			success: function(result) {
 				$(".modal-dialog").css('width', '90%');
-				$("#head_title").html("<b>APPROVAL</b>");
+				$("#head_title").html("<b>APPROVAL DOKUMEN</b>");
 				$("#view").html(result);
 				$("#ModalView").modal('show');
 			}

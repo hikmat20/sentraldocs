@@ -466,7 +466,7 @@ function Size($bytes)
             success: function(result) {
                 // console.log(result);
                 $(".modal-dialog").css('width', '90%');
-                $(".modal-title").html("<b>REVISI DOKUMEN</b>");
+                $(".modal-title").html("<b>EDIT DOKUMEN</b>");
                 $("#viewData").html(result);
                 $("#ModalView").modal('show');
             }
