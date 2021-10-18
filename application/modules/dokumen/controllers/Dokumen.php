@@ -1169,13 +1169,13 @@ class Dokumen extends Admin_Controller
 
 	public function simpan_koreksi()
 	{
-
 		$config['upload_path'] = './assets/files/'; //path folder
 		$config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
 		$config['encrypt_name'] = false; //Enkripsi nama yang terupload
 		$this->upload->initialize($config);
 
-		if ($this->upload->do_upload('image')) {
+		if ($_FILES['image']['name']) {
+			$this->upload->do_upload('image');
 			$gbr = $this->upload->data();
 			//Compress Image
 			$config['image_library'] = 'gd2';
@@ -1226,6 +1226,8 @@ class Dokumen extends Admin_Controller
 			$data['status_approve']	= $approve;
 			$data['approval_by']	= null;
 			$data['approval_on']	= null;
+			unset($data['table']);
+			unset($data['keterangan']);
 
 			$data_insert = array(
 				'deskripsi'	        => $insert->deskripsi,
@@ -1296,11 +1298,14 @@ class Dokumen extends Admin_Controller
 
 	public function simpan_koreksi1()
 	{
+		$this->load->library('upload');
 		$config['upload_path'] = './assets/files/'; //path folder
 		$config['allowed_types'] = 'gif|jpg|png|jpeg|bmp|doc|docx|xls|xlsx|ppt|pptx|pdf|rar|zip'; //type yang dapat diakses bisa anda sesuaikan
 		$config['encrypt_name'] = false; //Enkripsi nama yang terupload
 		$this->upload->initialize($config);
-		if ($this->upload->do_upload('image')) {
+
+		if ($_FILES['image']['name']) {
+			$this->upload->do_upload('image');
 			$gbr = $this->upload->data();
 			//Compress Image
 			$config['image_library'] = 'gd2';
@@ -1314,19 +1319,18 @@ class Dokumen extends Admin_Controller
 			$this->load->library('image_lib', $config);
 			$this->image_lib->resize();
 
-			$gambar  = $gbr['file_name'];
-			$type    = $gbr['file_type'];
-			$ukuran  = $gbr['file_size'];
-			$ext1    = explode('.', $gambar);
-			$ext     = $ext1[1];
-			$lokasi = './assets/files/' . $gbr['file_name'];
+			$gambar  	= $gbr['file_name'];
+			$type    	= $gbr['file_type'];
+			$ukuran  	= $gbr['file_size'];
+			$ext1    	= explode('.', $gambar);
+			$ext     	= $ext1[1];
+			$lokasi 	= './assets/files/' . $gbr['file_name'];
 		}
 
-		$id_master 	= $this->input->post('id_master');
-		$id_detail 	= $this->input->post('id');
+		$id 		= $this->input->post('id');
 		$table      = $this->input->post('table');
 
-		$insert = $this->db->query("SELECT * FROM $table  WHERE id='$id_detail'")->row();
+		$insert = $this->db->query("SELECT * FROM $table  WHERE id='$id'")->row();
 		$norev  = $insert->revisi;
 		if ($insert->id_review != '') {
 			$approve	= '1';
@@ -1346,6 +1350,8 @@ class Dokumen extends Admin_Controller
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
 			$data['status_approve']	= $approve;
+			unset($data['table']);
+			unset($data['keterangan']);
 
 			$data_insert = array(
 				'deskripsi'	        => $insert->deskripsi,
@@ -1365,7 +1371,7 @@ class Dokumen extends Admin_Controller
 
 			);
 
-			$update = $this->Folders_model->getUpdate('gambar1', $data, 'id', $this->input->post('id'));
+			$update = $this->db->update('gambar1', $data, ['id' => $this->input->post('id')]);
 			if ($update) {
 				$this->db->insert("tbl_history", $data_insert);
 			}
@@ -1373,8 +1379,7 @@ class Dokumen extends Admin_Controller
 			$data					= $this->input->post();
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
-			$data['id_master']		= $id_master;
-			$data['id_detail']		= $id_detail;
+			$data['id_detail']		= $id;
 			$data['status_approve']	= $approve;
 
 			$update = $this->Folders_model->getUpdate('gambar1', $data, 'id', $this->input->post('id'));
@@ -1410,7 +1415,8 @@ class Dokumen extends Admin_Controller
 
 
 		$this->upload->initialize($config);
-		if ($this->upload->do_upload('image')) {
+		if ($_FILES['image']['name']) {
+			$this->upload->do_upload('image');
 			$gbr = $this->upload->data();
 			//Compress Image
 			$config['image_library'] = 'gd2';
@@ -1454,6 +1460,8 @@ class Dokumen extends Admin_Controller
 			$data['revisi']			= $norev;
 			$data['created_by']		= $this->auth->user_id();
 			$data['created']		= date('Y-m-d H:i:s');
+			unset($data['table']);
+			unset($data['keterangan']);
 
 			$data_insert = array(
 				'deskripsi'	        => $insert->deskripsi,

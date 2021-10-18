@@ -81,7 +81,7 @@ function Size($bytes)
                                         <td><?= $doc->approval_on; ?></td>
                                         <td>
                                             <a href="javascript:void(0)" data-id="<?= $doc->id; ?>" data-file="<?= $doc->nama_file; ?>" data-table="gambar1" class="view btn btn-icon btn-warning btn-xs btn-shadow" title="View Dokumen"><i class="fa fa-eye"></i></a>
-                                            <a href="javascript:void(0)" type="button" onclick="download_file('<?= $doc->id; ?>')" class="btn btn-xs btn-info btn-icon btn-shadow ml-2" title="Download Dokumen" data-id="<?= $doc->id; ?>"><i class="fa fa-download"></i></a>
+                                            <a href="javascript:void(0)" type="button" onclick="_download('<?= $doc->id; ?>')" class="btn btn-xs btn-info btn-icon btn-shadow ml-2" title="Download Dokumen" data-id="<?= $doc->id; ?>"><i class="fa fa-download"></i></a>
 
                                         </td>
                                     </tr>

@@ -443,7 +443,7 @@ function Size($bytes)
             data: "id=" + id + "&table=" + table + "&file=" + file,
             success: function(result) {
                 // $(".modal-dialog").css('max-width', '1360px !important');
-                $(".modal-title").html("<b>VIEW DATA</b>");
+                $(".modal-title").html("<b>VIEW DOKUMEN</b>");
                 $("#viewData").html(result);
                 $("#ModalView").modal('show');
             }
@@ -466,7 +466,7 @@ function Size($bytes)
             success: function(result) {
                 // console.log(result);
                 $(".modal-dialog").css('width', '90%');
-                $("#head_title").html("<b>REVISI</b>");
+                $(".modal-title").html("<b>REVISI DOKUMEN</b>");
                 $("#viewData").html(result);
                 $("#ModalView").modal('show');
             }
