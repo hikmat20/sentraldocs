@@ -131,7 +131,7 @@ function Size($bytes)
     <div class="modal-dialog modal-dialog-centered" style="max-width: 1360px !Important;" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Modal Title</h5>
+                <h5 class="modal-title"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i aria-hidden="true" class="ki ki-close"></i>
                 </button>
@@ -370,7 +370,7 @@ function Size($bytes)
             data: "id=" + id + "&table=" + table + "&file=" + file,
             success: function(result) {
                 // $(".modal-dialog").css('max-width', '1360px !important');
-                $(".modal-title").html("<b>VIEW DATA</b>");
+                $(".modal-title").html("<b>VIEW DOKUMEN</b>");
                 $("#viewData").html(result);
                 $("#ModalView").modal('show');
                 Swal.close();
@@ -394,7 +394,7 @@ function Size($bytes)
             success: function(result) {
                 // console.log(result);
                 $(".modal-dialog").css('width', '90%');
-                $("#head_title").html("<b>REVISI</b>");
+                $(".modal-title").html("<b>REVISI DOKUMEN</b>");
                 $("#viewData").html(result);
                 $("#ModalView").modal('show');
             }
