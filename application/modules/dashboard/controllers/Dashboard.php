@@ -22,21 +22,13 @@ class Dashboard extends Admin_Controller
 
 	public function index()
 	{
-		$this->template->set('title', 'Dashboard');
-		//$data = $this->dashboard_model->monitor_eoq();
-
-		//$data = $this->dashboard_model->where('qty<=minstok')->find_all();
-		$open = $this->dashboard_model->meeting_open();
-		$done = $this->dashboard_model->meeting_done();
-		$close = $this->dashboard_model->meeting_close();
-		$late = $this->dashboard_model->meeting_late();
-		// $sum_penacc = $this->dashboard_model->pengajuan_acc();
-		//$this->template->set('results', $data);
-		$this->template->set('open', $open);
-		$this->template->set('done', $done);
-		$this->template->set('close', $close);
-		$this->template->set('late', $late);
-		//$this->template->set('sum_penacc', $sum_penacc);
+		$Data = $this->db->get_where('directory', ['parent_id' => '0', 'active' => 'Y'])->result();
+		$this->template->set(
+			[
+				'title' => 'Dashboard',
+				'Data' => $Data
+			]
+		);
 		$this->template->render('index');
 	}
 

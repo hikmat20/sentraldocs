@@ -20,7 +20,7 @@
   <script src="<?= base_url('assets/dist/sweetalert.min.js'); ?>"></script>
   <script src="<?= base_url('assets/plugins/jqueryform/jquery.form.js'); ?>"></script>
   <script src="<?= base_url('assets/js/scripts.js'); ?>" type="text/javascript"></script>
-  <script src="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/datatables/datatables.bundle1036.js"></script>
+  <!-- <script src="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/datatables/datatables.bundle1036.js"></script> -->
   <script src="<?= base_url('assets/dist/sweetalert.min.js'); ?>"></script>
 
   <script type="text/javascript">
@@ -29,6 +29,66 @@
     var base_url = siteurl;
     var active_controller = '<?php echo $this->uri->segment(1); ?>' + '/';
     var active_function = '<?php echo $this->uri->segment(2); ?>' + '/';
+  </script>
+  <script>
+    var KTAppSettings = {
+      "breakpoints": {
+        "sm": 576,
+        "md": 768,
+        "lg": 992,
+        "xl": 1200,
+        "xxl": 1200
+      },
+      "colors": {
+        "theme": {
+          "base": {
+            "white": "#ffffff",
+            "primary": "#0BB783",
+            "secondary": "#E5EAEE",
+            "success": "#1BC5BD",
+            "info": "#8950FC",
+            "warning": "#FFA800",
+            "danger": "#F64E60",
+            "light": "#F3F6F9",
+            "dark": "#212121"
+          },
+          "light": {
+            "white": "#ffffff",
+            "primary": "#D7F9EF",
+            "secondary": "#ECF0F3",
+            "success": "#C9F7F5",
+            "info": "#EEE5FF",
+            "warning": "#FFF4DE",
+            "danger": "#FFE2E5",
+            "light": "#F3F6F9",
+            "dark": "#D6D6E0"
+          },
+          "inverse": {
+            "white": "#ffffff",
+            "primary": "#ffffff",
+            "secondary": "#212121",
+            "success": "#ffffff",
+            "info": "#ffffff",
+            "warning": "#ffffff",
+            "danger": "#ffffff",
+            "light": "#464E5F",
+            "dark": "#ffffff"
+          }
+        },
+        "gray": {
+          "gray-100": "#F3F6F9",
+          "gray-200": "#ECF0F3",
+          "gray-300": "#E5EAEE",
+          "gray-400": "#D6D6E0",
+          "gray-500": "#B5B5C3",
+          "gray-600": "#80808F",
+          "gray-700": "#464E5F",
+          "gray-800": "#1B283F",
+          "gray-900": "#212121"
+        }
+      },
+      "font-family": "Poppins"
+    };
   </script>
 
   <style>
@@ -44,7 +104,7 @@
 </head>
 <!-- 0c18a9 -->
 
-<body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled aside-enabled aside-static page-loading" style="background-image: url(<?= base_url('assets/images/image-asset-2.jpg'); ?>);background-repeat:no-repeat;background-size:cover;background-position:top;background-attachment:fixed">
+<body id="kt_body" class="header-fixed header-mobile-fixed aside-enabled aside-static page-loading" style="background-image: url(<?= base_url('assets/images/bg-primary.png'); ?>);background-repeat:no-repeat;background-size:cover;background-position:top;background-attachment:cover">
   <div id="kt_header_mobile" class="header-mobile header-mobile-fixed">
     <a href="<?= base_url('/'); ?>">
       <img alt="Logo" src="<?= base_url('assets/img/logo.png'); ?>" class="max-h-30px" />
@@ -122,11 +182,11 @@
             <!--begin::Header Menu Wrapper-->
             <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
               <!--begin::Logo-->
-              <div class="header-logo mr-3 d-none d-lg-flex" style="background-color: transparent;">
+              <!-- <div class="header-logo mr-3 d-none d-lg-flex" style="background-color: transparent;">
                 <a href="<?= base_url(); ?>">
                   <img alt="Logo" src="<?= base_url('assets/img/logo-2.png'); ?>" class="h-40px" />
                 </a>
-              </div>
+              </div> -->
               <!--end::Logo-->
               <!--begin::Header Menu-->
               <div id="kt_header_menu" class="header-menu header-menu-left header-menu-mobile header-menu-layout-default">
@@ -137,7 +197,7 @@
                     <button class=" btn btn-icon" onclick="$('#kt_aside_toggle').click()">
                       <span class="svg-icon svg-icon-xl">
                         <!--begin::Svg Icon | path:/keen/theme/demo6/dist/assets/media/svg/icons/Text/Toggle-Left.svg-->
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48px" height="48px" viewBox="0 0 24 24" version="1.1">
                           <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                             <rect x="0" y="0" width="24" height="24" />
                             <path d="M2 11.5C2 12.3284 2.67157 13 3.5 13H20.5C21.3284 13 22 12.3284 22 11.5V11.5C22 10.6716 21.3284 10 20.5 10H3.5C2.67157 10 2 10.6716 2 11.5V11.5Z" fill="black" />
@@ -149,8 +209,8 @@
                     </button>
                   </li>
                   <li class="menu-item <?= (check_class('dashboard', TRUE)) ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
-                    <a href="<?= base_url('/dashboard'); ?>" class="menu-link">
-                      <span class="menu-text">Dashboard</span>
+                    <a href="<?= base_url('/dashboard'); ?>" class="menu-link bg-warning" style="border-radius: 14px 1px 14px 1px  ;">
+                      <span class="menu-text text-white h5 my-0"><i class="fa fa-home mr-3 text-white"></i> Dashboard</span>
                     </a>
                   </li>
                 </ul>
@@ -162,6 +222,17 @@
             <!--begin::Topbar-->
             <div class="topbar">
               <!--begin::Quick Actions-->
+              <div class="topbar-item mr-3">
+                <span class="bg-white rounded py-2 h6 my-0 pl-3 pr-10" style="margin-right:-30px"><?= $userData->nm_lengkap; ?></span>
+                <div class="btn btn-icon w-auto d-flex align-items-center btn-lg px-2" onclick="$('#kt_quick_user_toggle').click()">
+                  <div class="symbol symbol-circle symbol-50 bg-white overflow-hidden">
+                    <div class="symbol-label">
+                      <img alt="Logo" src="<?= (isset($userData->photo) && file_exists('assets/images/users/' . $userData->photo)) ? base_url('assets/images/users/' . $userData->photo) : base_url('assets/images/male-def.png'); ?>" class="h-75 align-self-end" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div class="topbar-item" data-offset="10px,0px">
                 <a href="<?= base_url('users/logout'); ?>">
                   <div class="btn btn-icon btn-hover-transparent-white btn-dropdown btn-lg mr-1" title="Log Out">
@@ -180,18 +251,8 @@
                   </div>
                 </a>
               </div>
-              <!--end::Quick Actions-->
 
-              <!--begin::User-->
-              <div class="topbar-item mr-3">
-                <div class="btn btn-icon btn-hover-transparent-white w-auto d-flex align-items-center btn-lg px-2" onclick="$('#kt_quick_user_toggle').click()">
-                  <div class="symbol symbol-circle symbol-30 bg-white overflow-hidden">
-                    <div class="symbol-label">
-                      <img alt="Logo" src="<?= (isset($userData->photo) && file_exists('assets/images/users/' . $userData->photo)) ? base_url('assets/images/users/' . $userData->photo) : base_url('assets/images/male-def.png'); ?>" class="h-75 align-self-end" />
-                    </div>
-                  </div>
-                </div>
-              </div>
+
               <!--end::User-->
             </div>
             <!--end::Topbar-->
@@ -199,25 +260,6 @@
           <!--end::Container-->
         </div>
         <!--end::Header-->
-        <!--begin::Subheader-->
-        <div class="subheader py-2" id="kt_subheader">
-          <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
-            <!--begin::Info-->
-            <div class="d-flex align-items-center flex-wrap mr-1">
-              <!--begin::Page Heading-->
-              <div class="d-flex align-items-baseline flex-wrap mr-5">
-                <!--begin::Page Title-->
-                <h5 class="text-dark font-weight-bold my-1 mr-5"><?= $title; ?>
-                  <small class="text-muted ml-1">updates and statistics</small>
-                </h5>
-                <!--end::Page Title-->
-              </div>
-              <!--end::Page Heading-->
-            </div>
-            <!--end::Info-->
-          </div>
-        </div>
-        <!--end::Subheader-->
         <div class="ajax_loader">
           <!-- <img src="<?php echo base_url('assets/images/ajax_loader.gif'); ?>"> -->
         </div>

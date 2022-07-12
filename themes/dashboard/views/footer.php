@@ -1,10 +1,10 @@
  <!--begin::Footer-->
- <div class="footer bg-transparent py-4 d-flex flex-lg-column" id="kt_footer">
+ <div class="footer bg-transparent  d-flex flex-lg-column" id="kt_footer">
      <!--begin::Container-->
-     <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between">
+     <div class="container d-flex flex-column flex-md-row align-items-center justify-content-center">
          <!--begin::Copyright-->
-         <div class="text-dark order-2 order-md-1">
-             <span class="text-muted font-weight-bold mr-2">Sentral Sistem© 2021</span>
+         <div class="text-dark order-2 text-center order-md-1">
+             <span class="text-muted  font-weight-bold mr-2">Sentral Sistem© <?= date('Y'); ?></span>
              <!-- <a href="http://keenthemes.com/keen" target="_blank" class="text-dark-75 text-hover-primary">Keenthemes</a> -->
          </div>
          <!--end::Copyright-->
@@ -211,8 +211,8 @@
  <script src="<?= base_url(); ?>themes/dashboard/assets/js/scripts.bundle1036.js?"></script>
  <script src="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/fullcalendar/fullcalendar.bundle1036.js?"></script>
  <script src="<?= base_url(); ?>themes/dashboard/assets/js/pages/widgets1036.js?"></script>
- <!-- <script src="<?= base_url('assets/plugins/select2/select2.full.min.js'); ?>"></script> -->
- <script src="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/datatables/datatables.bundle1036.js"></script>
+ <script src="<?= base_url('assets/plugins/select2/select2.full.min.js'); ?>"></script>
+ <!-- <script src="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/datatables/datatables.bundle1036.js"></script> -->
  <script>
      $(document).ready(function() {})
 

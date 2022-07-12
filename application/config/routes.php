@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
@@ -55,3 +55,5 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['login'] = 'users/users/login';
 $route['logout'] = 'users/users/logout';
+$route['list'] = 'documents_list/404_override/';
+$route['list/(:any)'] = 'documents_list/find/$1';
