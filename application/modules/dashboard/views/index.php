@@ -16,7 +16,7 @@
 								<img src="<?= base_url('assets/images/dashboard/' . $dt->picture); ?>" alt="<?= $dt->name; ?>" class="img-fluid" style="width: 200px;">
 							</div>
 							<h3 class="card-title text-center pt-0 px-4 pb-5 m-0" style="min-height: 80px;">
-								<a href="<?= base_url($this->uri->segment(1) . '/' . $dt->id); ?>" class="text-hover-primary" title="<?= $dt->name; ?>">
+								<a href="<?= base_url($this->uri->segment(1) . '/list/' . $dt->id); ?>" class="text-hover-primary" title="<?= $dt->name; ?>">
 									<span class="card-label m-0 text-dark text-center font-weight-bolder"><?= $dt->name; ?></span>
 								</a>
 							</h3>
