@@ -29,6 +29,17 @@
 			</div>
 			<div class="row">
 				<div class="col-md-9">
+					<?php if (isset($ArrDataLink[$thisData->id])) : ?>
+						<div class="row mb-10">
+							<?php
+							foreach ($ArrDataLink[$thisData->id] as $link) : ?>
+								<div class="col-md-6 mb-3">
+									<a href="<?= $link->link; ?>" target="_blank" class="h4 btn btn-lg btn-outline-success d-block" title="<?= $link->name; ?>"><i class="fa fa-link"></i><?= $link->name; ?></a>
+								</div>
+							<?php endforeach; ?>
+						</div>
+					<?php endif; ?>
+
 					<ul class="nav nav-warning nav-pills nav-bolder" id="myTab2" role="tablist">
 						<?php $n = 0;
 						foreach ($Data as $dt) : $n++; ?>
@@ -37,7 +48,11 @@
 									<span class="nav-icon ">
 										<i class="fa fa-file-alt"></i>
 									</span>
-									<span class="text-white h5 my-0"><?= $dt->name; ?> <div class="badge bg-white rounded-circle text-warning"><?= (isset($ArrDataFolder[$dt->id]) ? count($ArrDataFolder[$dt->id]) : 0) + (isset($ArrDataFile[$dt->id]) ? count($ArrDataFile[$dt->id]) : 0); ?></div></span>
+									<span class="text-white h5 my-0"><?= $dt->name; ?>
+										<small class="">
+											<div class="badge bg-white rounded-circle text-warning"><?= (isset($ArrDataFolder[$dt->id]) ? count($ArrDataFolder[$dt->id]) : 0) + (isset($ArrDataFile[$dt->id]) ? count($ArrDataFile[$dt->id]) : 0); ?></div>
+										</small>
+									</span>
 								</a>
 							</li>
 						<?php endforeach; ?>

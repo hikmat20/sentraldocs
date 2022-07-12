@@ -55,5 +55,12 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['login'] = 'users/users/login';
 $route['logout'] = 'users/users/logout';
-$route['list'] = 'documents_list/404_override/';
+
+/* List Documents */
+$route['list'] = 'dashboard';
 $route['list/(:any)'] = 'documents_list/find/$1';
+
+/* Manage Documents */
+$route['docs'] = 'manage_documents/index';
+$route['docs/(:any)/(:any)'] = 'manage_documents/$1/$2';
+$route['docs/(:any)'] = 'manage_documents/$1';

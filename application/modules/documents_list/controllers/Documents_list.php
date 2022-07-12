@@ -23,15 +23,17 @@ class Documents_list extends Admin_Controller
 	public function index()
 	{
 		//$this->template->set('sum_penacc', $sum_penacc);
-		$this->template->render('index');
+		// $this->template->render('index');
+		redirect('dashboard');
 	}
 
 	public function find($id)
 	{
 		$thisData 		= $this->db->get_where('directory', ['id' => $id])->row();
-		$Data 			= $this->db->get_where('directory', ['parent_id' => $id])->result();
-		$listDataFolder = $this->db->get_where('directory', ['flag_file' => 'N'])->result();
-		$listDataFile 	= $this->db->get_where('directory', ['flag_file' => 'Y'])->result();
+		$Data 			= $this->db->get_where('directory', ['parent_id' => $id, 'flag_type' => 'FOLDER'])->result();
+		$listDataFolder = $this->db->get_where('directory', ['flag_type' => 'FOLDER'])->result();
+		$listDataFile 	= $this->db->get_where('directory', ['flag_type' => 'FILE'])->result();
+		$listDataLink 	= $this->db->get_where('directory', ['flag_type' => 'LINK'])->result();
 
 		$ArrDataFolder = [];
 		foreach ($listDataFolder as $listFolder) {
@@ -41,7 +43,10 @@ class Documents_list extends Admin_Controller
 		foreach ($listDataFile as $listFile) {
 			$ArrDataFile[$listFile->parent_id][] = $listFile;
 		}
-
+		$ArrDataLink = [];
+		foreach ($listDataLink as $listLink) {
+			$ArrDataLink[$listLink->parent_id][] = $listLink;
+		}
 
 		$dt 		= $this->db->get_where('directory', ['id' => $id])->row_array();
 		$buildBreadcumb = $this->buildBreadcumb($dt);
@@ -52,6 +57,7 @@ class Documents_list extends Admin_Controller
 		$this->template->set('Data', $Data);
 		$this->template->set('ArrDataFolder', $ArrDataFolder);
 		$this->template->set('ArrDataFile', $ArrDataFile);
+		$this->template->set('ArrDataLink', $ArrDataLink);
 		$this->template->render('index');
 	}
 

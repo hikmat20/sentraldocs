@@ -168,16 +168,15 @@ class Menu_generator
 				->get()
 				->result();
 			$active_dash = (check_class('dashboard', TRUE)) ? 'menu-item-active' : '';
-			$html = "<ul class='menu-nav'>
-						<li class='menu-item " . $active_dash . "' aria-haspopup='true'>
-							<a href='" . site_url('dashboard/create_documents') . "' class='menu-link'>
-							<span class='menu-text'>
-							<i class='fa fa-file-alt mr-2 text-primary'></i>
-								<h6 class='m-0'>Create Document</h6>
-							</span>
-							</a>
-						</li>
-						";
+			// <li class='menu-item " . $active_dash . "' aria-haspopup='true'>
+			// 	<a href='" . site_url('dashboard/create_documents') . "' class='menu-link'>
+			// 	<span class='menu-text'>
+			// 	<i class='fa fa-file-alt mr-2 text-primary'></i>
+			// 		<h6 class='m-0'>Create Document</h6>
+			// 	</span>
+			// 	</a>
+			// </li>
+			$html = "<ul class='menu-nav'>";
 
 			if (is_array($menu) && count($menu)) {
 				foreach ($menu as $rw) {
@@ -212,13 +211,11 @@ class Menu_generator
 							$html .= "
 							<li class='menu-item {$active}' aria-haspopup='true'>
 							<a href='" . ($link == '#' ? '#' : site_url($link)) . "' " . ($target == '_blank' ? "target='_blank'" : "") . "' class='menu-link'>
-								<span class='svg-icon menu-icon'>
-									<i class='{$icon} mr-3'></i> 
-								</span>
+							<i class='$icon text-info mr-3 my-auto'></i> 
 								<span class='menu-text'>
-									<h6 class='m-0'>
+									<h4 class='m-0'>
 									" . ucwords($title) . "
-									</h6>
+									</h4>
 								</span>
 							</a>
 						</li>";
@@ -235,11 +232,9 @@ class Menu_generator
 					$html .= "
             			<li class='menu-item menu-item-submenu " . $active . "' aria-haspopup='true' data-menu-toggle='hover'>
 						  	<a href='#' class='menu-link menu-toggle'>
-                        		<span class='svg-icon menu-icon'>
-									<i class='" . $icon . " mr-3'></i>
-								</span>
-                        		<span class='menu-text'><h6 class='m-0'>" . ucwords($title) . "</h6></span>
-								<i class='menu-arrow'></i>
+								<i class='$icon text-info mr-3 my-auto'></i>
+                        		<span class='menu-text'><h4 class='m-0'>" . ucwords($title) . "</h4></span>
+								<i class='menu-arrow h6 my-auto'></i>
                 			</a>
 							<div class='menu-submenu'>
 								<i class='menu-arrow'></i>
@@ -265,11 +260,9 @@ class Menu_generator
 						}
 						$html .= "
 						<li class='menu-item " . $active . "' aria-haspopup='true'>
-							<a href='" . ($sublink == '#' ? '#' : site_url($sublink)) . "'" . " " . $subtarget . " class='menu-link'>
-								<i class='menu-bullet mr-3 " . (($subicon) ? $subicon : 'menu-bullet-dot') . "'>
-									<span></span>
-								</i>
-								 <span class='menu-text'>" . ucwords($subtitle) . "</span>
+							<a href='" . ($sublink == '#' ? '#' : site_url($sublink)) . "'" . " " . $subtarget . " class='menu-link text-dark-75'>
+								<i class='my-auto mr-3 fa fa-angle-right'></i>
+								 <h5 class='my-auto'>" . ucwords($subtitle) . "</h5>
 							</a>
 						</li>";
 					}
