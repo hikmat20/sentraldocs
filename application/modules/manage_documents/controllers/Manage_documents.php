@@ -89,9 +89,48 @@ class Manage_documents extends Admin_Controller
 		}
 	}
 
+	public function new_folder($parent_id)
+	{
+		$this->template->set('parent_id', $parent_id);
+		$this->template->render('create-folder');
+	}
+
+	public function rename($id)
+	{
+		$data = $this->db->get_where('directory', ['id' => $id])->row();
+		$this->template->set('data', $data);
+		$this->template->set('title', 'Rename');
+		$this->template->render('create-folder');
+	}
+
+	public function delete_folder()
+	{
+		$id 		= $this->input->post('id');
+		$parent_id 	= $this->input->post('parent_id');
+		$this->db->trans_begin();
+		$this->db->delete('directory', ['id' => $id]);
+
+		if ($this->db->trans_status() === FALSE) {
+			$this->db->trans_rollback();
+			$Return		= array(
+				'status'		=> 0,
+				'pesan'			=> 'Folder failed deleted'
+			);
+		} else {
+			$this->db->trans_commit();
+			$Return		= array(
+				'status'		=> 1,
+				'msg'			=> 'Folder success deleted'
+			);
+		}
+
+		echo json_encode($Return);
+	}
+
 	public function create_folder()
 	{
 		$data 				= $this->input->post();
+
 		$check_folder_name 	= $this->db->get_where('directory', ['name' => $data['folder_name'], 'parent_id' => $data['parent_id']])->num_rows();
 		$folder_name 		= ($check_folder_name > 0) ? $data['folder_name'] . "(" . $check_folder_name . ")" : $data['folder_name'];
 

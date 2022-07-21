@@ -74,19 +74,7 @@
 					<i aria-hidden="true" class="ki ki-close"></i>
 				</button>
 			</div>
-			<div class="modal-body">
-				<div class="container">
-					<form id="create-folder">
-						<div class="form-group row">
-							<label for="inputName" class="col-md-12 col-form-label">Folder Name</label>
-							<div class="col-md-12">
-								<input type="hidden" class="form-control" name="parent_id" id="parent_id" placeholder="Folder Name">
-								<input type="text" class="form-control" name="folder_name" id="folder_name" placeholder="Folder Name">
-								<span class="invalid-feedback text-danger">Nama folder harus di isi</span>
-							</div>
-						</div>
-					</form>
-				</div>
+			<div class="modal-body" id="form-data">
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-light-primary font-weight-bold save-folder">Save</button>
@@ -256,6 +244,7 @@
 
 	$(document).on('click', '.save-folder', function() {
 		let folder_name = $('#folder_name').val()
+		let id = $('#id').val()
 		let parent_id = $('#parent_id').val()
 		if (folder_name == '') {
 			$('#folder_name').addClass('is-invalid');
@@ -267,6 +256,7 @@
 				type: 'POST',
 				dataType: 'JSON',
 				data: {
+					id,
 					parent_id,
 					folder_name,
 				},
@@ -436,8 +426,12 @@
 
 	function new_folder(parent_id) {
 		$('#new-folder').modal('show')
-		$('#folder_name').focus()
-		$('#parent_id').val(parent_id)
+		$('#form-data').load(siteurl + active_controller + 'new_folder/' + parent_id)
+	}
+
+	function rename(id) {
+		$('#new-folder').modal('show')
+		$('#form-data').load(siteurl + active_controller + 'rename/' + id)
 	}
 
 	function upload_file(parent_id) {
@@ -449,5 +443,61 @@
 	function edit_file(id) {
 		$('#upload').modal('show')
 		$('#viewData').load(siteurl + active_controller + 'edit_file/' + id)
+	}
+
+	function delete_folder(id, parent_id) {
+		Swal.fire({
+			title: "Are you sure?",
+			text: "You will not be able to process again this data!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonText: "Yes, Process it!",
+			cancelButtonText: "No, cancel process!",
+		}).then((value) => {
+			if (value.isConfirmed) {
+				var baseurl = siteurl + active_controller + 'delete_folder';
+				$.ajax({
+					url: baseurl,
+					type: "POST",
+					data: {
+						id,
+						parent_id
+					},
+					dataType: 'json',
+					success: function(data) {
+						if (data.status == 1) {
+							Swal.fire({
+								title: "Delete Success!",
+								text: data.msg,
+								icon: "success",
+								timer: 3000,
+								showCancelButton: false,
+								showConfirmButton: false,
+								allowOutsideClick: false
+							});
+							$('#upload').modal('hide')
+							$('#data-file').load(siteurl + active_controller + 'load_file/' + parent_id)
+						} else {
+							if (data.status == 0) {
+								Swal.fire({
+									title: "Delete Failed!",
+									html: data.msg,
+									icon: "warning",
+									timer: 5000,
+								});
+							}
+						}
+					},
+					error: function() {
+						Swal.fire({
+							title: "Error Message !",
+							text: 'An Error Occured During Process. Please try again..',
+							icon: "warning",
+							timer: 3000,
+						});
+					}
+				});
+			}
+		});
 	}
 </script>

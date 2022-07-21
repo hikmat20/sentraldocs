@@ -381,3 +381,5 @@ ERROR - 2022-07-21 16:39:52 --> Severity: Notice --> Trying to get property of n
 ERROR - 2022-07-21 16:39:52 --> Severity: Notice --> Undefined variable: file F:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\manage_documents\views\upload_file.php 53
 ERROR - 2022-07-21 16:39:52 --> Severity: Notice --> Trying to get property of non-object F:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\manage_documents\views\upload_file.php 53
 ERROR - 2022-07-21 16:39:52 --> Severity: Notice --> Undefined variable: file F:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\manage_documents\views\upload_file.php 66
+ERROR - 2022-07-21 17:44:23 --> Severity: Notice --> Undefined variable: parent_id F:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\manage_documents\views\create-folder.php 6
+ERROR - 2022-07-21 18:03:13 --> 404 Page Not Found: /index
