@@ -69,25 +69,25 @@ class Auth
             redirect('/');
         }
 
-        $inis     = $this->ci->users_model->find_by(array('inisial' => $inisial));
-        if (!$inis) {
+        $inis     = $this->ci->db->get_where('view_assign_company', ['inisial' => $inisial])->num_rows();
+        if ($inis == 0) {
             $this->ci->template->set_message('Inisial Company not found', '');
             return FALSE;
         }
 
-        $user     = $this->ci->users_model->find_by(array('username' => $username, 'inisial' => $inisial));
+        $user     = $this->ci->db->get_where('view_assign_company', array('username' => $username, 'inisial' => $inisial))->row();
 
         if (!$user) {
             $this->ci->template->set_message(lang('users_login_fail'), 'error');
             return FALSE;
         }
 
-        if ($user->deleted == 1) {
-            $this->ci->template->set_message(lang('users_already_deleted'), 'error');
-            return FALSE;
-        }
+        // if ($user->deleted == 1) {
+        //     $this->ci->template->set_message(lang('users_already_deleted'), 'error');
+        //     return FALSE;
+        // }
 
-        if ($user->st_aktif == 0) {
+        if ($user->status == 'N') {
             $this->ci->template->set_message(lang('users_not_active'), 'error');
             return FALSE;
         }
@@ -97,15 +97,18 @@ class Auth
             return FALSE;
         }
 
-
         if (password_verify($password, $user->password)) {
+            $user_session = $this->ci->db->get_where('users', ['id_user' => $user->user_id])->row();
             //Buat Session
             $array = array();
-            foreach ($user as $key => $usr) {
+            foreach ($user_session as $key => $usr) {
                 $array[$key] = $usr;
             }
-
+            $company     = $this->ci->db->get_where('view_assign_company', ['user_id' => $user->user_id])->result();
             $this->ci->session->set_userdata('app_session', $array);
+            $this->ci->session->set_userdata('session_company', $company);
+            $this->ci->session->set_userdata('session_active_company', $user);
+
             //Set User Data
             $this->user = $this->ci->session->userdata('app_session');
             //Update Login Terakhir
@@ -136,7 +139,7 @@ class Auth
     {
         $id = $this->user_id();
 
-        $data = $this->ci->users_model->join('user_groups', 'users.id_user = user_groups.id_user')
+        $data = $this->ci->users_model->join('user_groups', 'users.id_user = user_groups.user_id')
             ->find_by(array('users.id_user' => $id, 'id_group' => 1));
 
         if ($data) {

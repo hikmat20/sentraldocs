@@ -12,16 +12,12 @@
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
   <script src="<?= base_url('assets/plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
-  <link href="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/fullcalendar/fullcalendar.bundle1036.css?v=2.1.1" rel="stylesheet" type="text/css" />
   <link href="<?= base_url(); ?>themes/dashboard/assets/plugins/global/plugins.bundle1036.css?v=2.1.1" rel="stylesheet" type="text/css" />
   <link href="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/prismjs/prismjs.bundle1036.css?v=2.1.1" rel="stylesheet" type="text/css" />
-  <link href="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/datatables/datatables.bundle1036.css" rel="stylesheet" type="text/css" />
+  <link href="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/fullcalendar/fullcalendar.bundle1036.css?v=2.1.1" rel="stylesheet" type="text/css" />
   <link href="<?= base_url(); ?>themes/dashboard/assets/css/style.bundle1036.css?v=2.1.1" rel="stylesheet" type="text/css" />
-  <script src="<?= base_url('assets/dist/sweetalert.min.js'); ?>"></script>
-  <script src="<?= base_url('assets/plugins/jqueryform/jquery.form.js'); ?>"></script>
-  <script src="<?= base_url('assets/js/scripts.js'); ?>" type="text/javascript"></script>
-  <!-- <script src="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/datatables/datatables.bundle1036.js"></script> -->
-  <script src="<?= base_url('assets/dist/sweetalert.min.js'); ?>"></script>
+  <link href="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/jstree/jstree.bundle.css?v=2.1.1" rel="stylesheet" type="text/css" />
+  <link href="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/datatables/datatables.bundle1036.css" rel="stylesheet" type="text/css" />
 
   <script type="text/javascript">
     var baseurl = "<?= base_url(); ?>";
@@ -30,66 +26,7 @@
     var active_controller = '<?php echo $this->uri->segment(1); ?>' + '/';
     var active_function = '<?php echo $this->uri->segment(2); ?>' + '/';
   </script>
-  <script>
-    var KTAppSettings = {
-      "breakpoints": {
-        "sm": 576,
-        "md": 768,
-        "lg": 992,
-        "xl": 1200,
-        "xxl": 1200
-      },
-      "colors": {
-        "theme": {
-          "base": {
-            "white": "#ffffff",
-            "primary": "#0BB783",
-            "secondary": "#E5EAEE",
-            "success": "#1BC5BD",
-            "info": "#8950FC",
-            "warning": "#FFA800",
-            "danger": "#F64E60",
-            "light": "#F3F6F9",
-            "dark": "#212121"
-          },
-          "light": {
-            "white": "#ffffff",
-            "primary": "#D7F9EF",
-            "secondary": "#ECF0F3",
-            "success": "#C9F7F5",
-            "info": "#EEE5FF",
-            "warning": "#FFF4DE",
-            "danger": "#FFE2E5",
-            "light": "#F3F6F9",
-            "dark": "#D6D6E0"
-          },
-          "inverse": {
-            "white": "#ffffff",
-            "primary": "#ffffff",
-            "secondary": "#212121",
-            "success": "#ffffff",
-            "info": "#ffffff",
-            "warning": "#ffffff",
-            "danger": "#ffffff",
-            "light": "#464E5F",
-            "dark": "#ffffff"
-          }
-        },
-        "gray": {
-          "gray-100": "#F3F6F9",
-          "gray-200": "#ECF0F3",
-          "gray-300": "#E5EAEE",
-          "gray-400": "#D6D6E0",
-          "gray-500": "#B5B5C3",
-          "gray-600": "#80808F",
-          "gray-700": "#464E5F",
-          "gray-800": "#1B283F",
-          "gray-900": "#212121"
-        }
-      },
-      "font-family": "Poppins"
-    };
-  </script>
+
 
   <style>
     .swal2-loader {
@@ -162,7 +99,7 @@
       <!--begin::Menu Container-->
       <div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500">
         <!--begin::Menu Nav-->
-        <?= $this->menu_generator->show_menus(); ?>
+        <?= $this->menu_generator->show_menus_new(); ?>
         <!--end::Menu Nav-->
       </div>
       <!--end::Menu Container-->

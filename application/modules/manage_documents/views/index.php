@@ -35,18 +35,7 @@
 								</h3>
 							</div>
 						</div>
-						<div class="col-md-3 col-sm-6 col-xs-6 mb-10">
-							<div class="card border-0 shadow-sm " style="border-radius: 50px 5px 50px 5px;background-color: rgba(255, 255, 255, 1);">
-								<div class="card-body pb-1 d-flex justify-content-center align-items-center" style="height: 200px;">
-									<img id="myImg2" src="<?= base_url('assets/images/dashboard/correction.png'); ?>" alt="" class="img-fluid" style="width: 200px;height: auto;">
-								</div>
-								<h3 class="card-title text-center pt-5 pb-10 px-4 m-0" style="min-height: 80px;">
-									<a href="<?= base_url('/docs/correction'); ?>" class="text-hover-primary" title="Correction Document">
-										<span class="card-label m-0 text-dark text-center font-weight-bolder">CORRECTION DOCUMENTS</span>
-									</a>
-								</h3>
-							</div>
-						</div>
+
 						<div class="col-md-3 col-sm-6 col-xs-6 mb-10">
 							<div class="card border-0 shadow-sm " style="border-radius: 50px 5px 50px 5px;background-color: rgba(255, 255, 255, 1);">
 								<div class="card-body pb-1 d-flex justify-content-center align-items-center" style="height: 200px;">
@@ -55,6 +44,18 @@
 								<h3 class="card-title text-center pt-5 pb-10 px-4 m-0" style="min-height: 80px;">
 									<a href="<?= base_url('/docs/review'); ?>" class="text-hover-primary" title="Review Document">
 										<span class="card-label m-0 text-dark text-center font-weight-bolder">REVIEW DOCUMENTS</span>
+									</a>
+								</h3>
+							</div>
+						</div>
+						<div class="col-md-3 col-sm-6 col-xs-6 mb-10">
+							<div class="card border-0 shadow-sm " style="border-radius: 50px 5px 50px 5px;background-color: rgba(255, 255, 255, 1);">
+								<div class="card-body pb-1 d-flex justify-content-center align-items-center" style="height: 200px;">
+									<img id="myImg2" src="<?= base_url('assets/images/dashboard/correction.png'); ?>" alt="" class="img-fluid" style="width: 200px;height: auto;">
+								</div>
+								<h3 class="card-title text-center pt-5 pb-10 px-4 m-0" style="min-height: 80px;">
+									<a href="<?= base_url('/docs/correction'); ?>" class="text-hover-primary" title="Correction Document">
+										<span class="card-label m-0 text-dark text-center font-weight-bolder">CORRECTION DOCUMENTS</span>
 									</a>
 								</h3>
 							</div>

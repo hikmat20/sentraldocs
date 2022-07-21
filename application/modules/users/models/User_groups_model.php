@@ -13,7 +13,7 @@ class User_groups_model extends BF_Model
      * @var string  User Table Name
      */
     protected $table_name = 'user_groups';
-    protected $key        = 'id_user';
+    protected $key        = 'id_group';
 
     /**
      * @var string Field name to use for the created time column in the DB table

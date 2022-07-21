@@ -9,20 +9,24 @@
 				</div>
 			</div>
 			<div class="row">
-				<?php foreach ($Data as $dt) : ?>
-					<div class="col-md-3 px-10">
-						<div class="card border-0 shadow-lg " style="border-radius: 50px 5px 50px 5px;background-color: rgba(255, 255, 255, 0.60);">
-							<div class="card-body pb-1 d-flex justify-content-center align-items-center" style="min-height: 250px;">
-								<img src="<?= base_url('assets/images/dashboard/' . $dt->picture); ?>" alt="<?= $dt->name; ?>" class="img-fluid" style="width: 200px;">
+				<div class="col-md-10 offset-1">
+					<div class="row">
+						<?php foreach ($Data as $dt) : ?>
+							<div class="col-md-3 px-5">
+								<div class="card border-2 border-warning shadow-lg " style="border-radius: 30px 5px 30px 5px;background-color: rgba(255, 255, 255, 0.60);">
+									<div class="card-body pb-1 d-flex justify-content-center align-items-center" style="min-height: 190px;">
+										<img src="<?= base_url('assets/images/dashboard/' . $dt->picture); ?>" alt="<?= $dt->name; ?>" class="img-fluid" style="width: 150px;">
+									</div>
+									<h6 class="card-title text-center pt-0 px-4 pb-5 m-0" style="min-height: 60px;">
+										<a href="<?= base_url('/list/' . $dt->id); ?>" class="text-hover-primary" title="<?= $dt->name; ?>">
+											<span class="card-label m-0 text-dark text-center font-weight-bolder"><?= $dt->name; ?></span>
+										</a>
+									</h6>
+								</div>
 							</div>
-							<h3 class="card-title text-center pt-0 px-4 pb-5 m-0" style="min-height: 80px;">
-								<a href="<?= base_url('/list/' . $dt->id); ?>" class="text-hover-primary" title="<?= $dt->name; ?>">
-									<span class="card-label m-0 text-dark text-center font-weight-bolder"><?= $dt->name; ?></span>
-								</a>
-							</h3>
-						</div>
+						<?php endforeach; ?>
 					</div>
-				<?php endforeach; ?>
+				</div>
 
 				<!-- <div class="col-xl-6 col-sm-6 col-xs-12">
 					<a href="<?= base_url('dashboard/create_documents') ?>" class="text-left btn btn-danger btn-md btn-block font-size-h2 py-5 mb-5 btn-shadow">
