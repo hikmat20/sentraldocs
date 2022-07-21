@@ -183,7 +183,9 @@ class Manage_documents extends Admin_Controller
 		$parent_name = $this->db->get_where('directory', ['id' => $data['parent_id']])->row()->name;
 		if ($_FILES['image']['name']) {
 			if (!is_dir('./directory/' . $parent_name)) {
-				mkdir('./directory/' . $parent_name, 777, TRUE);
+				mkdir('./directory/' . $parent_name, 0755, TRUE);
+				chmod("./directory/" . $parent_name, 0755);  // octal; correct value of mode
+				chown("./directory/" . $parent_name, 'www-data');
 			}
 			// $new_name 					= $this->fixForUri($data['description']);
 			$config['upload_path'] 		= "./directory/$parent_name"; //path folder
