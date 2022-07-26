@@ -2,12 +2,9 @@
 	<div class="d-flex flex-column-fluid justify-content-between align-items-top">
 		<div class="container">
 			<div class="d-flex align-items-baseline flex-wrap mr-5 mb-10">
-				<!--begin::Page Title-->
 				<a href="<?= base_url('dashboard'); ?>">
 					<h4 class="text-dark font-weight-bold my-1 mr-2"><i class="fa fa-home"></i></h4>
 				</a>
-				<!--end::Page Title-->
-				<!--begin::Breadcrumb-->
 				<ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
 					<?php if (isset($Breadcumb)) : foreach ($Breadcumb as $bc) : ?>
 							<li class="breadcrumb-item text-muted">
@@ -19,7 +16,6 @@
 						<a href="" class="text-muted"><?= $thisData->name; ?></a>
 					</li>
 				</ul>
-				<!--end::Breadcrumb-->
 			</div>
 			<h1 class="text-white fa-3x"><?= $thisData->name; ?></h1>
 			<div class="row mb-10">
@@ -95,7 +91,7 @@
 												<tbody>
 													<?php $no = 0;
 													foreach ($ArrDataFile[$dtl->id] as $list) : $no++; ?>
-														<tr class="cursor-pointer">
+														<tr class="cursor-pointer" ondblclick="show('<?= $list->id; ?>')">
 															<td class="h6 text-dark"><?= $no; ?></td>
 															<td class="h6 text-dark"><?= $list->name; ?></td>
 															<td class="h6 text-center"><i class="fa fa-eye text-dark"></i></td>
@@ -135,3 +131,30 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+		<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+			<div class="modal-content" data-scroll="true" data-height="700">
+				<div class="modal-header">
+					<h5 class="modal-title">View Document</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body pt-1" id="data-file">
+					File not found
+				</div>
+				<div class="modal-footer py-2">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		function show(id) {
+			$('#modelId').modal('show')
+			$('#data-file').load(siteurl + active_controller + 'show/' + id)
+		}
+	</script>

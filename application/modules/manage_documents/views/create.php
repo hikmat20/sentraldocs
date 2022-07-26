@@ -1,11 +1,11 @@
 <div class="content d-flex flex-column flex-column-fluid px-10 pb-0" id="kt_content">
 	<div class="row">
 		<div class="col-md-4">
-			<div class="card card-custom">
+			<div class="card card-custom h-550px">
 				<div class="card-header my-0 min-h-10px">
 					<span class="card-title text-dark-75"><i class="fa fa-folder mr-2 text-warning"></i>Directories</span>
 				</div>
-				<div class="card-body px-4 h-550px overflow-auto">
+				<div class="card-body px-4 py-1 overflow-auto">
 					<div id="kt_tree_2" class="tree-demo">
 						<?= $loadFolder; ?>
 					</div>
@@ -13,12 +13,12 @@
 			</div>
 		</div>
 		<div class="col-md-8">
-			<div class="card card-custom">
+			<div class="card card-custom h-550px">
 				<div class="card-header my-0 min-h-10px">
 					<span class="card-title text-dark-75"><i class="fa fa-file mr-2 text-success"></i>List File & Folder</span>
 				</div>
-				<div class="card-body h-550px overflow-auto py-2">
-					<div id="data-file">
+				<div id="data-file">
+					<div class="card-body overflow-auto py-2">
 						<div class="d-flex justify-content-center align-items-center py-10">
 							<img src="<?= base_url('assets\images\dashboard\folder-file.gif'); ?>" alt="" width="300px" class="img-responsive text-center opacity-30">
 						</div>
@@ -31,7 +31,7 @@
 
 <!-- Modal-->
 <div class="modal fade" id="upload" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">Upload File</h5>
@@ -39,17 +39,17 @@
 					<i aria-hidden="true" class="ki ki-close"></i>
 				</button>
 			</div>
-			<div class="modal-body" id="viewData"></div>
-			<div class="modal-footer">
+			<div class="modal-body" data-scroll="true" data-height="500" id="viewData"></div>
+			<div class="modal-footer py-1">
 				<button type="button" class="btn btn-light-primary save-upload font-weight-bold">Save</button>
-				<button type="button" class="btn btn-light-warning font-weight-bold" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-light-warning font-weight-bold" data-dismiss="modal" onclick="setTimeout(function(){$('#viewData').html('')},1000)">Close</button>
 			</div>
 		</div>
 	</div>
 </div>
 
 <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">View File</h5>
@@ -66,10 +66,10 @@
 </div>
 
 <div class="modal fade" id="new-folder" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Create New Folder </h5>
+				<!-- <h5 class="modal-title" id="exampleModalLabel">Create New Folder </h5> -->
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<i aria-hidden="true" class="ki ki-close"></i>
 				</button>
@@ -77,7 +77,7 @@
 			<div class="modal-body" id="form-data">
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-light-primary font-weight-bold save-folder">Save</button>
+				<button type="button" id="save" class="btn btn-light-primary font-weight-bold">Save</button>
 				<button type="button" class="btn btn-light-warning font-weight-bold" data-dismiss="modal">Close</button>
 			</div>
 		</div>
@@ -242,7 +242,7 @@
 		})
 	})
 
-	$(document).on('click', '.save-folder', function() {
+	$(document).on('click', '#save', function() {
 		let folder_name = $('#folder_name').val()
 		let id = $('#id').val()
 		let parent_id = $('#parent_id').val()
@@ -252,7 +252,7 @@
 			return false;
 		} else {
 			return $.ajax({
-				url: base_url + active_controller + 'create_folder',
+				url: base_url + active_controller + 'save',
 				type: 'POST',
 				dataType: 'JSON',
 				data: {
@@ -295,22 +295,22 @@
 	$(document).on('click', '.save-upload', function(e) {
 		$('#description').removeClass('is-invalid')
 		$('#prepared_by').removeClass('is-invalid')
-		$('#id_approval').removeClass('is-invalid')
-		$('#id_review').removeClass('is-invalid')
-		$('#id_distribusi').removeClass('is-invalid')
+		$('#approval_id').removeClass('is-invalid')
+		$('#reviewer_id').removeClass('is-invalid')
+		$('#distribute_id').removeClass('is-invalid')
 		$('#image').removeClass('is-invalid')
 
 		e.preventDefault();
-		const deskripsi = $('#description').val();
+		const description = $('#description').val();
 		const prepared_by = $('#prepared_by').val();
-		const id_review = $('#id_review').val();
-		const id_approval = $('#id_approval').val();
-		const id_distribusi = $('#id_distribusi').val();
+		const reviewer_id = $('#reviewer_id').val();
+		const approval_id = $('#approval_id').val();
+		const distribute_id = $('#distribute_id').val();
 		const id_master = $('#id_master').val();
 		const image = $('#image').val();
 		const parent_id = $('#parent_id').val();
-
-		if (deskripsi == '' || deskripsi == null) {
+		console.log(reviewer_id)
+		if (description == '' || description == null) {
 			$('#description').addClass('is-invalid')
 			return false;
 		}
@@ -324,30 +324,28 @@
 
 			return false;
 		}
-
-		if (id_approval == '' || id_approval == null) {
+		if ((reviewer_id == '' && reviewer_id != undefined) || (reviewer_id == null && reviewer_id != undefined)) {
 			Swal.fire({
 				title: "Error Message!",
-				text: 'Empty approval, please input approval first.....',
+				text: 'Empty reviewer, please input reviewer first.....',
 				icon: "warning"
 			});
-			$('#id_approval').addClass('is-invalid')
+			$('#reviewer_id').addClass('is-invalid')
 
 			return false;
 		}
-
-		if (id_review == '' || id_review == null) {
+		if ((approval_id == '' && approval_id != undefined) || (approval_id == null && approval_id != undefined)) {
 			Swal.fire({
 				title: "Error Message!",
-				text: 'Empty approval, please input approval first.....',
+				text: 'Empty approval, please input approval first!',
 				icon: "warning"
 			});
-			$('#id_review').addClass('is-invalid')
+			$('#approval_id').addClass('is-invalid')
 
 			return false;
 		}
-		if (id_distribusi == '' || id_distribusi == null) {
-			$('#id_distribusi').addClass('is-invalid')
+		if ((distribute_id == '' && distribute_id != undefined) || (distribute_id == null && distribute_id != undefined)) {
+			$('#distribute_id').addClass('is-invalid')
 			Swal.fire({
 				title: "Error Message!",
 				text: 'Empty distribusi, please input distribusi first.....',
@@ -400,6 +398,7 @@
 							});
 							$('#upload').modal('hide')
 							$('#data-file').load(siteurl + active_controller + 'load_file/' + parent_id)
+							$('#viewData').html('')
 						} else {
 							if (data.status == 0) {
 								Swal.fire({
@@ -424,9 +423,129 @@
 		});
 	});
 
+	$(document).on('change', 'input[name="flag_record"]:checked', function() {
+		const mode = $(this).val()
+
+		if (mode == 'Y') {
+			$('#file-type').html('')
+		} else {
+			const html = `
+			<div class="form-group row">
+				<label class="col-lg-3 col-form-label text-lg-right">Review By :</label>
+				<div class="col-lg-7">
+					<select name="reviewer_id" id="reviewer_id" class="form-control select2">;
+						<option value=""></option>
+						<?php foreach ($jabatan as $jbt) : ?>
+							<option value="<?= $jbt->id; ?>" <?= (isset($file) && $file->reviewer_id == $jbt->id) ? 'selected' : ''; ?>><?= $jbt->nm_jabatan; ?></option>
+						<?php endforeach; ?>
+					</select>
+					<span class="form-text text-danger invalid-feedback">Review By harus di isi</span>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-lg-3 col-form-label text-lg-right">Approval By :</label>
+				<div class="col-lg-7">
+					<select name="approval_id" id="approval_id" class="form-control select2">;
+						<option value=""></option>
+						<?php foreach ($jabatan as $jbt) : ?>
+							<option value="<?= $jbt->id; ?>" <?= (isset($file) && $file->approval_id == $jbt->id) ? 'selected' : ''; ?>><?= $jbt->nm_jabatan; ?></option>
+						<?php endforeach; ?>
+					</select>
+					<span class="form-text text-danger invalid-feedback">Approval By harus di isi</span>
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-lg-3 col-form-label text-lg-right">Distribusi :</label>
+				<div class="col-lg-7">
+					<select name="distribute_id[]" multiple id="distribute_id" data-placeholder="Choose an options" class="form-control select2">;
+						<option value=""></option>
+						<?php foreach ($jabatan as $jbt) : ?>
+							<option value="<?= $jbt->id; ?>" <?= isset($file) ? ((in_array($jbt->id, explode(',', $file->distribute_id))) ? 'selected' : '') : ''; ?>><?= $jbt->nm_jabatan; ?></option>
+						<?php endforeach; ?>
+					</select>
+					<span class="form-text text-danger invalid-feedback">Distribusi By harus di isi</span>
+				</div>
+			</div>`
+			$('#file-type').html(html)
+			$('.select2').select2({
+				placeholder: 'Choose an options',
+				width: '100%',
+				allowClear: true
+			})
+
+		}
+
+	})
+
+
+	/* FUNCTIONS */
+
+	function refresh(id) {
+		if (id) {
+			$('#data-file').load(siteurl + active_controller + 'load_file/' + id)
+		} else {
+			$('#data-file').html('<tr class="text-center"><td colspan="3" class="text-center">Not available data</td></tr>')
+
+		}
+	}
+
 	function new_folder(parent_id) {
 		$('#new-folder').modal('show')
 		$('#form-data').load(siteurl + active_controller + 'new_folder/' + parent_id)
+	}
+
+	function review_process(id, parent_id) {
+		Swal.fire({
+			title: "Are you sure?",
+			text: "You will not be able to process again this data!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonText: "Yes, Process it!",
+			cancelButtonText: "No, cancel process!",
+		}).then((value) => {
+			if (value.isConfirmed) {
+				var baseurl = siteurl + active_controller + 'process_review';
+				$.ajax({
+					url: baseurl,
+					type: "POST",
+					data: {
+						id
+					},
+					dataType: 'json',
+					success: function(data) {
+						if (data.status == 1) {
+							Swal.fire({
+								title: "Success!",
+								text: data.msg,
+								icon: "success",
+								timer: 3000,
+								showCancelButton: false,
+								showConfirmButton: false,
+								allowOutsideClick: false
+							});
+							$('#data-file').load(siteurl + active_controller + 'load_file/' + parent_id)
+						} else {
+							if (data.status == 0) {
+								Swal.fire({
+									title: "Failed!",
+									html: data.msg,
+									icon: "warning",
+									timer: 5000,
+								});
+							}
+						}
+					},
+					error: function() {
+						Swal.fire({
+							title: "Error Message !",
+							text: 'An Error Occured During Process. Please try again..',
+							icon: "warning",
+							timer: 3000,
+						});
+					}
+				});
+			}
+		});
 	}
 
 	function rename(id) {

@@ -21,42 +21,62 @@
 		</div>
 	</div>
 	<div class="form-group row">
-		<label class="col-lg-3 col-form-label text-lg-right">Review By :</label>
-		<div class="col-lg-7">
-			<select name="id_review" id="id_review" class="form-control select2">;
-				<option value=""></option>
-				<?php foreach ($jabatan as $jbt) : ?>
-					<option value="<?= $jbt->id; ?>" <?= (isset($file) && $file->id_review == $jbt->id) ? 'selected' : ''; ?>><?= $jbt->nm_jabatan; ?></option>
-				<?php endforeach; ?>
-			</select>
-			<span class="form-text text-danger invalid-feedback">Review By harus di isi</span>
+		<label class="col-lg-3 col-form-label text-lg-right">File Type :</label>
+		<div class="col-9 col-form-label">
+			<div class="radio-inline">
+				<label class="radio radio-primary">
+					<input type="radio" name="flag_record" checked="checked" value="N" />
+					<span></span>
+					Pedoman
+				</label>
+				<label class="radio radio-primary">
+					<input type="radio" name="flag_record" value="Y" />
+					<span></span>
+					Record
+				</label>
+			</div>
+			<span class="form-text text-muted">pilih salah satu</span>
 		</div>
 	</div>
-	<div class="form-group row">
-		<label class="col-lg-3 col-form-label text-lg-right">Approval By :</label>
-		<div class="col-lg-7">
-			<select name="id_approval" id="id_approval" class="form-control select2">;
-				<option value=""></option>
-				<?php foreach ($jabatan as $jbt) : ?>
-					<option value="<?= $jbt->id; ?>" <?= (isset($file) && $file->id_approval == $jbt->id) ? 'selected' : ''; ?>><?= $jbt->nm_jabatan; ?></option>
-				<?php endforeach; ?>
-			</select>
-			<span class="form-text text-danger invalid-feedback">Approval By harus di isi</span>
+	<div id="file-type">
+		<div class="form-group row">
+			<label class="col-lg-3 col-form-label text-lg-right">Review By :</label>
+			<div class="col-lg-7">
+				<select name="reviewer_id" id="reviewer_id" class="form-control select2">;
+					<option value=""></option>
+					<?php foreach ($jabatan as $jbt) : ?>
+						<option value="<?= $jbt->id; ?>" <?= (isset($file) && $file->reviewer_id == $jbt->id) ? 'selected' : ''; ?>><?= $jbt->nm_jabatan; ?></option>
+					<?php endforeach; ?>
+				</select>
+				<span class="form-text text-danger invalid-feedback">Review By harus di isi</span>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-lg-3 col-form-label text-lg-right">Approval By :</label>
+			<div class="col-lg-7">
+				<select name="approval_id" id="approval_id" class="form-control select2">;
+					<option value=""></option>
+					<?php foreach ($jabatan as $jbt) : ?>
+						<option value="<?= $jbt->id; ?>" <?= (isset($file) && $file->approval_id == $jbt->id) ? 'selected' : ''; ?>><?= $jbt->nm_jabatan; ?></option>
+					<?php endforeach; ?>
+				</select>
+				<span class="form-text text-danger invalid-feedback">Approval By harus di isi</span>
+			</div>
+		</div>
+		<div class="form-group row">
+			<label class="col-lg-3 col-form-label text-lg-right">Distribusi :</label>
+			<div class="col-lg-7">
+				<select name="distribute_id[]" multiple id="distribute_id" data-placeholder="Choose an options" class="form-control select2">;
+					<option value=""></option>
+					<?php foreach ($jabatan as $jbt) : ?>
+						<option value="<?= $jbt->id; ?>" <?= isset($file) ? ((in_array($jbt->id, explode(',', $file->distribute_id))) ? 'selected' : '') : ''; ?>><?= $jbt->nm_jabatan; ?></option>
+					<?php endforeach; ?>
+				</select>
+				<span class="form-text text-danger invalid-feedback">Distribusi By harus di isi</span>
+			</div>
 		</div>
 	</div>
-	<div class="form-group row">
-		<label class="col-lg-3 col-form-label text-lg-right">Distribusi :</label>
-		<div class="col-lg-7">
-			<select name="id_distribusi[]" multiple id="id_distribusi" data-placeholder="Choose an options" class="form-control select2">;
-				<option value=""></option>
-				<?php foreach ($jabatan as $jbt) : ?>
-					<option value="<?= $jbt->id; ?>" <?= isset($file) ? ((in_array($jbt->id, explode(',', $file->id_distribusi))) ? 'selected' : '') : ''; ?>><?= $jbt->nm_jabatan; ?></option>
-				<?php endforeach; ?>
-			</select>
-			<span class="form-text text-danger invalid-feedback">Distribusi By harus di isi</span>
-		</div>
-	</div>
-	<div class="form-group row">
+	<div class="form-group row mb-0">
 		<label class="col-lg-3 col-form-label text-lg-right">Upload Document :</label>
 		<div class="col-lg-7">
 			<input type="file" name="image" id="image" class="form-control" placeholder="Upload File">

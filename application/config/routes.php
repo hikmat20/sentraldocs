@@ -57,10 +57,12 @@ $route['login'] = 'users/users/login';
 $route['logout'] = 'users/users/logout';
 
 /* List Documents */
-$route['list'] = 'dashboard';
+$route['list/(:any)/(:any)'] = 'documents_list/$1/$2';
 $route['list/(:any)'] = 'documents_list/find/$1';
+$route['list'] = 'dashboard';
 
 /* Manage Documents */
-$route['docs'] = 'manage_documents/index';
+$route['docs/(:any)/(:any)/(:any)'] = 'manage_documents/$1/$2/$3';
 $route['docs/(:any)/(:any)'] = 'manage_documents/$1/$2';
 $route['docs/(:any)'] = 'manage_documents/$1';
+$route['docs'] = 'manage_documents/index';
