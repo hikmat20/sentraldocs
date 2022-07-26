@@ -32,3 +32,6 @@ JOIN `groups` ON `user_groups`.`id_group` = `groups`.`id_group`
 WHERE `id_user` = '3'
 ORDER BY `nm_group` ASC
 ERROR - 2022-07-26 17:06:21 --> 404 Page Not Found: /index
+ERROR - 2022-07-26 17:24:42 --> Severity: Notice --> Undefined index: status F:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\manage_documents\controllers\Manage_documents.php 434
+ERROR - 2022-07-26 17:30:44 --> Severity: Notice --> Undefined index: status F:\SENTRAL\SENTRALDOCS\sentraldocs\application\modules\manage_documents\controllers\Manage_documents.php 434
+ERROR - 2022-07-26 17:30:44 --> Query error: Unknown column 'statuss' in 'field list' - Invalid query: INSERT INTO `directory` (`id`, `parent_id`, `description`, `prepared_by`, `flag_record`, `reviewer_id`, `approval_id`, `distribute_id`, `name`, `file_name`, `size`, `ext`, `flag_type`, `created_by`, `created_at`, `statuss`) VALUES ('0762dfc25493f7b', '62dfc0d2251be', 'aaaaaaaaaaaaaaaaaaaaaaaaaa', '4', 'N', '6', '6', '8', 'aaaaaaaaaaaaaaaaaaaaaaaaaa', 'ca476c199d9eb9d5cf1bf68d0f7132e6.pdf', 90, '.pdf', 'FILE', '3', '2022-07-26 17:30:44', 'OPN')

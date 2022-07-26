@@ -308,7 +308,6 @@ class Manage_documents extends Admin_Controller
 	public function save_upload()
 	{
 		$data = $this->input->post();
-
 		try {
 			$parent_name = $this->db->get_where('directory', ['id' => $data['parent_id']])->row()->name;
 			if ($_FILES['image']['name']) {
@@ -356,6 +355,7 @@ class Manage_documents extends Admin_Controller
 						$data['created_by']		= $this->auth->user_id();
 						$data['created_at']		= date('Y-m-d H:i:s');
 						$data['note']			= 'First Upload File';
+						$data['status']			= isset($data['status']) ? $data['status'] : 'OPN';
 						$this->_update_history($data);
 						unset($data['note']);
 						$this->db->insert('directory', $data);
@@ -395,20 +395,6 @@ class Manage_documents extends Admin_Controller
 					echo json_encode($Return);
 					return false;
 				endif;
-
-				if ($this->db->trans_status() === FALSE) {
-					$this->db->trans_rollback();
-					$Return = [
-						'status' => 0,
-						'msg'	 => 'Failed upload document file. Please try again later.!'
-					];
-				} else {
-					$this->db->trans_commit();
-					$Return = [
-						'status' => 1,
-						'msg'	 => 'Success upload document file...'
-					];
-				}
 			} else {
 				$Return = [
 					'status' => 0,
@@ -416,6 +402,7 @@ class Manage_documents extends Admin_Controller
 				];
 			}
 		} catch (Exception $e) {
+			$this->db->trans_rollback();
 			$Return = [
 				'status' => 1,
 				'msg'	 => $e->getMessage()
@@ -424,6 +411,19 @@ class Manage_documents extends Admin_Controller
 			return $Return;
 		}
 
+		if ($this->db->trans_status() === FALSE) {
+			$this->db->trans_rollback();
+			$Return = [
+				'status' => 0,
+				'msg'	 => 'Failed upload document file. Please try again later.!'
+			];
+		} else {
+			$this->db->trans_commit();
+			$Return = [
+				'status' => 1,
+				'msg'	 => 'Success upload document file...'
+			];
+		}
 		echo json_encode($Return);
 	}
 
