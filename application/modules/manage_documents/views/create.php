@@ -1,11 +1,11 @@
 <div class="content d-flex flex-column flex-column-fluid px-10 pb-0" id="kt_content">
 	<div class="row">
 		<div class="col-md-4">
-			<div class="card card-custom h-550px">
+			<div class="card card-custom">
 				<div class="card-header my-0 min-h-10px">
 					<span class="card-title text-dark-75"><i class="fa fa-folder mr-2 text-warning"></i>Directories</span>
 				</div>
-				<div class="card-body px-4 py-1 overflow-auto">
+				<div class="card-body px-4 py-1 overflow-auto h-500px">
 					<div id="kt_tree_2" class="tree-demo">
 						<?= $loadFolder; ?>
 					</div>
@@ -13,12 +13,12 @@
 			</div>
 		</div>
 		<div class="col-md-8">
-			<div class="card card-custom h-550px">
+			<div class="card card-custom">
 				<div class="card-header my-0 min-h-10px">
 					<span class="card-title text-dark-75"><i class="fa fa-file mr-2 text-success"></i>List File & Folder</span>
 				</div>
 				<div id="data-file">
-					<div class="card-body overflow-auto py-2">
+					<div class="card-body py-2 overflow-auto h-550px">
 						<div class="d-flex justify-content-center align-items-center py-10">
 							<img src="<?= base_url('assets\images\dashboard\folder-file.gif'); ?>" alt="" width="300px" class="img-responsive text-center opacity-30">
 						</div>

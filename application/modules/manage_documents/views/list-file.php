@@ -45,7 +45,7 @@
 		</ul>
 	</div>
 </div>
-<div class="card-body px-1 overflow-auto py-2">
+<div class="card-body px-1 py-2 overflow-auto h-500px">
 	<table class="table table-hover table-borderless">
 		<tbody>
 			<?php $n = 0;
