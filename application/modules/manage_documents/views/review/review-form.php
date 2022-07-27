@@ -90,7 +90,7 @@
 
                                     <div class="timeline-desc timeline-desc-light-danger">
                                         <span class="font-weight-bolder text-danger"> <?= $his->updated_at; ?></span>
-                                        <?= ($sts[$his->status]) ?: '-'; ?>
+                                        <?= (isset($sts[$his->status])) ? $his->status : '-'; ?>
                                         <p class="font-weight-normal text-dark-50 pt-1">
                                             <strong for="">Processed by <?= $his->updated_by; ?></strong>
                                         </p>
