@@ -76,14 +76,14 @@ $query_builder = true;
 
 $db['default'] = array(
     'dsn' => '',
-    'hostname' => 'localhost',
+    'hostname' => '103.228.117.98',
     'username' => 'root',
-    'password' => '',
-    'database' => '',
+    'password' => 'Annabell2018',
+    'database' => 'elibrary',
     'dbdriver' => 'mysqli',
     'dbprefix' => '',
     'pconnect' => false,
-    'db_debug' => (ENVIRONMENT !== 'production'),
+    'db_debug' => (ENVIRONMENT !== 'development'),
     'cache_on' => false,
     'cachedir' => '',
     'char_set' => 'utf8',
