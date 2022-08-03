@@ -15,9 +15,10 @@ class Manage_documents extends Admin_Controller
 		$this->load->library('upload');
 		$this->template->page_icon('fa fa-file-alt');
 		$this->MainData 	= $this->db->get_where('directory', ['parent_id' => '0'])->result();
-		$this->company 		= $this->session->session_active_company->company_id;
+		$this->company_id	= $this->session->default_company->company_id;
 		// $this->branch 		= $this->session->app_session['id_cabang'];
 		$this->sts = [
+			'' => '<span class="label label-light-secondary label-pill label-inline mr-2 text-dark-50">!Null!</span>',
 			'OPN' => '<span class="label label-light-primary label-pill label-inline mr-2">New</span>',
 			'REV' => '<span class="label label-light-warning label-pill label-inline mr-2">Waiting Review</span>',
 			'COR' => '<span class="label label-light-danger label-pill label-inline mr-2">Need Correction</span>',
@@ -34,8 +35,8 @@ class Manage_documents extends Admin_Controller
 
 	public function create()
 	{
-		$mainFolder = $this->db->get_where('directory', ['flag_type' => 'FOLDER', 'active' => 'Y', 'parent_id' => '0'])->result();
-		$Data 		= $this->db->get_where('directory', ['flag_type' => 'FOLDER', 'active' => 'Y'])->result();
+		$mainFolder = $this->db->get_where('directory', ['flag_type' => 'FOLDER', 'active' => 'Y', 'status !=' => 'DEL', 'parent_id' => '0'])->result();
+		$Data 		= $this->db->get_where('directory', ['flag_type' => 'FOLDER', 'active' => 'Y', 'status !=' => 'DEL'])->result();
 		$jabatan 	= $this->db->get('tbl_jabatan')->result();
 		$ArrFolder = [];
 		foreach ($Data as $dir) {
@@ -60,11 +61,11 @@ class Manage_documents extends Admin_Controller
 			// exit;
 			if (isset($ArrFolder[$val->id])) {
 
-				$html .= "<li class='h6 py-1'><a href='" . $val->link . "' data-id='" . $val->id . "' class='tree-folder'>" . $val->name . "</a>";
+				$html .= "<li class='h6 py-1'><a href='" . $val->link . "' data-id='" . $val->id . "' data-parent_id='" . $val->parent_id . "' class='tree-folder'>" . $val->name . "</a>";
 				$html .= $this->menus($ArrFolder, $val->id);
 				$html .= "</li>";
 			} else {
-				$html .= "<li class='h6 py-1'><a href='" . $val->link . "' data-id='" . $val->id . "' class='tree-folder'>" . $val->name . "</a></li>";
+				$html .= "<li class='h6 py-1'><a href='" . $val->link . "' data-id='" . $val->id . "' data-parent_id='" . $val->parent_id . "' class='tree-folder'>" . $val->name . "</a></li>";
 			}
 		}
 		$html .= "</ul>";
@@ -73,16 +74,33 @@ class Manage_documents extends Admin_Controller
 
 	public function load_file($id = null)
 	{
+
 		if ($id) {
 
 			$data_file = $this->db->get_where('directory', ['parent_id' => $id, 'flag_type !=' => 'LINK', 'status !=' => 'DEL'])->result();
 			$prev = $this->db->get_where('directory', ['id' => $id])->row()->parent_id;
-
+			// echo '<pre>';
+			// print_r($data_file);
+			// echo '<pre>';
+			// exit;
 			$this->template->set('prev', $prev);
 			$this->template->set('parent_id', $id);
 			$this->template->set('sts', $this->sts);
 			$this->template->set('list_file', $data_file);
 			$this->template->render('list-file');
+		} else {
+			$data_file = $this->db->get_where('directory', ['parent_id' => $id, 'flag_type !=' => 'LINK', 'status !=' => 'DEL'])->result();
+			$this->template->set('list_file', $data_file);
+			$this->template->render('list-file');
+		}
+	}
+
+	public function previous()
+	{
+		$id = $this->input->post('id');
+		if ($id) {
+			$data = $this->db->get_where('directory', ['id' => $id, 'flag_type !=' => 'LINK', 'status !=' => 'DEL'])->row();
+			echo json_encode($data);
 		}
 	}
 
@@ -122,29 +140,29 @@ class Manage_documents extends Admin_Controller
 		$id 		= $this->input->post('id');
 		$parent_id 	= $this->input->post('parent_id');
 		$check_child = $this->db->get_where('directory', ['parent_id' => $id])->num_rows();
-		if ($check_child == '0') {
-			$this->db->trans_begin();
-			$this->db->update('directory', ['status' => 'DEL'], ['id' => $id]);
+		$this->db->trans_begin();
+		$this->db->update('directory', ['status' => 'DEL'], ['id' => $id]);
 
-			if ($this->db->trans_status() === FALSE) {
-				$this->db->trans_rollback();
-				$Return		= array(
-					'status'		=> 0,
-					'pesan'			=> 'Folder failed deleted'
-				);
-			} else {
-				$this->db->trans_commit();
-				$Return		= array(
-					'status'		=> 1,
-					'msg'			=> 'Folder success deleted'
-				);
-			}
-		} else {
+		if ($this->db->trans_status() === FALSE) {
+			$this->db->trans_rollback();
 			$Return		= array(
 				'status'		=> 0,
-				'msg'			=> "Can't delete this folder, The folder has another folder or file that belongs to this folder"
+				'pesan'			=> 'Folder failed deleted'
+			);
+		} else {
+			$this->db->trans_commit();
+			$Return		= array(
+				'status'		=> 1,
+				'msg'			=> 'Folder success deleted'
 			);
 		}
+		// if ($check_child == '0') {
+		// } else {
+		// 	$Return		= array(
+		// 		'status'		=> 0,
+		// 		'msg'			=> "Can't delete this folder, The folder has another folder or file that belongs to this folder"
+		// 	);
+		// }
 
 		echo json_encode($Return);
 	}
@@ -268,7 +286,7 @@ class Manage_documents extends Admin_Controller
 
 	public function upload($parent_id)
 	{
-		$users 		= $this->db->get_where('users', ['st_aktif' => '1', 'id_perusahaan' => $this->company, 'id_user !=' => '1'])->result();
+		$users 		= $this->db->get_where('users', ['st_aktif' => '1', 'id_user !=' => '1'])->result();
 		$jabatan 	= $this->db->get('tbl_jabatan')->result();
 
 		$this->template->set([
