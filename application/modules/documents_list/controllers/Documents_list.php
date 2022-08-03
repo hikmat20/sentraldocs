@@ -16,8 +16,6 @@ class Documents_list extends Admin_Controller
 		$this->load->model('documents_list/Documents_list_model', 'List');
 		$this->template->page_icon('fa fa-dashboard');
 		$this->MainData 	= $this->db->get_where('directory', ['parent_id' => '0'])->result();
-		$this->company 		= $this->session->app_session['id_perusahaan'];
-		$this->branch 		= $this->session->app_session['id_cabang'];
 		$this->sts = [
 			'OPN' => '<span class="label label-light-primary label-pill label-inline mr-2">New</span>',
 			'REV' => '<span class="label label-light-warning label-pill label-inline mr-2">Waiting Review</span>',
@@ -37,10 +35,10 @@ class Documents_list extends Admin_Controller
 	public function find($id)
 	{
 		$thisData 		= $this->db->get_where('directory', ['id' => $id])->row();
-		$Data 			= $this->db->get_where('directory', ['parent_id' => $id, 'flag_type' => 'FOLDER'])->result();
-		$listDataFolder = $this->db->get_where('directory', ['flag_type' => 'FOLDER'])->result();
-		$listDataFile 	= $this->db->get_where('directory', ['flag_type' => 'FILE', 'status' => 'PUB'])->result();
-		$listDataLink 	= $this->db->get_where('directory', ['flag_type' => 'LINK'])->result();
+		$Data 			= $this->db->get_where('directory', ['parent_id' => $id, 'flag_type' => 'FOLDER', 'status !=' => 'DEL'])->result();
+		$listDataFolder = $this->db->get_where('directory', ['flag_type' => 'FOLDER', 'status !=' => 'DEL'])->result();
+		$listDataFile 	= $this->db->get_where('directory', ['flag_type' => 'FILE', 'status' => 'PUB', 'status !=' => 'DEL'])->result();
+		$listDataLink 	= $this->db->get_where('directory', ['flag_type' => 'LINK', 'status !=' => 'DEL'])->result();
 
 		$ArrDataFolder = [];
 		foreach ($listDataFolder as $listFolder) {
@@ -67,7 +65,6 @@ class Documents_list extends Admin_Controller
 		$this->template->set('ArrDataLink', $ArrDataLink);
 		$this->template->render('index');
 	}
-
 
 	function buildBreadcumb($data)
 	{

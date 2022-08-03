@@ -69,59 +69,48 @@ class Auth
             redirect('/');
         }
 
-        $inis     = $this->ci->db->get_where('view_assign_company', ['inisial' => $inisial])->num_rows();
+        $inis     = $this->ci->db->get_where('companies', ['inisial' => $inisial])->num_rows();
         if ($inis == 0) {
             $this->ci->template->set_message('Inisial Company not found', '');
             return FALSE;
         }
 
-        $user     = $this->ci->db->get_where('view_assign_company', array('username' => $username, 'inisial' => $inisial))->row();
-
-        if (!$user) {
+        $assign_user     = $this->ci->db->get_where('view_assign_company', array('username' => $username, 'inisial' => $inisial))->row();
+        if (!$assign_user) {
             $this->ci->template->set_message(lang('users_login_fail'), 'error');
             return FALSE;
-        }
-
-        // if ($user->deleted == 1) {
-        //     $this->ci->template->set_message(lang('users_already_deleted'), 'error');
-        //     return FALSE;
-        // }
-
-        if ($user->status == 'N') {
-            $this->ci->template->set_message(lang('users_not_active'), 'error');
-            return FALSE;
-        }
-
-        if ($user->inisial == '') {
-            $this->ci->template->set_message(lang('users_inisial'));
-            return FALSE;
-        }
-
-        if (password_verify($password, $user->password)) {
-            $user_session = $this->ci->db->get_where('users', ['id_user' => $user->user_id])->row();
-            //Buat Session
-            $array = array();
-            foreach ($user_session as $key => $usr) {
-                $array[$key] = $usr;
+        } else {
+            $user = $this->ci->db->get_where('users', ['username' => $username])->row();
+            if ($user->status == 'N') {
+                $this->ci->template->set_message(lang('users_not_active'), 'error');
+                return FALSE;
             }
-            $company     = $this->ci->db->get_where('view_assign_company', ['user_id' => $user->user_id])->result();
-            $this->ci->session->set_userdata('app_session', $array);
-            $this->ci->session->set_userdata('session_company', $company);
-            $this->ci->session->set_userdata('session_active_company', $user);
 
-            //Set User Data
-            $this->user = $this->ci->session->userdata('app_session');
-            //Update Login Terakhir
+            if (password_verify($password, $user->password)) {
+                // $user_session = $this->ci->db->get_where('users', ['id_user' => $user->user_id])->row();
+                //Buat Session
+                $array = array();
+                foreach ($user as $key => $usr) {
+                    $array[$key] = $usr;
+                }
+                $company     = $this->ci->db->get_where('assign_company', ['user_id' => $user->id_user, 'default' => 'Y'])->row();
 
-            $ip_address = ($this->ci->input->ip_address()) == "::1" ? "127.0.0.1" : $this->ci->input->ip_address();
-            $this->ci->users_model->update($this->user_id(), array('login_terakhir' => date('Y-m-d H:i:s'), 'ip' => $ip_address));
+                $this->ci->session->set_userdata('app_session', $array);
+                $this->ci->session->set_userdata('default_company', $company);
 
-            $requested_page = $this->ci->session->userdata('requested_page');
-            if ($requested_page != '') {
+                //Set User Data
+                $this->user = $this->ci->session->userdata('app_session');
+
+                //Update Login Terakhir
+                $ip_address = ($this->ci->input->ip_address()) == "::1" ? "127.0.0.1" : $this->ci->input->ip_address();
+                $this->ci->users_model->update($this->user_id(), array('last_login' => date('Y-m-d H:i:s'), 'ip' => $ip_address));
+
+                $requested_page = $this->ci->session->userdata('requested_page');
+                if ($requested_page != '') {
+                    redirect("/");
+                }
                 redirect("/");
             }
-
-            redirect("/");
         }
 
         $this->ci->template->set_message(lang('users_wrong_password'), 'error');

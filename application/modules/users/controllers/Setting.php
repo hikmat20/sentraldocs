@@ -16,12 +16,6 @@ class Setting extends Admin_Controller
      *
      */
 
-    //Permissions
-    protected $viewPermission   = "Users.View";
-    protected $addPermission    = "Users.Add";
-    protected $managePermission = "Users.Manage";
-    protected $deletePermission = "Users.Delete";
-
     public function __construct()
     {
         parent::__construct();
@@ -376,13 +370,13 @@ class Setting extends Admin_Controller
         $st_aktif                       = $this->input->post('st_aktif');
         $kdcab                          = $this->input->post('kdcab');
         $level                          = $this->input->post('level');
-		$perusahaan                     = $this->input->post('nm_perusahaan');
+        $perusahaan                     = $this->input->post('nm_perusahaan');
         $cabang                         = $this->input->post('nm_cabang');
         $old_photo                      = $this->input->post('old_photo');
-		
-		$kodeprsh = $this->db->query("SELECT inisial FROM perusahaan_cbg WHERE id_cabang='$cabang'")->row();	
-        $inisial =$kodeprsh->inisial;
-        
+
+        $kodeprsh = $this->db->query("SELECT inisial FROM perusahaan_cbg WHERE id_cabang='$cabang'")->row();
+        $inisial = $kodeprsh->inisial;
+
         // print_r($inisial);
         // exit;		
 
@@ -454,9 +448,9 @@ class Setting extends Admin_Controller
                 'dept_dokter' => $dept,
                 'level' => $level,
                 'photo' => $newPhoto,
-				'id_perusahaan' => $perusahaan,
-				 'id_cabang' => $cabang,
-				 'inisial'=>$inisial,
+                'id_perusahaan' => $perusahaan,
+                'id_cabang' => $cabang,
+                'inisial' => $inisial,
             );
 
             $result = $this->users_model->insert($data_insert);
@@ -493,11 +487,11 @@ class Setting extends Admin_Controller
                 'kdcab'     => $kdcab,
                 'level' => $level,
                 'photo' => $newPhoto,
-				'id_perusahaan' => $perusahaan,
-				'id_cabang' => $cabang,
-				'inisial'=>$inisial,
+                'id_perusahaan' => $perusahaan,
+                'id_cabang' => $cabang,
+                'inisial' => $inisial,
             );
-            if ($_POST['password'] !='') {
+            if ($_POST['password'] != '') {
                 $data_insert['password'] = $password;
             }
 
@@ -516,6 +510,4 @@ class Setting extends Admin_Controller
     {
         return $val == "" ? FALSE : TRUE;
     }
-	
-	
 }

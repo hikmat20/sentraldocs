@@ -21,10 +21,9 @@ class Admin_Controller extends Base_Controller
             redirect('login');
         }
 
-        $idt         = $this->identitas_model->find(1);
-
-        $this->user_data = $this->auth->userdata();
-
+        $idt                = $this->identitas_model->find(1);
+        $this->user_data    = $this->auth->userdata();
+        $this->company      = $this->session->default_company->company_id;
         $this->form_validation->set_error_delimiters('', '');
 
         // Pagination config
@@ -50,9 +49,13 @@ class Admin_Controller extends Base_Controller
         // Basic setup
         $this->template->set('userData', $this->user_data);
         $this->template->set('idt', $idt);
+
         // $this->template->set_theme('admin');
         $this->template->set_theme('dashboard');
         $this->template->set_layout('index');
+
+        // $this->branch 		= $this->session->app_session['company_id'];
+
         //Overwrite if the request is ajax
         if ($this->input->is_ajax_request()) {
             $this->template->set_layout('ajax');

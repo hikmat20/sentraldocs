@@ -41,7 +41,7 @@
 </head>
 <!-- 0c18a9 -->
 
-<body id="kt_body" class="header-fixed header-mobile-fixed aside-enabled aside-static page-loading" style="background-image: url(<?= base_url('assets/images/bg-primary.png'); ?>);background-repeat:no-repeat;background-size:cover;background-position:top;background-attachment:cover">
+<body id="kt_body" class="header-fixed header-mobile-fixed aside-enabled aside-static page-loading" style="background-image: url(<?= base_url('assets/images/bg-primary.png'); ?>);background-repeat:repeat-y;background-size:cover;background-position:top;background-attachment:cover">
   <div id="kt_header_mobile" class="header-mobile header-mobile-fixed">
     <a href="<?= base_url('/'); ?>">
       <img alt="Logo" src="<?= base_url('assets/img/logo.png'); ?>" class="max-h-30px" />
@@ -150,6 +150,13 @@
                       <span class="menu-text text-white h5 my-0"><i class="fa fa-home mr-3 text-white"></i> Dashboard</span>
                     </a>
                   </li>
+                  <?php if ($this->session->app_session['group_id'] == '2') : ?>
+                    <li class="menu-item <?= (check_class('docs', TRUE)) ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
+                      <a href="<?= base_url('/docs'); ?>" class="menu-link bg-warning" style="border-radius: 14px 1px 14px 1px  ;">
+                        <span class="menu-text text-white h5 my-0"><i class="fa fa-file-alt mr-3 text-white"></i> Manage Docs</span>
+                      </a>
+                    </li>
+                  <?php endif; ?>
                 </ul>
                 <!--end::Header Nav-->
               </div>
@@ -160,7 +167,7 @@
             <div class="topbar">
               <!--begin::Quick Actions-->
               <div class="topbar-item mr-3">
-                <span class="bg-white rounded py-2 h6 my-0 pl-3 pr-10" style="margin-right:-30px"><?= $userData->nm_lengkap; ?></span>
+                <span class="bg-white rounded py-2 h6 my-0 pl-3 pr-10" style="margin-right:-30px"><?= $userData->full_name; ?></span>
                 <div class="btn btn-icon w-auto d-flex align-items-center btn-lg px-2" onclick="$('#kt_quick_user_toggle').click()">
                   <div class="symbol symbol-circle symbol-50 bg-white overflow-hidden">
                     <div class="symbol-label">

@@ -76,10 +76,10 @@ $query_builder = true;
 
 $db['default'] = array(
     'dsn' => '',
-    'hostname' => '103.228.117.98',
+    'hostname' => 'localhost',
     'username' => 'root',
-    'password' => 'Annabell2018',
-    'database' => 'elibrary',
+    'password' => 'adminroot',
+    'database' => 'sentraldocs_db',
     'dbdriver' => 'mysqli',
     'dbprefix' => '',
     'pconnect' => false,

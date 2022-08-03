@@ -1,28 +1,80 @@
-<div class="content d-flex flex-column flex-column-fluid px-10 pb-0" id="kt_content">
-	<div class="row">
-		<div class="col-md-4">
-			<div class="card card-custom">
-				<div class="card-header my-0 min-h-10px">
-					<span class="card-title text-dark-75"><i class="fa fa-folder mr-2 text-warning"></i>Directories</span>
-				</div>
-				<div class="card-body px-4 py-1 overflow-auto h-500px">
-					<div id="kt_tree_2" class="tree-demo">
-						<?= $loadFolder; ?>
+<div class="content d-flex flex-column flex-column-fluid px-5 pb-0" id="kt_content">
+	<div class="container mx-auto">
+		<div class="card card-custom">
+			<div class="row">
+				<div class="col-md-4 bg-dark-25 pr-0">
+					<div class="card-header pb-8 pt-3 h-20px">
+						<span class="card-title text-dark-75"><i class="fa fa-folder mr-2 text-warning"></i>Directories</span>
 					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-8">
-			<div class="card card-custom">
-				<div class="card-header my-0 min-h-10px">
-					<span class="card-title text-dark-75"><i class="fa fa-file mr-2 text-success"></i>List File & Folder</span>
-				</div>
-				<div id="data-file">
-					<div class="card-body py-2 overflow-auto h-550px">
-						<div class="d-flex justify-content-center align-items-center py-10">
-							<img src="<?= base_url('assets\images\dashboard\folder-file.gif'); ?>" alt="" width="300px" class="img-responsive text-center opacity-30">
+					<div class="card-body px-4 py-1 overflow-auto h-500px">
+						<div id="kt_tree_2" class="tree-demo">
+							<?= $loadFolder; ?>
 						</div>
 					</div>
+				</div>
+
+				<div class="col-md-8 pl-0">
+					<div class="card-header px-0 border-1 border-left pb-11 pt-0 h-20px">
+						<!-- <span class="card-title text-dark-75"><i class="fa fa-file mr-2 text-success"></i>List File & Folder</span> -->
+						<div class="px-1">
+							<ul class="nav nav-light-success nav-pills" id="myTab" role="tablist">
+								<li class="nav-item" data-id="0">
+									<a class="nav-link pr-3" id="back" data-id="0" href="javascript:void(0)">
+										<span class="nav-icon">
+											<i class="fa fa-arrow-left mr-2"></i>
+										</span>
+										<span class="nav-text">Back</span>
+									</a>
+								</li>
+								<li class="nav-item" data-id="0">
+									<a class="nav-link pr-3" id="forward" data-id="0" href="javascript:void(0)">
+										<span class="nav-icon">
+											<i class="fa fa-arrow-right mr-2"></i>
+										</span>
+										<span class="nav-text">Forward</span>
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link px-2" id="add-folder" data-id="0" href="javascript:void(0)">
+										<span class="nav-icon">
+											<i class="fa fa-plus"></i>
+										</span>
+										<span class="nav-text">
+											Add Folder
+										</span>
+									</a>
+								</li>
+								<li class="nav-item dropdown">
+									<a class="nav-link px-2" id="add-file" data-id="0" href="javascript:void(0)">
+										<span class="nav-icon">
+											<i class="fa fa-file mr-2"></i>
+										</span>
+										<span class="nav-text">
+											Upload File
+										</span>
+									</a>
+								</li>
+								<li class="nav-item dropdown">
+									<a class="nav-link px-2" id="refresh" href="javascript:void(0)" data-id="0">
+										<span class="nav-icon">
+											<i class="fa fa-redo mr-2"></i>
+										</span>
+										<span class="nav-text">
+											Refresh
+										</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div id="data-file">
+						<div class="card-body border border-1 border-left py-2 overflow-auto h-550px">
+							<div class="d-flex justify-content-center align-items-center py-10">
+								<img src="<?= base_url('assets\images\dashboard\folder-file.gif'); ?>" alt="" width="300px" class="img-responsive text-center opacity-30">
+							</div>
+						</div>
+					</div>
+
 				</div>
 			</div>
 		</div>
@@ -119,8 +171,14 @@
 
 	$(document).on("click", ".tree-folder", function() {
 		const id = $(this).data('id');
+		const parent_id = $(this).data('parent_id')
 		if (id) {
 			$('#data-file').load(siteurl + active_controller + 'load_file/' + id)
+			$('#add-folder').data('id', id);
+			$('#add-folder').data('id', id);
+			$('#add-file').data('id', id);
+			$('#refresh').data('id', id);
+			console.log(id);
 		} else {
 			$('#data-file').html('<tr class="text-center"><td colspan="3" class="text-center">Not available data</td></tr>')
 
@@ -131,7 +189,11 @@
 		const id = $(this).data('id');
 		if (id) {
 			$('#data-file').load(siteurl + active_controller + 'load_file/' + id)
-
+			$('#back').data('id', id);
+			$('#add-folder').data('id', id);
+			$('#add-file').data('id', id);
+			$('#refresh').data('id', id);
+			console.log(id);
 		} else {
 			$('#data-file').html('')
 
@@ -149,98 +211,33 @@
 		}
 	});
 
-	$(document).on("click", ".prev", function() {
+	$(document).on("click", "#back", function() {
 		const id = $(this).data('id');
+
 		if (id != '0') {
-			$('#data-file').load(siteurl + active_controller + 'load_file/' + id)
-		}
-	});
-
-	$(document).on('change', '#picture', function(event) {
-		let old_picture = $('#old_picture').val();
-		// alert(old_photo)
-		var reader = new FileReader();
-		reader.onload = function() {
-			var output = document.getElementById('preview');
-			output.src = reader.result;
-			console.log(reader);
-			let dataUpload = new FormData($('#dataUpload')[0]);
 			$.ajax({
-				url: baseurl + active_controller + 'upload',
+				url: siteurl + active_controller + 'previous',
 				type: 'POST',
-				data: dataUpload,
-				dataType: 'JSON',
-				cache: false,
-				processData: false,
-				contentType: false,
-				success: function(result) {
-					console.log(result.msg);
-					if (result.status == 1) {
-						$('#msg-upload').fadeIn('ease').html(`
-							<div class="alert alert-custom py-3 alert-light-primary fade show mb-5" role="alert">
-								<div class="alert-icon"><i class="fa fa-info-circle"></i></div>
-								<div class="alert-text">` + result.msg + `</div>
-								<div class="alert-close">
-									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-										<span aria-hidden="true"><i class="ki ki-close"></i></span>
-									</button>
-								</div>
-							</div>`)
-						$('#old_picture').val(result.photo);
-						setTimeout(function() {
-							$('#msg-upload').fadeOut('ease')
-						}, 5000)
-					} else {
-						$('#msg-upload').fadeIn('ease').html(`\
-							<div class="alert alert-danger">
-								<div class="alert alert-custom py-3 alert-light-danger fade show mb-5" role="alert">
-									<div class="alert-icon"><i class="fas fa-exclamation-triangle"></i></div>
-									<div class="alert-text">` + result.msg + `</div>
-									<div class="alert-close">
-										<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-											<span aria-hidden="true"><i class="ki ki-close"></i></span>
-										</button>
-									</div>
-								</div>`)
-						// return false;
-						setTimeout(function() {
-							$('#msg-upload').fadeOut('ease')
-							$('#preview').attr('src', './assets/img/' + old_picture);
-						}, 5000)
-					}
+				data: {
+					id
 				},
-				error: function(result) {
-					alert('Internal Error!');
-					console.log(result);
-				}
-			})
-		}
-		reader.readAsDataURL(event.target.files[0]);
-	})
+				dataType: "JSON",
+				success: function(data) {
 
-	$(document).on('click', '.change-picture', function() {
-		let id = $(this).data('id')
-		$.ajax({
-			url: baseurl + active_controller + 'picture',
-			type: 'POST',
-			data: {
-				id
-			},
-			success: function(result) {
-				if (result) {
-					$('#exampleModal').modal('show');
-					$('#viewData').html(result);
-				} else {
-					$('#exampleModal').modal('show');
-					$('#viewData').html('-- No Data --');
+					$('#data-file').load(siteurl + active_controller + 'load_file/' + data.parent_id)
+					$('#back').data('id', data.parent_id);
+					$('#add-folder').data('id', data.parent_id);
+					$('#add-file').data('id', data.parent_id);
+					$('#refresh').data('id', data.parent_id);
+					console.log(data.parent_id);
+				},
+				error: function(data) {
+
 				}
-			},
-			error: function(result) {
-				alert('Internal Error!');
-				console.log(result);
-			}
-		})
-	})
+			});
+		}
+
+	});
 
 	$(document).on('click', '#save', function() {
 		let folder_name = $('#folder_name').val()
@@ -478,13 +475,38 @@
 	})
 
 
+	$(document).on('click', '#refresh', function() {
+		const id = $(this).data('id')
+		refresh(id)
+	})
+
+	$(document).on('click', '#add-file', function() {
+		const id = $(this).data('id')
+		upload_file(id)
+		console.log(id);
+	})
+
+	$(document).on('click', '#add-folder', function() {
+		const id = $(this).data('id')
+		new_folder(id)
+		console.log(id);
+	})
+
 	/* FUNCTIONS */
 
 	function refresh(id) {
 		if (id) {
 			$('#data-file').load(siteurl + active_controller + 'load_file/' + id)
+			console.log(id);
 		} else {
-			$('#data-file').html('<tr class="text-center"><td colspan="3" class="text-center">Not available data</td></tr>')
+			$('#data-file').html(`
+			<div class="card-body border border-1 border-left py-2 overflow-auto h-550px">
+				<div class="d-flex justify-content-center align-items-center py-10">
+					<img src="` + "<?= base_url('assets/images/dashboard/folder-file.gif'); ?>" + `" alt="" width="300px" class="img-responsive text-center opacity-30">
+				</div>
+			</div>
+			`)
+			console.log('<?= base_url('assets/images/dashboard/folder-file.gif'); ?>');
 
 		}
 	}

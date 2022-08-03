@@ -1,51 +1,10 @@
-<div class="card-header px-0 py-1 min-h-10px">
-	<!-- <button type="button" class="btn btn- btn-icon prev" data-id="<?= $prev; ?>"><i class="fa fa-arrow-left mr-2 <?= ($prev != '0') ? 'text-dark-75' : ''; ?>"></i></button>
+<!-- <div class="card-header px-0 py-1 min-h-10px"> -->
+<!-- <button type="button" class="btn btn- btn-icon prev" data-id="<?= $prev; ?>"><i class="fa fa-arrow-left mr-2 <?= ($prev != '0') ? 'text-dark-75' : ''; ?>"></i></button>
 	<button type="button" class="btn btn-light-warning btn-md" onclick="new_folder('<?= $parent_id; ?>')"><i class="fa fa-folder-plus mr-2"></i>Add Folder</button>
 	<button type="button" class="btn btn-light-success btn-md" onclick="upload_file('<?= $parent_id; ?>')"><i class="fa fa-file mr-2"></i>Upload File</button> -->
-	<div class="px-1">
-		<ul class="nav nav-light-success nav-pills" id="myTab" role="tablist">
-			<li class="nav-item prev" data-id="<?= $prev; ?>">
-				<a class="nav-link prev pr-3" data-id="<?= $prev; ?>" href="javascript:void(0)">
-					<span class="nav-icon">
-						<i class="fa fa-arrow-left mr-2"></i>
-					</span>
-					<span class="nav-text">Back</span>
-				</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link px-2" href="javascript:void(0)" onclick="new_folder('<?= $parent_id; ?>')">
-					<span class="nav-icon">
-						<i class="fa fa-plus"></i>
-					</span>
-					<span class="nav-text">
-						Add Folder
-					</span>
-				</a>
-			</li>
-			<li class="nav-item dropdown">
-				<a class="nav-link px-2" href="javascript:void(0)" onclick="upload_file('<?= $parent_id; ?>')">
-					<span class="nav-icon">
-						<i class="fa fa-file mr-2"></i>
-					</span>
-					<span class="nav-text">
-						Upload File
-					</span>
-				</a>
-			</li>
-			<li class="nav-item dropdown">
-				<a class="nav-link px-2" href="javascript:void(0)" onclick="refresh('<?= $parent_id; ?>')">
-					<span class="nav-icon">
-						<i class="fa fa-redo mr-2"></i>
-					</span>
-					<span class="nav-text">
-						Refresh
-					</span>
-				</a>
-			</li>
-		</ul>
-	</div>
-</div>
-<div class="card-body px-1 py-2 overflow-auto h-500px">
+
+<!-- </div> -->
+<div class="card-body px-0 border border-1 border-left py-2 overflow-auto h-550px">
 	<table class="table table-hover table-borderless">
 		<tbody>
 			<?php $n = 0;
