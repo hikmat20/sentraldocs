@@ -15,7 +15,7 @@ class Manage_documents extends Admin_Controller
 		$this->load->library('upload');
 		$this->template->page_icon('fa fa-file-alt');
 		$this->MainData 	= $this->db->get_where('directory', ['parent_id' => '0'])->result();
-		$this->company_id	= $this->session->default_company->company_id;
+		// $this->company_id	= $this->session->default_company->company_id;
 		// $this->branch 		= $this->session->app_session['id_cabang'];
 		$this->sts = [
 			'' => '<span class="label label-light-secondary label-pill label-inline mr-2 text-dark-50">!Null!</span>',
