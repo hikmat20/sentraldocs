@@ -14,7 +14,7 @@
 			<select name="prepared_by" id="prepared_by" class="form-control select2">;
 				<option value=""></option>
 				<?php foreach ($users as $usr) : ?>
-					<option value="<?= $usr->id_user; ?>" <?= (isset($file) && $file->prepared_by == $usr->id_user) ? 'selected' : ''; ?>><?= $usr->nm_lengkap; ?></option>
+					<option value="<?= $usr->id_user; ?>" <?= (isset($file) && $file->prepared_by == $usr->id_user) ? 'selected' : ''; ?>><?= $usr->full_name; ?></option>
 				<?php endforeach; ?>
 			</select>
 			<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>

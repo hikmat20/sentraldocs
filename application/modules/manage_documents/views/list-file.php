@@ -30,7 +30,7 @@
 							<?= ($list->flag_type == 'FOLDER') ? "<i class='fa fa-folder text-warning mr-2 fa-2x py-0' style='vertical-align:middle;'></i>" : "<i class='text-success fa-2x fa fa-file mr-2 py-0' style='vertical-align:middle;'></i>"; ?> <span class="my-auto"><?= $list->name; ?></span>
 						</td>
 						<td style="vertical-align: middle;"><?= $list->created_at; ?></td>
-						<td style="vertical-align: middle;" class="mt-1"><?= $list->created_by; ?></td>
+						<td style="vertical-align: middle;" class="mt-1"><?= $list->full_name; ?></td>
 						<td style="vertical-align: middle;" class="mt-1">
 							<?= ($list->flag_type == 'FILE') ? $sts[$list->status] : "" ?>
 						</td>

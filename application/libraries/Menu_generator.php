@@ -389,20 +389,19 @@ class Menu_generator
 		$html = '';
 
 
-		$group_id = $this->ci->db->get_where('users', ['id_user' => $this->user_id])->row()->group_id;
+		$group = $this->ci->session->group;
 		$ArrMenu	= array();
 
-		if ($group_id == '1') {
+		if ($group->role == '1') {
 			$Query	= "SELECT * FROM menus WHERE `status`='1' ORDER BY parent_id,id ASC";
 		} else {
-			$Query	= "SELECT menus.* FROM menus INNER JOIN group_menus ON menus.id=group_menus.menu_id WHERE menus.status='1' AND group_menus.group_id='$group_id' ORDER BY menus.parent_id,menus.id ASC";
+			$Query	= "SELECT menus.* FROM menus INNER JOIN group_menus ON menus.id=group_menus.menu_id WHERE menus.status='1' AND group_menus.group_id='$group->id_group' ORDER BY menus.parent_id,menus.id ASC";
 		}
 
 		$count		= $this->ci->db->query($Query)->num_rows();
+
 		if ($count > 0) {
 			$results		= $this->ci->db->query($Query)->result_array();
-
-
 			foreach ($results as $key => $val) {
 				$ArrMenu[$key]['Menu']['id']		= $val['id'];
 				$ArrMenu[$key]['Menu']['title']		= $val['title'];
