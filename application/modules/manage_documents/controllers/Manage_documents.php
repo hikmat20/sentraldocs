@@ -147,7 +147,7 @@ class Manage_documents extends Admin_Controller
 		$parent_id 	= $this->input->post('parent_id');
 		$check_child = $this->db->get_where('view_directories', ['parent_id' => $id])->num_rows();
 		$this->db->trans_begin();
-		$this->db->update('view_directories', ['status' => 'DEL'], ['id' => $id]);
+		$this->db->update('directory', ['status' => 'DEL'], ['id' => $id]);
 
 		if ($this->db->trans_status() === FALSE) {
 			$this->db->trans_rollback();
@@ -178,7 +178,7 @@ class Manage_documents extends Admin_Controller
 		$id 		= $this->input->post('id');
 		if ($id) {
 			$this->db->trans_begin();
-			$this->db->update('view_directories', ['status' => 'REV', 'modified_by' => $this->auth->user_id(), 'modified_at' => date('Y-m-d H:i:s')], ['id' => $id]);
+			$this->db->update('directory', ['status' => 'REV', 'modified_by' => $this->auth->user_id(), 'modified_at' => date('Y-m-d H:i:s')], ['id' => $id]);
 
 			$file = $this->db->get_where('view_directories', ['id' => $id])->row_array();
 			$file['note'] = 'Processed to Review';
@@ -251,12 +251,12 @@ class Manage_documents extends Admin_Controller
 				if (is_dir("./directory/" . $old_name)) {
 					rename("./directory/" . $old_name, "./directory/" . $data['folder_name']);
 				}
-				$this->db->update('view_directories', $ArrFolder, ['id' => $data['id']]);
+				$this->db->update('directory', $ArrFolder, ['id' => $data['id']]);
 			else :
 				$ArrFolder['id'] = uniqid();
 				$ArrFolder['created_by'] = $this->auth->user_id();
 				$ArrFolder['created_at'] = date('Y-m-d H:i:s');
-				$this->db->insert('view_directories', $ArrFolder);
+				$this->db->insert('directory', $ArrFolder);
 				if (!is_dir('./directory/' . $data['folder_name'])) {
 					mkdir('./directory/' . $data['folder_name'], 0755, TRUE);
 					chmod("./directory/" . $data['folder_name'], 0755);  // octal; correct value of mode
@@ -385,14 +385,14 @@ class Manage_documents extends Admin_Controller
 						$data['status']			= isset($data['status']) ? $data['status'] : (($data['flag_record'] == 'Y') ? 'PUB' : 'OPN');
 						$this->_update_history($data);
 						unset($data['note']);
-						$this->db->insert('view_directories', $data);
+						$this->db->insert('directory', $data);
 					} else {
 						$data['modified_by']	= $this->auth->user_id();
 						$data['modified_at']	= date('Y-m-d H:i:s');
 						$data['note']			= 'Re-upload File';
 						$this->_update_history($data);
 						unset($data['note']);
-						$this->db->update('view_directories', $data, ['id' => $id]);
+						$this->db->update('directory', $data, ['id' => $id]);
 					}
 
 					if (isset($data['distribute_id'])) {
