@@ -108,7 +108,7 @@ class Auth
 
                     $requested_page = $this->ci->session->userdata('requested_page');
                     if ($requested_page != '') {
-                        redirect('/' . $requested_page);
+                        redirect(base_url() . $requested_page);
                     }
                     redirect("/");
                 } else {
