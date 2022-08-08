@@ -14,9 +14,13 @@ class Manage_documents extends Admin_Controller
 		$this->load->model('manage_documents/manage_documents_model', 'DOCS');
 		$this->load->library('upload');
 		$this->template->page_icon('fa fa-file-alt');
+<<<<<<< HEAD
 		$this->MainData 	= $this->db->get_where('directory', ['parent_id' => '0'])->result();
 		// $this->company_id	= $this->session->default_company->company_id;
 		// $this->branch 		= $this->session->app_session['id_cabang'];
+=======
+		$this->MainData 	= $this->db->get_where('view_directories', ['parent_id' => '0'])->result();
+>>>>>>> 3d85c10d78097fe87d00c6b5dc6026fef002aff8
 		$this->sts = [
 			'' => '<span class="label label-light-secondary label-pill label-inline mr-2 text-dark-50">!Null!</span>',
 			'OPN' => '<span class="label label-light-primary label-pill label-inline mr-2">New</span>',
@@ -35,13 +39,14 @@ class Manage_documents extends Admin_Controller
 
 	public function create()
 	{
-		$mainFolder = $this->db->get_where('directory', ['flag_type' => 'FOLDER', 'active' => 'Y', 'status !=' => 'DEL', 'parent_id' => '0'])->result();
-		$Data 		= $this->db->get_where('directory', ['flag_type' => 'FOLDER', 'active' => 'Y', 'status !=' => 'DEL'])->result();
+		$mainFolder = $this->db->get_where('view_directories', ['flag_type' => 'FOLDER', 'active' => 'Y', 'status !=' => 'DEL', 'parent_id' => '0', 'company_id' => $this->company])->result();
+		$Data 		= $this->db->get_where('view_directories', ['flag_type' => 'FOLDER', 'active' => 'Y', 'status !=' => 'DEL'])->result();
 		$jabatan 	= $this->db->get('tbl_jabatan')->result();
 		$ArrFolder = [];
 		foreach ($Data as $dir) {
 			$ArrFolder[$dir->parent_id][] = $dir;
 		}
+
 		$loadFolder = $this->menus($ArrFolder);
 		$this->template->set('loadFolder', $loadFolder);
 		$this->template->set('jabatan', $jabatan);
@@ -56,18 +61,25 @@ class Manage_documents extends Admin_Controller
 	function menus($ArrFolder, $parent = '0')
 	{
 		// $result = ("SELECT a.id, a.label, a.link, Deriv1.Count FROM `menu` a  LEFT OUTER JOIN (SELECT parent, COUNT(*) AS Count FROM `menu` GROUP BY parent) Deriv1 ON a.id = Deriv1.parent WHERE a.parent=" . $parent);
+		$cek_company = '';
 		$html = "<ul class='h6 text-dark'>";
 		foreach ($ArrFolder[$parent] as $val) {
 			// exit;
+			$main = ($val->parent_id == '0') ? true : false;
+			if ($main == false) {
+				$cek_company = ($val->company_id && $val->company_id != $this->company) ? 'd-none' : '';
+			}
+
 			if (isset($ArrFolder[$val->id])) {
 
-				$html .= "<li class='h6 py-1'><a href='" . $val->link . "' data-id='" . $val->id . "' data-parent_id='" . $val->parent_id . "' class='tree-folder'>" . $val->name . "</a>";
+				$html .= "<li class='h6 py-1 " . $cek_company . "'><a href='" . $val->link . "' data-id='" . $val->id . "' data-parent_id='" . $val->parent_id . "' class='tree-folder'>" . $val->name . "</a>";
 				$html .= $this->menus($ArrFolder, $val->id);
 				$html .= "</li>";
 			} else {
-				$html .= "<li class='h6 py-1'><a href='" . $val->link . "' data-id='" . $val->id . "' data-parent_id='" . $val->parent_id . "' class='tree-folder'>" . $val->name . "</a></li>";
+				$html .= "<li class='h6 py-1 " . $cek_company . "'><a href='" . $val->link . "' data-id='" . $val->id . "' data-parent_id='" . $val->parent_id . "' class='tree-folder'>" . $val->name . "</a></li>";
 			}
 		}
+
 		$html .= "</ul>";
 		return $html;
 	}
@@ -77,8 +89,8 @@ class Manage_documents extends Admin_Controller
 
 		if ($id) {
 
-			$data_file = $this->db->get_where('directory', ['parent_id' => $id, 'flag_type !=' => 'LINK', 'status !=' => 'DEL'])->result();
-			$prev = $this->db->get_where('directory', ['id' => $id])->row()->parent_id;
+			$data_file = $this->db->get_where('view_directories', ['parent_id' => $id, 'flag_type !=' => 'LINK', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
+			$prev = $this->db->get_where('view_directories', ['id' => $id])->row()->parent_id;
 			// echo '<pre>';
 			// print_r($data_file);
 			// echo '<pre>';
@@ -89,7 +101,7 @@ class Manage_documents extends Admin_Controller
 			$this->template->set('list_file', $data_file);
 			$this->template->render('list-file');
 		} else {
-			$data_file = $this->db->get_where('directory', ['parent_id' => $id, 'flag_type !=' => 'LINK', 'status !=' => 'DEL'])->result();
+			$data_file = $this->db->get_where('view_directories', ['parent_id' => $id, 'flag_type !=' => 'LINK', 'status !=' => 'DEL'])->result();
 			$this->template->set('list_file', $data_file);
 			$this->template->render('list-file');
 		}
@@ -99,14 +111,14 @@ class Manage_documents extends Admin_Controller
 	{
 		$id = $this->input->post('id');
 		if ($id) {
-			$data = $this->db->get_where('directory', ['id' => $id, 'flag_type !=' => 'LINK', 'status !=' => 'DEL'])->row();
+			$data = $this->db->get_where('view_directories', ['id' => $id, 'flag_type !=' => 'LINK', 'status !=' => 'DEL'])->row();
 			echo json_encode($data);
 		}
 	}
 
 	public function check_folder_name($name, $parent_id)
 	{
-		$check 	= $this->db->get_where('directory', ['name' => $name, 'parent_id' => $parent_id])->num_rows();
+		$check 	= $this->db->get_where('view_directories', ['name' => $name, 'parent_id' => $parent_id])->num_rows();
 		if ($check > 0) {
 			for ($i = 0; $i < $check; $i++) {
 				$newName = $name . "(" . $i . ")";
@@ -126,7 +138,7 @@ class Manage_documents extends Admin_Controller
 
 	public function rename($id)
 	{
-		$data = $this->db->get_where('directory', ['id' => $id])->row();
+		$data = $this->db->get_where('view_directories', ['id' => $id])->row();
 
 		$this->template->set('data', $data);
 		$this->template->set('parent_id', $data->parent_id);
@@ -139,9 +151,9 @@ class Manage_documents extends Admin_Controller
 	{
 		$id 		= $this->input->post('id');
 		$parent_id 	= $this->input->post('parent_id');
-		$check_child = $this->db->get_where('directory', ['parent_id' => $id])->num_rows();
+		$check_child = $this->db->get_where('view_directories', ['parent_id' => $id])->num_rows();
 		$this->db->trans_begin();
-		$this->db->update('directory', ['status' => 'DEL'], ['id' => $id]);
+		$this->db->update('view_directories', ['status' => 'DEL'], ['id' => $id]);
 
 		if ($this->db->trans_status() === FALSE) {
 			$this->db->trans_rollback();
@@ -172,9 +184,9 @@ class Manage_documents extends Admin_Controller
 		$id 		= $this->input->post('id');
 		if ($id) {
 			$this->db->trans_begin();
-			$this->db->update('directory', ['status' => 'REV', 'modified_by' => $this->auth->user_id(), 'modified_at' => date('Y-m-d H:i:s')], ['id' => $id]);
+			$this->db->update('view_directories', ['status' => 'REV', 'modified_by' => $this->auth->user_id(), 'modified_at' => date('Y-m-d H:i:s')], ['id' => $id]);
 
-			$file = $this->db->get_where('directory', ['id' => $id])->row_array();
+			$file = $this->db->get_where('view_directories', ['id' => $id])->row_array();
 			$file['note'] = 'Processed to Review';
 			$file['status'] = 'REV';
 			$this->_update_history($file);
@@ -206,7 +218,7 @@ class Manage_documents extends Admin_Controller
 	{
 		$id 		= $this->input->post('id');
 		$this->db->trans_begin();
-		$this->db->delete('directory', ['status' => 'DEL'], ['id' => $id]);
+		$this->db->delete('view_directories', ['status' => 'DEL'], ['id' => $id]);
 
 		if ($this->db->trans_status() === FALSE) {
 			$this->db->trans_rollback();
@@ -227,7 +239,7 @@ class Manage_documents extends Admin_Controller
 	public function save()
 	{
 		$data 				= $this->input->post();
-		$check_folder_name 	= $this->db->get_where('directory', ['name' => $data['folder_name'], 'parent_id' => $data['parent_id']])->num_rows();
+		$check_folder_name 	= $this->db->get_where('view_directories', ['name' => $data['folder_name'], 'parent_id' => $data['parent_id']])->num_rows();
 		$folder_name 		= ($check_folder_name > 0) ? $data['folder_name'] . "(" . $check_folder_name . ")" : $data['folder_name'];
 
 		$ArrFolder = [
@@ -241,16 +253,16 @@ class Manage_documents extends Admin_Controller
 			if (isset($data['id']) && ($data['id'] != null)) :
 				$ArrFolder['modified_by'] = $this->auth->user_id();
 				$ArrFolder['modified_at'] = date('Y-m-d H:i:s');
-				$old_name = $this->db->get_where('directory', ['id' => $data['id']])->row()->name;
+				$old_name = $this->db->get_where('view_directories', ['id' => $data['id']])->row()->name;
 				if (is_dir("./directory/" . $old_name)) {
 					rename("./directory/" . $old_name, "./directory/" . $data['folder_name']);
 				}
-				$this->db->update('directory', $ArrFolder, ['id' => $data['id']]);
+				$this->db->update('view_directories', $ArrFolder, ['id' => $data['id']]);
 			else :
 				$ArrFolder['id'] = uniqid();
 				$ArrFolder['created_by'] = $this->auth->user_id();
 				$ArrFolder['created_at'] = date('Y-m-d H:i:s');
-				$this->db->insert('directory', $ArrFolder);
+				$this->db->insert('view_directories', $ArrFolder);
 				if (!is_dir('./directory/' . $data['folder_name'])) {
 					mkdir('./directory/' . $data['folder_name'], 0755, TRUE);
 					chmod("./directory/" . $data['folder_name'], 0755);  // octal; correct value of mode
@@ -286,7 +298,7 @@ class Manage_documents extends Admin_Controller
 
 	public function upload($parent_id)
 	{
-		$users 		= $this->db->get_where('users', ['st_aktif' => '1', 'id_user !=' => '1'])->result();
+		$users 		= $this->db->get_where('users', ['status' => 'ACT', 'id_user !=' => '1'])->result();
 		$jabatan 	= $this->db->get('tbl_jabatan')->result();
 
 		$this->template->set([
@@ -299,7 +311,7 @@ class Manage_documents extends Admin_Controller
 
 	public function edit_file($id)
 	{
-		$file 		= $this->db->get_where('directory', ['id' => $id])->row();
+		$file 		= $this->db->get_where('view_directories', ['id' => $id])->row();
 
 		$users 		= $this->db->get_where('users', ['st_aktif' => '1', 'id_perusahaan' => $this->company, 'id_user !=' => '1'])->result();
 		$jabatan 	= $this->db->get('tbl_jabatan')->result();
@@ -326,8 +338,9 @@ class Manage_documents extends Admin_Controller
 	public function save_upload()
 	{
 		$data = $this->input->post();
+
 		try {
-			$parent_name = $this->db->get_where('directory', ['id' => $data['parent_id']])->row()->name;
+			$parent_name = $this->db->get_where('view_directories', ['id' => $data['parent_id']])->row()->name;
 			if ($_FILES['image']['name']) {
 				if (!is_dir('./directory/' . $parent_name)) {
 					mkdir('./directory/' . $parent_name, 0755, TRUE);
@@ -349,11 +362,13 @@ class Manage_documents extends Admin_Controller
 					$size  		= $file['file_size'];
 					$ext     	= $file['file_ext'];
 
+
 					$data['id']	    		= $id;
 					$data['name']	    	= $data['description'];
 					$data['file_name']		= $file_name;
 					$data['size']			= $size;
 					$data['ext']			= $ext;
+					$data['company_id']		= $this->company;
 					$data['flag_type']		= 'FILE';
 					$dist 					= isset($data['distribute_id']) ? implode(",", $data['distribute_id']) : null;
 					$data['distribute_id']	= $dist;
@@ -367,23 +382,23 @@ class Manage_documents extends Admin_Controller
 					}
 
 					$this->db->trans_begin();
-					$check = $this->db->get_where('directory', ['id' => $id])->num_rows();
+					$check = $this->db->get_where('view_directories', ['id' => $id])->num_rows();
 
 					if (intval($check) == '0') {
 						$data['created_by']		= $this->auth->user_id();
 						$data['created_at']		= date('Y-m-d H:i:s');
 						$data['note']			= 'First Upload File';
-						$data['status']			= isset($data['status']) ? $data['status'] : 'OPN';
+						$data['status']			= isset($data['status']) ? $data['status'] : (($data['flag_record'] == 'Y') ? 'PUB' : 'OPN');
 						$this->_update_history($data);
 						unset($data['note']);
-						$this->db->insert('directory', $data);
+						$this->db->insert('view_directories', $data);
 					} else {
 						$data['modified_by']	= $this->auth->user_id();
 						$data['modified_at']	= date('Y-m-d H:i:s');
 						$data['note']			= 'Re-upload File';
 						$this->_update_history($data);
 						unset($data['note']);
-						$this->db->update('directory', $data, ['id' => $id]);
+						$this->db->update('view_directories', $data, ['id' => $id]);
 					}
 
 					if (isset($data['distribute_id'])) {
@@ -460,8 +475,8 @@ class Manage_documents extends Admin_Controller
 
 	public function view_file($id)
 	{
-		$file 			= $this->db->get_where('directory', ['id' => $id])->row();
-		$parent_name 	= $this->db->get_where('directory', ['id' => $file->parent_id])->row()->name;
+		$file 			= $this->db->get_where('view_directories', ['id' => $id])->row();
+		$parent_name 	= $this->db->get_where('view_directories', ['id' => $file->parent_id])->row()->name;
 		$this->template->set(
 			[
 				'file' => $file,
@@ -473,8 +488,8 @@ class Manage_documents extends Admin_Controller
 
 	public function viewfile($parent_name, $id)
 	{
-		// $file 			= $this->db->get_where('directory', ['id' => $id])->row();
-		// $parent_name 	= $this->db->get_where('directory', ['id' => $file->parent_id])->row()->name;
+		// $file 			= $this->db->get_where('view_directories', ['id' => $id])->row();
+		// $parent_name 	= $this->db->get_where('view_directories', ['id' => $file->parent_id])->row()->name;
 		// Store the file name into variable
 		// $file = 'filename.pdf';
 		// $filename = 'filename.pdf';
@@ -493,7 +508,7 @@ class Manage_documents extends Admin_Controller
 
 	public function review()
 	{
-		$files = $this->db->get_where('directory', ['status' => 'REV'])->result();
+		$files = $this->db->get_where('view_directories', ['status' => 'REV'])->result();
 		$this->template->set('files', $files);
 		$this->template->set('sts', $this->sts);
 		$this->template->render('review/review-list');
@@ -501,8 +516,8 @@ class Manage_documents extends Admin_Controller
 
 	public function load_form_review($id)
 	{
-		$file 		= $this->db->get_where('directory', ['id' => $id])->row();
-		$dir_name 	= $this->db->get_where('directory', ['id' => $file->parent_id])->row()->name;
+		$file 		= $this->db->get_where('view_directories', ['id' => $id])->row();
+		$dir_name 	= $this->db->get_where('view_directories', ['id' => $file->parent_id])->row()->name;
 		$history	= $this->db->order_by('updated_at', 'ASC')->get_where('directory_log', ['directory_id' => $id])->result();
 		$this->template->set('dir_name', $dir_name);
 		$this->template->set('sts', $this->sts);
@@ -518,7 +533,7 @@ class Manage_documents extends Admin_Controller
 		if ($data) {
 			$this->db->trans_begin();
 			$this->db->update(
-				'directory',
+				'view_directories',
 				[
 					'status' 		=> $data['status'],
 					'modified_by' 	=> $this->auth->user_id(),
@@ -560,7 +575,7 @@ class Manage_documents extends Admin_Controller
 	/* CORRECTION RPOCESS */
 	public function correction()
 	{
-		$files = $this->db->get_where('directory', ['status' => 'COR'])->result();
+		$files = $this->db->get_where('view_directories', ['status' => 'COR'])->result();
 		$this->template->set('files', $files);
 		$this->template->set('sts', $this->sts);
 		$this->template->render('correction/correction-list');
@@ -568,8 +583,8 @@ class Manage_documents extends Admin_Controller
 
 	public function load_form_correction($id)
 	{
-		$file 		= $this->db->get_where('directory', ['id' => $id])->row();
-		$dir_name 	= $this->db->get_where('directory', ['id' => $file->parent_id])->row()->name;
+		$file 		= $this->db->get_where('view_directories', ['id' => $id])->row();
+		$dir_name 	= $this->db->get_where('view_directories', ['id' => $file->parent_id])->row()->name;
 		$history	= $this->db->order_by('updated_at', 'ASC')->get_where('directory_log', ['directory_id' => $id])->result();
 		$jabatan 	= $this->db->get('tbl_jabatan')->result();
 		$this->template->set('dir_name', $dir_name);
@@ -587,7 +602,7 @@ class Manage_documents extends Admin_Controller
 		if ($data) {
 			$this->db->trans_begin();
 			$this->db->update(
-				'directory',
+				'view_directories',
 				[
 					'status' => $data['status'],
 					'modified_by' => $this->auth->user_id(),
@@ -626,7 +641,7 @@ class Manage_documents extends Admin_Controller
 	/* APPROVAL RPOCESS */
 	public function approval()
 	{
-		$files = $this->db->get_where('directory', ['status' => 'APV'])->result();
+		$files = $this->db->get_where('view_directories', ['status' => 'APV'])->result();
 		$this->template->set('files', $files);
 		$this->template->set('sts', $this->sts);
 		$this->template->render('approval/approval-list');
@@ -634,8 +649,8 @@ class Manage_documents extends Admin_Controller
 
 	public function load_form_approval($id)
 	{
-		$file 		= $this->db->get_where('directory', ['id' => $id])->row();
-		$dir_name 	= $this->db->get_where('directory', ['id' => $file->parent_id])->row()->name;
+		$file 		= $this->db->get_where('view_directories', ['id' => $id])->row();
+		$dir_name 	= $this->db->get_where('view_directories', ['id' => $file->parent_id])->row()->name;
 		$history	= $this->db->order_by('updated_at', 'ASC')->get_where('directory_log', ['directory_id' => $id])->result();
 		$jabatan 	= $this->db->get('tbl_jabatan')->result();
 		$this->template->set('dir_name', $dir_name);
@@ -653,7 +668,7 @@ class Manage_documents extends Admin_Controller
 		if ($data) {
 			$this->db->trans_begin();
 			$this->db->update(
-				'directory',
+				'view_directories',
 				[
 					'status' => $data['status'],
 					'modified_by' => $this->auth->user_id(),

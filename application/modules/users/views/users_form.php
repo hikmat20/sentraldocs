@@ -1,202 +1,238 @@
-<div class="box box-primary">
-	<!-- form start -->
-	<?= form_open($this->uri->uri_string(), array('id' => 'frm_users', 'name' => 'frm_users', 'role' => 'form', 'class' => 'form-horizontal', 'enctype' => 'multipart/form-data')) ?>
-	<div class="box-body">
-		<!-- <div class="row"> -->
-		<div class="col-md-6">
-			<div class="form-group <?= form_error('username') ? ' has-error' : ''; ?>">
-				<label for="username" class="col-md-3 control-label"><?= lang('users_username') ?></label>
-				<div class="col-sm-3 col-md-6">
-					<input type="text" class="form-control" id="username" name="username" maxlength="45" value="<?= set_value('username', isset($data->username) ? $data->username : ''); ?>" autofocus />
-				</div>
-			</div>
-			<div class="form-group <?= form_error('password') ? ' has-error' : ''; ?>">
-				<label for="password" class="col-md-3 control-label"><?= lang('users_password') ?></label>
-				<div class="col-md-6">
-					<input type="password" class="form-control" id="password" name="password" maxlength="100" value="<?= set_value('password') ?>" />
-				</div>
-			</div>
-			<div class="form-group <?= form_error('re-password') ? ' has-error' : ''; ?>">
-				<label for="re-password" class="col-md-3 control-label"><?= lang('users_repassword') ?></label>
-				<div class="col-md-6">
-					<input type="password" class="form-control" id="re-password" name="re-password" maxlength="100" value="<?= set_value('re-password') ?>" />
-				</div>
-			</div>
-			<div class="form-group <?= form_error('email') ? ' has-error' : ''; ?>">
-				<label for="email" class="col-md-3 control-label"><?= lang('users_email') ?></label>
-				<div class="col-md-6">
-					<input type="email" class="form-control" id="email" name="email" maxlength="100" value="<?= set_value('email', isset($data->email) ? $data->email : ''); ?>" />
-				</div>
-			</div>
-			<div class="form-group <?= form_error('nm_lengkap') ? ' has-error' : ''; ?>">
-				<label for="nm_lengkap" class="col-md-3 control-label"><?= lang('users_nm_lengkap') ?></label>
-				<div class="col-md-6">
-					<input type="text" class="form-control" id="nm_lengkap" name="nm_lengkap" maxlength="100" value="<?= set_value('nm_lengkap', isset($data->nm_lengkap) ? $data->nm_lengkap : ''); ?>" />
-				</div>
-			</div>
-			<div class="form-group <?= form_error('alamat') ? ' has-error' : ''; ?>">
-				<label for="alamat" class="col-md-3 control-label"><?= lang('users_alamat') ?></label>
-				<div class="col-md-6">
-					<textarea class="form-control" id="alamat" name="alamat" maxlength="255"><?= set_value('alamat', isset($data->alamat) ? $data->alamat : ''); ?></textarea>
-				</div>
-			</div>
-		</div>
+<div class="container mt-10">
 
-		<div class="col-md-6">
-			<div class="form-group <?= form_error('kota') ? ' has-error' : ''; ?>">
-				<label for="kota" class="col-md-3 control-label"><?= lang('users_kota') ?></label>
-				<div class="col-md-6">
-					<input type="text" class="form-control" id="kota" name="kota" maxlength="20" value="<?= set_value('kota', isset($data->kota) ? $data->kota : ''); ?>" />
-				</div>
-			</div>
-			<div class="form-group <?= form_error('hp') ? ' has-error' : ''; ?>">
-				<label for="hp" class="col-md-3 control-label"><?= lang('users_hp') ?></label>
-				<div class="col-md-6">
-					<input type="text" class="form-control" id="hp" name="hp" maxlength="20" value="<?= set_value('hp', isset($data->hp) ? $data->hp : ''); ?>" />
-				</div>
-			</div>
-			<div class="form-group <?= form_error('st_aktif') ? ' has-error' : ''; ?>">
-				<label for="st_aktif" class="col-md-3 control-label"><?= lang('users_st_aktif') ?></label>
-				<div class="col-md-6">
-					<select name="st_aktif" id="st_aktif" class="form-control">
-						<option value="1" <?= set_select('st_aktif', 1, isset($data->st_aktif) && $data->st_aktif == 1) ?>><?= lang('users_aktif') ?></option>
-						<option value="0" <?= set_select('st_aktif', 0, isset($data->st_aktif) && $data->st_aktif == 0) ?>><?= lang('users_td_aktif') ?></option>
-					</select>
-				</div>
-			</div>
-			<div class="form-group <?= form_error('level') ? ' has-error' : ''; ?>">
-				<label for="level" class="col-md-3 control-label"><?= lang('level') ?></label>
-				<div class="col-md-6">
-					<select name="level" id="level" class="form-control">
-						<option value="admin" <?= set_select('admin', 1, isset($data->level) && $data->level == 'admin') ?>><?= lang('level_admin') ?></option>
-						<option value="user" <?= set_select('user', 0, isset($data->level) && $data->level == 'user') ?>><?= lang('level_user') ?></option>
-					</select>
-				</div>
-			</div>
-			
-			<div class="form-group <?= form_error('nm_perusahaan') ? ' has-error' : ''; ?>" ">
-			<label for="nm_perusahaan" class="col-sm-3 control-label"><?= lang('nm_perusahaan') ?></label>	
-            			
-			<?php 
-			$id = isset($data->username) ? $data->username : '';
-			if($id==''){
-				
-			?>
-			<div class="col-sm-6" id="select_nm_perusahaan">
-				 <select class="form-control input-sm select2" name="nm_perusahaan" id="nm_perusahaan" 
-				 onchange="get_cabang()">
-				 <option value="">Pilih Perusahaan</option>								
-				 </select> 								  
-			</div>
-			
-			<?php
-			}
-			else{
-					$users	= $this->db->query("SELECT * FROM perusahaan")->result();
-					echo "
-					        <div class='col-sm-6'>
-							<select id='nm_perusahaan' name='nm_perusahaan' class='select2'  onchange='get_cabang()'>
-							<option value=''>Pilih Perusahaan</option>";
-							foreach($users as $pic){
-					
-					if($data->id_perusahaan == $pic->id_perusahaan){						
-					$sel ='selected';
-					}
-					else{
-					$sel ='';
-					}
-					echo "<option value='$pic->id_perusahaan' $sel>$pic->nm_perusahaan</option>";
-							}
-					echo "</select>
-					
-					</div>";
-			}
-			?>
-		    </div>
-			
-			
-			<div class="form-group">
-			  <label class="col-sm-3 control-label"><?= lang('nm_cabang') ?></font></label>
-			<?php 
-			$id = isset($data->username) ? $data->username : '';
-			if($id==''){
-				
-			?>
-			  <div class="col-sm-6" id="select_nm_cabang">   
-				  <select class="form-control input-sm select2" name="nm_cabang" id="nm_cabang">
-					<option value="">Pilih Cabang</option>								
-				  </select> 							  
-			  </div>
-            <?php
-			}
-		    else{
-					$users	= $this->db->query("SELECT * FROM perusahaan_cbg")->result();
-					echo "
-					<div class='col-sm-6' id='select_nm_cabang'>
-					<select id='nm_cabang' name='nm_cabang' class='select2' >
-					<option value=''>Pilih Cabang</option>";
-					foreach($users as $pic){
-					
-					if($data->id_cabang == $pic->id_cabang){						
-					$sel ='selected';
-					}
-					else{
-					$sel ='';
-					}
-					echo "<option value='$pic->id_cabang' $sel>$pic->nm_cabang</option>";
-							}
-					echo "</select>
-					
-					</div>";
-			}
-			?>
-			  
-		    </div>
-			
-			
-			<div class="form-group">
-				<label for="level" class="col-md-3 control-label">Photo</label>
-				<div class="col-md-6">
-					<img id="preview" src="<?= base_url('assets/img/') . set_value('photo', isset($data->photo) ? $data->photo : 'avatar.png') ?>" alt="<?= isset($data->photo) ? $data->photo : 'avatar.png' ?>" class="img-thumbnail img-responsive" width="150px" height="150px" style="margin-bottom: 10px;">
-					<input type="file" name="photo" onchange="preview_image(event)" id="photo" class="hidden">
-					<input type="hidden" name="old_photo" id="old_photo" value="<?= isset($data->photo) ? $data->photo : 'avatar.png' ?>">
-					<button class="btn btn-warning" onclick="$('#photo').click()" type="button"><i class="fa fa-upload"></i> Upload Gambar</button>
-					<div class="">
-						<br>
-						<span class="text-center text-muted text-sm">*) Ukuran Max. 500kb, Dimensi Max. 1000 x 1000 pixel</span>
-					</div>
-				</div>
-			</div>
+	<!--begin::Card-->
+	<div class="card card-custom">
+		<!--begin::Body-->
+		<div class="card-body p-0">
+			<div class="row justify-content-center px-8 py-5">
+				<div class="col-xl-12 col-xxl-10">
+					<!--begin::Wizard Form-->
+					<form id="frm_users">
+						<div class="row justify-content-center">
+							<div class="col-xl-10">
+								<!--begin::Wizard Step 1-->
+								<div class="my-5 step" data-wizard-type="step-content" data-wizard-state="current">
+									<h3 class="text-dark text-center font-weight-bold mb-4">User's Profile Details</h3>
+									<!--begin::Group-->
+									<hr>
+									<?php if (isset($data) && $data->id_user) : ?>
+										<input type="hidden" name="id_user" value="<?= $data->id_user; ?>">
+									<?php endif; ?>
+									<!--end::Group-->
+									<!--begin::Group-->
+									<div class="form-group row">
+										<label class="col-xl-3 col-lg-3 col-form-label">Full Name</label>
+										<div class="col-lg-9 col-xl-9">
+											<input class="form-control required form-control-solid form-control-lg" id="full_name" placeholder="Full Name" name="full_name" maxlength="100" value="<?= isset($data->full_name) ? $data->full_name : ''; ?>" />
+											<span class="form-text text-danger invalid-feedback">Full Name can't be empty..!</span>
+										</div>
+									</div>
+									<!--end::Group-->
+									<!--begin::Group-->
+									<div class="form-group row">
+										<label class="col-xl-3 col-lg-3 col-form-label">Contact Phone</label>
+										<div class="col-lg-9 col-xl-9">
+											<input type="text" class="form-control form-control-solid required form-control-lg" name="phone" value="<?= isset($data->phone) ? $data->phone : ''; ?>" placeholder="0812345567" />
+											<span class="form-text text-danger invalid-feedback">Contact Phone can't be empty..!</span>
+										</div>
+									</div>
+									<!--end::Group-->
+									<!--begin::Group-->
+									<div class="form-group row">
+										<label class="col-xl-3 col-lg-3 col-form-label">Email Address</label>
+										<div class="col-lg-9 col-xl-9">
+											<input type="text" class="form-control form-control-solid required form-control-lg" placeholder="name@mail.com" name="email" value="<?= isset($data->email) ? $data->email : ''; ?>" />
+											<span class="form-text text-danger invalid-feedback">Email Address can't be empty..!</span>
+										</div>
+									</div>
+									<!--end::Group-->
+									<!--begin::Group-->
+									<div class="form-group row">
+										<label class="col-xl-3 col-lg-3 col-form-label">City</label>
+										<div class="col-lg-9 col-xl-9">
+											<input type="text" class="form-control required form-control-solid form-control-lg" name="city" placeholder="City" value="<?= isset($data->city) ? $data->city : ''; ?>" />
+											<span class="form-text text-danger invalid-feedback">City can't be empty..!</span>
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-xl-3 col-lg-3 col-form-label">Address</label>
+										<div class="col-lg-9 col-xl-9">
+											<textarea name="address" id="address" class="form-control required form-control-solid form-control-lg" placeholder="Address"><?= isset($data) ? $data->address : ''; ?></textarea>
+											<span class="form-text text-danger invalid-feedback">Address can't be empty..!</span>
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-form-label col-3 text-left">Status</label>
+										<div class="col-9">
+											<div class="checkbox-inline">
+												<label class="checkbox">
+													<input type="checkbox" class="required" name="status" value="ACT" <?= (isset($data) && $data->status == 'ACT') ? 'checked' : ''; ?>>
+													<span></span>Active</label>
+											</div>
+											<span class="form-text text-danger invalid-feedback">Address can't be empty..!</span>
+											<div class="form-text text-muted"> Activation account</div>
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-xl-3 col-lg-3 col-form-label">Level</label>
+										<div class="col-lg-9 col-xl-9">
+											<select name="group_id" id="group_id" class="form-control required form-control-solid select2">
+												<option value=""></option>
+												<?php foreach ($levels as $level) : ?>
+													<option value="<?= $level->id_group; ?>" <?= (isset($data) && $data->group_id == $level->id_group) ? 'selected' : ""; ?>><?= $level->nm_group; ?></option>
+												<?php endforeach; ?>
+											</select>
+											<span class="form-text text-danger invalid-feedback">Level can't be empty..!</span>
+										</div>
+									</div>
+									<!-- <div class="form-group row">
+										<label class="col-xl-3 col-lg-3 col-form-label">Company</label>
+										<div class="col-lg-9 col-xl-9">
+											<select name="company_id" id="company_id" class="form-control form-control-solid select2">
+												<option value=""></option>
+											</select>
+										</div>
+									</div> -->
+									<!--end::Group-->
+									<div class="form-group row">
+										<label class="col-xl-3 col-lg-3 col-form-label text-left">Photo</label>
+										<div class="col-lg-9 col-xl-9">
+											<div class="image-input image-input-outline" id="kt_user_add_avatar">
+												<div id="preview" class="image-input-wrapper" style="background-image: url('<?= base_url('assets/img/') . set_value('photo', isset($data->photo) ? $data->photo : 'avatar.png') ?>')"></div>
+												<label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
+													<i class="fa fa-pen icon-sm text-muted"></i>
+													<input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg" />
+													<input type="hidden" name="profile_avatar_remove" />
+													<input type="file" name="profile_avatar" onchange="preview_image(event)" id="profile_avatar" class="hidden">
+													<!-- <input type="hidden" name="old_photo" id="old_photo" value="<?= isset($data->photo) ? $data->photo : 'avatar.png' ?>"> -->
+													<!-- <button class="btn btn-warning" onclick="$('#photo').click()" type="button"><i class="fa fa-upload"></i> Upload Gambar</button> -->
 
-		</div>
-		<!-- </div> -->
-	</div>
-	<div class="box-footer">
-		<div class="row">
-			<div class="col-md-6">
-				<div class="text-center">
-					<button type="submit" name="save" class="btn btn-primary"><?= lang('users_btn_save') ?></button>
-					<?php
-					echo anchor('users/setting', lang('users_btn_cancel'), array('class' => 'btn btn-danger'));
-					?>
+												</label>
+												<span class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="cancel" data-toggle="tooltip" title="Cancel avatar">
+													<i class="ki ki-bold-close icon-xs text-muted"></i>
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!--end::Wizard Step 1-->
+								<div class="my-5 step border-top pt-10 mt-15" data-wizard-type="step-content" data-wizard-state="current">
+									<div class="form-group row">
+										<label class="col-xl-3 col-lg-3 col-form-label">Username</label>
+										<div class="col-lg-9 col-xl-9">
+											<input type="text" id="username" class="form-control form-control-solid form-control-lg" name="username" placeholder="username" <?= (isset($data) && $data->username) ? 'readonly' : '';; ?> value="<?= isset($data) ? $data->username : ''; ?>" />
+											<span class="invalid-feedback">Username can't be empty..!</span>
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-xl-3 col-lg-3 col-form-label">Password</label>
+										<div class="col-lg-9 col-xl-9">
+											<input type="password" id="password" class="form-control  form-control-solid form-control-lg" name="password" placeholder="password" />
+											<span class="invalid-feedback">Password can't be empty..!</span>
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-xl-3 col-lg-3 col-form-label">Re-Password</label>
+										<div class="col-lg-9 col-xl-9">
+											<input type="password" id="re-password" class="form-control  form-control-solid form-control-lg" name="re-password" placeholder="re-password" />
+											<span class="invalid-feedback">Re-Password can't be empty..!</span>
+										</div>
+									</div>
+								</div>
+								<!--begin::Wizard Actions-->
+								<div class="d-flex justify-content-between border-top pt-10 mt-15">
+									<a href="<?= base_url('users/setting'); ?>" class="btn btn-danger"><i class="fa fa-reply mr-2"></i>Back</a>
+									<button type="button" name="save" id="save" class="btn btn-primary"><i class="fa fa-save"></i><?= lang('users_btn_save') ?></button>
+								</div>
+								<!--end::Wizard Actions-->
+							</div>
+						</div>
+					</form>
+					<!--end::Wizard Form-->
 				</div>
 			</div>
 		</div>
+		<!--end::Body-->
 	</div>
-	<?= form_close() ?>
-</div><!-- /.box -->
+	<!--end::Card-->
+</div>
 
 <!-- page script -->
 <script type="text/javascript">
-  
-	
-	$(document).ready(function(){
-	  get_perusahaan();
-	});	
+	$(document).ready(function() {
+		// get_perusahaan();
+		$('.select2').select2({
+			placeholder: "Choose an options",
+			width: "100%",
+			allowClear: true
 
-	$(function() {
-		$('.select2').select2();
+		});
+
+		$(document).on('click', '#save', function() {
+			const formdata = new FormData($('#frm_users')[0])
+			const username = $('#username').val()
+			const password = $('#password').val()
+			const re_password = $('#re-password').val()
+
+			if (username) {
+				if (!password) {
+					$('#password').addClass('is-invalid')
+				} else if (password && !re_password) {
+					$('#re-password').addClass('is-invalid')
+				}
+			}
+
+			const valid = getValidation('#frm_users')
+			console.log(formdata);
+			if (valid) {
+				$.ajax({
+					url: base_url + active_controller + 'setting/save',
+					type: 'POST',
+					dataType: 'JSON',
+					data: formdata,
+					processData: false,
+					contentType: false,
+					cache: false,
+					success: function(res) {
+						if (res.status == '1') {
+							Swal.fire({
+								title: 'Success!!',
+								text: res.msg,
+								icon: 'success',
+								timer: 2000
+							}).then(function() {
+								location.href = siteurl + active_controller;
+							})
+
+						} else {
+							Swal.fire({
+								title: 'Failed!!',
+								icon: 'warning',
+								text: res.msg,
+								timer: 2000
+							})
+						}
+					},
+					error: function(res) {
+						Swal.fire({
+							title: 'Error!',
+							icon: 'error',
+							text: 'Server timeout, because error.',
+							timer: 3000
+						})
+					}
+				})
+			} else {
+				Swal.fire({
+					title: 'Warning!!',
+					text: 'Please fill the blank field(s)..!',
+					icon: 'warning',
+					timer: 2000
+				})
+			}
+		})
 	});
+
 
 	function preview_image(event) {
 		var reader = new FileReader();
@@ -206,33 +242,35 @@
 		}
 		reader.readAsDataURL(event.target.files[0]);
 	}
-    
-	function get_perusahaan(){
-       
-		$.ajax({
-            type:"GET",
-            url:siteurl+'users/get_perusahaan',
-            data:"",
-            success:function(html){
-               $("#select_nm_perusahaan").html(html);
-                $('.select2').select2();
 
-            }
-        });
-	}
-	
-	function get_cabang(){
-		
-		var perusahaan=$('#nm_perusahaan').val();
-       
+	function get_perusahaan() {
+
 		$.ajax({
-            type:'POST',
-            url:siteurl+'users/get_cabang',
-            data:{'perusahaan':perusahaan},
-            success:function(html){
-               $("#select_nm_cabang").html(html);
-               $('.select2').select2();
-            }
-        });
+			type: "GET",
+			url: siteurl + 'users/get_perusahaan',
+			data: "",
+			success: function(html) {
+				$("#select_nm_perusahaan").html(html);
+				$('.select2').select2();
+
+			}
+		});
+	}
+
+	function get_cabang() {
+
+		var perusahaan = $('#nm_perusahaan').val();
+
+		$.ajax({
+			type: 'POST',
+			url: siteurl + 'users/get_cabang',
+			data: {
+				'perusahaan': perusahaan
+			},
+			success: function(html) {
+				$("#select_nm_cabang").html(html);
+				$('.select2').select2();
+			}
+		});
 	}
 </script>

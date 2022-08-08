@@ -27,7 +27,7 @@ class Auth
 
     public function user_id()
     {
-        return (isset($this->user['id_user'])) ? $this->user['id_user'] : '';
+        return (isset($this->user->id_user)) ? $this->user->id_user : '';
     }
 
     public function user_name()
@@ -69,47 +69,52 @@ class Auth
             redirect('/');
         }
 
-        $inis     = $this->ci->db->get_where('companies', ['inisial' => $inisial])->num_rows();
-        if ($inis == 0) {
+        $company        = $this->ci->db->get_where('companies', ['inisial' => $inisial]);
+        $existComapny   = $company->num_rows();
+        $dataCompany    = $company->row();
+
+        if ($existComapny == 0) {
             $this->ci->template->set_message('Inisial Company not found', '');
             return FALSE;
         }
 
-        $assign_user     = $this->ci->db->get_where('view_assign_company', array('username' => $username, 'inisial' => $inisial))->row();
-        if (!$assign_user) {
+        $existUser = $this->ci->db->get_where('users', ['username' => $username])->row();
+        if (!$existUser) {
             $this->ci->template->set_message(lang('users_login_fail'), 'error');
             return FALSE;
         } else {
-            $user = $this->ci->db->get_where('users', ['username' => $username])->row();
-            if ($user->status == 'N') {
+            if ($existUser->status == 'N') {
                 $this->ci->template->set_message(lang('users_not_active'), 'error');
                 return FALSE;
             }
 
-            if (password_verify($password, $user->password)) {
-                // $user_session = $this->ci->db->get_where('users', ['id_user' => $user->user_id])->row();
-                //Buat Session
-                $array = array();
-                foreach ($user as $key => $usr) {
-                    $array[$key] = $usr;
-                }
-                $company     = $this->ci->db->get_where('assign_company', ['user_id' => $user->id_user, 'default' => 'Y'])->row();
+            if (password_verify($password, $existUser->password)) {
 
-                $this->ci->session->set_userdata('app_session', $array);
-                $this->ci->session->set_userdata('default_company', $company);
+                $existUserInComapny     = $this->ci->db->get_where('user_groups', ['user_id' => $existUser->id_user, 'company_id' => $dataCompany->id_perusahaan, 'default' => 'Y']);
 
-                //Set User Data
-                $this->user = $this->ci->session->userdata('app_session');
+                if ($existUserInComapny->num_rows() > 0) {
+                    $group                  = $this->ci->db->get_where('groups', ['id_group' => $existUserInComapny->row()->id_group])->row();
 
-                //Update Login Terakhir
-                $ip_address = ($this->ci->input->ip_address()) == "::1" ? "127.0.0.1" : $this->ci->input->ip_address();
-                $this->ci->users_model->update($this->user_id(), array('last_login' => date('Y-m-d H:i:s'), 'ip' => $ip_address));
+                    $this->ci->session->set_userdata('app_session', $existUser);
+                    $this->ci->session->set_userdata('company', $dataCompany);
+                    $this->ci->session->set_userdata('group', $group);
 
-                $requested_page = $this->ci->session->userdata('requested_page');
-                if ($requested_page != '') {
+                    //Set User Data
+                    $this->user = $this->ci->session->userdata('app_session');
+
+                    //Update Login Terakhir
+                    $ip_address = ($this->ci->input->ip_address()) == "::1" ? "127.0.0.1" : $this->ci->input->ip_address();
+                    $this->ci->users_model->update($this->user_id(), array('last_login' => date('Y-m-d H:i:s'), 'ip' => $ip_address));
+
+                    $requested_page = $this->ci->session->userdata('requested_page');
+                    if ($requested_page != '') {
+                        redirect($requested_page);
+                    }
                     redirect("/");
+                } else {
+                    $this->ci->template->set_message("The account is not registered with any company", 'error');
+                    return FALSE;
                 }
-                redirect("/");
             }
         }
 
@@ -127,7 +132,6 @@ class Auth
     public function is_admin()
     {
         $id = $this->user_id();
-
         $data = $this->ci->users_model->join('user_groups', 'users.id_user = user_groups.user_id')
             ->find_by(array('users.id_user' => $id, 'id_group' => 1));
 
@@ -142,10 +146,10 @@ class Auth
     {
         $id = $this->user_id();
 
-        $groups = $this->ci->user_groups_model->select("user_groups.id_group, groups.nm_group")
+        $groups = $this->ci->user_groups_model->select("user_groups.id_group,user_groups.user_id, groups.nm_group")
             ->join('groups', 'user_groups.id_group = groups.id_group')
             ->order_by('nm_group', 'ASC')
-            ->find_all_by(array('id_user' => $id));
+            ->find_all_by(array('user_id' => $id));
 
         $return = "";
         $arr    = array();

@@ -23,7 +23,8 @@ class Admin_Controller extends Base_Controller
 
         $idt                = $this->identitas_model->find(1);
         $this->user_data    = $this->auth->userdata();
-        $this->company      = $this->session->default_company->company_id;
+        $this->company      = $this->session->company->id_perusahaan;
+        $this->group_id      = $this->session->group->id_group;
         $this->form_validation->set_error_delimiters('', '');
 
         // Pagination config

@@ -124,6 +124,7 @@
                   <img alt="Logo" src="<?= base_url('assets/img/logo-2.png'); ?>" class="h-40px" />
                 </a>
               </div> -->
+
               <!--end::Logo-->
               <!--begin::Header Menu-->
               <div id="kt_header_menu" class="header-menu header-menu-left header-menu-mobile header-menu-layout-default">
@@ -150,13 +151,14 @@
                       <span class="menu-text text-white h5 my-0"><i class="fa fa-home mr-3 text-white"></i> Dashboard</span>
                     </a>
                   </li>
-                  <?php if ($this->session->app_session['group_id'] == '2') : ?>
+
+                  <!-- <?php if ($this->group_id == '2') : ?>
                     <li class="menu-item <?= (check_class('docs', TRUE)) ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
                       <a href="<?= base_url('/docs'); ?>" class="menu-link bg-warning" style="border-radius: 14px 1px 14px 1px  ;">
                         <span class="menu-text text-white h5 my-0"><i class="fa fa-file-alt mr-3 text-white"></i> Manage Docs</span>
                       </a>
                     </li>
-                  <?php endif; ?>
+                  <?php endif; ?> -->
                 </ul>
                 <!--end::Header Nav-->
               </div>

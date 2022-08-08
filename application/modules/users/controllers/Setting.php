@@ -23,20 +23,15 @@ class Setting extends Admin_Controller
         $this->load->model(array(
             'users/users_model',
             'users/groups_model',
-            'users/user_groups_model',
-            'users/permissions_model',
-            'users/user_permissions_model',
-            'Cabang/Cabang_model',
+            'users/user_groups_model'
         ));
 
         $this->template->page_icon('fa fa-users');
     }
-
+    /* 
     public function index()
     {
-        $this->auth->restrict($this->viewPermission);
-
-        if (isset($_POST['delete']) && has_permission($this->deletePermission)) {
+        if (isset($_POST['delete'])) {
             $checked = $this->input->post('checked');
 
             if (is_array($checked) && count($checked)) {
@@ -126,54 +121,34 @@ class Setting extends Admin_Controller
         $this->template->set("numb", $offset + 1);
         $this->template->render('list');
     }
+    */
 
+    public function index()
+    {
+        $data = $this->db->get_where('users')->result();
+        $this->template->set('results', $data);
+        $this->template->render('list');
+    }
     public function create()
     {
-        $this->auth->restrict($this->addPermission);
-
-        if (isset($_POST['save'])) {
-            if ($this->save_user()) {
-                $this->template->set_message(lang('users_create_success'), 'success');
-                redirect('users/setting');
-            }
-        }
-
-        $cabang = $this->Cabang_model->find_all();
-        $this->template->set('cabang', $cabang);
+        $companies = $this->db->get_where('companies')->result();
+        $levels = $this->db->get_where('groups', ['active' => 'Y', 'id_group !=' => '1'])->result();
+        // $cabang = $this->Cabang_model->find_all();
+        $this->template->set('levels', $levels);
         $this->template->title(lang('users_new_title'));
-        $this->template->page_icon('fa fa-user');
         $this->template->render('users_form');
     }
 
-
+    public function save()
+    {
+        $this->save_user();
+    }
 
     public function edit($id = 0)
     {
-        $this->auth->restrict($this->managePermission);
-
-        if ($id == 0 || is_numeric($id) == FALSE) {
-            $this->template->set_message(lang('users_invalid_id'), 'error');
-            redirect('users/setting');
-        }
-
-        if (isset($_POST['save'])) {
-            if ($this->save_user("update", $id)) {
-                $this->template->set_message(lang('users_edit_success'), 'success');
-                redirect('users/setting');
-            }
-        }
-
-        $data = $this->users_model->find($id);
-
-        if ($data) {
-            if ($data->deleted == 1) {
-                $this->template->set_message(lang('users_already_deleted'), 'error');
-                redirect('users/setting');
-            }
-        }
-
-        //$cabang = $this->Cabang_model->find_all();
-        //$this->template->set('cabang', $cabang);
+        $data = $this->db->get_where('users', ['id_user' => $id,])->row();
+        $levels = $this->db->get_where('groups', ['active' => 'Y', 'id_group !=' => '1'])->result();
+        $this->template->set('levels', $levels);
         $this->template->set('data', $data);
         $this->template->title(lang('users_edit_title'));
         $this->template->page_icon('fa fa-user');
@@ -319,89 +294,13 @@ class Setting extends Admin_Controller
         return $merge;
     }
 
-    protected function save_user($type = 'insert', $id = 0)
-
-
+    protected function save_user()
     {
-        if ($type == "insert") {
+        $data           = $this->input->post();
+        $data['ip']     = $this->input->ip_address();
 
-            $extra_rule = "|unique[users.username]";
-            $rule_email = "|unique[users.email]";
-        } else {
-            $_POST['id_user'] = $id;
-            $extra_rule = "|unique[users.username, users.id_user]";
-            $rule_email = "|unique[users.email, users.id_user]";
-        }
 
-        $this->form_validation->set_rules('username', 'lang:users_username', 'required' . $extra_rule);
-        if ($type == "insert") {
-            $this->form_validation->set_rules('password', 'lang:users_password', 'required');
-            $this->form_validation->set_rules('re-password', 'lang:users_repassword', 'required|matches[password]');
-        } else {
-            if (!empty($_POST['password'])) {
-                $extra_rule = "|unique[users.username]";
-                $this->form_validation->set_rules('password', 'lang:users_password', 'required');
-                $this->form_validation->set_rules('re-password', 'lang:users_repassword', 'required|matches[password]');
-            }
-        }
-
-        $this->form_validation->set_rules('email', 'lang:users_email', 'required|valid_email' . $rule_email);
-        $this->form_validation->set_rules('nm_lengkap', 'lang:users_nm_lengkap', 'required');
-        $this->form_validation->set_rules('alamat', 'lang:users_alamat', 'required');
-        $this->form_validation->set_rules('kota', 'lang:users_kota', 'required');
-        $this->form_validation->set_rules('hp', 'lang:users_hp', 'required');
-        $this->form_validation->set_rules('st_aktif', 'lang:users_st_aktif', 'required');
-
-        if ($this->form_validation->run($this) === FALSE) {
-            $this->template->set_message(validation_errors(), 'error');
-            return FALSE;
-        }
-
-        // print_r($this->input->post());
-        // exit;
-
-        $username                       = $this->input->post('username');
-        $password                       = $this->input->post('password');
-        $email                          = $this->input->post('email');
-        $nm_lengkap                     = $this->input->post('nm_lengkap');
-        $alamat                         = $this->input->post('alamat');
-        $kota                           = $this->input->post('kota');
-        $hp                             = $this->input->post('hp');
-        $st_aktif                       = $this->input->post('st_aktif');
-        $kdcab                          = $this->input->post('kdcab');
-        $level                          = $this->input->post('level');
-        $perusahaan                     = $this->input->post('nm_perusahaan');
-        $cabang                         = $this->input->post('nm_cabang');
-        $old_photo                      = $this->input->post('old_photo');
-
-        $kodeprsh = $this->db->query("SELECT inisial FROM perusahaan_cbg WHERE id_cabang='$cabang'")->row();
-        $inisial = $kodeprsh->inisial;
-
-        // print_r($inisial);
-        // exit;		
-
-        if ($_FILES['photo']['name']) {
-            $config['upload_path']          = './assets/img/';
-            $config['allowed_types']        = 'gif|jpg|png';
-            $config['max_size']             = 500;
-            $config['max_width']            = 1000;
-            $config['max_height']           = 1000;
-            $this->load->library('upload', $config);
-            $this->upload->initialize($config);
-
-            if (!$this->upload->do_upload('photo')) {
-                $error = $this->upload->display_errors();
-                $this->template->set_message($error, 'error');
-                return FALSE;
-            } else {
-                $dataPhoto = $this->upload->data();
-                $photo = $dataPhoto['file_name'];
-                if ($old_photo) {
-                    unlink('./assets/img/' . $old_photo);
-                }
-            }
-        }
-        $newPhoto = ($photo) ? $photo : $old_photo;
+        // $newPhoto = ($photo) ? $photo : $old_photo;
         // echo '<pre>';
         // print_r($dataPhoto);
         // echo '<pre>';
@@ -428,86 +327,114 @@ class Setting extends Admin_Controller
             'cost' => $cost,
             'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM)
         ];
+        $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT, $options);
 
-        $password = password_hash($password, PASSWORD_BCRYPT, $options);
+        // if ($_FILES['profile_avatar']['name']) {
+        //     $config['upload_path']          = './assets/img/';
+        //     $config['allowed_types']        = 'gif|jpg|png';
+        //     $config['max_size']             = 2048;
+        //     $config['max_width']            = 2000;
+        //     $config['max_height']           = 2000;
+        //     $config['file_name']            = $data['username'];
+        //     $this->load->library('upload', $config);
+        //     $this->upload->initialize($config);
 
-        if ($type == 'insert') {
-            $data_insert = array(
-                'username' => $username,
-                'password' => $password,
-                'email'    => $email,
-                'nm_lengkap' => $nm_lengkap,
-                'alamat'   => $alamat,
-                'kota'     => $kota,
-                'hp'       => $hp,
-                'ip'        => $this->input->ip_address(),
-                'st_aktif' => $st_aktif,
-                'kdcab'     => $kdcab,
-                'id_div'     => $id_div,
-                'id_dokter'  => $id_dokter,
-                'dept_dokter' => $dept,
-                'level' => $level,
-                'photo' => $newPhoto,
-                'id_perusahaan' => $perusahaan,
-                'id_cabang' => $cabang,
-                'inisial' => $inisial,
-            );
+        //     if (!$this->upload->do_upload('profile_avatar')) {
+        //         $error = $this->upload->display_errors();
+        //         $this->template->set_message($error, 'error');
+        //         return FALSE;
+        //     } else {
+        //         $dataPhoto = $this->upload->data();
+        //         $photo = $dataPhoto['file_name'];
+        //         if ($old_photo) {
+        //             unlink('./assets/img/' . $old_photo);
+        //         }
+        //     }
+        // }
 
-            $result = $this->users_model->insert($data_insert);
+        $group_id = $data['group_id'];
+        $this->db->trans_begin();
+        unset($data['profile_avatar_remove']);
+        if (isset($data['id_user']) && $data['id_user']) {
+            $data['modified_at'] = date('Y-m-d H:i:s');
+            $data['modified_by'] = $this->auth->user_id();
 
-            if ($result) {
-                //Get Default user group
-                $dt_group = $this->groups_model->find_by(array('st_default' => 1));
-                if ($dt_group) {
-                    $id_group = $dt_group->id_group;
-
-                    $insert_group = array(
-                        'id_user' => $result,
-                        'id_group' => $id_group
-                    );
-
-                    $this->user_groups_model->insert($insert_group);
-                }
-
-                return TRUE;
-            } else {
-                $this->template->set_message(lang('users_create_fail') . $this->users_model->error, 'error');
-                return FALSE;
-            }
+            unset($data['re-password']);
+            unset($data['group_id']);
+            $this->db->update('users', $data, ['id_user' => $data['id_user']]);
         } else {
-            $data_insert = array(
-                'username' => $username,
-                'email'    => $email,
-                'nm_lengkap' => $nm_lengkap,
-                'alamat'   => $alamat,
-                'kota'     => $kota,
-                'hp'       => $hp,
-                'ip'        => $this->input->ip_address(),
-                'st_aktif' => $st_aktif,
-                'kdcab'     => $kdcab,
-                'level' => $level,
-                'photo' => $newPhoto,
-                'id_perusahaan' => $perusahaan,
-                'id_cabang' => $cabang,
-                'inisial' => $inisial,
-            );
-            if ($_POST['password'] != '') {
-                $data_insert['password'] = $password;
+            $check_check_username   =  $this->check_username($data['username']);
+            $check_check_email      =  $this->check_email($data['email']);
+            if ($check_check_username > 0) {
+                $return = [
+                    'msg' => 'the Username is already registered, please use a different username',
+                    'status' => 0
+                ];
+                echo json_encode($return);
+                return false;
             }
 
-            $result = $this->users_model->update($id, $data_insert);
-
-            if ($result) {
-                return TRUE;
-            } else {
-                $this->template->set_message(lang('users_edit_fail') . $this->users_model->error, 'error');
-                return FALSE;
+            if ($check_check_email > 0) {
+                $return = [
+                    'msg' => 'the Email is already registered, please use a different Email',
+                    'status' => 0
+                ];
+                echo json_encode($return);
+                return false;
             }
+            $data['created_at'] = date('Y-m-d H:i:s');
+            $data['created_by'] = $this->auth->user_id();
+            unset($data['re-password']);
+            unset($data['group_id']);
+            $this->db->insert('users', $data);
+            $this->assign_company($data['username'], $group_id);
         }
+
+        $error = $this->db->error()['message'];
+
+        // exit;
+        if ($this->db->trans_status() === TRUE) {
+            $this->db->trans_commit();
+            $return = [
+                'msg' => 'User data saved successfully',
+                'status' => 1
+            ];
+        } else {
+            $this->db->trans_rollback();
+            $return = [
+                'msg' => $error . ' User data failed to save, Please try again...',
+                'status' => 0
+            ];
+        }
+        echo json_encode($return);
     }
 
     public function default_select($val)
     {
         return $val == "" ? FALSE : TRUE;
+    }
+
+    public function check_username($username)
+    {
+        $check = $this->db->get_where('users', ['username' => $username])->num_rows();
+        return $check;
+    }
+
+    public function check_email($email)
+    {
+        $check = $this->db->get_where('users', ['email' => $email])->num_rows();
+        return $check;
+    }
+
+    public function assign_company($username, $group_id)
+    {
+        $user =  $this->db->get_where('users', ['username' => $username])->row();
+        $this->db->insert('user_groups', [
+            'user_id' => $user->id_user,
+            'company_id' => $this->company,
+            'id_group' => $group_id,
+            'active' => 'Y',
+            'default' => 'Y',
+        ]);
     }
 }

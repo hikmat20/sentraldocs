@@ -35,10 +35,10 @@ class Documents_list extends Admin_Controller
 	public function find($id)
 	{
 		$thisData 		= $this->db->get_where('directory', ['id' => $id])->row();
-		$Data 			= $this->db->get_where('directory', ['parent_id' => $id, 'flag_type' => 'FOLDER', 'status !=' => 'DEL'])->result();
-		$listDataFolder = $this->db->get_where('directory', ['flag_type' => 'FOLDER', 'status !=' => 'DEL'])->result();
-		$listDataFile 	= $this->db->get_where('directory', ['flag_type' => 'FILE', 'status' => 'PUB', 'status !=' => 'DEL'])->result();
-		$listDataLink 	= $this->db->get_where('directory', ['flag_type' => 'LINK', 'status !=' => 'DEL'])->result();
+		$Data 			= $this->db->get_where('directory', ['parent_id' => $id, 'flag_type' => 'FOLDER', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
+		$listDataFolder = $this->db->get_where('directory', ['flag_type' => 'FOLDER', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
+		$listDataFile 	= $this->db->get_where('directory', ['flag_type' => 'FILE', 'status' => 'PUB', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
+		$listDataLink 	= $this->db->get_where('directory', ['flag_type' => 'LINK', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
 
 		$ArrDataFolder = [];
 		foreach ($listDataFolder as $listFolder) {
@@ -57,6 +57,7 @@ class Documents_list extends Admin_Controller
 		$buildBreadcumb = $this->buildBreadcumb($dt);
 
 		$this->template->set('MainData', $this->MainData);
+		$this->template->set('company', $this->company);
 		$this->template->set('Breadcumb', $buildBreadcumb);
 		$this->template->set('thisData', $thisData);
 		$this->template->set('Data', $Data);

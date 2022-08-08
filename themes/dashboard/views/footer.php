@@ -290,6 +290,53 @@
              }
          })
      }
+
+     function getValidation(f = '') {
+         var form = f;
+         var count = 0;
+         var success = true;
+         $('input,select,textarea,file').removeClass('is-invalid')
+         $('span.select2-selection').css('border-color', '');
+         $("form" + f + " .required").each(function() {
+             var node = $(this).prop('nodeName');
+             var type = $(this).prop('type');
+             var success = true;
+             if ((node == 'INPUT' && type == 'radio') || (node == 'INPUT' && type == 'checkbox')) {
+                 $(this).parents('div.form-group').removeClass('validated')
+                 var c = 0;
+                 $("input[name='" + $(this).attr('name') + "']").each(function() {
+                     if ($(this).prop('checked') == true) {
+                         c++;
+                     }
+                 });
+                 console.log(type);
+                 if (c == 0) {
+                     //  var name = $(this).attr('name');
+                     //  var id = $(this).attr('id');
+                     //  $('.' + name).removeClass('hideIt');
+                     //  $('.' + name).css('display', 'inline-block');
+                     $(this).parents('div.form-group').addClass('validated')
+                     count = count + 1;
+                     console.log(name);
+                 }
+
+             } else if ((node == 'INPUT' && type == 'text') || (node == 'INPUT' && type == 'password') || (node == 'SELECT') || (node == 'TEXTAREA') || (node == 'INPUT' && type == 'date') || (node == 'INPUT' && type == 'file')) {
+                 if ($(this).val() == null || $(this).val() == '') {
+                     const id = $(this).prop('id')
+                     $(this).addClass('is-invalid').focus()
+                     $('span[aria-labelledby=select2-' + id + '-container].select2-selection').css('border-color', 'red');
+                     count = count + 1;
+                     console.log(name);
+                 }
+             }
+
+         });
+         if (count == 0) {
+             return success;
+         } else {
+             return false;
+         }
+     }
  </script>
  </body>
 

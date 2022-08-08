@@ -38,9 +38,15 @@
 
 					<ul class="nav nav-warning nav-pills nav-bolder" id="myTab2" role="tablist">
 						<?php $n = 0;
-						foreach ($Data as $dt) : $n++; ?>
+						$thisCompany = '';
+						foreach ($Data as $dt) : $n++;
+							$main = ($dt->parent_id == '0') ? true : false;
+							if ($main == false) {
+								$thisCompany = ($dt->company_id && $dt->company_id != $company) ? 'd-none' : '';
+							}
+						?>
 							<li class="nav-item mx-0">
-								<a class="rounded-bottom-0 nav-link <?= ($n == '1') ? 'active' : ''; ?>" id="tab_<?= $dt->id; ?>" data-toggle="tab" href="#data_<?= $dt->id; ?>">
+								<a class="rounded-bottom-0 nav-link  <?= ($n == '1') ? 'active' : ''; ?>" id="tab_<?= $dt->id; ?>" data-toggle="tab" href="#data_<?= $dt->id; ?>">
 									<span class="nav-icon ">
 										<i class="fa fa-file-alt"></i>
 									</span>
@@ -63,14 +69,20 @@
 							<?php endif; ?>
 							<div class="tab-content " id="myTabContent2">
 								<?php $n = 0;
-								foreach ($Data as $dtl) :  $n++; ?>
+								$cek_company = '';
+								foreach ($Data as $dtl) :  $n++;
+									$main = ($dtl->parent_id == '0') ? true : false;
+									if ($main == false) {
+										$cek_company = ($dtl->company_id && $dtl->company_id != $company) ? 'd-none' : '';
+									}
+								?>
 									<div class="tab-pane fade <?= ($n == '1') ? 'active show' : ''; ?>" id="data_<?= $dtl->id; ?>" role="tabpanel" aria-labelledby="tab_<?= $dtl->id; ?>">
 										<table class="table table-hover">
 											<tbody>
 												<?php
 												if (isset($ArrDataFolder[$dtl->id])) :
 													foreach ($ArrDataFolder[$dtl->id] as $list) : ?>
-														<tr class="cursor-pointer" data-id="<?= $list->id; ?>" ondblclick="window.open(siteurl+active_controller+'<?= $list->id; ?>','_self')">
+														<tr class="cursor-pointer <?= $cek_company; ?>" data-id="<?= $list->id; ?>" ondblclick="window.open(siteurl+active_controller+'<?= $list->id; ?>','_self')">
 															<th class="h6 text-right" width="50px"><i class="fa fa-folder fa-2x text-warning"></i></th>
 															<th class="h4 font-weight-bolder pt-5 text-dark"><?= $list->name; ?></th>
 														</tr>
@@ -82,7 +94,7 @@
 										<?php if (isset($ArrDataFile[$dtl->id])) :; ?>
 											<table class="table table-condensed table-hover">
 												<thead>
-													<tr class="">
+													<tr class="<?= $cek_company; ?>">
 														<th class="h5 border-2 border-bottom-secondary" width="15px">No.</th>
 														<th class="h5 border-2 border-bottom-secondary text-center">File Name</th>
 														<th class="h5 border-2 border-bottom-secondary text-center" width="50px">View</th>

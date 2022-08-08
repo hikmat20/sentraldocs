@@ -16,8 +16,7 @@ class Dashboard extends Admin_Controller
 		$this->load->model('dashboard/dashboard_model');
 		$this->template->set_theme('dashboard');
 		$this->template->page_icon('fa fa-dashboard');
-		$this->company_id = $this->session->default_company->company_id;
-		$this->isAdmin = $this->session->app_session['group_id'];
+
 		// $this->cbg = $this->session->app_session['id_cabang'];
 	}
 
