@@ -669,11 +669,16 @@ class Manage_documents extends Admin_Controller
 	{
 		$data = $this->input->post();
 
+
+		$this->load->library(array('Mpdf'));
+
 		if ($data) {
 			$this->db->trans_begin();
 			$this->db->update(
 				'directory',
 				[
+					'approved_at' => date('Y-m-d H:i:s'),
+					'approved_by' => $this->auth->user_id(),
 					'status' => $data['status'],
 					'modified_by' => $this->auth->user_id(),
 					'modified_at' => date('Y-m-d H:i:s'),
@@ -689,11 +694,58 @@ class Manage_documents extends Admin_Controller
 					'msg'	 => 'Failed upload document file. Please try again later.!'
 				];
 			} else {
-				$this->db->trans_commit();
+				// $this->db->trans_commit();
 				$Return = [
 					'status' => 1,
 					'msg'	 => 'Success upload document file...'
 				];
+
+				$folder = $this->db->get_where('view_directories', ['id' => $data['parent_id']])->row();
+				$file = $this->db->get_where('view_directories', ['id' => $data['id']])->row();
+
+				$html = " 
+					<div>
+					<table width='100%'>
+						<thead>
+							<tr>
+								<th>Prepered By</th>
+								<th>Reviewed By</th>
+								<th>Aproved By</th>
+							</tr>
+							<tr>
+								<td align='center'>$file->prepared_by</td>
+								<td align='center'>$file->reviewed_by</td>
+								<td align='center'>$file->approved_by</td>
+							</tr>
+							<tr>
+								<td align='center'>$file->created_at</td>
+								<td align='center'>$file->reviewed_at</td>
+								<td align='center'>$file->approved_at</td>
+							</tr>
+						</thead>
+					</table>
+					</div>
+					";
+				$mpdf = new mPDF(
+					'P',
+					'',
+					'',
+					'',
+					'10',
+					'10',
+					'10',
+					'10',
+					'',
+					''
+				);
+				$mpdf->SetImportUse();
+				$pagecount = $mpdf->SetSourceFile('./directory/' . $folder->name . '/' . $file->file_name);
+				$tplId = $mpdf->ImportPage($pagecount);
+				$mpdf->UseTemplate($tplId);
+				$mpdf->addPage();
+				$mpdf->WriteHTML($html);
+				$newfile = './directory/' .  $folder->name . '/' . $file->file_name;
+				$mpdf->Output($newfile, 'F');
 			}
 		} else {
 			$Return = [
