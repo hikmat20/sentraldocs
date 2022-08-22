@@ -276,9 +276,7 @@
 						return false;
 					}
 				},
-				error: function(data) {
-
-				}
+				error: function(data) {}
 			});
 		}
 
