@@ -33,11 +33,6 @@ class Manage_documents extends Admin_Controller
 
 	public function create()
 	{
-		$permission = $this->db->get_where('group_menus', ['group_id' => $this->group_id, 'company_id' => $this->company])->row();
-		if (!$permission) {
-			redirect('/');
-			return FALSE;
-		}
 		$mainFolder = $this->db->get_where('view_directories', ['flag_type' => 'FOLDER', 'active' => 'Y', 'status !=' => 'DEL', 'parent_id' => '0', 'company_id' => $this->company])->result();
 		$Data 		= $this->db->get_where('view_directories', ['flag_type' => 'FOLDER', 'active' => 'Y', 'status !=' => 'DEL'])->result();
 		$jabatan 	= $this->db->get('tbl_jabatan')->result();
@@ -348,7 +343,7 @@ class Manage_documents extends Admin_Controller
 				}
 				// $new_name 					= $this->fixForUri($data['description']);
 				$config['upload_path'] 		= "./directory/$parent_name"; //path folder
-				$config['allowed_types'] 	= 'pdf|xlsx|docx'; //type yang dapat diakses bisa anda sesuaikan
+				$config['allowed_types'] 	= 'pdf'; //type yang dapat diakses bisa anda sesuaikan
 				$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
 				// $config['file_name'] 		= $new_name;
 				$id 						= (!$data['id']) ? uniqid(date('m')) : $data['id'];
@@ -532,7 +527,7 @@ class Manage_documents extends Admin_Controller
 		if ($data) {
 			$this->db->trans_begin();
 			$this->db->update(
-				'directory',
+				'view_directories',
 				[
 					'status' 		=> $data['status'],
 					'modified_by' 	=> $this->auth->user_id(),
@@ -601,7 +596,7 @@ class Manage_documents extends Admin_Controller
 		if ($data) {
 			$this->db->trans_begin();
 			$this->db->update(
-				'directory',
+				'view_directories',
 				[
 					'status' => $data['status'],
 					'modified_by' => $this->auth->user_id(),
@@ -667,7 +662,7 @@ class Manage_documents extends Admin_Controller
 		if ($data) {
 			$this->db->trans_begin();
 			$this->db->update(
-				'directory',
+				'view_directories',
 				[
 					'status' => $data['status'],
 					'modified_by' => $this->auth->user_id(),

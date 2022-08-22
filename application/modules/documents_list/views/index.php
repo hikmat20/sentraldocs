@@ -72,6 +72,7 @@
 								$cek_company = '';
 								foreach ($Data as $dtl) :  $n++;
 									$main = ($dtl->parent_id == '0') ? true : false;
+
 									if ($main == false) {
 										$cek_company = ($dtl->company_id && $dtl->company_id != $company) ? 'd-none' : '';
 									}

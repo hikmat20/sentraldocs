@@ -27,12 +27,12 @@
 				<label class="radio radio-primary">
 					<input type="radio" name="flag_record" checked="checked" value="N" />
 					<span></span>
-					Pedoman
+					Need Approval
 				</label>
 				<label class="radio radio-primary">
 					<input type="radio" name="flag_record" value="Y" />
 					<span></span>
-					Record
+					Without Approval
 				</label>
 			</div>
 			<span class="form-text text-muted">pilih salah satu</span>
