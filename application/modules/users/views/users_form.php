@@ -67,7 +67,8 @@
 											<div class="checkbox-inline">
 												<label class="checkbox">
 													<input type="checkbox" class="required" name="status" value="ACT" <?= (isset($data) && $data->status == 'ACT') ? 'checked' : ''; ?>>
-													<span></span>Active</label>
+													<span></span>Active
+												</label>
 											</div>
 											<span class="form-text text-danger invalid-feedback">Address can't be empty..!</span>
 											<div class="form-text text-muted"> Activation account</div>

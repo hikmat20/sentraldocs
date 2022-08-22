@@ -34,7 +34,7 @@
 							<td><?= $record->address ?></td>
 							<td><?= $record->city ?></td>
 							<td><?= $record->phone ?></td>
-							<td><?= ($record->status == 'ACT') ? "<label class='label label-inline label-light-danger'>" . lang('users_td_aktif') . "</label>" : "<label class='label label-light-success label-inline'>" . lang('users_aktif') . "</label>" ?></td>
+							<td><?= ($record->status == 'ACT') ? "<label class='label label-inline label-primary'>Active</label>" : "<label class='label label-danger label-inline'>Non Active</label>" ?></td>
 							<td class="text-center">
 								<a class="btn btn-xs btn-icon btn-warning" href="<?= site_url('users/setting/edit/' . $record->id_user); ?>" data-toggle="tooltip" data-placement="left" title="Edit Data"><i class="fa fa-pen"></i></a>
 								<!-- <a class="btn btn-xs btn-icon btn-info" href="<?= site_url('users/setting/permission/' . $record->id_user); ?>" data-toggle="tooltip" data-placement="left" title="Edit Hak Akses"><i class="fa fa-shield-alt"></i></a> -->

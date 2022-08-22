@@ -605,4 +605,168 @@ class Menu_generator
 		}
 		if ($dept == 0) echo ('</ul>');
 	}
+
+
+
+	// GROUP MENUS
+
+	public function group_menus()
+	{
+		$html = '';
+		$group      = $this->ci->session->group->id_group;
+		$company    = $this->ci->session->company->id_perusahaan;
+		$ArrMenu    = array();
+		$Query    = "SELECT * FROM view_group_menus WHERE `company_id`='$company' and group_id='$group' ORDER BY parent_id,id ASC";
+		$count        = $this->ci->db->query($Query)->num_rows();
+		if ($count > 0) {
+			$results        = $this->ci->db->query($Query)->result_array();
+
+			foreach ($results as $key => $val) {
+				$ArrMenu[$key]['Menu']['id']          = $val['id'];
+				$ArrMenu[$key]['Menu']['title']       = $val['title'];
+				$ArrMenu[$key]['Menu']['parent_id']   = $val['parent_id'];
+				$ArrMenu[$key]['Menu']['read']   = $val['read'];
+				$ArrMenu[$key]['Menu']['create']   = $val['create'];
+				$ArrMenu[$key]['Menu']['update']   = $val['update'];
+				$ArrMenu[$key]['Menu']['delete']   = $val['delete'];
+				$ArrMenu[$key]['Menu']['approve']   = $val['approve'];
+				$ArrMenu[$key]['Menu']['download']   = $val['download'];
+			}
+
+			$childs = array();
+
+			foreach ($ArrMenu as &$item) {
+				$childs[$item['Menu']['parent_id']][] = &$item['Menu'];
+				unset($item);
+			}
+
+			foreach ($ArrMenu as &$item) {
+				if (isset($childs[$item['Menu']['id']])) {
+					$item['Menu']['child'] = $childs[$item['Menu']['id']];
+					unset($childs[$item['Menu']['id']]);
+				}
+			}
+
+			//	pr($childs);exit;
+			//	menu that has no parent, append it as parent
+			if (count($childs) > 0) {
+				foreach ($childs as $key => $child) {
+					if ($key != 0) {
+						$childs[0][] = $child[0];
+						unset($childs[$key]);
+					}
+				}
+			}
+			$Menus = isset($childs[0]) ? $childs[0] : array();
+
+			$this->render_menus($Menus);
+		}
+	}
+
+	private function render_menus($Menus, $dept = 0)
+	{
+		//if first render echo wrapper
+		if ($dept == 0) {
+			echo '<tbody>';
+			// echo '<li class="header">MAIN NAVIGATION</li>';
+		}
+
+		//loop children
+		foreach ($Menus as $key => $value) {
+			$path = $value['title'] == '' ? '#' : base_url() .  strtolower($value['title']);
+			if (array_key_exists('child', $value)) {
+				echo "<tr class='parent'>
+				<th><input type='hidden' name='menus[" . $value['parent_id']  . $key . "][id]' value='" . $value['id'] . "'>" . ucwords($value['title']) . "</th>
+				<td class='text-center'>
+					<div class='checkbox-inline d-flex justify-content-center m-auto'>
+						<label class='checkbox checkbox-light-primary d-flex justify-content-center d-inline-block w-100px'>
+							<input class='form-check-input parent parent-read parent-read-" . $value['id'] . "' " . (($value['read'] == '1') ? 'checked' : '') . " type='checkbox' name='menus[" . $value['parent_id']  . $key . "][read]' data-action='read' data-id='" . $value['id'] . "' value='" . $value['read'] . "'>
+							<span></span>
+						</label>
+					</div>
+				</td>
+				<td class='text-center'>
+					<div class='checkbox-inline d-flex justify-content-center m-auto'>
+						<label class='checkbox checkbox-light-primary d-flex justify-content-center d-inline-block w-100px'>
+							<input class='form-check-input parent parent-create parent-create-" . $value['id'] . "' " . (($value['create'] == '1') ? 'checked' : '') . " type='checkbox' name='menus[" . $value['parent_id']  . $key . "][create]' data-action='create' data-id='" . $value['id'] . "' value='" . $value['create'] . "'>
+							<span></span>
+						</label>
+					</div>
+				</td>
+				<td class='text-center'>
+					<div class='checkbox-inline d-flex justify-content-center m-auto'>
+						<label class='checkbox checkbox-light-primary d-flex justify-content-center d-inline-block w-100px'>
+							<input class='form-check-input parent parent-update parent-update-" . $value['id'] . "' " . (($value['update'] == '1') ? 'checked' : '') . " type='checkbox' name='menus[" . $value['parent_id']  . $key . "][update]' data-action='update' data-id='" . $value['id'] . "' value='" . $value['update'] . "'>
+							<span></span>" . $key . "
+						</label>
+					</div>
+				</td>
+				<td class='text-center'>
+					<div class='checkbox-inline d-flex justify-content-center m-auto'>
+						<label class='checkbox checkbox-light-primary d-flex justify-content-center d-inline-block w-100px'>
+							<input class='form-check-input parent parent-delete parent-delete-" . $value['id'] . "' " . (($value['delete'] == '1') ? 'checked' : '') . " type='checkbox' name='menus[" . $value['parent_id']  . $key . "][delete]' data-action='delete' data-id='" . $value['id'] . "' value='" . $value['delete'] . "'>
+							<span></span>
+						</label>
+					</div>
+				</td>
+				<td class='text-center'>
+					<div class='checkbox-inline d-flex justify-content-center m-auto'>
+						<label class='checkbox checkbox-light-primary d-flex justify-content-center d-inline-block w-100px'>
+							<input class='form-check-input parent-full-access' type='checkbox' name='' id='' value='1'>
+							<span></span>
+						</label>
+					</div>
+				</td>";
+				$this->render_menus($value['child'], $dept + 1);
+				echo ('</tr>');
+			} else {
+				echo "<tr class='children'>
+				<td class='pl-5'><i class='fa fa-minus mr-2'></i>
+				<input type='hidden' name='submenus[" . $value['parent_id'] . $key . "][id]' value='" . $value['id'] . "'>" . ucwords($value['title']) . "</td>
+				<td class='text-center'>
+					<div class='checkbox-inline d-flex justify-content-center m-auto'>
+						<label class='checkbox checkbox-outline d-flex justify-content-center d-inline-block w-100px'>
+							<input class='form-check-input child child-read child-read-" . $value['parent_id'] . "' " . (($value['read'] == '1') ? 'checked' : '') . " type='checkbox' name='submenus[" . $value['parent_id'] . $key . "][read]' data-id='" . $value['id'] . "' data-parent='" . $value['parent_id'] . "' data-action='read' value='" . $value['read'] . "'>
+							<span></span>
+						</label>
+					</div>
+				</td>
+				<td class='text-center'>
+					<div class='checkbox-inline d-flex justify-content-center m-auto'>
+						<label class='checkbox checkbox-outline d-flex justify-content-center d-inline-block w-100px'>
+							<input class='form-check-input child child-create child-create-" . $value['parent_id'] . "' " . (($value['create'] == '1') ? 'checked' : '') . " type='checkbox' name='submenus[" . $value['parent_id'] . $key . "][create]' data-parent='" . $value['parent_id'] . "' data-id='" . $value['id'] . "' data-action='create' value='" . $value['create'] . "'>
+							<span></span>
+						</label>
+					</div>
+				</td>
+				<td class='text-center'>
+					<div class='checkbox-inline d-flex justify-content-center m-auto'>
+						<label class='checkbox checkbox-outline d-flex justify-content-center d-inline-block w-100px'>
+							<input class='form-check-input child child-update child-update-" . $value['parent_id'] . "' " . (($value['update'] == '1') ? 'checked' : '') . " type='checkbox' name='submenus[" . $value['parent_id'] . $key . "][update]' data-parent='" . $value['parent_id'] . "' data-id='" . $value['id'] . "' data-action='update' value='" . $value['update'] . "'>
+							<span></span>
+						</label>
+					</div>
+				</td>
+				<td class='text-center'>
+					<div class='checkbox-inline d-flex justify-content-center m-auto'>
+						<label class='checkbox checkbox-outline d-flex justify-content-center d-inline-block w-100px'>
+							<input class='form-check-input child child-delete child-delete-" . $value['parent_id'] . "' " . (($value['delete'] == '1') ? 'checked' : '') . " type='checkbox' name='submenus[" . $value['parent_id']  . $key . "][delete]' data-parent='" . $value['parent_id'] . "' data-id='" . $value['id'] . "' data-action='delete' value='" . $value['delete'] . "'>
+							<span></span>
+						</label>
+					</div>
+				</td>
+				<td class='text-center'>
+					<div class='checkbox-inline d-flex justify-content-center m-auto'>
+						<label class='checkbox checkbox-outline d-flex justify-content-center d-inline-block w-100px'>
+							<input class='form-check-input' type='checkbox' name='' id='' value='1'>
+							<span></span>
+						</label>
+					</div>
+				</td>
+				";
+			}
+			echo ('</tr>');
+		}
+		if ($dept == 0) echo ('</tbody>');
+	}
 }

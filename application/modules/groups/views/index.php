@@ -1,5 +1,3 @@
-<div id='alert_edit' class="alert alert-success alert-dismissable" style="padding: 15px; display: none;"></div>
-<!-- <link rel="stylesheet" href="<?= base_url('assets/plugins/datatables/dataTables.bootstrap.css') ?>"> -->
 <div class="content d-flex flex-column flex-column-fluid p-0">
 	<div class="d-flex flex-column-fluid justify-content-between align-items-top">
 		<div class="container mt-10">
@@ -29,7 +27,7 @@
 										<td><?= $record->nm_group ?></td>
 										<td><?= $record->ket ?></td>
 										<td class="d-flex justify-content-between">
-											<a class="btn btn-xs btn-icon btn-primary" id="access" href="javascript:void(0)" data-id="<?= $record->id_group; ?>" title="Access Group"><i class="fa fa-key"></i>
+											<a class="btn btn-xs btn-icon btn-primary" id="access" href="<?= base_url($this->uri->segment(1) . '/permissions/' . $record->id_group); ?>" data-id="<?= $record->id_group; ?>" title="Access Group"><i class="fa fa-key"></i>
 											</a>
 											<a class="btn btn-xs btn-icon btn-warning" id="edit" href="javascript:void(0)" data-id="<?= $record->id_group; ?>" title="Edit"><i class="fa fa-pen"></i>
 											</a>
