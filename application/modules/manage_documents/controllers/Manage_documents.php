@@ -349,11 +349,7 @@ class Manage_documents extends Admin_Controller
 				}
 				// $new_name 					= $this->fixForUri($data['description']);
 				$config['upload_path'] 		= "./directory/$parent_name"; //path folder
-<<<<<<< HEAD
 				$config['allowed_types'] 	= 'pdf|xlsx|docx'; //type yang dapat diakses bisa anda sesuaikan
-=======
-				$config['allowed_types'] 	= 'pdf|xlxs|docx'; //type yang dapat diakses bisa anda sesuaikan
->>>>>>> 3e225731e6ef4340dbb8936c27abea40cbfe41cb
 				$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
 				// $config['file_name'] 		= $new_name;
 				$id 						= (!$data['id']) ? uniqid(date('m')) : $data['id'];
