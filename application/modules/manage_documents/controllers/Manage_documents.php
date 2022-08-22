@@ -86,7 +86,7 @@ class Manage_documents extends Admin_Controller
 	public function load_file($id = null)
 	{
 
-		if ($id) {
+		if ($id != '0') {
 
 			$data_file = $this->db->get_where('view_directories', ['parent_id' => $id, 'flag_type !=' => 'LINK', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
 			$prev = $this->db->get_where('view_directories', ['id' => $id])->row()->parent_id;
@@ -99,11 +99,12 @@ class Manage_documents extends Admin_Controller
 			$this->template->set('sts', $this->sts);
 			$this->template->set('list_file', $data_file);
 			$this->template->render('list-file');
-		} else {
-			$data_file = $this->db->get_where('view_directories', ['parent_id' => $id, 'flag_type !=' => 'LINK', 'status !=' => 'DEL'])->result();
-			$this->template->set('list_file', $data_file);
-			$this->template->render('list-file');
 		}
+		// else {
+		// 	$data_file = $this->db->get_where('view_directories', ['parent_id' => '0', 'flag_type !=' => 'LINK', 'status !=' => 'DEL'])->result();
+		// 	$this->template->set('list_file', $data_file);
+		// 	$this->template->render('list-file');
+		// }
 	}
 
 	public function previous()
@@ -348,7 +349,11 @@ class Manage_documents extends Admin_Controller
 				}
 				// $new_name 					= $this->fixForUri($data['description']);
 				$config['upload_path'] 		= "./directory/$parent_name"; //path folder
+<<<<<<< HEAD
 				$config['allowed_types'] 	= 'pdf|xlsx|docx'; //type yang dapat diakses bisa anda sesuaikan
+=======
+				$config['allowed_types'] 	= 'pdf|xlxs|docx'; //type yang dapat diakses bisa anda sesuaikan
+>>>>>>> 3e225731e6ef4340dbb8936c27abea40cbfe41cb
 				$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
 				// $config['file_name'] 		= $new_name;
 				$id 						= (!$data['id']) ? uniqid(date('m')) : $data['id'];
@@ -698,5 +703,23 @@ class Manage_documents extends Admin_Controller
 		}
 
 		echo json_encode($Return);
+	}
+
+	public function print_document()
+	{
+		$this->load->library(array('Mpdf'));
+		$folder = $_GET['p'];
+		$file = $_GET['f'];
+
+		$mpdf = new mPDF('', '', '', '', '', '', '', '', '', '');
+		$mpdf->SetImportUse();
+		$pagecount = $mpdf->SetSourceFile('directory/' . $folder . '/' . $file);
+		$tplId = $mpdf->ImportPage($pagecount);
+		$mpdf->UseTemplate($tplId);
+		$mpdf->addPage();
+		$mpdf->WriteHTML('Hello World');
+		$newfile = 'directory/' . $folder . '/' . $file;
+		$mpdf->Output($newfile, 'F');
+		$mpdf->Output();
 	}
 }

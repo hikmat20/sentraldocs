@@ -15,41 +15,42 @@
 
 				<div class="col-md-8 pl-0">
 					<div class="card-header px-0 border-1 border-left pb-11 pt-0 h-20px">
+						<input type="hidden" id="active_parent_id" value="ec">
 						<!-- <span class="card-title text-dark-75"><i class="fa fa-file mr-2 text-success"></i>List File & Folder</span> -->
 						<div class="px-1">
 							<ul class="nav nav-light-success nav-pills" id="myTab" role="tablist">
-								<li class="nav-item" data-id="0">
-									<a class="nav-link pr-3" id="back" data-id="0" href="javascript:void(0)">
+								<li class="nav-item text-primary" data-id="0">
+									<a class="nav-link px-2 disabled" id="back" data-id="0" href="javascript:void(0)">
 										<span class="nav-icon">
-											<i class="fa fa-arrow-left mr-2"></i>
+											<i class="fa fa-arrow-left mr-2 nav-icons"></i>
 										</span>
-										<span class="nav-text">Back</span>
+										<span class="nav-text nav-name">Back</span>
 									</a>
 								</li>
 								<li class="nav-item" data-id="0">
-									<a class="nav-link pr-3" id="forward" data-id="0" href="javascript:void(0)">
+									<a class="nav-link px-2 disabled" id="forward" data-id="0" href="javascript:void(0)">
 										<span class="nav-icon">
-											<i class="fa fa-arrow-right mr-2"></i>
+											<i class="fa fa-arrow-right mr-2 nav-icons"></i>
 										</span>
-										<span class="nav-text">Forward</span>
+										<span class="nav-text nav-name">Forward</span>
 									</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link px-2" id="add-folder" data-id="0" href="javascript:void(0)">
+									<a class="nav-link px-2 disabled" id="add-folder" data-id="0" href="javascript:void(0)">
 										<span class="nav-icon">
-											<i class="fa fa-plus"></i>
+											<i class="fa fa-plus nav-icons"></i>
 										</span>
-										<span class="nav-text">
+										<span class="nav-text nav-name">
 											Add Folder
 										</span>
 									</a>
 								</li>
 								<li class="nav-item dropdown">
-									<a class="nav-link px-2" id="add-file" data-id="0" href="javascript:void(0)">
+									<a class="nav-link px-2 disabled" id="add-file" data-id="0" href="javascript:void(0)">
 										<span class="nav-icon">
-											<i class="fa fa-file mr-2"></i>
+											<i class="fa fa-file mr-2 nav-icons"></i>
 										</span>
-										<span class="nav-text">
+										<span class="nav-text nav-name">
 											Upload File
 										</span>
 									</a>
@@ -57,9 +58,9 @@
 								<li class="nav-item dropdown">
 									<a class="nav-link px-2" id="refresh" href="javascript:void(0)" data-id="0">
 										<span class="nav-icon">
-											<i class="fa fa-redo mr-2"></i>
+											<i class="fa fa-redo mr-2 nav-icons text-success"></i>
 										</span>
-										<span class="nav-text">
+										<span class="nav-text nav-name text-success">
 											Refresh
 										</span>
 									</a>
@@ -83,7 +84,7 @@
 
 <!-- Modal-->
 <div class="modal fade" id="upload" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+	<div class="modal-dialog modal-xl modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">Upload File</h5>
@@ -94,7 +95,7 @@
 			<div class="modal-body" data-scroll="true" data-height="500" id="viewData"></div>
 			<div class="modal-footer py-1">
 				<button type="button" class="btn btn-light-primary save-upload font-weight-bold">Save</button>
-				<button type="button" class="btn btn-light-warning font-weight-bold" data-dismiss="modal" onclick="setTimeout(function(){$('#viewData').html('')},1000)">Close</button>
+				<button type="button" class="btn btn-light-warning font-weight-bold" data-dismiss="modal" onclick="setTimeout(function(){$(' #viewData').html('')},1000)">Close</button>
 			</div>
 		</div>
 	</div>
@@ -175,9 +176,25 @@
 		if (id) {
 			$('#data-file').load(siteurl + active_controller + 'load_file/' + id)
 			$('#add-folder').data('id', id);
-			$('#add-folder').data('id', id);
 			$('#add-file').data('id', id);
 			$('#refresh').data('id', id);
+			if (id != '0') {
+				$('a#back').removeClass('disabled')
+				$('#back span').children('i.nav-icons').addClass('text-success')
+				$('#back').children('.nav-name').addClass('text-success')
+
+				$('a#add-folder').removeClass('disabled')
+				$('#add-folder span').children('i.nav-icons').addClass('text-success')
+				$('#add-folder').children('.nav-name').addClass('text-success')
+
+				$('a#add-file').removeClass('disabled')
+				$('#add-file span').children('i.nav-icons').addClass('text-success')
+				$('#add-file').children('.nav-name').addClass('text-success')
+
+				$('a#back').removeClass('disabled')
+				$('#back span').children('i.nav-icons').addClass('text-success')
+				$('#back').children('.nav-name').addClass('text-success')
+			}
 			console.log(id);
 		} else {
 			$('#data-file').html('<tr class="text-center"><td colspan="3" class="text-center">Not available data</td></tr>')
@@ -195,7 +212,13 @@
 			$('#refresh').data('id', id);
 			console.log(id);
 		} else {
-			$('#data-file').html('')
+			$('#data-file').html(`
+			<div class="card-body border border-1 border-left py-2 overflow-auto h-550px">
+				<div class="d-flex justify-content-center align-items-center py-10">
+					<img src="<?= base_url('assets\images\dashboard\folder-file.gif'); ?>" alt="" width="300px" class="img-responsive text-center opacity-30">
+				</div>
+			</div>
+			`)
 
 		}
 	});
@@ -213,7 +236,7 @@
 
 	$(document).on("click", "#back", function() {
 		const id = $(this).data('id');
-
+		console.log(id);
 		if (id != '0') {
 			$.ajax({
 				url: siteurl + active_controller + 'previous',
@@ -223,13 +246,35 @@
 				},
 				dataType: "JSON",
 				success: function(data) {
+					if (data.parent_id != '0') {
+						$('#data-file').load(siteurl + active_controller + 'load_file/' + data.parent_id)
+						$('#back').data('id', data.parent_id);
+						$('#add-folder').data('id', data.parent_id);
+						$('#add-file').data('id', data.parent_id);
+						$('#refresh').data('id', data.parent_id);
+						console.log(data.parent_id);
+					} else {
+						$('a#back').addClass('disabled')
+						$('#back span').children('i.nav-icons').removeClass('text-success')
+						$('#back').children('.nav-name').removeClass('text-success')
 
-					$('#data-file').load(siteurl + active_controller + 'load_file/' + data.parent_id)
-					$('#back').data('id', data.parent_id);
-					$('#add-folder').data('id', data.parent_id);
-					$('#add-file').data('id', data.parent_id);
-					$('#refresh').data('id', data.parent_id);
-					console.log(data.parent_id);
+						$('a#add-folder').addClass('disabled')
+						$('#add-folder span').children('i.nav-icons').removeClass('text-success')
+						$('#add-folder').children('.nav-name').removeClass('text-success')
+
+						$('a#add-file').addClass('disabled')
+						$('#add-file span').children('i.nav-icons').removeClass('text-success')
+						$('#add-file').children('.nav-name').removeClass('text-success')
+
+						$('#data-file').html(`
+							<div class="card-body border border-1 border-left py-2 overflow-auto h-550px">
+								<div class="d-flex justify-content-center align-items-center py-10">
+									<img src="` + siteurl + `assets/images/dashboard/folder-file.gif" alt="" width="300px" class="img-responsive text-center opacity-30">
+								</div>
+							</div>
+						`)
+						return false;
+					}
 				},
 				error: function(data) {
 
