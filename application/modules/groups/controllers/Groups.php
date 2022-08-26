@@ -36,13 +36,21 @@ class Groups extends Admin_Controller
     public function save()
     {
         $data = $this->input->post();
-        echo '<pre>';
-        print_r($data);
-        echo '<pre>';
-        exit;
+        // echo '<pre>';
+        // print_r($data);
+        // echo '<pre>';
+        // exit;
 
-        if (isset($data['id'])) {
-            $this->update($data);
+        if (isset($data)) {
+            foreach ($data['menus'] as $menus) {
+                $check = $this->db->get_where('group_menus', ['id' => $menus['id']])->num_rows();
+                if ($check > 0) {
+                    $this->db->update('group_menus', ['id' => $menus['id']], $menus);
+                } else {
+                    $this->db->insert('group_menus', $menus);
+                }
+            }
+            exit;
         } else {
             $this->db->trans_begin();
             $data['company_id']  = $this->company;
