@@ -697,7 +697,7 @@ class Menu_generator
 					<div class='checkbox-inline d-flex justify-content-center m-auto'>
 						<label class='checkbox checkbox-light-primary d-flex justify-content-center d-inline-block w-100px'>
 							<input class='form-check-input parent parent-update parent-update-" . $value['id'] . "' " . (($value['update'] == '1') ? 'checked' : '') . " type='checkbox' name='menus[" . $value['parent_id']  . $key . "][update]' data-action='update' data-id='" . $value['id'] . "' value='" . $value['update'] . "'>
-							<span></span>" . $key . "
+							<span></span>
 						</label>
 					</div>
 				</td>

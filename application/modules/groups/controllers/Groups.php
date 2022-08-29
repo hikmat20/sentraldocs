@@ -36,27 +36,39 @@ class Groups extends Admin_Controller
     public function save()
     {
         $data = $this->input->post();
-        // echo '<pre>';
-        // print_r($data);
-        // echo '<pre>';
-        // exit;
+
+        $this->db->trans_begin();
 
         if (isset($data)) {
             foreach ($data['menus'] as $menus) {
                 $check = $this->db->get_where('group_menus', ['id' => $menus['id']])->num_rows();
+                $menus['read'] = isset($menus['read']) ? $menus['read'] : '0';
+                $menus['create'] = isset($menus['create']) ? $menus['create'] : '0';
+                $menus['update'] = isset($menus['update']) ? $menus['update'] : '0';
+                $menus['delete'] = isset($menus['delete']) ? $menus['delete'] : '0';
+
                 if ($check > 0) {
-                    $this->db->update('group_menus', ['id' => $menus['id']], $menus);
+                    $this->db->update('group_menus', $menus, ['id' => $menus['id']]);
                 } else {
                     $this->db->insert('group_menus', $menus);
                 }
             }
-            exit;
-        } else {
-            $this->db->trans_begin();
-            $data['company_id']  = $this->company;
-            $data['nm_group']  = $data['name'];
-            unset($data['name']);
-            $this->db->insert("groups", $data);
+            foreach ($data['submenus'] as $submenus) {
+                $check = $this->db->get_where('group_menus', ['id' => $submenus['id']])->num_rows();
+                $submenus['read'] = isset($submenus['read']) ? $submenus['read'] : '0';
+                $submenus['create'] = isset($submenus['create']) ? $submenus['create'] : '0';
+                $submenus['update'] = isset($submenus['update']) ? $submenus['update'] : '0';
+                $submenus['delete'] = isset($submenus['delete']) ? $submenus['delete'] : '0';
+
+                if ($check > 0) {
+                    $this->db->update('group_menus', $submenus, ['id' => $submenus['id']]);
+                } else {
+                    $this->db->insert('group_menus', $submenus);
+                }
+            }
+
+
+
             if ($this->db->trans_status() === FALSE) {
                 $this->db->trans_rollback();
                 $Arr_Return        = array(
@@ -70,8 +82,14 @@ class Groups extends Admin_Controller
                     'msg'        => 'Save Process Success... '
                 );
             }
-            echo json_encode($Arr_Return);
+        } else {
+            $Arr_Return         = array(
+                'status'        => 0,
+                'msg'           => 'Data not valid...'
+            );
         }
+
+        echo json_encode($Arr_Return);
     }
 
     public function update($data)

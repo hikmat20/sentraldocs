@@ -34,8 +34,8 @@
                         </table>
                     </div>
                     <div class="d-flex justify-content-between align-items-center card-footer">
-                        <button type="button" class="btn btn-primary save"><i class="fa fa-save"></i>Save</button>
                         <a href="<?= base_url($this->uri->segment(1)); ?>" class="btn btn-danger"><i class="fa fa-reply"></i>Back</a>
+                        <button type="button" class="btn btn-primary save"><i class="fa fa-save"></i>Save</button>
                     </div>
                 </div>
             </div>
@@ -51,9 +51,9 @@
             const check = $(this).is(':checked')
             const id = $(this).data('id')
             if (check) {
-                $('.child-' + action + '-' + id).prop('checked', true)
+                $('.child-' + action + '-' + id).prop('checked', true).val('1').change()
             } else {
-                $('.child-' + action + '-' + id).prop('checked', false)
+                $('.child-' + action + '-' + id).prop('checked', false).val('0')
             }
         })
 
@@ -66,9 +66,9 @@
                 count += Number($(this).is(':checked'))
             })
             if (count > 0) {
-                $('.parent-' + action + '-' + parent).prop('checked', true)
+                $('.parent-' + action + '-' + parent).prop('checked', true).val('1')
             } else {
-                $('.parent-' + action + '-' + parent).prop('checked', false)
+                $('.parent-' + action + '-' + parent).prop('checked', false).val('0')
             }
         })
 

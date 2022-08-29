@@ -22,7 +22,6 @@
     <div class="tab-pane fade show active" id="file" role="tabpanel" aria-labelledby="file-tab">
         <div style="width:92%;height:400px;background-color: red;position: absolute;opacity: 0;"></div>
         <iframe src="https://docs.google.com/gview?embedded=true&url=<?= base_url("directory/$dir_name/$file->file_name"); ?>&rm=minimal#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
-
         <hr>
     </div>
     <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
