@@ -18,7 +18,6 @@
   <link href="<?= base_url(); ?>themes/dashboard/assets/css/style.bundle1036.css?v=2.1.1" rel="stylesheet" type="text/css" />
   <link href="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/jstree/jstree.bundle.css?v=2.1.1" rel="stylesheet" type="text/css" />
   <link href="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/datatables/datatables.bundle1036.css" rel="stylesheet" type="text/css" />
-
   <script type="text/javascript">
     var baseurl = "<?= base_url(); ?>";
     var siteurl = "<?php echo site_url(); ?>";
@@ -152,13 +151,15 @@
                     </a>
                   </li>
 
-                  <!-- <?php if ($this->group_id == '2') : ?>
+                  <!-- <?php //if ($this->group_id == '2') : 
+                        ?>
                     <li class="menu-item <?= (check_class('docs', TRUE)) ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
                       <a href="<?= base_url('/docs'); ?>" class="menu-link bg-warning" style="border-radius: 14px 1px 14px 1px  ;">
                         <span class="menu-text text-white h5 my-0"><i class="fa fa-file-alt mr-3 text-white"></i> Manage Docs</span>
                       </a>
                     </li>
-                  <?php endif; ?> -->
+                  <?php //endif; 
+                  ?> -->
                 </ul>
                 <!--end::Header Nav-->
               </div>

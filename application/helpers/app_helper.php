@@ -110,9 +110,9 @@ function gen_primary($kode_tambahan = '')
     $letter1 = chr(mt_rand(65, 90));
     $letter2 = chr(mt_rand(65, 90));
 
-    $kode_primary = $tahun.$bulan.$hari.$jam.$menit.$detik.$letter1.$kode_rand.$letter2;
+    $kode_primary = $tahun . $bulan . $hari . $jam . $menit . $detik . $letter1 . $kode_rand . $letter2;
 
-    return $kode_tambahan.$kode_primary;
+    return $kode_tambahan . $kode_primary;
 }
 
 if (!function_exists('gen_idcustomer')) {
@@ -272,7 +272,7 @@ if (!function_exists('simpan_alurkas')) {
 if (!function_exists('buatrp')) {
     function buatrp($angka)
     {
-        $jadi = 'Rp '.number_format($angka, 0, ',', '.');
+        $jadi = 'Rp ' . number_format($angka, 0, ',', '.');
 
         return $jadi;
     }
@@ -307,25 +307,25 @@ if (!function_exists('ynz_terbilang_format')) {
         $angka = array('', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'delapan', 'sembilan', 'sepuluh', 'sebelas');
         $temp = '';
         if ($x < 12) {
-            $temp = ' '.$angka[$x];
+            $temp = ' ' . $angka[$x];
         } elseif ($x < 20) {
-            $temp = ynz_terbilang_format($x - 10).' belas';
+            $temp = ynz_terbilang_format($x - 10) . ' belas';
         } elseif ($x < 100) {
-            $temp = ynz_terbilang_format($x / 10).' puluh'.ynz_terbilang_format($x % 10);
+            $temp = ynz_terbilang_format($x / 10) . ' puluh' . ynz_terbilang_format($x % 10);
         } elseif ($x < 200) {
-            $temp = ' seratus'.ynz_terbilang_format($x - 100);
+            $temp = ' seratus' . ynz_terbilang_format($x - 100);
         } elseif ($x < 1000) {
-            $temp = ynz_terbilang_format($x / 100).' ratus'.ynz_terbilang_format($x % 100);
+            $temp = ynz_terbilang_format($x / 100) . ' ratus' . ynz_terbilang_format($x % 100);
         } elseif ($x < 2000) {
-            $temp = ' seribu'.ynz_terbilang_format($x - 1000);
+            $temp = ' seribu' . ynz_terbilang_format($x - 1000);
         } elseif ($x < 1000000) {
-            $temp = ynz_terbilang_format($x / 1000).' ribu'.ynz_terbilang_format($x % 1000);
+            $temp = ynz_terbilang_format($x / 1000) . ' ribu' . ynz_terbilang_format($x % 1000);
         } elseif ($x < 1000000000) {
-            $temp = ynz_terbilang_format($x / 1000000).' juta'.ynz_terbilang_format($x % 1000000);
+            $temp = ynz_terbilang_format($x / 1000000) . ' juta' . ynz_terbilang_format($x % 1000000);
         } elseif ($x < 1000000000000) {
-            $temp = ynz_terbilang_format($x / 1000000000).' milyar'.ynz_terbilang_format(fmod($x, 1000000000));
+            $temp = ynz_terbilang_format($x / 1000000000) . ' milyar' . ynz_terbilang_format(fmod($x, 1000000000));
         } elseif ($x < 1000000000000000) {
-            $temp = ynz_terbilang_format($x / 1000000000000).' trilyun'.ynz_terbilang_format(fmod($x, 1000000000000));
+            $temp = ynz_terbilang_format($x / 1000000000000) . ' trilyun' . ynz_terbilang_format(fmod($x, 1000000000000));
         }
 
         return $temp;
@@ -336,23 +336,23 @@ if (!function_exists('ynz_terbilang')) {
     function ynz_terbilang($x, $style = 1)
     {
         if ($x < 0) {
-            $hasil = 'minus '.trim(ynz_terbilang_format($x));
+            $hasil = 'minus ' . trim(ynz_terbilang_format($x));
         } else {
             $hasil = trim(ynz_terbilang_format($x));
         }
         switch ($style) {
-        case 1:
-            $hasil = strtoupper($hasil);
-            break;
-        case 2:
-            $hasil = strtolower($hasil);
-            break;
-        case 3:
-            $hasil = ucwords($hasil);
-            break;
-        default:
-            $hasil = ucfirst($hasil);
-            break;
+            case 1:
+                $hasil = strtoupper($hasil);
+                break;
+            case 2:
+                $hasil = strtolower($hasil);
+                break;
+            case 3:
+                $hasil = ucwords($hasil);
+                break;
+            default:
+                $hasil = ucfirst($hasil);
+                break;
         }
 
         return $hasil;
@@ -367,7 +367,7 @@ if (!function_exists('tipe_pengiriman')) {
             'SEWA' => 'SEWA',
             'EKSPEDISI' => 'EKSPEDISI',
             'PELANGGAN' => 'PELANGGAN AMBIL SENDIRI',
-            );
+        );
         if ($ket == true) {
             return $uu[$ket];
         } else {
@@ -396,7 +396,7 @@ if (!function_exists('kategori_umur_piutang')) {
             '30|59' => '30-59',
             '60|89' => '60-89',
             '90' => '>90',
-            );
+        );
         if ($ket == true) {
             return $uu[$ket];
         } else {
@@ -408,7 +408,8 @@ if (!function_exists('kategori_umur_piutang')) {
 if (!function_exists('the_bulan')) {
     function the_bulan($time = false)
     {
-        $a = array('1' => 'Januari',
+        $a = array(
+            '1' => 'Januari',
             '2' => 'Februari',
             '3' => 'Maret',
             '4' => 'April',
@@ -429,7 +430,8 @@ if (!function_exists('the_bulan')) {
 if (!function_exists('bulan')) {
     function bulan($time = false)
     {
-        $a = array('01' => 'Januari',
+        $a = array(
+            '01' => 'Januari',
             '02' => 'Februari',
             '03' => 'Maret',
             '04' => 'April',
@@ -454,7 +456,7 @@ if (!function_exists('is_jenis_bayar')) {
             'CASH' => 'CASH',
             'TRANSFER' => 'TRANSFER',
             'BG' => 'GIRO',
-            );
+        );
         if ($ket == true) {
             return $uu[$ket];
         } else {
@@ -471,7 +473,7 @@ if (!function_exists('is_status_giro')) {
             'INV' => 'INVOICE',
             'CAIR' => 'CAIR',
             'TOLAK' => 'TOLAK',
-            );
+        );
         if ($ket == true) {
             return $uu[$ket];
         } else {
@@ -486,7 +488,7 @@ if (!function_exists('is_filter_report_jual')) {
         $uu = array(
             'by_customer' => 'Per Customer',
             'by_sales' => 'Per Sales',
-            );
+        );
         if ($ket == true) {
             return $uu[$ket];
         } else {
@@ -502,7 +504,7 @@ if (!function_exists('is_filter_detail_jual')) {
             'by_produk' => 'Per Produk',
             'by_customer' => 'Per Customer',
             'by_sales' => 'Per Sales',
-            );
+        );
         if ($ket == true) {
             return $uu[$ket];
         } else {
@@ -511,9 +513,21 @@ if (!function_exists('is_filter_detail_jual')) {
     }
 }
 
-function tgl_indo($tgl){
-			$tanggal = substr($tgl,8,2);
-			$bulan =substr($tgl,5,2);
-			$tahun = substr($tgl,0,4);
-			return $tanggal.'-'.$bulan.'-'.$tahun;		 
-	}	
+function tgl_indo($tgl)
+{
+    $tanggal = substr($tgl, 8, 2);
+    $bulan = substr($tgl, 5, 2);
+    $tahun = substr($tgl, 0, 4);
+    return $tanggal . '-' . $bulan . '-' . $tahun;
+}
+
+
+function limit_text($x, $length)
+{
+    if (strlen($x) <= $length) {
+        return $x;
+    } else {
+        $y = substr($x, 0, $length) . ' <span class="fw-bold fs-16px text-primary">...</span>';
+        return $y;
+    }
+}

@@ -9,6 +9,7 @@ class Admin_Controller extends Base_Controller
     public function __construct()
     {
         $this->autoload['helpers'][]   = 'form';
+        $this->autoload['helpers'][]   = 'app';
         $this->autoload['libraries'][] = 'Template';
         $this->autoload['libraries'][] = 'users/auth';
 

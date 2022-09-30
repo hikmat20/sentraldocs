@@ -80,7 +80,7 @@
 											<select name="group_id" id="group_id" class="form-control required form-control-solid select2">
 												<option value=""></option>
 												<?php foreach ($levels as $level) : ?>
-													<option value="<?= $level->id_group; ?>" <?= (isset($data) && $data->group_id == $level->id_group) ? 'selected' : ""; ?>><?= $level->nm_group; ?></option>
+													<option value="<?= $level->id_group; ?>" <?= (isset($user_group) && $user_group->id_group == $level->id_group) ? 'selected' : ""; ?>><?= $level->nm_group; ?></option>
 												<?php endforeach; ?>
 											</select>
 											<span class="form-text text-danger invalid-feedback">Level can't be empty..!</span>

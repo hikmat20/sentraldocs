@@ -664,8 +664,6 @@ class Manage_documents extends Admin_Controller
 	public function save_approval()
 	{
 		$data = $this->input->post();
-
-
 		$this->load->library(array('Mpdf'));
 
 		if ($data) {
@@ -690,7 +688,7 @@ class Manage_documents extends Admin_Controller
 					'msg'	 => 'Failed upload document file. Please try again later.!'
 				];
 			} else {
-				// $this->db->trans_commit();
+				$this->db->trans_commit();
 				$Return = [
 					'status' => 1,
 					'msg'	 => 'Success upload document file...'
@@ -698,10 +696,16 @@ class Manage_documents extends Admin_Controller
 
 				$folder = $this->db->get_where('view_directories', ['id' => $data['parent_id']])->row();
 				$file = $this->db->get_where('view_directories', ['id' => $data['id']])->row();
+				$users = $this->db->get_where('users')->result();
+
+				$ArrUsers = [];
+				foreach ($users as $user) {
+					$ArrUsers[$user->id_user] = $user;
+				}
 
 				$html = " 
 					<div>
-					<table width='100%'>
+					<table border='1' width='100%' style='font-family:Arial,Tahoma,sans-serif;border-collapse: collapse;'>
 						<thead>
 							<tr>
 								<th>Prepered By</th>
@@ -709,9 +713,9 @@ class Manage_documents extends Admin_Controller
 								<th>Aproved By</th>
 							</tr>
 							<tr>
-								<td align='center'>$file->prepared_by</td>
-								<td align='center'>$file->reviewed_by</td>
-								<td align='center'>$file->approved_by</td>
+								<td align='center'>" . $ArrUsers[$file->prepared_by]->full_name . "</td>
+								<td align='center'>" . $ArrUsers[$file->reviewed_by]->full_name . "</td>
+								<td align='center'>" . $ArrUsers[$file->approved_by]->full_name . "</td>
 							</tr>
 							<tr>
 								<td align='center'>$file->created_at</td>
@@ -727,17 +731,25 @@ class Manage_documents extends Admin_Controller
 					'',
 					'',
 					'',
-					'10',
-					'10',
-					'10',
-					'10',
+					'20', //kiri
+					'20', //kanan
+					'30', //atas
+					'10', //bawah
 					'',
 					''
 				);
+
 				$mpdf->SetImportUse();
 				$pagecount = $mpdf->SetSourceFile('./directory/' . $folder->name . '/' . $file->file_name);
-				$tplId = $mpdf->ImportPage($pagecount);
-				$mpdf->UseTemplate($tplId);
+
+				for ($i = 1; $i <= $pagecount; $i++) {
+					$mpdf->AddPage(); // Add page to output document
+					$tplId = $mpdf->ImportPage($i); // Import page as a template
+					$mpdf->UseTemplate($tplId); // insert the template in the added page
+				}
+
+				// $tplId = $mpdf->ImportPage($pagecount);
+				// $mpdf->UseTemplate($tplId);
 				$mpdf->addPage();
 				$mpdf->WriteHTML($html);
 				$newfile = './directory/' .  $folder->name . '/' . $file->file_name;

@@ -20,7 +20,7 @@
 </div>
 <div class="tab-content mt-5">
     <div class="tab-pane fade show active" id="filetab" role="tabpanel" aria-labelledby="file-">
-        <iframe class="w-100" style="height: 450px;" src="<?= base_url("directory/$dir_name/$file->file_name"); ?>#toolbar=0&navpanes=0" frameborder="1"></iframe>
+        <iframe class="w-100" style="height: 450px;" src="<?= base_url("directory/$dir_name/$file->file_name"); ?>?time=<?= time(); ?> #toolbar=0&navpanes=0" frameborder="1"></iframe>
         <hr>
         <div class="row">
             <div class="col-md-2"></div>
