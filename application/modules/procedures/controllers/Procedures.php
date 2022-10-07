@@ -47,41 +47,54 @@ class Procedures extends Admin_Controller
 	public function edit($id = '')
 	{
 		$Data 			= $this->db->get_where('procedures', ['id' => $id])->row();
-		$Data_detail 	= $this->db->get_where('procedure_details', ['procedure_id' => $id, 'status' => '1'])->result();
+		if ($Data) {
+			$Data_detail 	= $this->db->get_where('procedure_details', ['procedure_id' => $id, 'status' => '1'])->result();
 
-		$this->template->set([
-			'title' 	=> 'Edit Procedures',
-			'data' 		=> $Data,
-			'detail' 	=> $Data_detail,
-		]);
+			$this->template->set([
+				'title' 	=> 'Edit Procedures',
+				'data' 		=> $Data,
+				'detail' 	=> $Data_detail,
+			]);
 
-		$this->template->render('edit');
+			$this->template->render('edit');
+		} else {
+			$data = [
+				'heading' => 'Error!',
+				'message' => 'Data not found..'
+			];
+			$this->template->render('../views/errors/html/error_404_custome', $data);
+		}
 	}
 
 	public function view($id = '')
 	{
-		$Data 			= $this->db->get_where('procedures', ['id' => $id])->row();
-		$Data_detail 		= $this->db->get_where('procedures', ['id' => $id])->row();
-
-		$this->template->set([
-			'title' => 'Add Procedures',
-			'data' => $Data,
-		]);
-
-		$this->template->render('add');
+		$Data 				= $this->db->get_where('procedures', ['id' => $id, 'status' => '1'])->row();
+		if ($Data) {
+			$Data_detail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id])->result();
+			$this->template->set([
+				'title' => 'Procedures',
+				'data' => $Data,
+				'detail' => $Data_detail,
+			]);
+			$this->template->render('view');
+		} else {
+			$data = [
+				'heading' => 'Error!',
+				'message' => 'Data not found..'
+			];
+			$this->template->render('../views/errors/html/error_404_custome', $data);
+		}
 	}
 
 	public function save()
 	{
-		$Data 		= $this->input->post();
+		$Data 			= $this->input->post();
 		$Data_flow 		= $this->input->post('flow');
 
 		$this->db->trans_begin();
 		if ($Data) {
 			if (isset($_FILES)) {
 				$images = $this->upload_images();
-
-
 				($images['image1']) ? $Data['image_flow_1'] = $images['image1'] : '';
 				($images['image2']) ? $Data['image_flow_2'] = $images['image2'] : '';
 				($images['image3']) ? $Data['image_flow_3'] = $images['image3'] : '';
@@ -136,6 +149,32 @@ class Procedures extends Admin_Controller
 			);
 		}
 
+		echo json_encode($Return);
+	}
+
+	function delete_procedure($id)
+	{
+		$this->db->trans_begin();
+		if (($id)) {
+			$data['deleted_by'] = $this->auth->user_id();
+			$data['deleted_at'] = date('Y-m-d H:i:s');
+			$data['status'] = '0';
+			$this->db->update('procedures', $data, ['id' => $id]);
+		}
+
+		if ($this->db->trans_status() === FALSE) {
+			$this->db->trans_rollback();
+			$Return		= array(
+				'status'		=> 0,
+				'msg'			=> 'Data Procedure failed to save. Please try again.',
+			);
+		} else {
+			$this->db->trans_commit();
+			$Return		= array(
+				'status'		=> 1,
+				'msg'			=> 'Data Procedure successfully saved..',
+			);
+		}
 		echo json_encode($Return);
 	}
 

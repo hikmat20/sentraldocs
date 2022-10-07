@@ -67,6 +67,27 @@
 	</div>
 </div>
 
+<div class="modal fade" id="modalView" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl modal-dialog-centered">
+		<div class="modal-content">
+			<form class="form-horiontal" id="form-input">
+				<div class="modal-header">
+					<h5 class="modal-title" id="staticBackdropLabel">View Procedure</h5>
+					<span type="button" onclick="$('#name').val('')" class="btn-close" data-dismiss="modal" aria-label="Close">
+						<div class="fa fa-times"></div>
+					</span>
+				</div>
+				<div class="modal-body">
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal" onclick="$('#name').val('')"><i class="fa fa-times"></i>Close</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
 <script>
 	$(document).ready(function() {
 		$('#example1').DataTable({
@@ -188,73 +209,10 @@
 			$.ajax({
 				url: siteurl + active_controller + 'view/' + id,
 				type: 'GET',
-				dataType: 'JSON',
 				success: function(result) {
 					if (result) {
-						let html = `
-						<div class="form-group">
-							<label class="font-weight-bold"><strong>NAMA PROSES</strong></label>
-							<div class="">
-							` + result.name + `
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="font-weight-bold"><strong>OBJEDTIF PROSES</strong></label>
-							<div class="">
-								` + result.object + `
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="font-weight-bold"><strong>DEFINISI</strong></label>
-							<div class="">
-								` + result.define + `
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="font-weight-bold"><strong>PERFORMA INDIKATOR</strong></label>
-							<div class="">
-								` + result.performance + `
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="font-weight-bold"><strong>RUANG LINGKUP</strong></label>
-							<div class="">
-								` + result.scope + `
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="" class="font-weight-bold"><strong>SIPOCOR</strong></label>
-							<div class="">
-								` + result.sipocor + `
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="font-weight-bold"><strong>NOMOR</strong></label>
-							<div class="">
-								` + result.number + `
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="font-weight-bold"><strong>PIC</strong></label>
-							<div class="">
-								` + result.pic + `
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="description" class="font-weight-bold"><strong>DESKRIPSI</strong></label>
-							<div class="">
-								` + result.description + `
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="font-weight-bold"><strong>DOKUMEN TERKAIT</strong></label>
-							<div class="">
-								` + result.relate_doc + `
-							</div>
-						</div>
-						`;
-						$('.modal-body').html(html);
-						$('#modalForm').modal('show')
+						$('#modalView').find('.modal-body').html(result);
+						$('#modalView').modal('show')
 					} else {
 						Swal.fire('Warning', 'Data not valid. Please try again!', 'warning', 3000)
 					}
@@ -274,11 +232,11 @@
 				icon: 'question',
 				showCancelButton: true,
 				confirmButtonColor: '#DD6B55',
-				confirmButtonText: 'Yes, Delete <i class="fa fa-trash"></i>',
+				confirmButtonText: 'Yes, Delete <i class="fa fa-trash text-white"></i>',
 			}).then((value) => {
 				if (value.isConfirmed) {
 					$.ajax({
-						url: siteurl + active_controller + 'delete/' + id,
+						url: siteurl + active_controller + 'delete_procedure/' + id,
 						type: 'GET',
 						dataType: 'JSON',
 						success: function(result) {

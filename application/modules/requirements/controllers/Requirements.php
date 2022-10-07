@@ -41,21 +41,42 @@ class Requirements extends Admin_Controller
 
 	public function edit($id = '')
 	{
-		$Data 		= $this->db->get_where('requirements', ['id' => $id])->row();
-		$Data_list 	= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result();
+		$Data 		= $this->db->get_where('requirements', ['id' => $id, 'status' => '1'])->row();
+		if ($Data) {
+			$Data_list 	= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result();
 
-		$this->template->set([
-			'Data' => $Data,
-			'Data_list' => $Data_list,
-		]);
+			$this->template->set([
+				'Data' => $Data,
+				'Data_list' => $Data_list,
+			]);
 
-		$this->template->render('edit');
+			$this->template->render('edit');
+		} else {
+			$data = [
+				'heading' => 'Error!',
+				'message' => 'Data not found..'
+			];
+			$this->template->render('../views/errors/html/error_404_custome', $data);
+		}
 	}
 
 	public function edit_detail($id = '')
 	{
 		$Data_list 	= $this->db->get_where('requirement_details', ['id' => $id])->row();
 		echo  json_encode($Data_list);
+	}
+
+	public function view($id = '')
+	{
+		$Data 	= $this->db->get_where('requirements', ['id' => $id, 'status' => '1'])->row();
+		$Data_list 	= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result();
+
+		$this->template->set([
+			'Data' => $Data,
+			'List' => $Data_list
+		]);
+
+		$this->template->render('view');
 	}
 
 	public function view_detail($id = '')

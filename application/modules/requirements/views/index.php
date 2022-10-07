@@ -50,6 +50,22 @@
 		</div>
 	</div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="modalView" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="staticBackdropLabel">View Standard</h5>
+				<span class="close" data-dismiss="modal" aria-label="Close"></span>
+			</div>
+			<div class="modal-body">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 <script>
 	$(document).ready(function() {
@@ -60,224 +76,37 @@
 			ordering: false,
 			// info: false
 		});
-	})
 
-	function new_folder() {
-		Swal.fire({
-			title: 'Create Folder',
-			html: `<input id='folder_name' required class='form-control ' name='new-folder' placeholder='New Folder'>
-			<div id="feedback" class="invalid-feedback d-none">Mohon mengisi nama folder terlebih dahulu.</div>
-			<style>
-			.swal2-content{
-				text-align:left;
-			}
-			</style>`,
-			showCancelButton: true,
-			confirmButtonText: 'Save',
-			showLoaderOnConfirm: true,
-			allowOutsideClick: false,
-			preConfirm: (create) => {
-				let folder_name = $('#folder_name').val()
-				if (folder_name == '') {
-					$('#folder_name').addClass('is-invalid');
-					$('#feedback').removeClass('d-none');
-					return false;
-				} else {
-					console.log(folder_name);
-					return $.ajax({
-						url: base_url + active_controller + 'add',
-						type: 'POST',
-						dataType: 'JSON',
-						data: {
-							folder_name
-						},
-						success: function(res) {
-							console.log(res)
-							if (res.status == '1') {
-								Swal.fire({
-									title: 'Folder baru berhasil dibuat!',
-									icon: 'success',
-									timer: 1500
-								}).then(function() {
-									location.reload()
-								})
-							} else {
-								Swal.fire({
-									title: 'Gagal!',
-									icon: 'warning',
-									text: res.pesan,
-									timer: 1500
-								})
-							}
-						},
-						error: function(res) {
-							Swal.fire({
-								title: 'Error!',
-								icon: 'error',
-								text: res.pesan,
-								timer: 3000
-							})
-						}
-					})
-				}
-			}
-
-		})
-	}
-
-	function rename_folder() {
-		let id = $('#btn-rename').data('id');
-		let folder_name = $('#btn-rename').data('name');
-		Swal.fire({
-			title: 'Rename Folder',
-			html: `<input id='folder_name' required class='form-control ' name='rename-folder' placeholder='New Folder' value='` + folder_name + `'>
-			<div id="feedback" class="invalid-feedback d-none">Mohon mengisi nama folder terlebih dahulu.</div>
-			<style>
-			.swal2-content{
-				text-align:left;
-			}
-			</style>`,
-			showCancelButton: true,
-			confirmButtonText: 'Save',
-			showLoaderOnConfirm: true,
-			allowOutsideClick: false,
-			preConfirm: (create) => {
-				let folder_name = $('#folder_name').val()
-				if (folder_name == '') {
-					$('#folder_name').addClass('is-invalid');
-					$('#feedback').removeClass('d-none');
-					return false;
-				} else {
-					console.log(folder_name);
-					return $.ajax({
-						url: base_url + active_controller + 'rename_folder',
-						type: 'POST',
-						dataType: 'JSON',
-						data: {
-							id,
-							folder_name
-						},
-						success: function(res) {
-							console.log(res)
-							if (res.status == '1') {
-								Swal.fire({
-									title: res.msg,
-									icon: 'success',
-									timer: 1500
-								}).then(function() {
-									location.reload()
-								})
-							} else {
-								Swal.fire({
-									title: 'Gagal!',
-									icon: 'warning',
-									text: res.msg,
-									timer: 1500
-								})
-							}
-						},
-						error: function(res) {
-							Swal.fire({
-								title: 'Error!',
-								icon: 'error',
-								text: res.msg,
-								timer: 3000
-							})
-						}
-					})
-				}
-			}
-
-		})
-	}
-
-	$("input:checkbox").on('click', function() {
-		// in the handler, 'this' refers to the box clicked on
-		var $box = $(this);
-		var group = "input:checkbox[name='" + $box.attr("name") + "']";
-		$(group).parents('label').removeClass('btn-bg-secondary');
-		if ($box.is(":checked")) {
-			$(group).prop("checked", false);
-			$box.prop("checked", true);
-			$box.parents('label').addClass('btn-bg-secondary');
-			$('#btn-rename').attr('data-id', $(this).data('id'))
-			$('#btn-rename').attr('data-name', $(this).data('name'))
-			$('#btn-rename').prop('disabled', false)
-			$('#btn-delete').attr('data-id', $(this).data('id'))
-			$('#btn-delete').prop('disabled', false)
-		} else {
-			$box.prop("checked", false);
-			$('#btn-rename').attr('data-id', '')
-			$('#btn-rename').attr('data-name', '')
-			$('#btn-rename').prop('disabled', true)
-			$('#btn-delete').attr('data-id', '')
-			$('#btn-delete').prop('disabled', true)
-		}
-	});
-
-	function delete_folder() {
-		let id = $('#btn-delete').data('id');
-		// alert(id)
-		console.log(id);
-		Swal.fire({
-			title: "Are you sure?",
-			text: "You will not be able to process again this data!",
-			icon: "warning",
-			showCancelButton: true,
-			confirmButtonText: "Yes, Delete!",
-			cancelButtonText: "No",
-		}).then((value) => {
-			if (value.isConfirmed) {
-				loading_spinner();
+		$(document).on('click', '.view', function() {
+			let id = $(this).data('id')
+			if (id) {
 				$.ajax({
-					url: base_url + active_controller + 'delete_folder',
-					type: 'POST',
-					dataType: 'JSON',
-					data: {
-						id
-					},
-					success: function(result) {
-						if (result.status == 1) {
-							Swal.fire({
-								title: "Success!",
-								text: result.msg,
-								icon: "success",
-								timer: 1500
-							}).then(() => {
-								location.reload();
-							})
+					url: base_url + active_controller + 'view/' + id,
+					type: 'GET',
+					success: function(res) {
+						if (res) {
+							$('.modal-body').html(res)
+							$('#modalView').modal('show')
 						} else {
 							Swal.fire({
-								title: "Gagal!",
-								text: result.msg,
-								icon: "warning",
+								title: 'Warinng!',
+								icon: 'warning',
+								text: 'Data not valid, please try again.',
 								timer: 3000
 							})
 						}
 					},
-					error: function(result) {
+					error: function(res) {
 						Swal.fire({
-							title: "Error",
-							text: "Server Timeout!",
-							icon: "error",
+							title: 'Error!',
+							icon: 'error',
+							text: 'Server timeout, error..',
 							timer: 3000
 						})
 					}
 				})
 			}
-
 		})
 
-	}
-
-	$(document).on('blur', 'input:checkbox', function() {
-		var group = "input:checkbox";
-		$(group).parents('label').removeClass('btn-bg-secondary');
-		$(group).prop("checked", false);
-		$('#btn-rename').attr('data-id', '')
-		$('#btn-rename').attr('data-name', '')
-		$('#btn-rename').prop('disabled', true)
-		$('#btn-delete').attr('data-id', '')
-		$('#btn-delete').prop('disabled', true)
-	});
+	})
 </script>
