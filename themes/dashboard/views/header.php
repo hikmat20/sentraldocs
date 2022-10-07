@@ -36,7 +36,94 @@
       border-width: .8em;
       border-color: #704dff #704dff #704dff #bbabff;
     }
+
+    .box {
+      position: relative;
+      background: #ffffff;
+      width: 100%;
+    }
+
+    .box-header {
+      color: #444;
+      display: block;
+      padding: 10px;
+      position: relative;
+      border-bottom: 1px solid #f4f4f4;
+      margin-bottom: 10px;
+    }
+
+    .box-tools {
+      position: absolute;
+      right: 10px;
+      top: 5px;
+    }
+
+    .dropzone-wrapper {
+      border: 2px dashed #91b0b3;
+      color: #92b0b3;
+      position: relative;
+      height: 150px;
+      border-radius: 10px;
+      transition: .5s ease;
+      overflow: hidden;
+    }
+
+    .dropzone-desc {
+      margin: 0 auto;
+      text-align: center;
+      font-size: 12px;
+      overflow: hidden;
+    }
+
+    .dropzone-desc p {
+      padding: 0 10px;
+    }
+
+    .dropzone,
+    .dropzone:focus {
+      position: absolute;
+      outline: none !important;
+      width: 100%;
+      height: 150px;
+      cursor: pointer;
+      opacity: 0;
+    }
+
+    .dropzone-wrapper:hover,
+    .dropzone-wrapper.dragover {
+      background: #ecf0f5;
+    }
+
+    .middle {
+      transition: .5s ease;
+      opacity: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: #3f3f3fa3;
+    }
+
+
+
+    .dropzone-wrapper:hover .middle {
+      opacity: 1;
+    }
+
+    .dropzone-wrapper:hover .dropzone-wrapper {
+      background-color: #444;
+    }
+
+    .preview-zone {
+      text-align: center;
+    }
+
+    .preview-zone .box {
+      box-shadow: none;
+      border-radius: 0;
+      margin-bottom: 0;
+    }
   </style>
+
 </head>
 <!-- 0c18a9 -->
 

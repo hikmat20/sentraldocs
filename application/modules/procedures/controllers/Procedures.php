@@ -76,9 +76,22 @@ class Procedures extends Admin_Controller
 		$Data 		= $this->input->post();
 		$Data_flow 		= $this->input->post('flow');
 
-
 		$this->db->trans_begin();
 		if ($Data) {
+			if (isset($_FILES)) {
+				$images = $this->upload_images();
+
+
+				($images['image1']) ? $Data['image_flow_1'] = $images['image1'] : '';
+				($images['image2']) ? $Data['image_flow_2'] = $images['image2'] : '';
+				($images['image3']) ? $Data['image_flow_3'] = $images['image3'] : '';
+			}
+
+
+			// isset($Data['delete_image_1']) ? $Data['image_flow_1'] = null : null;
+			// isset($Data['delete_image_2']) ? $Data['image_flow_2'] = null : null;
+			// isset($Data['delete_image_3']) ? $Data['image_flow_3'] = null : null;
+
 			$Data['company_id'] = $this->company;
 			unset($Data['flow']);
 			if (isset($Data['id'])) {
@@ -149,7 +162,73 @@ class Procedures extends Admin_Controller
 				'msg'			=> 'Data Procedure successfully saved..',
 			);
 		}
+		echo json_encode($Return);
+	}
+
+	function delete_img($id, $dataImg)
+	{
+		$this->db->trans_begin();
+		if (($id)) {
+			$data['modified_by'] = $this->auth->user_id();
+			$data['modified_at'] = date('Y-m-d H:i:s');
+			$data["$dataImg"] = null;
+			$this->db->update('procedures', $data, ['id' => $id]);
+		}
+
+		if ($this->db->trans_status() === FALSE) {
+			$this->db->trans_rollback();
+			$Return		= array(
+				'status'		=> 0,
+				'msg'			=> 'Failed to delete image.. Please try again.',
+			);
+		} else {
+			$this->db->trans_commit();
+			$Return		= array(
+				'status'		=> 1,
+				'msg'			=> 'Successfully deleted image..',
+			);
+		}
 
 		echo json_encode($Return);
+	}
+
+	public function upload_images()
+	{
+		$this->load->library('upload');
+		$dataInfo = array();
+		$files = $_FILES;
+
+		$cpt = count($_FILES['img_flow']['name']);
+		for ($i = 0; $i < $cpt; $i++) {
+			$_FILES['img_flow']['name'] = $files['img_flow']['name'][$i];
+			$_FILES['img_flow']['type'] = $files['img_flow']['type'][$i];
+			$_FILES['img_flow']['tmp_name'] = $files['img_flow']['tmp_name'][$i];
+			$_FILES['img_flow']['error'] = $files['img_flow']['error'][$i];
+			$_FILES['img_flow']['size'] = $files['img_flow']['size'][$i];
+
+			$this->upload->initialize($this->set_upload_options());
+			$this->upload->do_upload('img_flow');
+			$dataInfo[] = $this->upload->data();
+		}
+
+
+		return array(
+			'image1' => $dataInfo[0]['file_name'],
+			'image2' => $dataInfo[1]['file_name'],
+			'image3' => $dataInfo[2]['file_name'],
+		);
+	}
+
+	private function set_upload_options()
+	{
+		//upload an image options
+		$config = array();
+		$config['upload_path'] = './image_flow/';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size']      = '0';
+		$config['overwrite']     = TRUE;
+		$config['encrypt_name']  = TRUE;
+
+		return $config;
 	}
 }

@@ -58,7 +58,7 @@
 				</div>
 				<!-- Modal -->
 				<div class="modal fade" id="modelId" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+					<div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
 								<h5 class="modal-title">Modal title</h5>
@@ -72,19 +72,21 @@
 										<label for="chapter" class="col-form-label font-weight-bold">Chapter</label>
 										<input type="text" name="list[chapter]" class="form-control" id="chapter" placeholder="Chapter" />
 									</div>
+
 									<div class="mb-5">
 										<label for="chapter" class="font-weight-bold">Description in Indonesian</label>
-										<textarea name="list[desc_indo]" class="form-control tinymce" id="desc_indo" rows="10" placeholder="Description"></textarea>
+										<textarea name="list[desc_indo]" class="form-control textarea" id="desc_indo" rows="10" placeholder="Description"></textarea>
 									</div>
+
 									<div class="mb-5">
 										<label for="chapter" class="font-weight-bold">Description in English</label>
-										<textarea name="list[desc_eng]" class="form-control tinymce" id="desc_eng" rows="10" placeholder="Description"></textarea>
+										<textarea name="list[desc_eng]" class="form-control textarea" id="desc_eng" rows="10" placeholder="Description"></textarea>
 									</div>
 
 								</div>
 							</div>
 							<div class="modal-footer justify-content-between align-items-center">
-								<button type="submit" class="btn btn-primary w-25" id="save_chapter"><i class="fa fa-save"></i>Save</button>
+								<button type="submit" class="btn btn-primary w-100px" id="save_chapter"><i class="fa fa-save"></i>Save</button>
 								<button type="button" class="btn btn-danger" onclick="tinymce.remove()" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
 							</div>
 						</div>
@@ -97,36 +99,33 @@
 
 <script>
 	$(document).ready(function() {
-		tinymce.init({
-			selector: 'textarea', // change this value according to the HTML
-			resize: false,
-			autosave_ask_before_unload: false,
-			powerpaste_allow_local_images: true,
-			plugins: [
-				'a11ychecker', 'advcode', 'advlist', 'anchor', 'autolink', 'codesample', 'fullscreen', 'help',
-				'image', 'editimage', 'tinydrive', 'lists', 'link', 'media', 'powerpaste', 'preview',
-				'searchreplace', 'template', 'tinymcespellchecker', 'visualblocks', 'wordcount'
-			],
-			templates: [{
-					title: 'Non-editable Example',
-					description: 'Non-editable example.',
-				},
-				{
-					title: 'Simple Table Example',
-					description: 'Simple Table example.',
-				}
-			],
-			toolbar: 'insertfile a11ycheck undo redo | bold italic | forecolor backcolor | template codesample | alignleft aligncenter alignright alignjustify | bullist numlist | link image',
-			spellchecker_dialog: true,
-			spellchecker_ignore_list: ['Ephox', 'Moxiecode'],
-			tinydrive_demo_files_url: '../_images/tiny-drive-demo/demo_files.json',
-			tinydrive_token_provider: (success, failure) => {
-				success({
-					token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2huZG9lIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.Ks_BdfH4CWilyzLNk8S2gDARFhuxIauLa8PwhdEQhEo'
-				});
-			},
-			content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+		function handlePromise(promiseList) {
+			return promiseList.map(promise =>
+				promise.then((res) => ({
+					status: 'ok',
+					res
+				}), (err) => ({
+					status: 'not ok',
+					err
+				}))
+			)
+		}
+		Promise.allSettled = function(promiseList) {
+			return Promise.all(handlePromise(promiseList))
+		}
 
+		tinymce.init({
+			selector: 'textarea.textarea',
+			height: 500,
+			resize: true,
+			plugins: 'preview importcss  searchreplace autolink autosave save ' +
+				'directionality visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
+			toolbar: 'undo redo | blocks | ' +
+				'bold italic backcolor forecolor | alignleft aligncenter ' +
+				'alignright alignjustify | template codesample bullist numlist outdent indent | link image ' +
+				'removeformat | help',
+			content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+			// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
 		});
 
 		$(document).on('click', '#add_pasal', function() {

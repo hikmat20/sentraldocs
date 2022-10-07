@@ -44,7 +44,7 @@
 									<th width="40">No</th>
 									<th width="150">Pasal</th>
 									<th width="450">Desc. Indonesian</th>
-									<th width="">Desc. English</th>
+									<th width="450">Desc. English</th>
 									<th width="150">Action</th>
 								</tr>
 							</thead>
@@ -63,10 +63,11 @@
 												<?= $dtl->chapter; ?>
 											</td>
 											<td class="">
-												<?= limit_text(strip_tags($dtl->desc_indo), 200) . ' <a href="#read" class="link view" data-id="' . $dtl->id . '">[read]</a>'; ?>
+												<?= ($dtl->desc_indo) ? limit_text(strip_tags($dtl->desc_indo), 200) . ' <a href="#read" class="link view" data-id="' . $dtl->id . '">[read]</a>' : ''; ?>
 											</td>
 											<td class="">
-												<?= limit_text(strip_tags($dtl->desc_eng), 200) . ' <a href="#read" class="link view" data-id="' . $dtl->id . '">[read]</a>'; ?>
+
+												<?= ($dtl->desc_eng) ? limit_text(strip_tags($dtl->desc_eng), 200) . ' <a href="#read" class="link view" data-id="' . $dtl->id . '">[read]</a>' : ''; ?>
 											</td>
 											<td class="text-center" style="vertical-align: middle;">
 												<button type="button" class="btn btn-sm btn-info rounded-circle btn-icon view" data-id="<?= $dtl->id; ?>"><i class="fa fa-file-alt"></i></button>
@@ -97,7 +98,7 @@
 								</div>
 							</div>
 							<div class="modal-footer justify-content-between align-items-center">
-								<button type="submit" class="btn btn-primary w-25" id="save_chapter"><i class="fa fa-save"></i>Save</button>
+								<button type="submit" class="btn btn-primary w-100px" id="save_chapter"><i class="fa fa-save"></i>Save</button>
 								<button type="button" class="btn btn-danger" onclick="tinymce.remove()" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
 							</div>
 						</div>
@@ -138,46 +139,43 @@
 			</div>
 			<div class="mb-5">
 				<label for="chapter" class="font-weight-bold">Description in Indonesian</label>
-				<textarea name="list[desc_indo]" class="form-control tinymce" id="desc_indo" rows="10" placeholder="Description"></textarea>
+				<textarea name="list[desc_indo]" class="form-control textarea" id="desc_indo" rows="10" placeholder="Description"></textarea>
 			</div>
 			<div class="mb-5">
 				<label for="chapter" class="font-weight-bold">Description in English</label>
-				<textarea name="list[desc_eng]" class="form-control tinymce" id="desc_eng" rows="10" placeholder="Description"></textarea>
+				<textarea name="list[desc_eng]" class="form-control textarea" id="desc_eng" rows="10" placeholder="Description"></textarea>
 			</div>`;
 		$('#modal_content').html(html)
 		$('.modal-title').html('Add Detail')
 		$('#modelId').modal('show')
 
-		tinymce.init({
-			selector: 'textarea', // change this value according to the HTML
-			resize: false,
-			autosave_ask_before_unload: false,
-			powerpaste_allow_local_images: true,
-			plugins: [
-				'a11ychecker', 'advcode', 'advlist', 'anchor', 'autolink', 'codesample', 'fullscreen', 'help',
-				'image', 'editimage', 'tinydrive', 'lists', 'link', 'media', 'powerpaste', 'preview',
-				'searchreplace', 'template', 'tinymcespellchecker', 'visualblocks', 'wordcount'
-			],
-			templates: [{
-					title: 'Non-editable Example',
-					description: 'Non-editable example.',
-				},
-				{
-					title: 'Simple Table Example',
-					description: 'Simple Table example.',
-				}
-			],
-			toolbar: 'insertfile a11ycheck undo redo | bold italic | forecolor backcolor | template codesample | alignleft aligncenter alignright alignjustify | bullist numlist | link image',
-			spellchecker_dialog: true,
-			spellchecker_ignore_list: ['Ephox', 'Moxiecode'],
-			tinydrive_demo_files_url: '../_images/tiny-drive-demo/demo_files.json',
-			tinydrive_token_provider: (success, failure) => {
-				success({
-					token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2huZG9lIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.Ks_BdfH4CWilyzLNk8S2gDARFhuxIauLa8PwhdEQhEo'
-				});
-			},
-			content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+		function handlePromise(promiseList) {
+			return promiseList.map(promise =>
+				promise.then((res) => ({
+					status: 'ok',
+					res
+				}), (err) => ({
+					status: 'not ok',
+					err
+				}))
+			)
+		}
+		Promise.allSettled = function(promiseList) {
+			return Promise.all(handlePromise(promiseList))
+		}
 
+		tinymce.init({
+			selector: 'textarea.textarea',
+			height: 500,
+			resize: true,
+			plugins: 'preview importcss searchreplace autolink autosave save ' +
+				'directionality visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
+			toolbar: 'undo redo | blocks | ' +
+				'bold italic backcolor forecolor | alignleft aligncenter ' +
+				'alignright alignjustify | template codesample bullist numlist outdent indent | link image ' +
+				'removeformat | help',
+			content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+			// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
 		});
 
 	})
@@ -200,46 +198,43 @@
 						</div>
 						<div class="mb-5">
 							<label for="chapter" class="font-weight-bold">Description in Indonesian</label>
-							<textarea name="list[desc_indo]" class="form-control tinymce" id="desc_indo" rows="10" placeholder="Description">` + result.desc_indo + `</textarea>
+							<textarea name="list[desc_indo]" class="form-control textarea" id="desc_indo" rows="10" placeholder="Description">` + result.desc_indo + `</textarea>
 						</div>
 						<div class="mb-5">
 							<label for="chapter" class="font-weight-bold">Description in English</label>
-							<textarea name="list[desc_eng]" class="form-control tinymce" id="desc_eng" rows="10" placeholder="Description">` + result.desc_eng + `</textarea>
+							<textarea name="list[desc_eng]" class="form-control textarea" id="desc_eng" rows="10" placeholder="Description">` + result.desc_eng + `</textarea>
 						</div>
 						`;
 					$('#modal_content').html(html)
 					$('#modelId').modal('show')
 
-					tinymce.init({
-						selector: 'textarea', // change this value according to the HTML
-						resize: false,
-						autosave_ask_before_unload: false,
-						powerpaste_allow_local_images: true,
-						plugins: [
-							'a11ychecker', 'advcode', 'advlist', 'anchor', 'autolink', 'codesample', 'fullscreen', 'help',
-							'image', 'editimage', 'tinydrive', 'lists', 'link', 'media', 'powerpaste', 'preview',
-							'searchreplace', 'template', 'tinymcespellchecker', 'visualblocks', 'wordcount'
-						],
-						templates: [{
-								title: 'Non-editable Example',
-								description: 'Non-editable example.',
-							},
-							{
-								title: 'Simple Table Example',
-								description: 'Simple Table example.',
-							}
-						],
-						toolbar: 'insertfile a11ycheck undo redo | bold italic | forecolor backcolor | template codesample | alignleft aligncenter alignright alignjustify | bullist numlist | link image',
-						spellchecker_dialog: true,
-						spellchecker_ignore_list: ['Ephox', 'Moxiecode'],
-						tinydrive_demo_files_url: '../_images/tiny-drive-demo/demo_files.json',
-						tinydrive_token_provider: (success, failure) => {
-							success({
-								token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2huZG9lIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.Ks_BdfH4CWilyzLNk8S2gDARFhuxIauLa8PwhdEQhEo'
-							});
-						},
-						content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+					function handlePromise(promiseList) {
+						return promiseList.map(promise =>
+							promise.then((res) => ({
+								status: 'ok',
+								res
+							}), (err) => ({
+								status: 'not ok',
+								err
+							}))
+						)
+					}
+					Promise.allSettled = function(promiseList) {
+						return Promise.all(handlePromise(promiseList))
+					}
 
+					tinymce.init({
+						selector: 'textarea.textarea',
+						height: 500,
+						resize: true,
+						plugins: 'preview importcss  searchreplace autolink autosave save ' +
+							'directionality visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
+						toolbar: 'undo redo | blocks | ' +
+							'bold italic backcolor forecolor | alignleft aligncenter ' +
+							'alignright alignjustify | template codesample bullist numlist outdent indent | link image ' +
+							'removeformat | help',
+						content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+						// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
 					});
 
 				},
@@ -274,11 +269,11 @@
 						</ul>
 
 						<!-- Tab panes -->
-						<div class="tab-content">
-							<div class="tab-pane active pt-4 pb-4" id="indo" role="tabpanel" aria-labelledby="indo-tab">
+						<div class="tab-content mt-3">
+							<div class="tab-pane active pt-4 pb-4 border px-4 rounded-lg" id="indo" role="tabpanel" aria-labelledby="indo-tab">
 							` + result.desc_indo + `
 							</div>
-							<div class="tab-pane pt-4 pb-4" id="eng" role="tabpanel" aria-labelledby="eng-tab">
+							<div class="tab-pane pt-4 pb-4 border px-4 rounded-lg" id="eng" role="tabpanel" aria-labelledby="eng-tab">
 							` + result.desc_eng + `
 							</div>
 						</div>
@@ -343,6 +338,43 @@
 						icon: 'error',
 						text: 'Server timeout, becuase error!',
 						timer: 4000
+					})
+				}
+			})
+		})
+
+		$(document).on('click', '.delete', function() {
+			let id = $(this).data('id')
+			Swal.fire({
+				title: 'Are you sure to delete this data?',
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonColor: '#DD6B55',
+				confirmButtonText: 'Yes, Delete <i class="fa fa-trash text-white"></i>',
+			}).then((value) => {
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'delete_pasal/' + id,
+						type: 'GET',
+						dataType: 'JSON',
+						success: function(result) {
+							if (result.status == '1') {
+								Swal.fire({
+									title: 'Success!!',
+									text: result.msg,
+									icon: 'success',
+									timer: 1500
+								}).then(() => {
+									location.reload()
+								})
+
+							} else {
+								Swal.fire('Warning', "Can't delete data. Please try again!", 'warning', 2000)
+							}
+						},
+						error: function() {
+							Swal.fire('Error!', 'Server timeout. Please try again!', 'error', 3000)
+						}
 					})
 				}
 			})

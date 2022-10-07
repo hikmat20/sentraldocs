@@ -123,27 +123,27 @@ class Requirements extends Admin_Controller
 		echo json_encode($Return);
 	}
 
-	function delete_detail($id)
+	public function delete_pasal($id)
 	{
-		$id_master = $this->db->query("SELECT id_master FROM gambar WHERE id='$id'")->row();
-		$idmaster  = $id_master->id_master;
-		// print_r($idmaster);
-		// exit;
-		$this->db->where('id', $id);
-		$query = $this->db->get('gambar');
-		$path = $query->row();
-		unlink("./assets/files/$path->nama_file");
-		$this->db->delete("gambar", array('id' => $id));
-		if ($this->db->affected_rows() > 0) {
-			$this->session->set_flashdata("alert_data", "<div class=\"alert alert-success\" id=\"flash-message\">Data has been successfully deleted...........!!</div>");
-			$keterangan = 'Berhasil Hapus Dokumen';
-			$status = 1;
-			$nm_hak_akses = $this->addPermission;
-			$kode_universal = $id;
-			$jumlah = 1;
-			$sql = $this->db->last_query();
-			simpan_aktifitas($nm_hak_akses, $kode_universal, $keterangan, $jumlah, $sql, $status);
-			redirect(site_url('Folders/detail?id_master=' . $idmaster));
+		$this->db->trans_begin();
+		if (($id)) {
+			$this->db->delete('requirement_details', ['id' => $id]);
 		}
+
+		if ($this->db->trans_status() === FALSE) {
+			$this->db->trans_rollback();
+			$Return		= array(
+				'status'		=> 0,
+				'msg'			=> 'Failed to delete data.. Please try again.',
+			);
+		} else {
+			$this->db->trans_commit();
+			$Return		= array(
+				'status'		=> 1,
+				'msg'			=> 'Successfully deleted data..',
+			);
+		}
+
+		echo json_encode($Return);
 	}
 }
