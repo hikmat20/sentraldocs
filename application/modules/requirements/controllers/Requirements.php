@@ -123,6 +123,31 @@ class Requirements extends Admin_Controller
 		echo json_encode($Return);
 	}
 
+	public function delete($id)
+	{
+		$this->db->trans_begin();
+		if (($id)) {
+			$this->db->delete('requirements', ['id' => $id]);
+			$this->db->delete('requirement_details', ['requirement_id' => $id]);
+		}
+
+		if ($this->db->trans_status() === FALSE) {
+			$this->db->trans_rollback();
+			$Return		= array(
+				'status'		=> 0,
+				'msg'			=> 'Failed to delete data.. Please try again.',
+			);
+		} else {
+			$this->db->trans_commit();
+			$Return		= array(
+				'status'		=> 1,
+				'msg'			=> 'Successfully deleted data..',
+			);
+		}
+
+		echo json_encode($Return);
+	}
+
 	public function delete_pasal($id)
 	{
 		$this->db->trans_begin();
