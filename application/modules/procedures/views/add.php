@@ -235,6 +235,13 @@
 		$(document).on('click', '#add_flow', function() {
 			let html = `
 			<div class="form-group">
+				<label class="">Nomor</label>
+				<div class="">
+					<input type="text" name="flow[number]" id="number" class="form-control" required placeholder="Nomor" value="">
+					<small class="text-danger invalid-feedback">Nomor</small>
+				</div>
+			</div>
+			<div class="form-group">
 				<label class="">PIC/Penanggung Jawab</label>
 				<div class="">
 					<input type="text" name="flow[pic]" id="pic" class="form-control" required placeholder="PIC" aria-describedby="helpId">
