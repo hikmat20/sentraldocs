@@ -74,10 +74,23 @@
 											<div class="form-text text-muted"> Activation account</div>
 										</div>
 									</div>
+
+									<div class="form-group row">
+										<label class="col-xl-3 col-lg-3 col-form-label">Company</label>
+										<div class="col-lg-9 col-xl-9">
+											<select name="company_id" id="company_id" class="form-control required form-control-solid select2">
+												<option value=""></option>
+												<?php foreach ($companies as $com) : ?>
+													<option value="<?= $com->id_perusahaan; ?>"> <span class="fw-bold"><?= strtoupper($com->inisial); ?></span> - <?= $com->nm_perusahaan; ?></option>
+												<?php endforeach; ?>
+											</select>
+										</div>
+									</div>
+
 									<div class="form-group row">
 										<label class="col-xl-3 col-lg-3 col-form-label">Level</label>
 										<div class="col-lg-9 col-xl-9">
-											<select name="group_id" id="group_id" class="form-control required form-control-solid select2">
+											<select name="group_id" id="group_id" disabled class="form-control required form-control-solid select2">
 												<option value=""></option>
 												<?php foreach ($levels as $level) : ?>
 													<option value="<?= $level->id_group; ?>" <?= (isset($user_group) && $user_group->id_group == $level->id_group) ? 'selected' : ""; ?>><?= $level->nm_group; ?></option>
@@ -86,15 +99,7 @@
 											<span class="form-text text-danger invalid-feedback">Level can't be empty..!</span>
 										</div>
 									</div>
-									<!-- <div class="form-group row">
-										<label class="col-xl-3 col-lg-3 col-form-label">Company</label>
-										<div class="col-lg-9 col-xl-9">
-											<select name="company_id" id="company_id" class="form-control form-control-solid select2">
-												<option value=""></option>
-											</select>
-										</div>
-									</div> -->
-									<!--end::Group-->
+
 									<div class="form-group row">
 										<label class="col-xl-3 col-lg-3 col-form-label text-left">Photo</label>
 										<div class="col-lg-9 col-xl-9">
@@ -165,9 +170,41 @@
 		$('.select2').select2({
 			placeholder: "Choose an options",
 			width: "100%",
-			allowClear: true
+			allowClear: true,
+			tags: true,
+			// selectOnClose: true,
+
+			//Allow manually entered text in drop down.
+			createSearchChoice: function(term, data) {
+				if ($(data).filter(function() {
+						return this.text.localeCompare(term) === 0;
+					}).length === 0) {
+					return {
+						id: term,
+						text: term
+					};
+				}
+			},
+
+			escapeMarkup: function(markup) {
+				return markup;
+			},
+			// placeholder: "Search a cow/dam ID",
+			// language: {
+			// 	noResults: function() {
+			// 		return "<a href=/'http://google.com/'>Add</a>";
+			// 	}
+			// }
 
 		});
+
+		$(document).on('change', '#company_id', function() {
+			let id = $(this).select2('val')
+			if (id) {
+				alert(id)
+
+			}
+		})
 
 		$(document).on('click', '#save', function() {
 			const formdata = new FormData($('#frm_users')[0])
@@ -233,6 +270,13 @@
 			}
 		})
 	});
+
+
+
+	// $('#company_id').on('select2:selecting', function(e) {
+	// 	var data = e.params.data;
+	// 	console.log(data);
+	// });
 
 
 	function preview_image(event) {

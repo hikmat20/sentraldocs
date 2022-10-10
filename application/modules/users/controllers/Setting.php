@@ -135,6 +135,7 @@ class Setting extends Admin_Controller
         $levels = $this->db->get_where('groups', ['active' => 'Y', 'id_group !=' => '1'])->result();
         // $cabang = $this->Cabang_model->find_all();
         $this->template->set('levels', $levels);
+        $this->template->set('companies', $companies);
         $this->template->title(lang('users_new_title'));
         $this->template->render('users_form');
     }

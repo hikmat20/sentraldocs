@@ -31,7 +31,7 @@ class Procedures extends Admin_Controller
 
 	public function index()
 	{
-		$data		= $this->db->get_where('procedures', ['deleted_at' => null])->result();
+		$data		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null])->result();
 		$this->template->set('title', 'List of Procedures');
 		$this->template->set('data', $data);
 		$this->template->set('status', $this->status);
@@ -46,7 +46,7 @@ class Procedures extends Admin_Controller
 
 	public function edit($id = '')
 	{
-		$Data 			= $this->db->get_where('procedures', ['id' => $id])->row();
+		$Data 			= $this->db->get_where('procedures', ['company_id' => $this->company, 'id' => $id])->row();
 		if ($Data) {
 			$Data_detail 	= $this->db->get_where('procedure_details', ['procedure_id' => $id, 'status' => '1'])->result();
 
@@ -68,7 +68,7 @@ class Procedures extends Admin_Controller
 
 	public function view($id = '')
 	{
-		$Data 				= $this->db->get_where('procedures', ['id' => $id, 'status' => '1'])->row();
+		$Data 				= $this->db->get_where('procedures', ['id' => $id, 'company_id' => $this->company,  'status' => '1'])->row();
 		if ($Data) {
 			$Data_detail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id])->result();
 			$this->template->set([
@@ -159,7 +159,7 @@ class Procedures extends Admin_Controller
 			$data['deleted_by'] = $this->auth->user_id();
 			$data['deleted_at'] = date('Y-m-d H:i:s');
 			$data['status'] = '0';
-			$this->db->update('procedures', $data, ['id' => $id]);
+			$this->db->update('procedures', $data, ['company_id' => $this->company, 'id' => $id]);
 		}
 
 		if ($this->db->trans_status() === FALSE) {
