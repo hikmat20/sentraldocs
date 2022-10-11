@@ -171,23 +171,28 @@
 			placeholder: "Choose an options",
 			width: "100%",
 			allowClear: true,
+		});
+
+		$('#group_id').select2({
+			placeholder: "Choose an options",
+			width: "100%",
+			allowClear: true,
 			tags: true,
 			// selectOnClose: true,
 
 			//Allow manually entered text in drop down.
-			createSearchChoice: function(term, data) {
-				if ($(data).filter(function() {
-						return this.text.localeCompare(term) === 0;
-					}).length === 0) {
-					return {
-						id: term,
-						text: term
-					};
-				}
-			},
+			createTag: function(params) {
+				var term = $.trim(params.term);
 
-			escapeMarkup: function(markup) {
-				return markup;
+				if (term === '') {
+					return null;
+				}
+
+				return {
+					id: term,
+					text: term,
+					newTag: true // add additional parameters
+				}
 			},
 			// placeholder: "Search a cow/dam ID",
 			// language: {
@@ -201,8 +206,9 @@
 		$(document).on('change', '#company_id', function() {
 			let id = $(this).select2('val')
 			if (id) {
-				alert(id)
-
+				$('#group_id').prop('disabled', false);
+			} else {
+				$('#group_id').prop('disabled', true).val('').change();
 			}
 		})
 

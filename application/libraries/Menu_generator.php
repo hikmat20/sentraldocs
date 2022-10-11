@@ -319,25 +319,25 @@ class Menu_generator
 		return $merge;
 	}
 
-
 	function group_menus_access()
 	{
 		$CI 			= &get_instance();
 		$data_session	= $CI->session->userdata;
+		$company    	= $this->ci->session->company->id_perusahaan;
 		$groupID		= $data_session['User']['group_id'];
+
 
 		$ArrMenu	= array();
 		if ($groupID == '1') {
 			$Query	= "SELECT * FROM menus WHERE flag_active='1' ORDER BY parent_id,weight,id ASC";
 		} else {
-			$Query	= "SELECT menus.* FROM menus INNER JOIN group_menus ON menus.id=group_menus.menu_id WHERE menus.flag_active='1' AND group_menus.group_id='$groupID' ORDER BY menus.parent_id,menus.weight,menus.id ASC";
+			$Query	= "SELECT menus.* FROM menus INNER JOIN group_menus ON menus.id=group_menus.menu_id WHERE menus.flag_active='1' AND group_menus.group_id='$groupID' AND group_menus.company_id='$company' ORDER BY menus.parent_id,menus.weight,menus.id ASC";
 		}
 
 		$jumlah		= $CI->db->query($Query)->num_rows();
 
 		if ($jumlah > 0) {
 			$hasil		= $CI->db->query($Query)->result_array();
-
 			foreach ($hasil as $key => $val) {
 				$ArrMenu[$key]['Menu']['id']		= $val['id'];
 				$ArrMenu[$key]['Menu']['name']		= $val['name'];
@@ -347,7 +347,8 @@ class Menu_generator
 				$ArrMenu[$key]['Menu']['icon']		= $val['icon'];
 			}
 		}
-		$Menus	= rebuild_structure($ArrMenu);
+
+		$Menus	= $this->rebuild_structure($ArrMenu);
 		return $Menus;
 	}
 
@@ -387,15 +388,15 @@ class Menu_generator
 	public function show_menus_new($type = 1)
 	{
 		$html = '';
-
-
 		$group = $this->ci->session->group;
+		$company    = $this->ci->session->company->id_perusahaan;
 		$ArrMenu	= array();
+
 
 		if ($group->role == '1') {
 			$Query	= "SELECT * FROM menus WHERE `status`='1' ORDER BY parent_id,id ASC";
 		} else {
-			$Query	= "SELECT menus.* FROM menus INNER JOIN group_menus ON menus.id=group_menus.menu_id WHERE menus.status='1' AND group_menus.group_id='$group->id_group' ORDER BY menus.parent_id,menus.id ASC";
+			$Query	= "SELECT menus.* FROM menus INNER JOIN group_menus ON menus.id=group_menus.menu_id WHERE menus.status='1' AND group_menus.group_id='$group->id_group'  AND group_menus.company_id='$company' ORDER BY menus.parent_id,menus.id ASC";
 		}
 
 		$count		= $this->ci->db->query($Query)->num_rows();
@@ -439,134 +440,6 @@ class Menu_generator
 			$this->render_left_menus($Menus);
 			// return $Menus;
 		}
-
-
-
-
-
-		// if ($type == 1) {
-		// 	$menu = $this->ci->db->select("t1.*")
-		// 		->from("{$this->x}menus as t1")
-		// 		->join("{$this->x}menus as t2", "t1.id = t2.parent_id", "left")
-		// 		//->join("{$this->x}menus as t3","t2.id = t3.parent_id","left")
-		// 		->where("t1.parent_id", 0)
-		// 		->where("t1.group_menu", $type)
-		// 		->where("t1.status", 1)
-		// 		->group_by("t1.id")
-		// 		->order_by("t1.order", "ASC")
-		// 		->get()
-		// 		->result();
-		// 	$active_dash = (check_class('dashboard', TRUE)) ? 'menu-item-active' : '';
-
-		// 	$html = "<ul class='menu-nav'>
-		// 	<li class='menu-item " . $active_dash . "' aria-haspopup='true'>
-		// 		<a href='" . site_url('dashboard/') . "' class='menu-link'>
-		// 		<i class='fa fa-home mr-2 text-primary'></i>
-		// 			<h6 class='m-0'>Dashboard</h6>
-		// 		</a>
-		// 	</li>";
-
-		// 	if (is_array($menu) && count($menu)) {
-		// 		foreach ($menu as $rw) {
-		// 			$id 		= $rw->id;
-		// 			$title 		= $rw->title;
-		// 			$link 		= $rw->link;
-		// 			$icon 		= $rw->icon;
-		// 			$target 	= $rw->target;
-		// 			$submenu = $this->ci->db->select("t1.*")
-		// 				->from("{$this->x}menus as t1")
-		// 				->where("t1.parent_id", $id)
-		// 				->where("t1.group_menu", $type)
-		// 				->where("t1.status", 1);
-		// 			if (!$this->is_admin) {
-		// 				$submenu = $submenu->where_in("t1.permission_id", $auth);
-		// 			}
-		// 			$submenu = $submenu->group_by("t1.id")
-		// 				->group_by("t1.id")
-		// 				->order_by("t1.order", "ASC")
-		// 				->get()
-		// 				->result();
-		// 			//Jump to end_for point
-		// 			if (count($submenu) == 0) {
-		// 				if ($link != "#") {
-		// 					if (!in_array($rw->permission_id, $auth) && $this->is_admin == FALSE) {
-		// 						goto end_for;
-		// 					}
-		// 					$active = "";
-		// 					if (strpos($this->uri, '/' . $link . '/') !== FALSE) {
-		// 						$active = "menu-item-active";
-		// 					}
-		// 					$html .= "
-		// 					<li class='menu-item {$active}' aria-haspopup='true'>
-		// 					<a href='" . ($link == '#' ? '#' : site_url($link)) . "' " . ($target == '_blank' ? "target='_blank'" : "") . "' class='menu-link'>
-		// 					<i class='$icon text-info mr-3 my-auto'></i> 
-		// 						<span class='menu-text'><h6 class='m-0'>" . ucwords($title) . "</h6></span>
-		// 					</a>
-		// 				</li>";
-		// 				}
-		// 				goto end_for;
-		// 			}
-		// 			$active = "";
-		// 			foreach ($submenu as $sub) {
-		// 				if (strpos($this->uri, '/' . $sub->link . '/') !== FALSE) {
-		// 					$active = "menu-item-active";
-		// 					break;
-		// 				}
-		// 			}
-		// 			$isLink = ($link !== '#') ? base_url($link) : '#';
-		// 			$html .= "
-		//     			<li class='menu-item menu-item-submenu " . $active . "' aria-haspopup='true' data-menu-toggle='hover'>
-		// 				  	<a href='" . $isLink . "' class='menu-link'>
-		// 						<i class='$icon text-info mr-3 my-auto'></i>
-		//                 		<span class='menu-text'><h6 class='m-0'>" . ucwords($title) . "</h6></span>
-		// 						<i class='menu-arrow h6 my-auto menu-toggle'></i>
-		//         			</a>
-		// 					<div class='menu-submenu'>
-		// 						<i class='menu-arrow'></i>
-		// 						<ul class='menu-subnav'>";
-		// 			//Make Sub Menu
-		// 			foreach ($submenu as $sub) {
-		// 				$subid 		= $sub->id;
-		// 				$subtitle 	= $sub->title;
-		// 				$sublink 	= $sub->link;
-		// 				$subicon 	= $sub->icon;
-		// 				$subtarget 	= $sub->target;
-		// 				$subtarget = "";
-		// 				if ($subtarget == '_blank') {
-		// 					$subtarget = "target='_blank'";
-		// 				}
-
-
-		// 				//Check current link
-		// 				if (strpos($this->uri, '/' . $sublink . '/') !== FALSE) {
-		// 					$active = "menu-item-active";
-		// 				} else {
-		// 					$active = "";
-		// 				}
-		// 				$html .= "
-		// 				<li class='menu-item " . $active . "' aria-haspopup='true'>
-		// 					<a href='" . ($sublink == '#' ? '#' : site_url($sublink)) . "'" . " " . $subtarget . " class='menu-link text-dark-75'>
-		// 						<i class='my-auto mr-3 fa fa-angle-right'></i>
-		// 						 <h6 class='my-auto'>" . ucwords($subtitle) . "</h6>
-		// 					</a>
-		// 				</li>";
-		// 			}
-		// 			$html .= "
-		// 				</ul>
-		// 			</li>";
-
-		// 			//Jump Point
-		// 			end_for:;
-		// 			//END FOREACH MENU
-		// 		}
-		// 		$html .= "
-		// 			</ul>";
-		// 	}
-		// } else {
-		// 	//other menu
-		// }
-
-		// return $html;
 	}
 
 	public function render_left_menus($Menus, $dept = 0)
@@ -615,6 +488,7 @@ class Menu_generator
 		$html = '';
 		$group      = $this->ci->session->group->id_group;
 		$company    = $this->ci->session->company->id_perusahaan;
+
 		$ArrMenu    = array();
 		$Query    = "SELECT * FROM view_group_menus WHERE `company_id`='$company' and group_id='$group' ORDER BY parent_id,id ASC";
 		$count        = $this->ci->db->query($Query)->num_rows();
