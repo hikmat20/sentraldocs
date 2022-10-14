@@ -6,17 +6,16 @@
 					<h2><i class="fa fa-plus mr-2"></i><?= $title; ?></h2>
 					<a href="<?= base_url($this->uri->segment(1)); ?>" class="btn btn-danger"><i class="fa fa-reply"></i>Back</a>
 				</div>
-
 				<form id="form-chapter">
 					<div class="card-body">
 						<div class="row">
 							<div class="col-md-6">
-								<input type="hidden" name="id" value="<?= $Data->id; ?>">
-								<input type="hidden" name="standard" value="<?= $Data->requirement_id; ?>">
-								<div class="mb-3 row flex-nowrap">
+								<input type="hidden" name="standard" value="<?= $Data->id; ?>">
+								<div class="mb-1 row flex-nowrap">
 									<label for="Name" class="col-3 col-form-label font-weight-bold">Standard</label>
 									<div class="col-10">
-										<input type="text" readonly class="form-control bg-light-secondary form-control-solid" id="Name" placeholder="Name of Requirement" value="<?= $Data->name; ?>" />
+										<input type="text" readonly class="mb-5 form-control bg-light-secondary form-control-solid" id="Name" placeholder="Name of Requirement" value="<?= $Data->name; ?>" />
+										<button class="btn btn-primary" type="submit" id="save"><i class="fa fa-save"></i>Save</button>
 									</div>
 								</div>
 							</div>
@@ -25,6 +24,7 @@
 						<hr>
 						<div class="d-flex justify-content-between align-items-center mb-3">
 							<h4 class="">List Pasal</h4>
+
 						</div>
 						<table class="table table-sm table-striped table-bordered">
 							<thead class="">
@@ -62,7 +62,7 @@
 												<select name="detail[<?= $n; ?>][procedure][]" multiple class="select2 form-control">
 													<option value=""></option>
 													<?php
-													$explode = explode(',', $dtl->procedure_id);
+													$explode = explode(',', $dtl->process);
 													foreach ($explode as $exp) :
 														foreach ($procedures as $pro) : ?>
 															<option value="<?= $pro->id; ?>" <?= ($pro->id == $exp) ? 'selected' : ''; ?>><?= $pro->name; ?></option>
@@ -78,7 +78,10 @@
 								endif; ?>
 							</tbody>
 						</table>
-						<button class="btn btn-primary" type="submit" id="save"><i class="fa fa-save"></i>Save</button>
+						<div class="d-flex justify-content-between align-items-center">
+							<button class="btn btn-primary" type="submit" id="save"><i class="fa fa-save"></i>Save</button>
+							<a href="<?= base_url($this->uri->segment(1)); ?>" class="btn btn-danger"><i class="fa fa-reply"></i>Back</a>
+						</div>
 					</div>
 				</form>
 			</div>

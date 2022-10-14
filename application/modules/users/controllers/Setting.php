@@ -305,8 +305,12 @@ class Setting extends Admin_Controller
     {
         $data           = $this->input->post();
         $data['ip']     = $this->input->ip_address();
-
-
+        $company_id = $data['company_id'];
+        unset($data['company_id']);
+        // echo '<pre>';
+        // print_r($data);
+        // echo '<pre>';
+        // exit;
         // $newPhoto = ($photo) ? $photo : $old_photo;
         // echo '<pre>';
         // print_r($dataPhoto);
@@ -360,6 +364,7 @@ class Setting extends Admin_Controller
         // }
 
         $group_id = $data['group_id'];
+
         $this->db->trans_begin();
         unset($data['profile_avatar_remove']);
         if (isset($data['id_user']) && $data['id_user']) {
@@ -394,7 +399,7 @@ class Setting extends Admin_Controller
             unset($data['re-password']);
             unset($data['group_id']);
             $this->db->insert('users', $data);
-            $this->assign_company($data['username'], $group_id);
+            $this->assign_company($data['username'], $group_id, $company_id);
         }
 
         $error = $this->db->error()['message'];
@@ -433,12 +438,12 @@ class Setting extends Admin_Controller
         return $check;
     }
 
-    public function assign_company($username, $group_id)
+    public function assign_company($username, $group_id, $company_id)
     {
         $user =  $this->db->get_where('users', ['username' => $username])->row();
         $this->db->insert('user_groups', [
             'user_id' => $user->id_user,
-            'company_id' => $this->company,
+            'company_id' => $company_id,
             'id_group' => $group_id,
             'active' => 'Y',
             'default' => 'Y',

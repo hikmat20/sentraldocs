@@ -39,9 +39,11 @@
 				<td><?= ($dtl->desc_eng); ?></td>
 				<td>
 					<?php
-					$explode = explode(',', $dtl->procedure_id);
-					foreach ($explode as $exp) {
-						echo $list_procedure[$exp];
+					if ($dtl->process) {
+						$explode = explode(',', $dtl->process);
+						foreach ($explode as $exp) {
+							echo $list_procedure[$exp];
+						}
 					}
 					?>
 				</td>

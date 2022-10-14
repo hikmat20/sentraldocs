@@ -27,7 +27,7 @@ class Requirements extends Admin_Controller
 
 	public function index()
 	{
-		$data		= $this->db->get_where('requirements', ['deleted_at' => null])->result();
+		$data		= $this->db->get_where('requirements', ['company_id' => $this->company, 'deleted_at' => null])->result();
 		$this->template->set('title', 'Index of Standard');
 		$this->template->set('data', $data);
 		$this->template->render('index');
@@ -41,7 +41,7 @@ class Requirements extends Admin_Controller
 
 	public function edit($id = '')
 	{
-		$Data 		= $this->db->get_where('requirements', ['id' => $id, 'status' => '1'])->row();
+		$Data 		= $this->db->get_where('requirements', ['company_id' => $this->company, 'id' => $id, 'status' => '1'])->row();
 		if ($Data) {
 			$Data_list 	= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result();
 
@@ -68,7 +68,7 @@ class Requirements extends Admin_Controller
 
 	public function view($id = '')
 	{
-		$Data 	= $this->db->get_where('requirements', ['id' => $id, 'status' => '1'])->row();
+		$Data 	= $this->db->get_where('requirements', ['company_id' => $this->company, 'id' => $id, 'status' => '1'])->row();
 		$Data_list 	= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result();
 
 		$this->template->set([
@@ -148,7 +148,7 @@ class Requirements extends Admin_Controller
 	{
 		$this->db->trans_begin();
 		if (($id)) {
-			$this->db->delete('requirements', ['id' => $id]);
+			$this->db->delete('requirements', ['company_id' => $this->company, 'id' => $id]);
 			$this->db->delete('requirement_details', ['requirement_id' => $id]);
 		}
 
