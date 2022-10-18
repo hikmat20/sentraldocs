@@ -228,6 +228,8 @@ class Cross_reference extends Admin_Controller
 					}
 				endforeach;
 			}
+			print_r($this->db->last_query());
+
 		} else {
 			$Return		= array(
 				'status'		=> 0,
