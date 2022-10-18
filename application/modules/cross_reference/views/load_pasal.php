@@ -36,7 +36,7 @@
 								</select>
 							</td>
 							<td>
-								<input type="other_docs" name="detail[<?= $n; ?>][other_docs]" id="other_docs_<?= $n; ?>" class="form-control" placeholder="Dokumen Lain">
+								<input type="other_docs" name="detail[<?= $n; ?>][other_docs]" id="other_docs_<?= $n; ?>" class="form-control" placeholder="Dokumen Terkait">
 							</td>
 						</tr>
 				<?php endforeach;

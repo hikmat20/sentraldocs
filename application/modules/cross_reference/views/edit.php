@@ -184,7 +184,7 @@
 			let formdata = new FormData(form)
 			let btn = $('#save')
 			$.ajax({
-				url: siteurl + active_controller + '/save',
+				url: siteurl + active_controller + 'save',
 				data: formdata,
 				type: 'POST',
 				dataType: 'JSON',

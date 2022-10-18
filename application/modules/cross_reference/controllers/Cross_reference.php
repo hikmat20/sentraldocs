@@ -205,7 +205,7 @@ class Cross_reference extends Admin_Controller
 					$dtlId 					= $dtl['id'];
 					$dtl['reference_id'] 	= ($id) ?: $reference_id->id;
 					$dtl['requirement_id'] 	= $requirement_id;
-					$dtl['other_docs'] 		= ($dtl['other_docs']) ?: null;
+					$dtl['other_docs'] 		= (isset($dtl['other_docs'])) ? $dtl['other_docs'] : null;
 
 					$procedure = '';
 					if (isset($dtl['procedure_id'])) {
