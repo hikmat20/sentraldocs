@@ -258,8 +258,15 @@
 				dataType: 'JSON',
 				success: function(result) {
 					let html = `
+						<div class="form-group">
+							<label class="font-weight-bold"><strong>Pasal</strong></label>
+							<div class="">
+							` + result.chapter + `
+							</div>
+						</div>
+
 						<!-- Nav tabs -->
-						<ul class="nav nav-pills" id="myTab" role="tablist">
+						<ul class="nav nav-fill nav-pills" id="myTab" role="tablist">
 							<li class="nav-item" role="presentation">
 								<a class="nav-link nav-pill active" id="indo-tab" data-toggle="tab" data-target="#indo" type="button" role="tab" aria-controls="indo" aria-selected="true">Indonesian</a>
 							</li>
@@ -269,11 +276,11 @@
 						</ul>
 
 						<!-- Tab panes -->
-						<div class="tab-content mt-3">
-							<div class="tab-pane active pt-4 pb-4 border px-4 rounded-lg" id="indo" role="tabpanel" aria-labelledby="indo-tab">
+						<div class="tab-content mt-4 border rounded-lg p-5">
+							<div class="tab-pane active pt-4 pb-4" id="indo" role="tabpanel" aria-labelledby="indo-tab">
 							` + result.desc_indo + `
 							</div>
-							<div class="tab-pane pt-4 pb-4 border px-4 rounded-lg" id="eng" role="tabpanel" aria-labelledby="eng-tab">
+							<div class="tab-pane pt-4 pb-4" id="eng" role="tabpanel" aria-labelledby="eng-tab">
 							` + result.desc_eng + `
 							</div>
 						</div>

@@ -39,15 +39,17 @@
 				<td><?= ($dtl->desc_eng); ?></td>
 				<td>
 					<?php
-					if ($dtl->process) {
-						$explode = explode(',', $dtl->process);
-						foreach ($explode as $exp) {
-							echo $list_procedure[$exp];
+					if (isset($Procedure[$dtl->id])) {
+						$explode = explode(',', $Procedure[$dtl->id]);
+						if (isset($explode) && $explode) {
+							foreach ($explode as $exp) {
+								echo isset($list_procedure[$exp]) ? $list_procedure[$exp] : '';
+							}
 						}
 					}
 					?>
 				</td>
-				<td><?= $dtl->other_docs; ?></td>
+				<td><?= ($dtl->other_docs) ?: ''; ?></td>
 			</tr>
 		<?php endforeach; ?>
 	</tbody>

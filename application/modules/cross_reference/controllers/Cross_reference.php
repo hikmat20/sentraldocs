@@ -34,7 +34,7 @@ class Cross_reference extends Admin_Controller
 
 	public function index()
 	{
-		$data		= $this->db->get_where('requirements', ['company_id' => $this->company, 'status' => '1', 'deleted_at' => null])->result();
+		$data		= $this->db->get_where('view_cross_references', ['company_id' => $this->company, 'status' => '1', 'deleted_at' => null])->result();
 
 		$this->template->set('title', 'Cross Reference');
 		$this->template->set('data', $data);
@@ -64,7 +64,14 @@ class Cross_reference extends Admin_Controller
 
 	public function select_procedure($id = '')
 	{
-		$Data 			= $this->db->get_where('view_cross_reference_details', ['procedure_id like' => "%$id%"])->result();
+		// $Data 			= $this->db->get_where('view_cross_reference_details', ['procedure_id like' => "%$id%"])->result();
+		$this->db->select('*')->from('view_cross_reference_details');
+		$this->db->group_start();
+		$this->db->where("find_in_set($id, procedure_id)");
+		// foreach ([$id] as $value) {
+		// }
+		$this->db->group_end();
+		$Data = $this->db->get()->result();
 
 		$Data_detail 	= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result();
 		$procedure 		= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => '1', 'deleted_by' => null])->result();
@@ -74,6 +81,7 @@ class Cross_reference extends Admin_Controller
 		$this->template->set('procedure', $procedure);
 		$this->template->render('load_proses');
 	}
+
 	public function select_standard($id = '')
 	{
 		$Data 			= $this->db->get_where('requirements', ['company_id' => $this->company, 'id' => $id])->row();
@@ -88,20 +96,39 @@ class Cross_reference extends Admin_Controller
 
 	public function cross_pasal($id = '')
 	{
-		$Data 			= $this->db->get_where('requirements', ['company_id' => $this->company, 'id' => $id])->row();
-		$Detail 		= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result();
-		$procedures 	= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => '1'])->result();
-		$list_procedure = [];
+		$Detail 		= $ArrPro = [];
+		$other_docs 	= '';
 
+		$DataStd 		= $this->db->get_where('requirements', ['id' => $id])->row();
+		$DetailStd 		= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result_array();
+
+		$Data 			= $this->db->get_where('view_cross_references', ['company_id' => $this->company, 'id' => $id])->row();
+
+		if ($Data) {
+			$Detail 		= $this->db->get_where('view_cross_reference_details', ['requirement_id' => $Data->requirement_id, 'reference_id' => $Data->id])->result_array();
+			$combine = array_combine(array_column($Detail, 'chapter_id'), array_column($Detail, 'procedure_id'));
+			foreach ($combine as $k => $com) {
+				$ArrPro[$k] = explode(",", $com);
+			}
+
+			$other_docs = array_combine(array_column($Detail, 'chapter_id'), array_column($Detail, 'other_docs'));
+		}
+
+		$procedures 	= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => '1'])->result_array();
+		$list_procedure = [];
 		foreach ($procedures as $pro) {
-			$list_procedure[$pro->id] = "<span class='badge badge-success m-1'>" . $pro->name . "</span>";
+			$list_procedure[$pro['id']] = "<span class='badge badge-success m-1'>" . $pro['name'] . "</span>";
 		}
 
 		$this->template->set([
+			'DataStd' 			=> $DataStd,
 			'Data' 				=> $Data,
 			'Detail' 			=> $Detail,
 			'list_procedure' 	=> $list_procedure,
 			'procedures' 		=> $procedures,
+			'DetailStd' 		=> $DetailStd,
+			'ArrPro' 			=> $ArrPro,
+			'other_docs' 		=> $other_docs,
 		]);
 		$this->template->render('edit');
 	}
@@ -116,10 +143,14 @@ class Cross_reference extends Admin_Controller
 
 		$this->template->render('cross');
 	}
+
 	public function view($id = '')
 	{
-		$Data 			= $this->db->get_where('requirements', ['company_id' => $this->company, 'id' => $id])->row();
-		$Detail 		= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result();
+		$Data 			= $this->db->get_where('view_cross_references', ['company_id' => $this->company, 'id' => $id])->row();
+		$Detail 		= $this->db->get_where('requirement_details', ['requirement_id' => $Data->requirement_id])->result();
+		$DetailCross	= $this->db->get_where('view_cross_reference_details', ['reference_id' => $id])->result_array();
+		$Procedure		= array_combine(array_column($DetailCross, 'chapter_id'), array_column($DetailCross, 'procedure_id'));
+
 		$procedures 	= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => '1'])->result();
 		$list_procedure = [];
 
@@ -131,6 +162,7 @@ class Cross_reference extends Admin_Controller
 			'Data' 				=> $Data,
 			'Detail' 			=> $Detail,
 			'list_procedure' 	=> $list_procedure,
+			'Procedure' 			=> $Procedure,
 		]);
 
 		$this->template->render('view_pasal_to_process');
@@ -142,52 +174,57 @@ class Cross_reference extends Admin_Controller
 		echo json_encode($Data);
 	}
 
-
 	public function save()
 	{
 		$Data 			= $this->input->post();
 		$Detail 		= $this->input->post('detail');
-		$id 			= ($Data['standard']) ?: '';
+		$id 			= ($Data['id']) ?: '';
+		$requirement_id = ($Data['requirement_id']) ?: '';
 
 		$this->db->trans_begin();
-
+		unset($Data['id']);
+		unset($Data['detail']);
 		if ($Data && $Detail) {
-			unset($Data['standard']);
-			unset($Data['detail']);
 			if ($Data) {
-				$Data['company_id'] 	= $this->company;
+				$Data['company_id'] 	 = $this->company;
+
 				if (($id)) {
 					$Data['modified_by'] = $this->auth->user_id();
 					$Data['modified_at'] = date('Y-m-d H:i:s');
-					$this->db->update('requirements', $Data, ['id' => $id]);
+					$this->db->update('cross_references', $Data, ['id' => $id]);
+				} else {
+					$Data['created_by'] = $this->auth->user_id();
+					$Data['created_at'] = date('Y-m-d H:i:s');
+					$this->db->insert('cross_references', $Data);
 				}
 			}
 
 			if ($Detail) {
-				$procedure = '';
+				$reference_id = $this->db->order_by('id', 'DESC')->get_where('cross_references')->row();
 				foreach ($Detail as $dtl) :
+					$dtlId 					= $dtl['id'];
+					$dtl['reference_id'] 	= ($id) ?: $reference_id->id;
+					$dtl['requirement_id'] 	= $requirement_id;
+					$dtl['other_docs'] 		= ($dtl['other_docs']) ?: null;
 
-					$dtl['requirement_id'] 	= $id;
-					if (isset($dtl['procedure'])) {
-						$procedure 			= implode(',', $dtl['procedure']);
-						$dtl['process'] 		= $procedure;
-
-						unset($dtl['procedure']);
-						if (isset($dtl['id']) && $dtl['id']) {
-							$dtl['other_docs'] 		= ($dtl['other_docs']) ?: null;
-							$dtl['modified_by'] = $this->auth->user_id();
-							$dtl['modified_at'] = date('Y-m-d H:i:s');
-							$this->db->update('requirement_details', $dtl, ['id' => $dtl['id']]);
-						}
+					$procedure = '';
+					if (isset($dtl['procedure_id'])) {
+						$procedure 			= implode(',', $dtl['procedure_id']);
+						$dtl['procedure_id'] = $procedure;
+					} else {
+						$dtl['procedure_id'] = $procedure;
 					}
 
-					if ($dtl['other_docs']) {
-						if (isset($dtl['id']) && $dtl['id']) {
-							$dtl['other_docs'] 		= ($dtl['other_docs']) ?: null;
-							$dtl['modified_by'] = $this->auth->user_id();
-							$dtl['modified_at'] = date('Y-m-d H:i:s');
-							$this->db->update('requirement_details', $dtl, ['id' => $dtl['id']]);
-						}
+
+					if ((isset($dtl['id']) && $dtl['id'])) {
+						$dtl['modified_by'] = $this->auth->user_id();
+						$dtl['modified_at'] = date('Y-m-d H:i:s');
+						$this->db->update('cross_reference_details', $dtl, ['id' => $dtl['id']]);
+					} else if (($dtl['procedure_id']) || ($dtl['other_docs'])) {
+						unset($dtl['id']);
+						$dtl['created_by'] = $this->auth->user_id();
+						$dtl['created_at'] = date('Y-m-d H:i:s');
+						$this->db->insert('cross_reference_details', $dtl);
 					}
 				endforeach;
 			}

@@ -105,6 +105,13 @@
 										<small class="text-danger invalid-feedback">Order</small>
 									</div>
 								</div>
+								<div class="form-group">
+									<label for="mitigation" class="font-weight-bold font-size-"><strong>8. Mitigation</strong></label>
+									<div class="">
+										<textarea rows="5" name="mitigation" id="mitigation" class="form-control" placeholder="Mitigation" aria-describedby="helpId"><?= $data->mitigation; ?></textarea>
+										<small class="text-danger invalid-feedback">Mitigation</small>
+									</div>
+								</div>
 							</div>
 
 						</div>

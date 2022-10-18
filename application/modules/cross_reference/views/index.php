@@ -34,7 +34,7 @@
 										<td><?= $status[$dt->status]; ?></td>
 										<td>
 											<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-											<a href="<?= base_url($this->uri->segment(1) . '/cross_pasal/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-primary edit" data-id="<?= $dt->id; ?>" title="Cross Pasal to Proses"><i class="fa fa-random"></i></a>
+											<a href="<?= base_url($this->uri->segment(1) . '/cross_pasal/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $dt->id; ?>" title="Edit"><i class="fa fa-edit"></i></a>
 											<!-- <button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button> -->
 										</td>
 									</tr>
@@ -50,17 +50,16 @@
 
 <!-- Modal -->
 <div class="modal fade" id="modalForm" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	<div class="modal-dialog modal-xl modal-dialog-centered">
+	<div class="modal-dialog modal-lg modal-dialog-centered">
 		<div class="modal-content">
 			<form class="form-horiontal" id="form-input">
 				<div class="modal-header">
 					<h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-					<span type="button" onclick="$('#name').val('')" class="btn-close" data-dismiss="modal" aria-label="Close">
+					<span onclick="$('#name').val('')" class="btn-close" data-dismiss="modal" aria-label="Close">
 						<div class="fa fa-times"></div>
 					</span>
 				</div>
 				<div class="modal-body">
-
 				</div>
 				<div class="modal-footer">
 					<!-- <button type="submit" class="btn btn-primary" id="save"><i class="fa fa-save"></i>Save</button> -->
@@ -91,34 +90,23 @@
 						$('.modal-title').text('View Cross Reference (Pasal to Proses)')
 						$('.modal-body').html(result);
 						$('#modalForm').modal('show')
+						$('.modal-dialog').css("max-width", "90%")
 					} else {
 						Swal.fire('Warning', 'Data not valid. Please try again!', 'warning', 3000)
 					}
-
 				},
 				error: function() {
 					Swal.fire('Error!', 'Server timeout. Please try again!', 'error', 5000)
 				}
 			})
 		})
+
 		$(document).on('click', '.cross', function() {
 			let id = $(this).data('id')
 			$('.modal-title').text('View Cross Reference (Pasal to Proses)')
 			$('.modal-body').load(siteurl + active_controller + 'cross');
 			$('#modalForm').modal('show')
-			// $.ajax({
-			// 	url: siteurl + active_controller + 'view/' + id,
-			// 	type: 'GET',
-			// 	success: function(result) {
-			// 		if (result) {} else {
-			// 			Swal.fire('Warning', 'Data not valid. Please try again!', 'warning', 3000)
-			// 		}
-
-			// 	},
-			// 	error: function() {
-			// 		Swal.fire('Error!', 'Server timeout. Please try again!', 'error', 5000)
-			// 	}
-			// })
+			$('.modal-dialog').attr("style", false)
 		})
 
 

@@ -10,11 +10,12 @@
 					<div class="card-body">
 						<div class="row">
 							<div class="col-md-6">
-								<input type="hidden" name="standard" value="<?= $Data->id; ?>">
+								<input type="hidden" name="id" value="<?= isset($Data->id) ? $Data->id : ''; ?>">
+								<input type="hidden" name="requirement_id" value="<?= $DataStd->id; ?>">
 								<div class="mb-1 row flex-nowrap">
 									<label for="Name" class="col-3 col-form-label font-weight-bold">Standard</label>
 									<div class="col-10">
-										<input type="text" readonly class="mb-5 form-control bg-light-secondary form-control-solid" id="Name" placeholder="Name of Requirement" value="<?= $Data->name; ?>" />
+										<input type="text" readonly class="mb-5 form-control bg-light-secondary form-control-solid" id="Name" placeholder="Name of Requirement" value="<?= $DataStd->name; ?>" />
 										<button class="btn btn-primary" type="submit" id="save"><i class="fa fa-save"></i>Save</button>
 									</div>
 								</div>
@@ -24,7 +25,6 @@
 						<hr>
 						<div class="d-flex justify-content-between align-items-center mb-3">
 							<h4 class="">List Pasal</h4>
-
 						</div>
 						<table class="table table-sm table-striped table-bordered">
 							<thead class="">
@@ -39,39 +39,47 @@
 							</thead>
 							<tbody>
 
-								<?php if (!$Detail) : ?>
+								<?php if (!$DetailStd) : ?>
 									<tr>
 										<td colspan="5" class="text-center text-muted">~ No data avilable ~</td>
 									</tr>
 									<?php else :
 									$n = 0;
-									foreach ($Detail as $dtl) : $n++; ?>
+									$inArray = '';
+									foreach ($DetailStd as $k => $dtl) : $n++;
+										$inArray = isset($ArrPro[$dtl['id']]) ? $ArrPro[$dtl['id']] : [];
+									?>
 										<tr>
 											<td class="text-center"><?= $n; ?></td>
 											<td class="">
-												<?= $dtl->chapter; ?>
-												<input type="hidden" name="detail[<?= $n; ?>][id]" id="" value="<?= $dtl->id; ?>">
+												<?= $dtl['chapter']; ?>
+												<?php
+												$comb = array_combine(array_column($Detail, 'chapter_id'), array_column($Detail, 'id'));
+												?>
+												<input type="hidden" name="detail[<?= $n; ?>][id]" value="<?= (((in_array($dtl['id'], array_column($Detail, 'chapter_id'))) ? $comb[$dtl['id']] : '')) ?>">
+												<input type="hidden" name="detail[<?= $n; ?>][chapter]" value="<?= $dtl['id'] ?>">
 											</td>
 											<td class="">
-												<?= limit_text(strip_tags($dtl->desc_indo), 100) . ' <a href="#read" class="link view_pasal" data-id="' . $dtl->id . '">[read]</a>'; ?></td>
+												<?= ($dtl['desc_indo']) ? limit_text(strip_tags($dtl['desc_indo']), 100) . ' <a href="#read" class="link view_pasal" data-id="' . $dtl['id'] . '">[read]</a>' : '-'; ?></td>
 											</td>
 											<td class="">
-												<?= limit_text(strip_tags($dtl->desc_indo), 100) . ' <a href="#read" class="link view_pasal" data-id="' . $dtl->id . '">[read]</a>'; ?></td>
+												<?= ($dtl['desc_eng']) ? limit_text(strip_tags($dtl['desc_eng']), 100) . ' <a href="#read" class="link view_pasal" data-id="' . $dtl['id'] . '">[read]</a>' : '-'; ?></td>
 											</td>
 											<td class="text-center">
-												<select name="detail[<?= $n; ?>][procedure][]" multiple class="select2 form-control">
-													<option value=""></option>
-													<?php
-													$explode = explode(',', $dtl->process);
-													foreach ($explode as $exp) :
-														foreach ($procedures as $pro) : ?>
-															<option value="<?= $pro->id; ?>" <?= ($pro->id == $exp) ? 'selected' : ''; ?>><?= $pro->name; ?></option>
-													<?php endforeach;
-													endforeach; ?>
-												</select>
+												<?php if ($dtl['desc_indo'] && $dtl['desc_eng']) : ?>
+													<select name="detail[<?= $n; ?>][procedure_id][]" multiple class="select2 form-control">
+														<option value=""></option>
+														<?php
+														foreach ($procedures as $p) : ?>
+															<option value="<?= $p['id']; ?>" <?= (isset($inArray) && in_array($p['id'], $inArray)) ? 'selected' : 'oo'; ?>><?= $p['name']; ?></option>
+														<?php endforeach; ?>
+													</select>
+												<?php endif; ?>
 											</td>
 											<td>
-												<input type="text" class="form-control" placeholder="Dokumen lain" name="detail[<?= $n; ?>][other_docs]" value="<?= $dtl->other_docs; ?>">
+												<?php if ($dtl['desc_indo'] && $dtl['desc_eng']) : ?>
+													<input type="text" class="form-control" placeholder="Dokumen lain" name="detail[<?= $n; ?>][other_docs]" value="<?= isset($other_docs[$dtl['id']]) ? ($other_docs[$dtl['id']]) : ''; ?>">
+												<?php endif; ?>
 											</td>
 										</tr>
 								<?php endforeach;
@@ -129,8 +137,15 @@
 				dataType: 'JSON',
 				success: function(result) {
 					let html = `
+						<div class="form-group">
+							<label class="font-weight-bold"><strong>Pasal</strong></label>
+							<div class="">
+							` + result.chapter + `
+							</div>
+						</div>
+
 						<!-- Nav tabs -->
-						<ul class="nav nav-pills" id="myTab" role="tablist">
+						<ul class="nav nav-fill nav-pills" id="myTab" role="tablist">
 							<li class="nav-item" role="presentation">
 								<a class="nav-link nav-pill active" id="indo-tab" data-toggle="tab" data-target="#indo" type="button" role="tab" aria-controls="indo" aria-selected="true">Indonesian</a>
 							</li>
@@ -140,7 +155,7 @@
 						</ul>
 
 						<!-- Tab panes -->
-						<div class="tab-content">
+						<div class="tab-content mt-4 border rounded-lg p-5">
 							<div class="tab-pane active pt-4 pb-4" id="indo" role="tabpanel" aria-labelledby="indo-tab">
 							` + result.desc_indo + `
 							</div>

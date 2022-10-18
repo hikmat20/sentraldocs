@@ -166,13 +166,13 @@ class Procedures extends Admin_Controller
 			$this->db->trans_rollback();
 			$Return		= array(
 				'status'		=> 0,
-				'msg'			=> 'Data Procedure failed to save. Please try again.',
+				'msg'			=> 'Data Procedure failed to delete. Please try again.',
 			);
 		} else {
 			$this->db->trans_commit();
 			$Return		= array(
 				'status'		=> 1,
-				'msg'			=> 'Data Procedure successfully saved..',
+				'msg'			=> 'Data Procedure successfully delete..',
 			);
 		}
 		echo json_encode($Return);

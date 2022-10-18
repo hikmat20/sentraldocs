@@ -2,8 +2,8 @@
 	<div class="d-flex flex-column-fluid">
 		<div class="container">
 			<div class="row mb-3">
-				<label for="exampleInputEmail1" class="col-2 col-form-label">Select Standard</label>
-				<div class="col-3">
+				<label for="exampleInputEmail1" class="col-3 col-form-label">Select Standard</label>
+				<div class="col-5">
 					<select name="standard" id="standard" class="form-control form-control-solid select2 mb-5" data-dropdown-parent=".card-body">
 						<option value=""></option>
 						<?php foreach ($Data as $dt) : ?>

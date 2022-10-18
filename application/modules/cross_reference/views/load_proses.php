@@ -21,10 +21,10 @@
 							<td><?= $val->chapter; ?>
 							</td>
 							<td>
-								<?= limit_text(strip_tags($val->desc_indo), 100) . ' <a href="#read" class="link view_pasal" data-id="' . $val->id . '">[read]</a>'; ?>
+								<?= limit_text(strip_tags($val->desc_indo), 100) . ' <a href="javascript:void(0)" class="link read" data-id="' . $val->id . '">[read]</a>'; ?>
 							</td>
 							<td>
-								<?= limit_text(strip_tags($val->desc_eng), 100) . ' <a href="#read" class="link view_pasal" data-id="' . $val->id . '">[read]</a>'; ?>
+								<?= limit_text(strip_tags($val->desc_eng), 100) . ' <a href="javascript:void(0)" class="link read" data-id="' . $val->id . '">[read]</a>'; ?>
 							</td>
 						</tr>
 				<?php endforeach;
