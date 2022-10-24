@@ -17,7 +17,7 @@ class Documents_list extends Admin_Controller
 		$this->template->page_icon('fa fa-dashboard');
 		$this->MainData 	= $this->db->get_where('directory', ['parent_id' => '0'])->result();
 		$this->sts = [
-			'OPN' => '<span class="label label-light-primary label-pill label-inline mr-2">New</span>',
+			'OPN' => '<span class="label label-light-primary label-pill label-inline mr-2">New Upload</span>',
 			'REV' => '<span class="label label-light-warning label-pill label-inline mr-2">Waiting Review</span>',
 			'COR' => '<span class="label label-light-danger label-pill label-inline mr-2">Need Correction</span>',
 			'APV' => '<span class="label label-light-info label-pill label-inline mr-2">Waiting Approval</span>',
@@ -91,5 +91,49 @@ class Documents_list extends Admin_Controller
 		$this->template->set('file', $file);
 		$this->template->set('history', $history);
 		$this->template->render('show');
+	}
+
+	public function procedures($id = null)
+	{
+		if (isset($id)) {
+			$procedure 		= $this->db->get_where('view_procedures', ['id' => $id])->result();
+			$forms 			= $this->db->order_by('name', 'ASC')->get_where('dir_forms', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
+			$guides 		= $this->db->order_by('name', 'ASC')->get_where('dir_guides', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
+			$records 		= $this->db->order_by('name', 'ASC')->get_where('dir_records', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
+
+			$this->template->set([
+				'procedure' 		=> $procedure,
+				'forms' 			=> $forms,
+				'guides' 			=> $guides,
+				'records' 			=> $records,
+			]);
+
+			$this->template->render('procedures/list-docs');
+		} else {
+			$groups 		= $this->db->get_where('group_procedure', ['status' => 'ACT'])->result();
+			$procedures 	= $this->db->get_where('view_procedures', ['company_id' => $this->company, 'status' => '1', 'deleted_by' => null])->result_array();
+
+			foreach ($procedures as $pro) {
+				$ArrPro[$pro['group_procedure']][] = $pro;
+			}
+
+
+			$this->template->set([
+				'groups' 		=> $groups,
+				'ArrPro' 		=> $ArrPro,
+			]);
+			$this->template->render('procedures/index');
+		}
+	}
+
+	public function view_procedure($id)
+	{
+		$docs 			= $this->db->get_where('view_procedures', ['id' => $id])->row();
+		$detail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id])->result();
+		$this->template->set([
+			'docs' 			=> $docs,
+			'detail' 		=> $detail
+		]);
+		$this->template->render('procedures/view-docs');
 	}
 }

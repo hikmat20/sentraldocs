@@ -107,9 +107,7 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<div class="container-fluid" id="modal_content_view">
-
-				</div>
+				<div class="container-fluid" id="modal_content_view"></div>
 			</div>
 			<div class="modal-footer justify-content-end align-items-center">
 				<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
@@ -125,8 +123,6 @@
 			width: "100%",
 			allowClear: true
 		})
-
-
 
 		$(document).on('click', '.view_pasal', function() {
 			let id = $(this).data('id')

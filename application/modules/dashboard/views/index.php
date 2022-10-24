@@ -11,6 +11,18 @@
 			<div class="row">
 				<div class="col-md-10 offset-1">
 					<div class="row">
+						<div class="col-md-3 px-5 mb-lg-5">
+							<div class="card border-2 border-warning shadow-lg " style="border-radius: 30px 5px 30px 5px;background-color: rgba(255, 255, 255, 0.60);">
+								<div class="card-body pb-1 d-flex justify-content-center align-items-center" style="min-height: 190px;">
+									<img src="<?= base_url('assets/images/dashboard/prosedur.png'); ?>" alt="List Procedure" class="img-fluid" style="width: 150px;">
+								</div>
+								<h6 class="card-title text-center pt-0 px-4 pb-5 m-0" style="min-height: 60px;">
+									<a href="<?= base_url('/list/procedures/'); ?>" class="text-hover-primary" title="PROSEDUR, FORM, IK DAN RECORDS">
+										<span class="card-label m-0 text-dark text-center font-weight-bolder">PROSEDUR, FORM, IK DAN RECORD</span>
+									</a>
+								</h6>
+							</div>
+						</div>
 						<?php foreach ($Data as $dt) : ?>
 							<div class="col-md-3 px-5">
 								<div class="card border-2 border-warning shadow-lg " style="border-radius: 30px 5px 30px 5px;background-color: rgba(255, 255, 255, 0.60);">

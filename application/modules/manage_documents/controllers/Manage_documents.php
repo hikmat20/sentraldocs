@@ -75,10 +75,10 @@ class Manage_documents extends Admin_Controller
 				$html .= $this->menus($ArrFolder, $val->id);
 				$html .= "</li>";
 			} else {
-				$html .= "<li class='h6 py-1 " . $cek_company . "'><a href='" . $val->link . "' data-id='" . $val->id . "' data-parent_id='" . $val->parent_id . "' class='tree-folder'>" . $val->name . "</a></li>";
+				$html .= "<li class='h6 py-1 " . $cek_company . "'><a href='" . $val->link . "' data-id='" . $val->id . "' data-parent_id='" . $val->parent_id . "' data-custome='" . $val->custome . "' class='tree-folder'>" . $val->name . "</a></li>";
 			}
 		}
-
+		$html .= "<li class='h6 py-1'><a href='javascript:void(0)' data-custome='Y' class='procedures'>PROSEDUR, FORM, IK DAN RECORD</a></li>";
 		$html .= "</ul>";
 		return $html;
 	}
@@ -212,6 +212,78 @@ class Manage_documents extends Admin_Controller
 		}
 
 		echo json_encode($Return);
+	}
+
+	public function procedures()
+	{
+		$group_process = $this->db->get_where('group_procedure')->result();
+		$procedures = $this->db->get_where('procedures', ['status' => '1'])->result();
+
+		$this->template->set([
+			'procedures' => $procedures,
+			'group_process' => $group_process
+		]);
+
+		$this->template->render('procedures/index');
+	}
+
+	public function list_procedures($id = null)
+	{
+		$procedures = $this->db->get_where('procedures', ['group_procedure' => $id, 'status' => '1', 'deleted_by' => null])->result();
+
+		$this->template->set([
+			'procedures' => $procedures
+		]);
+		$this->template->render('procedures/list-procedures');
+	}
+
+	public function procedure_details($id = null)
+	{
+		$this->template->set('id', $id);
+		$this->template->render('procedures/list-docs');
+	}
+
+	public function getProcedure($id = null)
+	{
+		$procedure 	= $this->db->get_where('procedures', ['id' => $id])->result();
+
+		$this->template->set([
+			'data' 	=> $procedure,
+			'type' 	=> 'view-procedure',
+		]);
+		$this->template->render('procedures/list-data');
+	}
+
+	public function getForms($id = null)
+	{
+		$forms 	= $this->db->order_by('name', 'ASC')->get_where('dir_forms', ['status !=' => 'DEL', 'procedure_id' => $id])->result();
+		$this->template->set([
+			'data' 	=> $forms,
+			'type' 		=> 'view-form',
+		]);
+		$this->template->render('procedures/list-data');
+	}
+
+	public function getGuides($id = null)
+	{
+		$guides 		= $this->db->order_by('name', 'ASC')->get_where('dir_guides', ['status !=' => 'DEL', 'procedure_id' => $id])->result();
+		// // $records 		= $this->db->get_where('dir_records', ['procedure_id' => $id])->result();
+
+		$this->template->set([
+			'data' 	=> $guides,
+			'type' 		=> 'view-guide',
+		]);
+		$this->template->render('procedures/list-data');
+	}
+	public function getRecords($id = null)
+	{
+		$records 		= $this->db->order_by('name', 'ASC')->get_where('dir_records', ['status !=' => 'DEL', 'procedure_id' => $id])->result();
+
+		$this->template->set([
+			'data' 	=> $records,
+			'type' 		=> 'view-records',
+		]);
+		$this->template->render('procedures/list-data');
 	}
 
 	public function delete_file()

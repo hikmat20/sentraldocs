@@ -21,11 +21,11 @@
 	<thead>
 		<tr>
 			<th>No</th>
-			<th width="100">Pasal</th>
-			<th>Desc. Indonesian</th>
-			<th>Desc. English</th>
+			<th width="150">Pasal</th>
+			<th width="400">Desc. Indonesian</th>
+			<th width="400">Desc. English</th>
 			<th>Proses Terkait</th>
-			<th>Dokumen Lain</th>
+			<th width="150">Dokumen Lain</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -49,7 +49,7 @@
 					}
 					?>
 				</td>
-				<td><?= ($dtl->other_docs) ?: ''; ?></td>
+				<td><?= isset($other_docs[$dtl->id]) ? ($other_docs[$dtl->id]) : ''; ?></td>
 			</tr>
 		<?php endforeach; ?>
 	</tbody>

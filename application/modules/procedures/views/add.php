@@ -9,177 +9,289 @@
 					</div>
 
 					<div class="card-body">
-						<div class="row">
-							<div class="col-md-6">
-								<div class="form-group">
-									<label class="font-size-h5"><strong>Nama Proses</strong></label>
-									<div class="">
-										<textarea rows="5" name="name" id="name" required class="form-control" rows="5" placeholder="Nama Proses" aria-describedby="helpId"></textarea>
-										<small class="text-danger invalid-feedback">Nama Proses</small>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="font-size-h5"><strong>Objektif Proses</strong></label>
-									<div class="">
-										<textarea rows="5" name="object" id="object" required class="form-control" rows="5" placeholder="Objektif Proses" aria-describedby="helpId"></textarea>
-										<small class="text-danger invalid-feedback">Objektif Proses</small>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label class="font-size-h5"><strong>Performa Indikator</strong></label>
-									<div class="">
-										<textarea rows="5" name="performance" id="performance" class="form-control" rows="5" placeholder="Performa Indikator" aria-describedby="helpId"></textarea>
-										<small class="text-danger invalid-feedback">Performa Indikator</small>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="font-size-h5"><strong>Ruang Lingkup</strong></label>
-									<div class="">
-										<textarea rows="5" name="scope" id="scope" class="form-control" rows="5" placeholder="Ruang Lingkup" aria-describedby="helpId"></textarea>
-										<small class="text-danger invalid-feedback">Ruang Lingkup</small>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-12">
-								<div class="form-group">
-									<label class="font-size-h5"><strong>Definisi</strong></label>
-									<div class="">
-										<textarea name="define" id="define" class="form-control textarea" placeholder="Definisi" aria-describedby="helpId"></textarea>
-										<small class="text-danger invalid-feedback">Definisi Proses</small>
-									</div>
-								</div>
-								<label for="sipocor" class="font-weight-bold font-size-h5"><strong>SIPOCOR</strong></label>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label for="Supplier" class="font-weight-bold font-size-"><strong>1. Supplier</strong></label>
-									<div class="">
-										<textarea rows="5" name="supplier" id="supplier" class="form-control" placeholder="Supplier" aria-describedby="helpId"></textarea>
-										<small class="text-danger invalid-feedback">Supplier</small>
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="Proses" class="font-weight-bold font-size-"><strong>3. Proses</strong></label>
-									<div class="">
-										<textarea rows="5" name="process" id="process" class="form-control" placeholder="Proses" aria-describedby="helpId"></textarea>
-										<small class="text-danger invalid-feedback">Proses</small>
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="Customer" class="font-weight-bold font-size-"><strong>5. Customer</strong></label>
-									<div class="">
-										<textarea rows="5" name="customer" id="customer" class="form-control" placeholder="Customer" aria-describedby="helpId"></textarea>
-										<small class="text-danger invalid-feedback">Customer</small>
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="Risk" class="font-weight-bold font-size-"><strong>7. Risk</strong></label>
-									<div class="">
-										<textarea rows="5" name="risk" id="risk" class="form-control" placeholder="Risk" aria-describedby="helpId"></textarea>
-										<small class="text-danger invalid-feedback">Risk</small>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group">
-									<label for="Input" class="font-weight-bold font-size-"><strong>2. Input</strong></label>
-									<div class="">
-										<textarea rows="5" name="input" id="input" class="form-control" placeholder="Input" aria-describedby="helpId"></textarea>
-										<small class="text-danger invalid-feedback">Input</small>
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="Output" class="font-weight-bold font-size-"><strong>4. Output</strong></label>
-									<div class="">
-										<textarea rows="5" name="output" id="output" class="form-control" placeholder="Output" aria-describedby="helpId"></textarea>
-										<small class="text-danger invalid-feedback">Output</small>
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="Objective" class="font-weight-bold font-size-"><strong>6. Objective</strong></label>
-									<div class="">
-										<textarea rows="5" name="objective" id="objective" class="form-control" placeholder="Objective" aria-describedby="helpId"></textarea>
-										<small class="text-danger invalid-feedback">Order</small>
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="Objective" class="font-weight-bold font-size-"><strong>8. Litigation</strong></label>
-									<div class="">
-										<textarea rows="5" name="litigation" id="litigation" class="form-control" placeholder="Litigation" aria-describedby="helpId"></textarea>
-										<small class="text-danger invalid-feedback">Litigation</small>
-									</div>
-								</div>
-							</div>
-						</div>
-						<hr>
-						<div class="mb-3">
-							<h4 class="">Flow Images</h4>
-							<div class="mt-1 mb-2">
-								<div class="row">
-									<div class="col-md-12">
-										<div class="form-group">
-											<label class="control-label">Upload File</label>
-											<div class="preview-zone hidden">
-												<div class="box box-solid">
-													<div class="box-body d-flex justify-content-start align-items-center">
-														<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
-															<div class="dropzone-desc">
-																<i class="fa fa-upload"></i>
-																<p>Choose an image file or drag it here.</p>
-															</div>
-															<input type="file" name="img_flow[]" data-index="1" class="dropzone dropzone-1">
-														</div>
-														<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
-															<div class="dropzone-desc">
-																<i class="fa fa-upload"></i>
-																<p>Choose an image file or drag it here.</p>
-															</div>
+						<div id="accProcedure" role="tablist" aria-multiselectable="true">
 
-															<input type="file" name="img_flow[]" data-index="2" class="dropzone dropzone-2">
-														</div>
-														<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
-															<div class="dropzone-desc">
-																<i class="fa fa-upload"></i>
-																<p>Choose an image file or drag it here.</p>
+							<!-- Nav tabs -->
+							<ul class="nav nav-tabs nav-pills border-0 mb-5" id="myTab" role="tablist">
+								<li class="nav-item" role="presentation">
+									<button class="nav-link active" id="procedures-tab" data-toggle="tab" data-target="#procedures" type="button" role="tab" aria-controls="procedures" aria-selected="true">PROCEDURE</button>
+								</li>
+								<li class="nav-item" role="presentation">
+									<button class="nav-link" id="form-tab" data-toggle="tab" data-target="#form" type="button" role="tab" aria-controls="form" aria-selected="false">FORM</button>
+								</li>
+								<li class="nav-item" role="presentation">
+									<button class="nav-link" id="guides-tab" data-toggle="tab" data-target="#guides" type="button" role="tab" aria-controls="guides" aria-selected="false">IK</button>
+								</li>
+								<li class="nav-item" role="presentation">
+									<button class="nav-link" id="records-tab" data-toggle="tab" data-target="#records" type="button" role="tab" aria-controls="records" aria-selected="false">RECORD</button>
+								</li>
+							</ul>
+
+							<!-- Tab panes -->
+							<div class="tab-content p-3 rounded-lg border">
+								<div class="tab-pane fade show active" id="procedures" role="tabpanel" aria-labelledby="procedures-tab">
+									<!-- DETAIL PROSES -->
+									<div class="card shadow-xs mb-3" style="border-radius: 10px;">
+										<div class="card-header  border-0 py-4 cursor-pointer" role="tab" id="sectionDetail" style="border-radius: 10px;">
+											<h4 class="mb-0 font-weight-bolder" data-toggle="collapse" data-parent="#accProcedure" href="#detailProcess" aria-expanded="true" aria-controls="detailProcess">
+												DETAIL PROSES
+											</h4>
+										</div>
+										<div id="detailProcess" class="collapse in" role="tabpanel" aria-labelledby="sectionDetail">
+											<div class="card-body">
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="font-size-h5"><strong>Process Group</strong></label>
+															<div class="">
+																<select name="group_procedure" id="group_procedure" class="form-control select2">
+																	<option value=""></option>
+																	<?php foreach ($grProcess as $pro) : ?>
+																		<option value="<?= $pro->id; ?>"><?= $pro->name; ?></option>
+																	<?php endforeach; ?>
+																</select>
+																<small class="text-danger invalid-feedback">Nama Proses</small>
 															</div>
-															<input type="file" name="img_flow[]" data-index="3" class="dropzone dropzone-3">
-															<!-- <div class="middle m-auto text-center ">
-																<button type="button" class="btn btn-sm btn-icon btn-danger remove-image rounded-circle"><i class="fa fa-trash"></i></button>
-															</div> -->
+														</div>
+													</div>
+												</div>
+
+												<hr>
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="font-size-h5"><strong>Nama Proses</strong></label>
+															<div class="">
+																<textarea rows="5" name="name" id="name" required class="form-control" rows="5" placeholder="Nama Proses" aria-describedby="helpId"></textarea>
+																<small class="text-danger invalid-feedback">Nama Proses</small>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="font-size-h5"><strong>Objektif Proses</strong></label>
+															<div class="">
+																<textarea rows="5" name="object" id="object" required class="form-control" rows="5" placeholder="Objektif Proses" aria-describedby="helpId"></textarea>
+																<small class="text-danger invalid-feedback">Objektif Proses</small>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="font-size-h5"><strong>Performa Indikator</strong></label>
+															<div class="">
+																<textarea rows="5" name="performance" id="performance" class="form-control" rows="5" placeholder="Performa Indikator" aria-describedby="helpId"></textarea>
+																<small class="text-danger invalid-feedback">Performa Indikator</small>
+															</div>
+														</div>
+														<div class="form-group">
+															<label class="font-size-h5"><strong>Ruang Lingkup</strong></label>
+															<div class="">
+																<textarea rows="5" name="scope" id="scope" class="form-control" rows="5" placeholder="Ruang Lingkup" aria-describedby="helpId"></textarea>
+																<small class="text-danger invalid-feedback">Ruang Lingkup</small>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-12">
+														<div class="form-group">
+															<label class="font-size-h5"><strong>Definisi</strong></label>
+															<div class="">
+																<textarea name="define" id="define" class="form-control textarea" placeholder="Definisi" aria-describedby="helpId"></textarea>
+																<small class="text-danger invalid-feedback">Definisi Proses</small>
+															</div>
 														</div>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
+
+									<!-- SIPOCOR -->
+									<div class="card shadow-xs mb-3" style="border-radius: 10px;">
+										<div class="card-header border-0 py-4 cursor-pointer" role="tab" id="sectionSipocor" style="border-radius: 10px;">
+											<h4 class="mb-0 font-weight-bolder" data-toggle="collapse" data-parent="#accProcedure" href="#sipocor" aria-expanded="true" aria-controls="sipocor">
+												SIPOCOR
+											</h4>
+										</div>
+
+										<div id="sipocor" class="collapse in" role="tabpanel" aria-labelledby="sectionSipocor">
+											<div class="card-body">
+												<div class="row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="Supplier" class="font-weight-bold font-size-"><strong>1. Supplier</strong></label>
+															<div class="">
+																<textarea rows="5" name="supplier" id="supplier" class="form-control" placeholder="Supplier" aria-describedby="helpId"></textarea>
+																<small class="text-danger invalid-feedback">Supplier</small>
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="Proses" class="font-weight-bold font-size-"><strong>3. Proses</strong></label>
+															<div class="">
+																<textarea rows="5" name="process" id="process" class="form-control" placeholder="Proses" aria-describedby="helpId"></textarea>
+																<small class="text-danger invalid-feedback">Proses</small>
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="Customer" class="font-weight-bold font-size-"><strong>5. Customer</strong></label>
+															<div class="">
+																<textarea rows="5" name="customer" id="customer" class="form-control" placeholder="Customer" aria-describedby="helpId"></textarea>
+																<small class="text-danger invalid-feedback">Customer</small>
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="Risk" class="font-weight-bold font-size-"><strong>7. Risk</strong></label>
+															<div class="">
+																<textarea rows="5" name="risk" id="risk" class="form-control" placeholder="Risk" aria-describedby="helpId"></textarea>
+																<small class="text-danger invalid-feedback">Risk</small>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label for="Input" class="font-weight-bold font-size-"><strong>2. Input</strong></label>
+															<div class="">
+																<textarea rows="5" name="input" id="input" class="form-control" placeholder="Input" aria-describedby="helpId"></textarea>
+																<small class="text-danger invalid-feedback">Input</small>
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="Output" class="font-weight-bold font-size-"><strong>4. Output</strong></label>
+															<div class="">
+																<textarea rows="5" name="output" id="output" class="form-control" placeholder="Output" aria-describedby="helpId"></textarea>
+																<small class="text-danger invalid-feedback">Output</small>
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="Objective" class="font-weight-bold font-size-"><strong>6. Objective</strong></label>
+															<div class="">
+																<textarea rows="5" name="objective" id="objective" class="form-control" placeholder="Objective" aria-describedby="helpId"></textarea>
+																<small class="text-danger invalid-feedback">Order</small>
+															</div>
+														</div>
+														<div class="form-group">
+															<label for="Objective" class="font-weight-bold font-size-"><strong>8. Litigation</strong></label>
+															<div class="">
+																<textarea rows="5" name="litigation" id="litigation" class="form-control" placeholder="Litigation" aria-describedby="helpId"></textarea>
+																<small class="text-danger invalid-feedback">Litigation</small>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<!-- FLOW IMAGES -->
+									<div class="card shadow-xs mb-3" style="border-radius: 10px;">
+										<div class="card-header border-0 py-4 cursor-pointer" role="tab" id="sectionFlowImages" style="border-radius: 10px;">
+											<h4 class="mb-0 font-weight-bolder" data-toggle="collapse" data-parent="#accProcedure" href="#flowImages" aria-expanded="true" aria-controls="flowImages">
+												FLOW IMAGES
+											</h4>
+										</div>
+										<div id="flowImages" class="collapse in" role="tabpanel" aria-labelledby="sectionFlowImages">
+											<div class="card-body">
+												<div class="mb-3">
+													<h4 class="">Flow Images</h4>
+													<div class="mt-1 mb-2">
+														<div class="row">
+															<div class="col-md-12">
+																<div class="form-group">
+																	<label class="control-label">Upload File</label>
+																	<div class="preview-zone hidden">
+																		<div class="box box-solid">
+																			<div class="box-body d-flex justify-content-start align-items-center">
+																				<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
+																					<div class="dropzone-desc">
+																						<i class="fa fa-upload"></i>
+																						<p>Choose an image file or drag it here.</p>
+																					</div>
+																					<input type="file" name="img_flow[]" data-index="1" class="dropzone dropzone-1">
+																				</div>
+																				<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
+																					<div class="dropzone-desc">
+																						<i class="fa fa-upload"></i>
+																						<p>Choose an image file or drag it here.</p>
+																					</div>
+
+																					<input type="file" name="img_flow[]" data-index="2" class="dropzone dropzone-2">
+																				</div>
+																				<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
+																					<div class="dropzone-desc">
+																						<i class="fa fa-upload"></i>
+																						<p>Choose an image file or drag it here.</p>
+																					</div>
+																					<input type="file" name="img_flow[]" data-index="3" class="dropzone dropzone-3">
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
+									<!-- FLOW DETAIL -->
+									<div class="card shadow-xs mb-3" style="border-radius: 10px;">
+										<div class="card-header border-0 py-4 cursor-pointer" role="tab" id="sectionFlowDetail" style="border-radius: 10px;">
+											<h4 class="mb-0 font-weight-bolder" data-toggle="collapse" data-parent="#accProcedure" href="#flowDetail" aria-expanded="true" aria-controls="flowDetail">
+												FLOW DETAIL
+											</h4>
+										</div>
+										<div id="flowDetail" class="collapse in" role="tabpanel" aria-labelledby="sectionFlowDetail">
+											<div class="card-body">
+												<div class="d-flex justify-content-between align-items-center mb-3">
+													<button type="button" class="btn btn-primary btn-sm" id="add_flow"><i class="fa fa-plus mr-2"></i>Add Flow</button>
+												</div>
+												<table class="table table-sm table-condensed table-bordered">
+													<thead class="text-center ">
+														<tr class="table-light">
+															<th width="80">No</th>
+															<th>PIC</th>
+															<th>Deskripsi</th>
+															<th>Dokumen Terkait</th>
+															<th>Action</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<td colspan="5" class="text-center text-muted">~ No data avilable ~</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
 								</div>
+								<div class="tab-pane fade" id="form" role="tabpanel" aria-labelledby="form-tab">
+									<button type="button" class="btn btn-primary mb-3" id="add_form"><i class="fa fa-plus"></i> Add Form</button>
+									<table class="table table-bordered table-sm table-condensed">
+										<thead>
+											<tr>
+												<th width="50" class="text-center">No</th>
+												<th class="text-center">Name</th>
+												<th width="250" class="text-center">Opis</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td colspan="3" class="text-center py-3">
+													<h5 class="text-light-secondary">~ No data available~ </h5>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="tab-pane fade" id="guides" role="tabpanel" aria-labelledby="guides-tab"> ik </div>
+								<div class="tab-pane fade" id="records" role="tabpanel" aria-labelledby="records-tab"> Records </div>
 							</div>
 						</div>
+						<hr>
 						<div class="d-flex justify-content-between align-items-center mb-3">
 							<button type="submit" class="btn btn-primary save"><i class="fa fa-save"></i>Save</button>
 						</div>
-						<div class="d-flex justify-content-between align-items-center mb-3">
-							<h4 class="">Flow Details</h4>
-							<button type="button" class="btn btn-primary btn-sm" id="add_flow"><i class="fa fa-plus mr-2"></i>Add Flow</button>
-						</div>
-						<table class="table table-sm table-condensed table-bordered">
-							<thead class="text-center ">
-								<tr class="table-light">
-									<th width="80">No</th>
-									<th>PIC</th>
-									<th>Deskripsi</th>
-									<th>Dokumen Terkait</th>
-									<th>Action</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td colspan="5" class="text-center text-muted">~ No data avilable ~</td>
-								</tr>
-							</tbody>
-						</table>
 					</div>
 				</div>
 
@@ -211,6 +323,12 @@
 
 <script>
 	$(document).ready(function() {
+		$('.select2').select2({
+			placeholder: "Choose an options",
+			width: "100%",
+			allowClear: true
+		})
+
 		function handlePromise(promiseList) {
 			return promiseList.map(promise =>
 				promise.then((res) => ({

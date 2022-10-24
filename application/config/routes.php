@@ -55,13 +55,17 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['login'] = 'users/users/login';
 $route['logout'] = 'users/users/logout';
+$route['/directory'] = '404';
 
 /* List Documents */
+$route['list/procedures'] = 'documents_list/procedures';
+$route['list/procedures/(:any)'] = 'documents_list/procedures/$1';
 $route['list/(:any)/(:any)'] = 'documents_list/$1/$2';
 $route['list/(:any)'] = 'documents_list/find/$1';
 $route['list'] = 'dashboard';
 
 /* Manage Documents */
+$route['docs/procedures'] = 'manage_documents/procedures/$1';
 $route['docs/(:any)/(:any)/(:any)'] = 'manage_documents/$1/$2/$3';
 $route['docs/(:any)/(:any)'] = 'manage_documents/$1/$2';
 $route['docs/(:any)'] = 'manage_documents/$1';
