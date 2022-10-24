@@ -184,14 +184,27 @@ class Procedures extends Admin_Controller
 	private function _save_upload()
 	{
 		$data = $this->input->post('forms');
+		$dir = '';
+		if (isset($data['type']) && $data['type'] == 'form') {
+			$table = 'dir_forms';
+			$dir = 'FORMS';
+		} else if (isset($data['type']) && $data['type'] == 'guide') {
+			$table = 'dir_guides';
+			$dir = 'GUIDES';
+		} else if (isset($data['type']) && $data['type'] == 'record') {
+			$table = 'dir_records';
+			$dir = 'RECORDS';
+		}
+
+		unset($data['type']);
 		if ($_FILES['forms_image']) {
-			if (!is_dir('./directory/FORMS')) {
-				mkdir('./directory/FORMS', 0755, TRUE);
-				chmod("./directory/FORMS", 0755);  // octal; correct value of mode
-				chown("./directory/FORMS", 'www-data');
+			if (!is_dir("./directory/$dir")) {
+				mkdir("./directory/$dir", 0755, TRUE);
+				chmod("./directory/$dir", 0755);  // octal; correct value of mode
+				chown("./directory/$dir", 'www-data');
 			}
 			// $new_name 					= $this->fixForUri($data['description']);
-			$config['upload_path'] 		= "./directory/FORMS"; //path folder
+			$config['upload_path'] 		= "./directory/$dir"; //path folder
 			$config['allowed_types'] 	= 'pdf|xlsx|docx'; //type yang dapat diakses bisa anda sesuaikan
 			$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
 			// $config['file_name'] 		= $new_name;
@@ -219,25 +232,25 @@ class Procedures extends Admin_Controller
 				unset($data['old_file']);
 
 				if ($old_file != null) {
-					if (file_exists('./directory/FORMS/' . $old_file)) {
-						unlink('./directory/FORMS/' . $old_file);
+					if (file_exists("./directory/$dir/" . $old_file)) {
+						unlink("./directory/$dir/" . $old_file);
 					}
 				}
 
-				$check = $this->db->get_where('dir_forms', ['id' => $id])->num_rows();
+				$check = $this->db->get_where($table, ['id' => $id])->num_rows();
 				$note = isset($data['note']) ? $data['note'] : null;
+				$data['status']			= isset($data['status']) ? $data['status'] : 'OPN';
 				unset($data['note']);
 				if (intval($check) == '0') {
 					$data['created_by']		= $this->auth->user_id();
 					$data['created_at']		= date('Y-m-d H:i:s');
 					$data['note']			= 'First Upload File';
-					$data['status']			= isset($data['status']) ? $data['status'] : 'OPN';
-					$this->db->insert('dir_forms', $data);
+					$this->db->insert($table, $data);
 				} else {
 					$data['modified_by']	= $this->auth->user_id();
 					$data['modified_at']	= date('Y-m-d H:i:s');
 					$data['note']			= 'Re-upload File';
-					$this->db->update('ydir_forms', $data, ['id' => $id]);
+					$this->db->update($table, $data, ['id' => $id]);
 				}
 
 				$data['note'] = $note;
@@ -440,9 +453,11 @@ class Procedures extends Admin_Controller
 			'jabatan' 		=> $jabatan,
 			'procedure_id' 	=> $id,
 			'users' 		=> $users,
+			'type' 			=> "form",
 		]);
 		$this->template->render('upload_file');
 	}
+
 	public function edit_form($id = null)
 	{
 
@@ -456,11 +471,31 @@ class Procedures extends Admin_Controller
 			'jabatan' 		=> $jabatan,
 			'procedure_id' 	=> $data->procedure_id,
 			'users' 		=> $users,
+			'type' 			=> "form",
 		]);
 		$this->template->render('upload_file');
 	}
 
 	/* upload ik */
+
+	public function view_guide($id = null)
+	{
+		if ($id) {
+			$file 		= $this->db->get_where('dir_guides', ['id' => $id])->row();
+			// $dir_name 	= $this->db->get_where('dir_form', ['id' => $file->parent_id])->row()->name;
+			$history	= $this->db->order_by('updated_at', 'ASC')->get_where('view_directory_log', ['directory_id' => $id])->result();
+			// $this->template->set('dir_name', $dir_name);
+			$this->template->set('sts', $this->sts);
+			$this->template->set('file', $file);
+			$this->template->set('type', 'guide');
+			$this->template->set('history', $history);
+			$this->template->render('show');
+		} else {
+			echo "~ Not data available ~";
+		}
+	}
+
+
 	public function upload_guide($id = null)
 	{
 		$users 		= $this->db->get_where('users', ['status' => 'ACT', 'id_user !=' => '1'])->result();
@@ -470,9 +505,11 @@ class Procedures extends Admin_Controller
 			'jabatan' 		=> $jabatan,
 			'procedure_id' 	=> $id,
 			'users' 		=> $users,
+			'type' 			=> "guide",
 		]);
 		$this->template->render('upload_file');
 	}
+
 	public function edit_guide($id = null)
 	{
 
@@ -486,6 +523,7 @@ class Procedures extends Admin_Controller
 			'jabatan' 		=> $jabatan,
 			'procedure_id' 	=> $data->procedure_id,
 			'users' 		=> $users,
+			'type' 			=> "guide",
 		]);
 		$this->template->render('upload_file');
 	}

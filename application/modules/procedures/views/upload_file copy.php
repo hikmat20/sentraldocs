@@ -8,15 +8,6 @@
 				<input type="text" class="form-control" id="description" placeholder="Description" name="forms[description]" value="<?= isset($data) ? $data->name : ''; ?>" autocomplete="off" />
 				<span class="form-text text-danger invalid-feedback">Deskripsi harus di isi</span>
 			</div>
-			<div class="type-form">
-				<?php if ($type == 'form') : ?>
-					<input type="hidden" name="forms[type]" value="form">
-				<?php elseif ($type == 'guide') : ?>
-					<input type="hidden" name="forms[type]" value="guide">
-				<?php elseif ($type == 'record') : ?>
-					<input type="hidden" name="forms[type]" value="record">
-				<?php endif; ?>
-			</div>
 		</div>
 
 		<div class="row">

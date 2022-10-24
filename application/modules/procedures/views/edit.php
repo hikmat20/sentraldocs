@@ -361,7 +361,7 @@
 								</table>
 							</div>
 							<div class="tab-pane fade" id="guides" role="tabpanel" aria-labelledby="guides-tab">
-								<button type="button" class="btn btn-primary mb-3" id="add_form"><i class="fa fa-plus"></i> Add Form</button>
+								<button type="button" class="btn btn-primary mb-3" id="add_guide"><i class="fa fa-plus"></i> Add IK</button>
 								<table class="table table-bordered table-hover">
 									<thead>
 										<tr class="table-light">
@@ -760,6 +760,19 @@
 		})
 
 		// upload IK
+
+		$(document).on('click', '.view-guide', function() {
+			const id = $(this).data('id')
+			if (id) {
+				$('.modal-title').html('View IK')
+				$('#content_modal').load(siteurl + active_controller + 'view_guide/' + id)
+				$('#modelId').modal('show')
+			} else {
+				Swal.fire('Warning!!', 'Not available data to process', 'waring', 2000);
+			}
+		})
+
+
 		$(document).on('click', '#add_guide', function() {
 			const id = $('#procedure_id').val() || null;
 			$('#modelId').modal('show')
