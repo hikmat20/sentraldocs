@@ -819,6 +819,43 @@
 
 		})
 
+		$(document).on('click', '.delete-form', function() {
+			const id = $(this).data('id') || null;
+			const btn = $(this)
+			Swal.fire({
+				title: 'Are you sure to delete this data?',
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonColor: '#DD6B55',
+				confirmButtonText: 'Yes, Delete <i class="fa fa-trash text-white"></i>',
+			}).then((value) => {
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'delete_form/' + id,
+						type: 'GET',
+						dataType: 'JSON',
+						success: function(result) {
+							if (result.status == '1') {
+								Swal.fire({
+									title: 'Success!!',
+									text: result.msg,
+									icon: 'success',
+									timer: 1500
+								});
+								$(btn).parents('tr').remove();
+
+							} else {
+								Swal.fire('Warning', "Can't delete data. Please try again!", 'warning', 2000)
+							}
+						},
+						error: function() {
+							Swal.fire('Error!', 'Server timeout. Please try again!', 'error', 3000)
+						}
+					})
+				}
+			})
+
+		})
 		// upload IK
 
 		$(document).on('click', '.view-guide', function() {
@@ -831,7 +868,6 @@
 				Swal.fire('Warning!!', 'Not available data to process', 'waring', 2000);
 			}
 		})
-
 
 		$(document).on('click', '#add_guide', function() {
 			const id = $('#procedure_id').val() || null;
@@ -850,6 +886,43 @@
 
 		})
 
+		$(document).on('click', '.delete-guide', function() {
+			const id = $(this).data('id') || null;
+			const btn = $(this)
+			Swal.fire({
+				title: 'Are you sure to delete this data?',
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonColor: '#DD6B55',
+				confirmButtonText: 'Yes, Delete <i class="fa fa-trash text-white"></i>',
+			}).then((value) => {
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'delete_guide/' + id,
+						type: 'GET',
+						dataType: 'JSON',
+						success: function(result) {
+							if (result.status == '1') {
+								Swal.fire({
+									title: 'Success!!',
+									text: result.msg,
+									icon: 'success',
+									timer: 1500
+								});
+								$(btn).parents('tr').remove();
+
+							} else {
+								Swal.fire('Warning', "Can't delete data. Please try again!", 'warning', 2000)
+							}
+						},
+						error: function() {
+							Swal.fire('Error!', 'Server timeout. Please try again!', 'error', 3000)
+						}
+					})
+				}
+			})
+
+		})
 		/* UPLOAD RECORDS */
 
 		$(document).on('click', '.view-record', function() {
@@ -880,6 +953,45 @@
 			$('#content_modal').load(siteurl + active_controller + 'edit_record/' + id)
 
 		})
+
+		$(document).on('click', '.delete-record', function() {
+			const id = $(this).data('id') || null;
+			const btn = $(this)
+			Swal.fire({
+				title: 'Are you sure to delete this data?',
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonColor: '#DD6B55',
+				confirmButtonText: 'Yes, Delete <i class="fa fa-trash text-white"></i>',
+			}).then((value) => {
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'delete_record/' + id,
+						type: 'GET',
+						dataType: 'JSON',
+						success: function(result) {
+							if (result.status == '1') {
+								Swal.fire({
+									title: 'Success!!',
+									text: result.msg,
+									icon: 'success',
+									timer: 1500
+								});
+								$(btn).parents('tr').remove();
+
+							} else {
+								Swal.fire('Warning', "Can't delete data. Please try again!", 'warning', 2000)
+							}
+						},
+						error: function() {
+							Swal.fire('Error!', 'Server timeout. Please try again!', 'error', 3000)
+						}
+					})
+				}
+			})
+
+		})
+
 
 		$(document).on('change', 'input[name="forms[flag_record]"]:checked', function() {
 			const mode = $(this).val()

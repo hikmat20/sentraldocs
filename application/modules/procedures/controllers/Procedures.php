@@ -365,6 +365,7 @@ class Procedures extends Admin_Controller
 	{
 		$this->db->trans_begin();
 		if (($id)) {
+
 			$data['modified_by'] = $this->auth->user_id();
 			$data['modified_at'] = date('Y-m-d H:i:s');
 			$data["$dataImg"] = null;
@@ -477,6 +478,51 @@ class Procedures extends Admin_Controller
 		$this->template->render('upload_file');
 	}
 
+	public function delete_form($id = null)
+	{
+		if ($id) {
+			$this->db->trans_begin();
+			$data = [
+				'status' => 'DEL',
+				'deleted_by' => $this->auth->user_id(),
+				'deleted_at' => date('Y-m-d H:i:s'),
+			];
+			$this->db->update('dir_forms', $data, ['id' => $id]);
+			$file_name = $this->db->get_where('dir_forms', ['id' => $id])->row()->file_name;
+			$this->_delete_file('FORMS', $file_name);
+			if ($this->db->trans_status() === FALSE) {
+				$this->db->trans_rollback();
+				$Return = [
+					'status' => '0',
+					'msg' => 'Data failed to delete, pelase try again.'
+				];
+			} else {
+				$this->db->trans_commit();
+				$Return = [
+					'status' => '1',
+					'msg' => 'Data successfull deleted.'
+				];
+			}
+		} else {
+			$Return = [
+				'status' => '0',
+				'msg' => 'Data not valid'
+			];
+		}
+
+		echo json_encode($Return);
+	}
+
+
+	private function _delete_file($dir = null, $file_name = null)
+	{
+		if ($dir && $file_name) {
+			if (file_exists("./directory/$dir/" . $file_name)) {
+				unlink("./directory/$dir/" . $file_name);
+			}
+		}
+	}
+
 	/* upload ik */
 
 	public function view_guide($id = null)
@@ -528,6 +574,40 @@ class Procedures extends Admin_Controller
 		$this->template->render('upload_file');
 	}
 
+	public function delete_guide($id = null)
+	{
+		if ($id) {
+			$this->db->trans_begin();
+			$data = [
+				'status' => 'DEL',
+				'deleted_by' => $this->auth->user_id(),
+				'deleted_at' => date('Y-m-d H:i:s'),
+			];
+			$this->db->update('dir_guides', $data, ['id' => $id]);
+			$file_name = $this->db->get_where('dir_guides', ['id' => $id])->row()->file_name;
+			$this->_delete_file('GUIDES', $file_name);
+			if ($this->db->trans_status() === FALSE) {
+				$this->db->trans_rollback();
+				$Return = [
+					'status' => '0',
+					'msg' => 'Data failed to delete, pelase try again.'
+				];
+			} else {
+				$this->db->trans_commit();
+				$Return = [
+					'status' => '1',
+					'msg' => 'Data successfull deleted.'
+				];
+			}
+		} else {
+			$Return = [
+				'status' => '0',
+				'msg' => 'Data not valid'
+			];
+		}
+
+		echo json_encode($Return);
+	}
 
 	/* UPLOAD RECORDS */
 
@@ -580,5 +660,40 @@ class Procedures extends Admin_Controller
 			'type' 			=> "record",
 		]);
 		$this->template->render('upload_file');
+	}
+
+	public function delete_record($id = null)
+	{
+		if ($id) {
+			$this->db->trans_begin();
+			$data = [
+				'status' => 'DEL',
+				'deleted_by' => $this->auth->user_id(),
+				'deleted_at' => date('Y-m-d H:i:s'),
+			];
+			$this->db->update('dir_records', $data, ['id' => $id]);
+			$file_name = $this->db->get_where('dir_records', ['id' => $id])->row()->file_name;
+			$this->_delete_file('RECORDS', $file_name);
+			if ($this->db->trans_status() === FALSE) {
+				$this->db->trans_rollback();
+				$Return = [
+					'status' => '0',
+					'msg' => 'Data failed to delete, pelase try again.'
+				];
+			} else {
+				$this->db->trans_commit();
+				$Return = [
+					'status' => '1',
+					'msg' => 'Data successfull deleted.'
+				];
+			}
+		} else {
+			$Return = [
+				'status' => '0',
+				'msg' => 'Data not valid'
+			];
+		}
+
+		echo json_encode($Return);
 	}
 }
