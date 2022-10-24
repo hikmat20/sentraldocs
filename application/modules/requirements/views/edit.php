@@ -30,6 +30,23 @@
 										<input type="text" name="number" id="number" class="form-control" placeholder="09123" value="<?= $Data->number; ?>">
 									</div>
 								</div>
+								<div class="mb-3 row flex-nowrap">
+									<label for="" class="col-2 col-form-label font-weight-bold">Status</label>
+									<div class="col-4">
+										<select name="status" id="status" class="form-control select2">
+											<option value="1" <?= ($Data->status == '1') ? 'selected' : ''; ?>>Publish</option>
+											<option value="DFT" <?= ($Data->status == 'DFT') ? 'selected' : ''; ?>>Draft</option>
+										</select>
+									</div>
+								</div>
+								<div class="mb-3 row flex-nowrap">
+									<label for="" class="col-2 col-form-label font-weight-bold"></label>
+									<div class="col-4">
+										<button type="submit" class="btn btn-primary w- save"><i class="fa fa-save"></i>Save</button>
+
+									</div>
+								</div>
+
 							</div>
 						</div>
 
@@ -181,6 +198,12 @@
 	})
 
 	$(document).ready(function() {
+
+		$('.select2').select2({
+			placeholder: 'Choose an Option',
+			width: '100%',
+			allowClear: true,
+		})
 
 		$(document).on('click', '.edit', function() {
 			let id = $(this).data('id')

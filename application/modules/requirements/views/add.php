@@ -29,6 +29,21 @@
 										<input type="text" name="number" id="number" class="form-control" placeholder="09123">
 									</div>
 								</div>
+								<div class="mb-3 row flex-nowrap">
+									<label for="" class="col-2 col-form-label font-weight-bold">Status</label>
+									<div class="col-4">
+										<select name="status" id="status" class="form-control select2">
+											<option value="1">Publish</option>
+											<option value="DFT">Draft</option>
+										</select>
+									</div>
+								</div>
+								<div class="mb-3 row flex-nowrap">
+									<label for="" class="col-2 col-form-label font-weight-bold"></label>
+									<div class="col-4">
+										<button type="submit" class="btn btn-primary w- save"><i class="fa fa-save"></i>Save</button>
+									</div>
+								</div>
 							</div>
 						</div>
 
@@ -86,7 +101,7 @@
 								</div>
 							</div>
 							<div class="modal-footer justify-content-between align-items-center">
-								<button type="submit" class="btn btn-primary w-100px" id="save_chapter"><i class="fa fa-save"></i>Save</button>
+								<button type="submit" class="btn btn-primary w- save" id="save_chapter"><i class="fa fa-save"></i>Save</button>
 								<button type="button" class="btn btn-danger" onclick="tinymce.remove()" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
 							</div>
 						</div>
@@ -99,6 +114,12 @@
 
 <script>
 	$(document).ready(function() {
+		$('.select2').select2({
+			placeholder: 'Choose an Option',
+			width: '100%',
+			allowClear: true,
+		})
+
 		function handlePromise(promiseList) {
 			return promiseList.map(promise =>
 				promise.then((res) => ({
@@ -135,7 +156,7 @@
 		$(document).on('submit', '#form-chapter', function(e) {
 			e.preventDefault();
 			let formdata = new FormData($(this)[0])
-			let btn = $('#save_chapter')
+			let btn = $('.save')
 			$.ajax({
 				url: siteurl + active_controller + '/save',
 				data: formdata,

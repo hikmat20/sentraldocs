@@ -206,6 +206,12 @@
 				<div class="col-md-3">
 					<div class="card mt-15 border-0 shadow-lg" style="background-color: srgba(255,255,255,0.85);">
 						<div class="card-body pt-5 px-5">
+							<div class="d-flex flex-center mb-3">
+								<span class="align-self-stretch mr-2 my-1 "><i class="fa fa-link text-warning"></i></span>
+								<div class="d-flex flex-column flex-grow-1">
+									<a href="<?= base_url($this->uri->segment(1) . '/procedures'); ?>" class="text-dark text-hover-warning font-weight-bolder font-size-lg mb-1">PROSEDUR, FORM, IK DAN RECORD</a>
+								</div>
+							</div>
 							<?php foreach ($MainData as $main) : ?>
 								<div class="d-flex flex-center mb-3">
 									<span class="align-self-stretch mr-2 my-1 "><i class="fa fa-link text-warning"></i></span>
@@ -214,6 +220,7 @@
 									</div>
 								</div>
 							<?php endforeach; ?>
+
 						</div>
 					</div>
 				</div>

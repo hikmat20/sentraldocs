@@ -37,6 +37,7 @@
 												DETAIL PROSES
 											</h4>
 										</div>
+
 										<div id="detailProcess" class="collapse in show" role="tabpanel" aria-labelledby="sectionDetail">
 											<div class="card-body">
 												<div class="row">
@@ -49,6 +50,19 @@
 																	<?php foreach ($grProcess as $pro) : ?>
 																		<option value="<?= $pro->id; ?>"><?= $pro->name; ?></option>
 																	<?php endforeach; ?>
+																</select>
+															</div>
+														</div>
+													</div>
+
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="font-size-h5"><strong><span class="text-danger">*</span> Status</strong></label>
+															<div class="">
+																<select name="status" id="status" class="form-control select2">
+																	<option value=""></option>
+																	<option value="DFT">Draft</option>
+																	<option value="1">Publish</option>
 																</select>
 															</div>
 														</div>

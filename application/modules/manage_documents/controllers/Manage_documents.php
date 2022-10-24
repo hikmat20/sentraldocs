@@ -78,7 +78,7 @@ class Manage_documents extends Admin_Controller
 				$html .= "<li class='h6 py-1 " . $cek_company . "'><a href='" . $val->link . "' data-id='" . $val->id . "' data-parent_id='" . $val->parent_id . "' data-custome='" . $val->custome . "' class='tree-folder'>" . $val->name . "</a></li>";
 			}
 		}
-		$html .= "<li class='h6 py-1'><a href='javascript:void(0)' data-custome='Y' class='procedures'>PROSEDUR, FORM, IK DAN RECORD</a></li>";
+		// $html .= "<li class='h6 py-1'><a href='javascript:void(0)' data-custome='Y' class='procedures'>PROSEDUR, FORM, IK DAN RECORD</a></li>";
 		$html .= "</ul>";
 		return $html;
 	}

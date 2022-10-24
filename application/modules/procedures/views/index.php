@@ -11,33 +11,84 @@
 					</div>
 				</div>
 				<div class="card-body">
-					<table id="example1" class="table table-bordered table-sm table-hover datatable">
-						<thead class="text-center">
-							<tr class="text-center">
-								<th width="40">No.</th>
-								<th class="text-left">Nama</th>
-								<th width="100">Status</th>
-								<th width="150">Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php if (isset($data) && $data) :
-								$n = 0;
-								foreach ($data as $dt) : $n++; ?>
+
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs nav-pills pb-3 mb-3" id="myTab" role="tablist">
+						<li class="nav-item" role="presentation">
+							<button class="nav-link active" id="published-tab" data-toggle="tab" data-target="#published" type="button" role="tab" aria-controls="published" aria-selected="true">Published <span class="badge badge-circle bg-white text-primary ml-2"><?= count($data); ?></span></button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="draft-tab" data-toggle="tab" data-target="#draft" type="button" role="tab" aria-controls="draft" aria-selected="false">Draft <span class="badge bg-white badge-circle text-primary ml-2"><?= count($dataDraft); ?></span></button>
+						</li>
+					</ul>
+
+					<!-- Tab panes -->
+					<div class="tab-content ">
+						<div class="tab-pane fade active show" id="published" role="tabpanel" aria-labelledby="published-tab">
+							<table id="example1" class="table table-bordered table-sm table-hover datatable">
+								<thead class="text-center table-light">
 									<tr class="text-center">
-										<td><?= $n; ?></td>
-										<td class="text-left"><?= $dt->name; ?></td>
-										<td><?= $status[$dt->status]; ?></td>
-										<td>
-											<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-											<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning" data-id="<?= $dt->id; ?>" title="Edit Data"><i class="fa fa-edit"></i></a>
-											<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button>
-										</td>
+										<th width="40">No.</th>
+										<th class="text-left">Nama</th>
+										<th width="100">Status</th>
+										<th width="150">Action</th>
 									</tr>
-							<?php endforeach;
-							endif; ?>
-						</tbody>
-					</table>
+								</thead>
+								<tbody>
+									<?php if (isset($data) && $data) :
+										$n = 0;
+										foreach ($data as $dt) : $n++; ?>
+											<tr class="text-center">
+												<td><?= $n; ?></td>
+												<td class="text-left"><?= $dt->name; ?></td>
+												<td><?= $status[$dt->status]; ?></td>
+												<td>
+													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
+													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning" data-id="<?= $dt->id; ?>" title="Edit Data"><i class="fa fa-edit"></i></a>
+													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button>
+												</td>
+											</tr>
+									<?php endforeach;
+									endif; ?>
+								</tbody>
+							</table>
+						</div>
+						<div class="tab-pane fade " id="draft" role="tabpanel" aria-labelledby="draft-tab">
+							<table id="example1" class="table table-bordered table-sm table-hover datatable">
+								<thead class="text-center table-light">
+									<tr class="text-center">
+										<th width="40">No.</th>
+										<th class="text-left">Nama</th>
+										<th width="100">Status</th>
+										<th width="150">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php if (isset($dataDraft) && $dataDraft) :
+										$n = 0;
+										foreach ($dataDraft as $draft) : $n++; ?>
+											<tr class="text-center">
+												<td><?= $n; ?></td>
+												<td class="text-left"><?= $draft->name; ?></td>
+												<td><?= $status[$draft->status]; ?></td>
+												<td>
+													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $draft->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
+													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $draft->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning" data-id="<?= $draft->id; ?>" title="Edit Data"><i class="fa fa-edit"></i></a>
+													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $draft->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button>
+												</td>
+											</tr>
+										<?php endforeach;
+									else : ?>
+										<tr class="text-center">
+											<td colspan="4" class="text-center text-light-secondary">~ Not avaliable data ~</td>
+										</tr>
+									<?php endif; ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+
 				</div>
 			</div>
 		</div>

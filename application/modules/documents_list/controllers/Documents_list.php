@@ -106,6 +106,7 @@ class Documents_list extends Admin_Controller
 				'forms' 			=> $forms,
 				'guides' 			=> $guides,
 				'records' 			=> $records,
+				'MainData' 			=> $this->MainData
 			]);
 
 			$this->template->render('procedures/list-docs');
@@ -121,6 +122,7 @@ class Documents_list extends Admin_Controller
 			$this->template->set([
 				'groups' 		=> $groups,
 				'ArrPro' 		=> $ArrPro,
+				'MainData' 		=> $this->MainData
 			]);
 			$this->template->render('procedures/index');
 		}
@@ -132,8 +134,10 @@ class Documents_list extends Admin_Controller
 		$detail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id])->result();
 		$this->template->set([
 			'docs' 			=> $docs,
-			'detail' 		=> $detail
+			'detail' 		=> $detail,
+			'MainData' 		=> $this->MainData
 		]);
+
 		$this->template->render('procedures/view-docs');
 	}
 }

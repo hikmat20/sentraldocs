@@ -55,6 +55,18 @@
 															</div>
 														</div>
 													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="font-size-h5"><strong><span class="text-danger">*</span> Status</strong></label>
+															<div class="">
+																<select name="status" id="status" class="form-control select2">
+																	<option value=""></option>
+																	<option value="DFT" <?= ($data->status == 'DFT') ? 'selected' : ''; ?>>Draft</option>
+																	<option value="1" <?= ($data->status == '1') ? 'selected' : ''; ?>>Publish</option>
+																</select>
+															</div>
+														</div>
+													</div>
 												</div>
 												<hr>
 												<div class="row">

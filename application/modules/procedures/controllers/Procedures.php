@@ -39,9 +39,11 @@ class Procedures extends Admin_Controller
 
 	public function index()
 	{
-		$data		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null])->result();
+		$data		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null, 'status' => '1'])->result();
+		$dataDraft		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null, 'status' => 'DFT'])->result();
 		$this->template->set('title', 'List of Procedures');
 		$this->template->set('data', $data);
+		$this->template->set('dataDraft', $dataDraft);
 		$this->template->set('status', $this->status);
 		$this->template->render('index');
 	}

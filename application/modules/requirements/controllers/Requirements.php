@@ -27,9 +27,11 @@ class Requirements extends Admin_Controller
 
 	public function index()
 	{
-		$data		= $this->db->get_where('requirements', ['company_id' => $this->company, 'deleted_at' => null])->result();
+		$data			= $this->db->get_where('requirements', ['company_id' => $this->company, 'deleted_at' => null, 'status' => '1'])->result();
+		$dataDraft		= $this->db->get_where('requirements', ['company_id' => $this->company, 'deleted_at' => null, 'status' => 'DFT'])->result();
 		$this->template->set('title', 'Index of Standard');
 		$this->template->set('data', $data);
+		$this->template->set('dataDraft', $dataDraft);
 		$this->template->render('index');
 	}
 
@@ -41,7 +43,7 @@ class Requirements extends Admin_Controller
 
 	public function edit($id = '')
 	{
-		$Data 		= $this->db->get_where('requirements', ['company_id' => $this->company, 'id' => $id, 'status' => '1'])->row();
+		$Data 		= $this->db->get_where('requirements', ['company_id' => $this->company, 'id' => $id, 'status !=' => '0'])->row();
 		if ($Data) {
 			$Data_list 	= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result();
 
@@ -106,13 +108,13 @@ class Requirements extends Admin_Controller
 			}
 		}
 
+		if (isset($Data['id'])) {
+			$Data_list['requirement_id'] = $Data['id'];
+		} else {
+			$req = $this->db->order_by('id', 'DESC')->get_where('requirements')->row();
+			$Data_list['requirement_id'] = $req->id;
+		}
 		if ($Data_list) {
-			if (isset($Data['id'])) {
-				$Data_list['requirement_id'] = $Data['id'];
-			} else {
-				$req = $this->db->order_by('id', 'DESC')->get_where('requirements')->row();
-				$Data_list['requirement_id'] = $req->id;
-			}
 
 			if (isset($Data_list['id'])) {
 				$Data_list['modified_by'] = $this->auth->user_id();
@@ -130,7 +132,6 @@ class Requirements extends Admin_Controller
 			$Return		= array(
 				'status'		=> 0,
 				'msg'			=> 'Data Chapter failed to save. Please try again.',
-
 			);
 		} else {
 			$this->db->trans_commit();
