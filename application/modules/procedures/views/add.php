@@ -42,7 +42,7 @@
 												<div class="row">
 													<div class="col-md-6">
 														<div class="form-group">
-															<label class="font-size-h5"><strong>Process Group</strong></label>
+															<label class="font-size-h5"><strong><span class="text-danger">*</span> Kelompok Proces</strong></label>
 															<div class="">
 																<select name="group_procedure" id="group_procedure" class="form-control select2">
 																	<option value=""></option>
@@ -50,7 +50,6 @@
 																		<option value="<?= $pro->id; ?>"><?= $pro->name; ?></option>
 																	<?php endforeach; ?>
 																</select>
-																<small class="text-danger invalid-feedback">Nama Proses</small>
 															</div>
 														</div>
 													</div>
@@ -60,14 +59,14 @@
 												<div class="row">
 													<div class="col-md-6">
 														<div class="form-group">
-															<label class="font-size-h5"><strong>Nama Proses</strong></label>
+															<label class="font-size-h5"><strong><span class="text-danger">*</span> Nama Proses</strong></label>
 															<div class="">
 																<textarea rows="5" name="name" id="name" required class="form-control" rows="5" placeholder="Nama Proses" aria-describedby="helpId"></textarea>
 																<small class="text-danger invalid-feedback">Nama Proses</small>
 															</div>
 														</div>
 														<div class="form-group">
-															<label class="font-size-h5"><strong>Objektif Proses</strong></label>
+															<label class="font-size-h5"><strong><span class="text-danger">*</span> Objektif Proses</strong></label>
 															<div class="">
 																<textarea rows="5" name="object" id="object" required class="form-control" rows="5" placeholder="Objektif Proses" aria-describedby="helpId"></textarea>
 																<small class="text-danger invalid-feedback">Objektif Proses</small>
@@ -76,7 +75,7 @@
 													</div>
 													<div class="col-md-6">
 														<div class="form-group">
-															<label class="font-size-h5"><strong>Performa Indikator</strong></label>
+															<label class="font-size-h5"><strong><span class="text-danger">*</span> Performa Indikator</strong></label>
 															<div class="">
 																<textarea rows="5" name="performance" id="performance" class="form-control" rows="5" placeholder="Performa Indikator" aria-describedby="helpId"></textarea>
 																<small class="text-danger invalid-feedback">Performa Indikator</small>
@@ -168,10 +167,10 @@
 															</div>
 														</div>
 														<div class="form-group">
-															<label for="Objective" class="font-weight-bold font-size-"><strong>8. Litigation</strong></label>
+															<label for="Objective" class="font-weight-bold font-size-"><strong>8. Mitigation</strong></label>
 															<div class="">
-																<textarea rows="5" name="litigation" id="litigation" class="form-control" placeholder="Litigation" aria-describedby="helpId"></textarea>
-																<small class="text-danger invalid-feedback">Litigation</small>
+																<textarea rows="5" name="mitigation" id="mitigation" class="form-control" placeholder="Mitigation" aria-describedby="helpId"></textarea>
+																<small class="text-danger invalid-feedback">Mitigation</small>
 															</div>
 														</div>
 													</div>
@@ -467,7 +466,6 @@
 			$('#distribute_id').removeClass('is-invalid')
 			$('#image').removeClass('is-invalid')
 
-			e.preventDefault();
 			const description = $('#description').val();
 			const prepared_by = $('#prepared_by').val();
 			const reviewer_id = $('#reviewer_id').val();
@@ -477,11 +475,12 @@
 			const image = $('#image').val();
 			const parent_id = $('#parent_id').val();
 
-			if (description == '' || description == null) {
+			console.log(description);
+			if (description !== undefined && (description == '' || description == null)) {
 				$('#description').addClass('is-invalid')
 				return false;
 			}
-			if (prepared_by == '' || prepared_by == null) {
+			if (prepared_by !== undefined && (prepared_by == '' || prepared_by == null)) {
 				Swal.fire({
 					title: "Error Message!",
 					text: 'Empty User Prepared, please input User Prepared  first.....',
@@ -522,7 +521,7 @@
 				return false;
 			}
 
-			if (image == '' || image == null) {
+			if (image != undefined && (image == '' || image == null)) {
 				$('#image').addClass('is-invalid')
 				Swal.fire({
 					title: "Error Message!",
@@ -559,7 +558,7 @@
 							timer: 2000
 						})
 						$('#modelId').modal('hide')
-						location.reload()
+						location.href = siteurl + active_controller + 'edit/' + result.id
 					} else {
 						Swal.fire({
 							title: 'Warning!',

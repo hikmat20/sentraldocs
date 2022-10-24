@@ -43,7 +43,7 @@
 												<div class="row">
 													<div class="col-md-6">
 														<div class="form-group">
-															<label class="font-size-h5"><strong>Kelompok Proses</strong></label>
+															<label class="font-size-h5"><strong><span class="text-danger">*</span> Kelompok Proses</strong></label>
 															<div class="">
 																<select name="group_procedure" id="group_procedure" class="form-control select2">
 																	<option value=""></option>
@@ -60,7 +60,7 @@
 												<div class="row">
 													<div class="col-md-6">
 														<div class="form-group">
-															<label class="font-size-h5"><strong>Nama Proses</strong></label>
+															<label class="font-size-h5"><strong><span class="text-danger">*</span> Nama Proses</strong></label>
 															<div class="">
 																<input type="hidden" name="id" id="procedure_id" value="<?= $data->id; ?>">
 																<textarea name="name" id="name" rows="5" required class="form-control" placeholder="Nama Proses" aria-describedby="helpId"><?= $data->name; ?></textarea>
@@ -68,7 +68,7 @@
 															</div>
 														</div>
 														<div class="form-group">
-															<label class="font-size-h5"><strong>Objektif Proses</strong></label>
+															<label class="font-size-h5"><strong><span class="text-danger">*</span> Objektif Proses</strong></label>
 															<div class="">
 																<textarea name="object" id="object" rows="5" required class="form-control" placeholder="Objektif Proses" aria-describedby="helpId"><?= $data->object; ?></textarea>
 																<small class="text-danger invalid-feedback">Objektif Proses</small>
@@ -77,7 +77,7 @@
 													</div>
 													<div class="col-md-6">
 														<div class="form-group">
-															<label class="font-size-h5"><strong>Performa Indikator</strong></label>
+															<label class="font-size-h5"><strong><span class="text-danger">*</span> Performa Indikator</strong></label>
 															<div class="">
 																<textarea name="performance" rows="5" id="performance" class="form-control" placeholder="Performa Indikator" aria-describedby="helpId"><?= $data->performance; ?></textarea>
 																<small class="text-danger invalid-feedback">Performa Indikator</small>
