@@ -495,7 +495,6 @@ class Procedures extends Admin_Controller
 		}
 	}
 
-
 	public function upload_guide($id = null)
 	{
 		$users 		= $this->db->get_where('users', ['status' => 'ACT', 'id_user !=' => '1'])->result();
@@ -524,6 +523,60 @@ class Procedures extends Admin_Controller
 			'procedure_id' 	=> $data->procedure_id,
 			'users' 		=> $users,
 			'type' 			=> "guide",
+		]);
+		$this->template->render('upload_file');
+	}
+
+
+	/* UPLOAD RECORDS */
+
+	public function view_record($id = null)
+	{
+
+		if ($id) {
+			$file 		= $this->db->get_where('dir_records', ['id' => $id])->row();
+			// $dir_name 	= $this->db->get_where('dir_form', ['id' => $file->parent_id])->row()->name;
+			$history	= $this->db->order_by('updated_at', 'ASC')->get_where('view_directory_log', ['directory_id' => $id])->result();
+			// $this->template->set('dir_name', $dir_name);
+
+			$this->template->set('sts', $this->sts);
+			$this->template->set('file', $file);
+			$this->template->set('type', 'record');
+			$this->template->set('history', $history);
+			$this->template->render('show');
+		} else {
+			echo "~ Not data available ~";
+		}
+	}
+
+	public function upload_record($id = null)
+	{
+		$users 		= $this->db->get_where('users', ['status' => 'ACT', 'id_user !=' => '1'])->result();
+		$jabatan 	= $this->db->get('tbl_jabatan')->result();
+
+		$this->template->set([
+			'jabatan' 		=> $jabatan,
+			'procedure_id' 	=> $id,
+			'users' 		=> $users,
+			'type' 			=> "record",
+		]);
+		$this->template->render('upload_file');
+	}
+
+	public function edit_record($id = null)
+	{
+
+		$users 		= $this->db->get_where('users', ['status' => 'ACT', 'id_user !=' => '1'])->result();
+		$jabatan 	= $this->db->get('tbl_jabatan')->result();
+		$data = $this->db->get_where('dir_records', ['id' => $id])->row();
+
+
+		$this->template->set([
+			'data' 			=> $data,
+			'jabatan' 		=> $jabatan,
+			'procedure_id' 	=> $data->procedure_id,
+			'users' 		=> $users,
+			'type' 			=> "record",
 		]);
 		$this->template->render('upload_file');
 	}

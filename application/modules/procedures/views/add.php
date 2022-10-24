@@ -17,13 +17,13 @@
 									<button class="nav-link active" id="procedures-tab" data-toggle="tab" data-target="#procedures" type="button" role="tab" aria-controls="procedures" aria-selected="true">PROCEDURE</button>
 								</li>
 								<li class="nav-item" role="presentation">
-									<button class="nav-link" id="form-tab" data-toggle="tab" data-target="#form" type="button" role="tab" aria-controls="form" aria-selected="false">FORM</button>
+									<button class="nav-link" disabled id="form-tab" data-toggle="tab" data-target="#form" type="button" role="tab" aria-controls="form" aria-selected="false">FORM</button>
 								</li>
 								<li class="nav-item" role="presentation">
-									<button class="nav-link" id="guides-tab" data-toggle="tab" data-target="#guides" type="button" role="tab" aria-controls="guides" aria-selected="false">IK</button>
+									<button class="nav-link" disabled id="guides-tab" data-toggle="tab" data-target="#guides" type="button" role="tab" aria-controls="guides" aria-selected="false">IK</button>
 								</li>
 								<li class="nav-item" role="presentation">
-									<button class="nav-link" id="records-tab" data-toggle="tab" data-target="#records" type="button" role="tab" aria-controls="records" aria-selected="false">RECORD</button>
+									<button class="nav-link" disabled id="records-tab" data-toggle="tab" data-target="#records" type="button" role="tab" aria-controls="records" aria-selected="false">RECORD</button>
 								</li>
 							</ul>
 
@@ -31,13 +31,13 @@
 							<div class="tab-content p-3 rounded-lg border">
 								<div class="tab-pane fade show active" id="procedures" role="tabpanel" aria-labelledby="procedures-tab">
 									<!-- DETAIL PROSES -->
-									<div class="card shadow-xs mb-3" style="border-radius: 10px;">
-										<div class="card-header  border-0 py-4 cursor-pointer" role="tab" id="sectionDetail" style="border-radius: 10px;">
+									<div class="card shadow- mb-3 border-0 " style="border-radius: 10px;">
+										<div class="card-header bg-light border-0 py-4 cursor-pointer" role="tab" id="sectionDetail" style="border-radius: 10px;">
 											<h4 class="mb-0 font-weight-bolder" data-toggle="collapse" data-parent="#accProcedure" href="#detailProcess" aria-expanded="true" aria-controls="detailProcess">
 												DETAIL PROSES
 											</h4>
 										</div>
-										<div id="detailProcess" class="collapse in" role="tabpanel" aria-labelledby="sectionDetail">
+										<div id="detailProcess" class="collapse in show" role="tabpanel" aria-labelledby="sectionDetail">
 											<div class="card-body">
 												<div class="row">
 													<div class="col-md-6">
@@ -105,8 +105,8 @@
 									</div>
 
 									<!-- SIPOCOR -->
-									<div class="card shadow-xs mb-3" style="border-radius: 10px;">
-										<div class="card-header border-0 py-4 cursor-pointer" role="tab" id="sectionSipocor" style="border-radius: 10px;">
+									<div class="card shadow- border-0 mb-3" style="border-radius: 10px;">
+										<div class="card-header bg-light border-0 py-4 cursor-pointer" role="tab" id="sectionSipocor" style="border-radius: 10px;">
 											<h4 class="mb-0 font-weight-bolder" data-toggle="collapse" data-parent="#accProcedure" href="#sipocor" aria-expanded="true" aria-controls="sipocor">
 												SIPOCOR
 											</h4>
@@ -181,8 +181,8 @@
 									</div>
 
 									<!-- FLOW IMAGES -->
-									<div class="card shadow-xs mb-3" style="border-radius: 10px;">
-										<div class="card-header border-0 py-4 cursor-pointer" role="tab" id="sectionFlowImages" style="border-radius: 10px;">
+									<div class="card shadow- border-0 mb-3" style="border-radius: 10px;">
+										<div class="card-header bg-light border-0 py-4 cursor-pointer" role="tab" id="sectionFlowImages" style="border-radius: 10px;">
 											<h4 class="mb-0 font-weight-bolder" data-toggle="collapse" data-parent="#accProcedure" href="#flowImages" aria-expanded="true" aria-controls="flowImages">
 												FLOW IMAGES
 											</h4>
@@ -233,9 +233,35 @@
 										</div>
 									</div>
 
+									<!-- MEDIA VIDEO -->
+									<div class="card shadow- border-0 mb-3" style="border-radius: 10px;">
+										<div class="card-header bg-light border-0 py-4 cursor-pointer" role="tab" id="sectionMediaVideo" style="border-radius: 10px;">
+											<h4 class="mb-0 font-weight-bolder" data-toggle="collapse" data-parent="#accProcedure" href="#MediaVideo" aria-expanded="true" aria-controls="MediaVideo">
+												MEDIA VIDEO
+											</h4>
+										</div>
+										<div id="MediaVideo" class="collapse in" role="tabpanel" aria-labelledby="sectionMediaVideo">
+											<div class="card-body">
+												<div class="mb-3">
+													<h4 class="">Link Video</h4>
+													<div class="mt-1 mb-2">
+														<div class="row">
+															<div class="input-group">
+																<div class="input-group-prepend">
+																	<span class="input-group-text"><i class="fa fa-link"></i></span>
+																</div>
+																<input type="text" name="link_video" class="form-control" placeholder="Link Video">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
 									<!-- FLOW DETAIL -->
-									<div class="card shadow-xs mb-3" style="border-radius: 10px;">
-										<div class="card-header border-0 py-4 cursor-pointer" role="tab" id="sectionFlowDetail" style="border-radius: 10px;">
+									<div class="card shadow- border-0 mb-3" style="border-radius: 10px;">
+										<div class="card-header bg-light border-0 py-4 cursor-pointer" role="tab" id="sectionFlowDetail" style="border-radius: 10px;">
 											<h4 class="mb-0 font-weight-bolder" data-toggle="collapse" data-parent="#accProcedure" href="#flowDetail" aria-expanded="true" aria-controls="flowDetail">
 												FLOW DETAIL
 											</h4>
@@ -284,8 +310,44 @@
 										</tbody>
 									</table>
 								</div>
-								<div class="tab-pane fade" id="guides" role="tabpanel" aria-labelledby="guides-tab"> ik </div>
-								<div class="tab-pane fade" id="records" role="tabpanel" aria-labelledby="records-tab"> Records </div>
+								<div class="tab-pane fade" id="guides" role="tabpanel" aria-labelledby="guides-tab">
+									<button type="button" class="btn btn-primary mb-3" id="add_guide"><i class="fa fa-plus"></i> Add Guide</button>
+									<table class="table table-bordered table-sm table-condensed">
+										<thead>
+											<tr>
+												<th width="50" class="text-center">No</th>
+												<th class="text-center">Name</th>
+												<th width="250" class="text-center">Opis</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td colspan="3" class="text-center py-3">
+													<h5 class="text-light-secondary">~ No data available~ </h5>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div class="tab-pane fade" id="records" role="tabpanel" aria-labelledby="records-tab">
+									<button type="button" class="btn btn-primary mb-3" id="add_record"><i class="fa fa-plus"></i> Add Record</button>
+									<table class="table table-bordered table-sm table-condensed">
+										<thead>
+											<tr>
+												<th width="50" class="text-center">No</th>
+												<th class="text-center">Name</th>
+												<th width="250" class="text-center">Opis</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td colspan="3" class="text-center py-3">
+													<h5 class="text-light-secondary">~ No data available~ </h5>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 						<hr>
@@ -297,7 +359,7 @@
 
 				<!-- Modal -->
 				<div class="modal fade" id="modelId" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable" role="document">
+					<div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
 								<h5 class="modal-title">Modal title</h5>
@@ -397,6 +459,81 @@
 			e.preventDefault();
 			let formdata = new FormData($(this)[0])
 			let btn = $('.save')
+
+			$('#description').removeClass('is-invalid')
+			$('#prepared_by').removeClass('is-invalid')
+			$('#approval_id').removeClass('is-invalid')
+			$('#reviewer_id').removeClass('is-invalid')
+			$('#distribute_id').removeClass('is-invalid')
+			$('#image').removeClass('is-invalid')
+
+			e.preventDefault();
+			const description = $('#description').val();
+			const prepared_by = $('#prepared_by').val();
+			const reviewer_id = $('#reviewer_id').val();
+			const approval_id = $('#approval_id').val();
+			const distribute_id = $('#distribute_id').val();
+			const id_master = $('#id_master').val();
+			const image = $('#image').val();
+			const parent_id = $('#parent_id').val();
+
+			if (description == '' || description == null) {
+				$('#description').addClass('is-invalid')
+				return false;
+			}
+			if (prepared_by == '' || prepared_by == null) {
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty User Prepared, please input User Prepared  first.....',
+					icon: "warning"
+				});
+				$('#prepared_by').addClass('is-invalid')
+
+				return false;
+			}
+			if ((reviewer_id == '' && reviewer_id != undefined) || (reviewer_id == null && reviewer_id != undefined)) {
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty reviewer, please input reviewer first.....',
+					icon: "warning"
+				});
+				$('#reviewer_id').addClass('is-invalid')
+
+				return false;
+			}
+			if ((approval_id == '' && approval_id != undefined) || (approval_id == null && approval_id != undefined)) {
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty approval, please input approval first!',
+					icon: "warning"
+				});
+				$('#approval_id').addClass('is-invalid')
+
+				return false;
+			}
+			if ((distribute_id == '' && distribute_id != undefined) || (distribute_id == null && distribute_id != undefined)) {
+				$('#distribute_id').addClass('is-invalid')
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty distribusi, please input distribusi first.....',
+					icon: "warning"
+				});
+
+				return false;
+			}
+
+			if (image == '' || image == null) {
+				$('#image').addClass('is-invalid')
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty file, please input file first.....',
+					icon: "warning"
+				});
+
+				return false;
+			}
+
+
 			$.ajax({
 				url: siteurl + active_controller + '/save',
 				data: formdata,
@@ -422,7 +559,7 @@
 							timer: 2000
 						})
 						$('#modelId').modal('hide')
-						location.href = siteurl + active_controller + 'edit/' + result.id
+						location.reload()
 					} else {
 						Swal.fire({
 							title: 'Warning!',
@@ -526,4 +663,26 @@
 		previewZone.addClass('hidden');
 		reset(dropzone);
 	});
+
+	$(document).on('click', '#add_form', function() {
+		const id = $('#procedure_id').val() || null;
+		$('#modelId').modal('show')
+		$('.modal-title').text('Add Form')
+		$('#content_modal').load(siteurl + active_controller + 'upload_form/' + id)
+
+	})
+	$(document).on('click', '#add_guide', function() {
+		const id = $('#procedure_id').val() || null;
+		$('#modelId').modal('show')
+		$('.modal-title').text('Add IK')
+		$('#content_modal').load(siteurl + active_controller + 'upload_guide/' + id)
+
+	})
+	$(document).on('click', '#add_record', function() {
+		const id = $('#procedure_id').val() || null;
+		$('#modelId').modal('show')
+		$('.modal-title').text('Add Record')
+		$('#content_modal').load(siteurl + active_controller + 'upload_record/' + id)
+
+	})
 </script>
