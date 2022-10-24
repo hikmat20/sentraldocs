@@ -23,7 +23,7 @@ class Dashboard extends Admin_Controller
 	public function index()
 	{
 
-		$Data = $this->db->order_by('created_at', 'ASC')->get_where('directory', ['parent_id' => '0', 'active' => 'Y'])->result();
+		$Data = $this->db->order_by('created_at', 'ASC')->get_where('directory', ['parent_id' => '0', 'active' => 'Y', 'status !=' => 'DEL'])->result();
 		$this->template->set(
 			[
 				'title' => 'Dashboard',
