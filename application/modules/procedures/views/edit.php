@@ -289,7 +289,7 @@
 																<div class="input-group-prepend">
 																	<span class="input-group-text"><i class="fa fa-link"></i></span>
 																</div>
-																<input type="text" name="link_video" class="form-control" placeholder="Link Video" value="<?= $data->link_video; ?>">
+																<input type="text" name="link_video" class="form-control" placeholder="Link Video" value="<?= html_escape($data->link_video); ?>">
 															</div>
 														</div>
 													</div>
@@ -347,7 +347,7 @@
 								</div>
 								<hr>
 								<div class="mb-6">
-									<button class="btn btn-primary w-100px"><i class="fa fa-save"></i>Save</button>
+									<button class="btn btn-primary w-100px" id="save"><i class="fa fa-save"></i>Save</button>
 								</div>
 
 							</div>
@@ -517,34 +517,39 @@
 		});
 
 		$(document).on('click', '#add_flow', function() {
-			let html = `
-			<div class="form-group">
-				<label class="">Nomor</label>
-				<div class="">
-					<input type="text" name="flow[number]" id="number" class="form-control" required placeholder="Nomor" aria-describedby="helpId">
-					<small class="text-danger invalid-feedback">Nomor</small>
+			let html = `<div class="modal-body">
+				<div class="form-group">
+					<label class="">Nomor</label>
+					<div class="">
+						<input type="text" name="flow[number]" id="number" class="form-control" required placeholder="Nomor" aria-describedby="helpId">
+						<small class="text-danger invalid-feedback">Nomor</small>
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label class="">PIC</label>
-				<div class="">
-					<input type="text" name="flow[pic]" id="pic" class="form-control" required placeholder="PIC" aria-describedby="helpId">
-					<small class="text-danger invalid-feedback">PIC</small>
+				<div class="form-group">
+					<label class="">PIC</label>
+					<div class="">
+						<input type="text" name="flow[pic]" id="pic" class="form-control" required placeholder="PIC" aria-describedby="helpId">
+						<small class="text-danger invalid-feedback">PIC</small>
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label for="description" class="">Deskripsi</label>
-				<div class="">
-					<textarea rows="5" name="flow[description]" id="description" class="form-control" placeholder="Deskripsi" aria-describedby="helpId"></textarea>
-					<small class="text-danger invalid-feedback">Deskripsi</small>
+				<div class="form-group">
+					<label for="description" class="">Deskripsi</label>
+					<div class="">
+						<textarea rows="5" name="flow[description]" id="description" class="form-control" placeholder="Deskripsi" aria-describedby="helpId"></textarea>
+						<small class="text-danger invalid-feedback">Deskripsi</small>
+					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label class="">Dok. Terkait</label>
-				<div class="">
-					<textarea rows="5" name="flow[relate_doc]" id="relate_doc" class="form-control" required placeholder="Dokumen terkait" aria-describedby="helpId" /></textarea>
-					<small class="text-danger invalid-feedback">Dokumen terkait</small>
-				</div>
+				<div class="form-group">
+					<label class="">Dok. Terkait</label>
+					<div class="">
+						<textarea rows="5" name="flow[relate_doc]" id="relate_doc" class="form-control" required placeholder="Dokumen terkait" aria-describedby="helpId" /></textarea>
+						<small class="text-danger invalid-feedback">Dokumen terkait</small>
+					</div>
+				</div> 
+				<div class="modal-footer justify-content-between align-items-center mb-3">
+						<button type="submit" class="btn btn-sm btn-primary w-100px save"><i class="fas fa-save"></i>Save</button>
+						<button type="button" class="btn btn-sm btn-danger w-100px" onclick="setTimeout(function(){$('#content_modal').html('')},1500)" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
+					</div> 
 			</div> 
 			`;
 
@@ -644,7 +649,6 @@
 			$('#distribute_id').removeClass('is-invalid')
 			$('#image').removeClass('is-invalid')
 
-			e.preventDefault();
 			const description = $('#description').val();
 			const prepared_by = $('#prepared_by').val();
 			const reviewer_id = $('#reviewer_id').val();
@@ -653,12 +657,12 @@
 			const id_master = $('#id_master').val();
 			const image = $('#image').val();
 			const parent_id = $('#parent_id').val();
-
-			if (description == '' || description == null) {
+			console.log(description);
+			if (description !== undefined && (description == '' || description == null)) {
 				$('#description').addClass('is-invalid')
 				return false;
 			}
-			if (prepared_by == '' || prepared_by == null) {
+			if (prepared_by !== undefined && (prepared_by == '' || prepared_by == null)) {
 				Swal.fire({
 					title: "Error Message!",
 					text: 'Empty User Prepared, please input User Prepared  first.....',
@@ -688,6 +692,7 @@
 
 				return false;
 			}
+
 			if ((distribute_id == '' && distribute_id != undefined) || (distribute_id == null && distribute_id != undefined)) {
 				$('#distribute_id').addClass('is-invalid')
 				Swal.fire({
@@ -699,7 +704,7 @@
 				return false;
 			}
 
-			if (image == '' || image == null) {
+			if (image !== undefined && (image == '' || image == null)) {
 				$('#image').addClass('is-invalid')
 				Swal.fire({
 					title: "Error Message!",
@@ -709,7 +714,6 @@
 
 				return false;
 			}
-
 
 			$.ajax({
 				url: siteurl + active_controller + '/save',

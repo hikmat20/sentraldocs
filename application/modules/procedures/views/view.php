@@ -84,7 +84,7 @@
           <?php if ($data->link_video) : ?>
             <tr>
               <td class="text-center">
-                <?= $data->link_video; ?>
+                <?= ($data->link_video); ?>
               </td>
             </tr>
           <?php endif; ?>
