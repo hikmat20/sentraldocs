@@ -155,7 +155,7 @@
 
 <div class="modal-footer justify-content-between align-items-center">
 	<button type="submit" class="btn btn-primary save"><i class="fa fa-save"></i>Save</button>
-	<button type="button" class="btn btn-danger" onclick="setTimeout(function(){$('#content_modal').html('')},1500)" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
+	<button type="button" class="btn btn-danger" onclick="setTimeout(function(){$('#content_modal').html('')},500)" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
 </div>
 <script>
 	$(document).ready(function() {

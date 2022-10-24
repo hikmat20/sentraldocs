@@ -437,6 +437,7 @@ class Procedures extends Admin_Controller
 			// $this->template->set('dir_name', $dir_name);
 			$this->template->set('sts', $this->sts);
 			$this->template->set('file', $file);
+			$this->template->set('type', 'form');
 			$this->template->set('history', $history);
 			$this->template->render('show');
 		} else {
