@@ -27,6 +27,14 @@ class Procedures extends Admin_Controller
 			'0' => '<span class="badge badge-danger">Invalid</span>',
 			'1' => '<span class="badge badge-primary">Valid</span>'
 		];
+
+		$this->sts = [
+			'OPN' => '<span class="label label-light-primary label-pill label-inline mr-2">New Upload</span>',
+			'REV' => '<span class="label label-light-warning label-pill label-inline mr-2">Waiting Review</span>',
+			'COR' => '<span class="label label-light-danger label-pill label-inline mr-2">Need Correction</span>',
+			'APV' => '<span class="label label-light-info label-pill label-inline mr-2">Waiting Approval</span>',
+			'PUB' => '<span class="label label-light-success label-pill label-inline mr-2">Published</span>',
+		];
 	}
 
 	public function index()
@@ -40,6 +48,13 @@ class Procedures extends Admin_Controller
 
 	public function add()
 	{
+		$grProcess	= $this->db->get_where('group_procedure', ['status' => 'ACT'])->result();
+
+		$this->template->set([
+			'grProcess' 	=> $grProcess,
+
+		]);
+
 		$this->template->set('title', 'Add Procedures');
 		$this->template->render('add');
 	}
@@ -49,13 +64,23 @@ class Procedures extends Admin_Controller
 		$Data 			= $this->db->get_where('procedures', ['company_id' => $this->company, 'id' => $id])->row();
 		if ($Data) {
 			$Data_detail 	= $this->db->get_where('procedure_details', ['procedure_id' => $id, 'status' => '1'])->result();
+			$grProcess	= $this->db->get_where('group_procedure', ['status' => 'ACT'])->result();
+			$getForms	= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
+			$getGuides	= $this->db->get_where('dir_guides', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
+			$getRecords	= $this->db->get_where('dir_records', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
+			$jabatan 	= $this->db->get('tbl_jabatan')->result();
 
 			$this->template->set([
-				'title' 	=> 'Edit Procedures',
-				'data' 		=> $Data,
-				'detail' 	=> $Data_detail,
+				'title' 		=> 'Edit Procedures',
+				'data' 			=> $Data,
+				'detail' 		=> $Data_detail,
+				'getForms' 		=> $getForms,
+				'getGuides' 	=> $getGuides,
+				'getRecords' 	=> $getRecords,
+				'jabatan' 		=> $jabatan,
 			]);
 
+			$this->template->set('grProcess', $grProcess);
 			$this->template->render('edit');
 		} else {
 			$data = [
@@ -90,7 +115,8 @@ class Procedures extends Admin_Controller
 	{
 		$Data 			= $this->input->post();
 		$Data_flow 		= $this->input->post('flow');
-
+		$Data_forms 		= $this->input->post('forms');
+		unset($Data['forms']);
 		$this->db->trans_begin();
 		if ($Data) {
 			if (isset($_FILES)) {
@@ -133,12 +159,15 @@ class Procedures extends Admin_Controller
 			}
 		}
 
+		if (isset($Data_forms) && $Data_forms) {
+			$this->_save_upload();
+		}
+
 		if ($this->db->trans_status() === FALSE) {
 			$this->db->trans_rollback();
 			$Return		= array(
 				'status'		=> 0,
 				'msg'			=> 'Data Procedure failed to save. Please try again.',
-
 			);
 		} else {
 			$this->db->trans_commit();
@@ -150,6 +179,121 @@ class Procedures extends Admin_Controller
 		}
 
 		echo json_encode($Return);
+	}
+
+	private function _save_upload()
+	{
+		$data = $this->input->post('forms');
+		if ($_FILES['forms_image']) {
+			if (!is_dir('./directory/FORMS')) {
+				mkdir('./directory/FORMS', 0755, TRUE);
+				chmod("./directory/FORMS", 0755);  // octal; correct value of mode
+				chown("./directory/FORMS", 'www-data');
+			}
+			// $new_name 					= $this->fixForUri($data['description']);
+			$config['upload_path'] 		= "./directory/FORMS"; //path folder
+			$config['allowed_types'] 	= 'pdf|xlsx|docx'; //type yang dapat diakses bisa anda sesuaikan
+			$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
+			// $config['file_name'] 		= $new_name;
+			$id 						= (!$data['id']) ? uniqid(date('m')) : $data['id'];
+
+
+			$this->upload->initialize($config);
+
+			if ($this->upload->do_upload('forms_image')) :
+				$file 		= $this->upload->data();
+				$file_name  = $file['file_name'];
+				$size  		= $file['file_size'];
+				$ext     	= $file['file_ext'];
+
+				$data['id']	    		= $id;
+				$data['name']	    	= $data['description'];
+				$data['file_name']		= $file_name;
+				$data['size']			= $size;
+				$data['ext']			= $ext;
+				$data['company_id']		= $this->company;
+				// $data['flag_type']		= 'FILE';
+				$dist 					= isset($data['distribute_id']) ? implode(",", $data['distribute_id']) : null;
+				$data['distribute_id']	= $dist;
+				$old_file 				= isset($data['old_file']) ? $data['old_file'] : null;
+				unset($data['old_file']);
+
+				if ($old_file != null) {
+					if (file_exists('./directory/FORMS/' . $old_file)) {
+						unlink('./directory/FORMS/' . $old_file);
+					}
+				}
+
+				$check = $this->db->get_where('dir_forms', ['id' => $id])->num_rows();
+				$note = isset($data['note']) ? $data['note'] : null;
+				unset($data['note']);
+				if (intval($check) == '0') {
+					$data['created_by']		= $this->auth->user_id();
+					$data['created_at']		= date('Y-m-d H:i:s');
+					$data['note']			= 'First Upload File';
+					$data['status']			= isset($data['status']) ? $data['status'] : 'OPN';
+					$this->db->insert('dir_forms', $data);
+				} else {
+					$data['modified_by']	= $this->auth->user_id();
+					$data['modified_at']	= date('Y-m-d H:i:s');
+					$data['note']			= 'Re-upload File';
+					$this->db->update('ydir_forms', $data, ['id' => $id]);
+				}
+
+				$data['note'] = $note;
+				$this->_update_history($data);
+
+				if (isset($data['distribute_id'])) {
+					foreach ($this->input->post('forms')['distribute_id'] as $key => $value) {
+						$cek = $this->db->where(['id_jabatan' => $value, 'id_file' => $data['id']])->get('distribusi')->row();
+						$arr_dist = [
+							'id_file' => $this->input->post('id'),
+							'id_jabatan' => $value,
+							'created_by' => $this->auth->user_id(),
+							'created_at' => date('Y-m-d H:i:s'),
+						];
+
+						if ($cek) {
+							$this->db->update('distribusi', $arr_dist, ['id' => $cek->id]);
+						} else if (!$cek) {
+							$this->db->insert('distribusi', $arr_dist);
+						} else {
+							$this->db->delete('distribusi', ['id' => $cek->id]);
+						}
+					}
+				};
+
+			else :
+				$error_msg = $this->upload->display_errors();
+				$this->db->trans_rollback();
+				$Return = [
+					'status' => 0,
+					'msg'	 => $error_msg
+				];
+				echo json_encode($Return);
+				return false;
+			endif;
+		} else {
+			$Return = [
+				'status' => 0,
+				'msg'	 => 'No file or data to upload document..'
+			];
+			echo json_encode($Return);
+			return false;
+		}
+	}
+
+	private function _update_history($data)
+	{
+		$dataLog = [
+			'directory_id'  => $data['id'],
+			'status' 	 	=> $data['status'],
+			'note' 		    => $data['note'],
+			'updated_by'    => $this->auth->user_id(),
+			'updated_at'    => date('Y-m-d H:i:s'),
+		];
+
+		$this->db->insert('directory_log', $dataLog);
 	}
 
 	function delete_procedure($id)
@@ -269,5 +413,80 @@ class Procedures extends Admin_Controller
 		$config['encrypt_name']  = TRUE;
 
 		return $config;
+	}
+
+	public function view_form($id = null)
+	{
+		if ($id) {
+			$file 		= $this->db->get_where('dir_forms', ['id' => $id])->row();
+			// $dir_name 	= $this->db->get_where('dir_form', ['id' => $file->parent_id])->row()->name;
+			$history	= $this->db->order_by('updated_at', 'ASC')->get_where('view_directory_log', ['directory_id' => $id])->result();
+			// $this->template->set('dir_name', $dir_name);
+			$this->template->set('sts', $this->sts);
+			$this->template->set('file', $file);
+			$this->template->set('history', $history);
+			$this->template->render('show');
+		} else {
+			echo "~ Not data available ~";
+		}
+	}
+
+	public function upload_form($id = null)
+	{
+		$users 		= $this->db->get_where('users', ['status' => 'ACT', 'id_user !=' => '1'])->result();
+		$jabatan 	= $this->db->get('tbl_jabatan')->result();
+
+		$this->template->set([
+			'jabatan' 		=> $jabatan,
+			'procedure_id' 	=> $id,
+			'users' 		=> $users,
+		]);
+		$this->template->render('upload_file');
+	}
+	public function edit_form($id = null)
+	{
+
+		$users 		= $this->db->get_where('users', ['status' => 'ACT', 'id_user !=' => '1'])->result();
+		$jabatan 	= $this->db->get('tbl_jabatan')->result();
+		$data = $this->db->get_where('dir_forms', ['id' => $id])->row();
+
+
+		$this->template->set([
+			'data' 			=> $data,
+			'jabatan' 		=> $jabatan,
+			'procedure_id' 	=> $data->procedure_id,
+			'users' 		=> $users,
+		]);
+		$this->template->render('upload_file');
+	}
+
+	/* upload ik */
+	public function upload_guide($id = null)
+	{
+		$users 		= $this->db->get_where('users', ['status' => 'ACT', 'id_user !=' => '1'])->result();
+		$jabatan 	= $this->db->get('tbl_jabatan')->result();
+
+		$this->template->set([
+			'jabatan' 		=> $jabatan,
+			'procedure_id' 	=> $id,
+			'users' 		=> $users,
+		]);
+		$this->template->render('upload_file');
+	}
+	public function edit_guide($id = null)
+	{
+
+		$users 		= $this->db->get_where('users', ['status' => 'ACT', 'id_user !=' => '1'])->result();
+		$jabatan 	= $this->db->get('tbl_jabatan')->result();
+		$data = $this->db->get_where('dir_guides', ['id' => $id])->row();
+
+
+		$this->template->set([
+			'data' 			=> $data,
+			'jabatan' 		=> $jabatan,
+			'procedure_id' 	=> $data->procedure_id,
+			'users' 		=> $users,
+		]);
+		$this->template->render('upload_file');
 	}
 }

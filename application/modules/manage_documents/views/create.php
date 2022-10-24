@@ -170,11 +170,21 @@
 		// interaction and events
 	})
 
+	$(document).on('click', '.procedures', function() {
+		$('#data-file').load(siteurl + active_controller + 'procedures')
+	})
+
 	$(document).on("click", ".tree-folder", function() {
 		const id = $(this).data('id');
+		const custome = $(this).data('custome');
 		const parent_id = $(this).data('parent_id')
 		if (id) {
-			$('#data-file').load(siteurl + active_controller + 'load_file/' + id)
+			if (custome == 'Y') {
+
+			} else {
+				$('#data-file').load(siteurl + active_controller + 'load_file/' + id)
+			}
+
 			$('#add-folder').data('id', id);
 			$('#add-file').data('id', id);
 			$('#refresh').data('id', id);
@@ -194,11 +204,10 @@
 				$('a#back').removeClass('disabled')
 				$('#back span').children('i.nav-icons').addClass('text-success')
 				$('#back').children('.nav-name').addClass('text-success')
+				// console.log(id);
 			}
-			console.log(id);
 		} else {
 			$('#data-file').html('<tr class="text-center"><td colspan="3" class="text-center">Not available data</td></tr>')
-
 		}
 	});
 
@@ -230,6 +239,124 @@
 			$('#viewDataFile').load(siteurl + active_controller + 'view_file/' + id)
 		} else {
 			$('#viewDataFile').html('')
+
+		}
+	});
+
+	$(document).on("dblclick", ".folder-procedure", function() {
+		const id = $(this).data('id');
+		if (id) {
+			$('#data-file').load(siteurl + active_controller + 'list_procedures/' + id)
+			$('#back').data('id', id);
+			$('#add-folder').data('id', id);
+			$('#add-file').data('id', id);
+			$('#refresh').data('id', id);
+			console.log(id);
+		} else {
+			$('#data-file').html(`
+			<div class="card-body border border-1 border-left py-2 overflow-auto h-550px">
+				<div class="d-flex justify-content-center align-items-center py-10">
+					<img src="<?= base_url('assets\images\dashboard\folder-file.gif'); ?>" alt="" width="300px" class="img-responsive text-center opacity-30">
+				</div>
+			</div>
+			`)
+
+		}
+	});
+
+	$(document).on("dblclick", ".procedure", function() {
+		const id = $(this).data('id');
+		if (id) {
+			$('#data-file').load(siteurl + active_controller + 'procedure_details/' + id)
+			$('#back').data('id', id);
+			$('#add-folder').data('id', id);
+			$('#add-file').data('id', id);
+			$('#refresh').data('id', id);
+		} else {
+			$('#data-file').html(`
+			<div class="card-body border border-1 border-left py-2 overflow-auto h-550px">
+				<div class="d-flex justify-content-center align-items-center py-10">
+					<img src="<?= base_url('assets\images\dashboard\folder-file.gif'); ?>" alt="" width="300px" class="img-responsive text-center opacity-30">
+				</div>
+			</div>
+			`)
+
+		}
+	});
+
+	$(document).on("dblclick", ".getProcedure", function() {
+		const id = $(this).data('id');
+		if (id) {
+			$('#data-file').load(siteurl + active_controller + 'getProcedure/' + id)
+			$('#back').data('id', id);
+			$('#add-folder').data('id', id);
+			$('#add-file').data('id', id);
+			$('#refresh').data('id', id);
+		} else {
+			$('#data-file').html(`
+			<div class="card-body border border-1 border-left py-2 overflow-auto h-550px">
+				<div class="d-flex justify-content-center align-items-center py-10">
+					<img src="<?= base_url('assets\images\dashboard\folder-file.gif'); ?>" alt="" width="300px" class="img-responsive text-center opacity-30">
+				</div>
+			</div>
+			`)
+
+		}
+	});
+	$(document).on("dblclick", ".getForms", function() {
+		const id = $(this).data('id');
+		if (id) {
+			$('#data-file').load(siteurl + active_controller + 'getForms/' + id)
+			$('#back').data('id', id);
+			$('#add-folder').data('id', id);
+			$('#add-file').data('id', id);
+			$('#refresh').data('id', id);
+		} else {
+			$('#data-file').html(`
+			<div class="card-body border border-1 border-left py-2 overflow-auto h-550px">
+				<div class="d-flex justify-content-center align-items-center py-10">
+					<img src="<?= base_url('assets\images\dashboard\folder-file.gif'); ?>" alt="" width="300px" class="img-responsive text-center opacity-30">
+				</div>
+			</div>
+			`)
+
+		}
+	});
+	$(document).on("dblclick", ".getGuides", function() {
+		const id = $(this).data('id');
+		if (id) {
+			$('#data-file').load(siteurl + active_controller + 'getGuides/' + id)
+			$('#back').data('id', id);
+			$('#add-folder').data('id', id);
+			$('#add-file').data('id', id);
+			$('#refresh').data('id', id);
+		} else {
+			$('#data-file').html(`
+			<div class="card-body border border-1 border-left py-2 overflow-auto h-550px">
+				<div class="d-flex justify-content-center align-items-center py-10">
+					<img src="<?= base_url('assets\images\dashboard\folder-file.gif'); ?>" alt="" width="300px" class="img-responsive text-center opacity-30">
+				</div>
+			</div>
+			`)
+
+		}
+	});
+	$(document).on("dblclick", ".getRecords", function() {
+		const id = $(this).data('id');
+		if (id) {
+			$('#data-file').load(siteurl + active_controller + 'getRecords/' + id)
+			$('#back').data('id', id);
+			$('#add-folder').data('id', id);
+			$('#add-file').data('id', id);
+			$('#refresh').data('id', id);
+		} else {
+			$('#data-file').html(`
+			<div class="card-body border border-1 border-left py-2 overflow-auto h-550px">
+				<div class="d-flex justify-content-center align-items-center py-10">
+					<img src="<?= base_url('assets\images\dashboard\folder-file.gif'); ?>" alt="" width="300px" class="img-responsive text-center opacity-30">
+				</div>
+			</div>
+			`)
 
 		}
 	});

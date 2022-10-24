@@ -80,7 +80,7 @@
 							<div class="card border-0 shadow-sm " style="border-radius: 50px 5px 50px 5px;background-color: rgba(255, 255, 255, 1);">
 								<div class="card-body pb-1 d-flex justify-content-center align-items-center" style="height: 200px;">
 									<img id="myImg5" src="<?= base_url('assets/images/dashboard/monitoring.png'); ?>" alt="" class="img-fluid" style="width: 200px;height: auto;">
-								</div>
+
 								<h3 class="card-title text-center pt-5 pb-10 px-4 m-0" style="min-height: 50px;">
 									<a href="<?= base_url('/docs/monitoring'); ?>" class="text-hover-primary" title="Monitoring Document">
 										<span class="card-label m-0 text-dark text-center font-weight-bolder">MONITORING DOCUMENTS</span>
