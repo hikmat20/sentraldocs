@@ -72,6 +72,24 @@
           <?php endif; ?>
         </tbody>
       </table>
+      <table class="table table-bordered mb-6">
+        <thead>
+          <tr class="table-secondary">
+            <th>
+              <h3>VIDEO</h3>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php if ($data->link_video) : ?>
+            <tr>
+              <td class="text-center">
+                <?= $data->link_video; ?>
+              </td>
+            </tr>
+          <?php endif; ?>
+        </tbody>
+      </table>
       <table class="table table-bordered">
         <thead>
           <tr class="table-secondary">

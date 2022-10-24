@@ -32,13 +32,13 @@
 								<div id="accProcedure" role="tablist" aria-multiselectable="true">
 
 									<!--  DETAIL PROSES-->
-									<div class="card shadow-xs mb-3" style="border-radius: 10px;">
-										<div class="card-header  border-0 py-4 cursor-pointer" role="tab" id="sectionDetail" style="border-radius: 10px;">
+									<div class="card border-0 mb-3" style="border-radius: 10px;">
+										<div class="card-header bg-light border-0 py-4 cursor-pointer" role="tab" id="sectionDetail" style="border-radius: 10px;">
 											<h4 class="mb-0 font-weight-bolder" data-toggle="collapse" data-parent="#accProcedure" href="#detailProcess" aria-expanded="true" aria-controls="detailProcess">
 												DETAIL PROSES
 											</h4>
 										</div>
-										<div id="detailProcess" class="collapse in" role="tabpanel" aria-labelledby="sectionDetail">
+										<div id="detailProcess" class="collapse in show" role="tabpanel" aria-labelledby="sectionDetail">
 											<div class="card-body">
 												<div class="row">
 													<div class="col-md-6">
@@ -107,8 +107,8 @@
 									</div>
 
 									<!-- SIPOCOR -->
-									<div class="card shadow-xs mb-3" style="border-radius: 10px;">
-										<div class="card-header border-0 py-4 cursor-pointer" role="tab" id="sectionSipocor" style="border-radius: 10px;">
+									<div class="card border-0  mb-3" style="border-radius: 10px;">
+										<div class="card-header bg-light border-0 py-4 cursor-pointer" role="tab" id="sectionSipocor" style="border-radius: 10px;">
 											<h4 class="mb-0 font-weight-bolder" data-toggle="collapse" data-parent="#accProcedure" href="#sipocor" aria-expanded="true" aria-controls="sipocor">
 												SIPOCOR
 											</h4>
@@ -186,8 +186,8 @@
 									</div>
 
 									<!-- FLOW IMAGES -->
-									<div class="card shadow-xs mb-3" style="border-radius: 10px;">
-										<div class="card-header border-0 py-4 cursor-pointer" role="tab" id="sectionFlowImages" style="border-radius: 10px;">
+									<div class="card border-0 mb-3" style="border-radius: 10px;">
+										<div class="card-header bg-light border-0 py-4 cursor-pointer" role="tab" id="sectionFlowImages" style="border-radius: 10px;">
 											<h4 class="mb-0 font-weight-bolder" data-toggle="collapse" data-parent="#accProcedure" href="#flowImages" aria-expanded="true" aria-controls="flowImages">
 												FLOW IMAGES
 											</h4>
@@ -272,9 +272,35 @@
 										</div>
 									</div>
 
+									<!-- MEDIA VIDEO -->
+									<div class="card shadow- border-0 mb-3" style="border-radius: 10px;">
+										<div class="card-header bg-light border-0 py-4 cursor-pointer" role="tab" id="sectionMediaVideo" style="border-radius: 10px;">
+											<h4 class="mb-0 font-weight-bolder" data-toggle="collapse" data-parent="#accProcedure" href="#MediaVideo" aria-expanded="true" aria-controls="MediaVideo">
+												MEDIA VIDEO
+											</h4>
+										</div>
+										<div id="MediaVideo" class="collapse in" role="tabpanel" aria-labelledby="sectionMediaVideo">
+											<div class="card-body">
+												<div class="mb-3">
+													<h4 class="">Link Video</h4>
+													<div class="mt-1 mb-2">
+														<div class="row">
+															<div class="input-group">
+																<div class="input-group-prepend">
+																	<span class="input-group-text"><i class="fa fa-link"></i></span>
+																</div>
+																<input type="text" name="link_video" class="form-control" placeholder="Link Video" value="<?= $data->link_video; ?>">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
 									<!-- FLOW DETAIL -->
-									<div class="card shadow-xs mb-3" style="border-radius: 10px;">
-										<div class="card-header border-0 py-4 cursor-pointer" role="tab" id="sectionFlowDetail" style="border-radius: 10px;">
+									<div class="card border-0 mb-3" style="border-radius: 10px;">
+										<div class="card-header bg-light border-0 py-4 cursor-pointer" role="tab" id="sectionFlowDetail" style="border-radius: 10px;">
 											<h4 class="mb-0 font-weight-bolder" data-toggle="collapse" data-parent="#accProcedure" href="#flowDetail" aria-expanded="true" aria-controls="flowDetail">
 												FLOW DETAIL
 											</h4>
@@ -321,7 +347,7 @@
 								</div>
 								<hr>
 								<div class="mb-6">
-									<button type="submit" class="btn btn-primary w-100px save"><i class="fa fa-save"></i>Save</button>
+									<button class="btn btn-primary w-100px"><i class="fa fa-save"></i>Save</button>
 								</div>
 
 							</div>
@@ -395,7 +421,41 @@
 									</tbody>
 								</table>
 							</div>
-							<div class="tab-pane fade" id="records" role="tabpanel" aria-labelledby="records-tab"> Records </div>
+							<div class="tab-pane fade" id="records" role="tabpanel" aria-labelledby="records-tab">
+								<button type="button" class="btn btn-primary mb-3" id="add_record"><i class="fa fa-plus"></i> Add Record</button>
+								<table class="table table-bordered table-hover">
+									<thead>
+										<tr class="table-light">
+											<th width="50" class="text-center">No</th>
+											<th class="text-center">Name</th>
+											<th width="200" class="text-center">Update</th>
+											<th width="150" class="text-center">Opis</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php if (isset($getRecords)) : $n = 0; ?>
+											<?php foreach ($getRecords as $form) : $n++; ?>
+												<tr>
+													<td class="text-center"><?= $n; ?></td>
+													<td class=""><?= $form->name; ?></td>
+													<td class="text-center"><?= $form->created_at; ?></td>
+													<td class="text-center">
+														<button type="button" class="btn btn-sm btn-icon btn-primary shadow-sm view-record" data-id="<?= $form->id; ?>"><i class="fas fa-file-pdf"></i></button>
+														<button type="button" class="btn btn-sm btn-icon btn-warning shadow-sm edit-record" data-id="<?= $form->id; ?>"><i class="fa fa-edit"></i></button>
+														<button type="button" class="btn btn-sm btn-icon btn-danger shadow-sm delete-record" data-id="<?= $form->id; ?>"><i class="fa fa-trash"></i></button>
+													</td>
+												</tr>
+											<?php endforeach; ?>
+										<?php else : ?>
+											<tr>
+												<td colspan="3" class="text-center py-3">
+													<h5 class="text-light-secondary">~ No data available~ </h5>
+												</td>
+											</tr>
+										<?php endif; ?>
+									</tbody>
+								</table>
+							</div>
 						</div>
 					</div>
 
@@ -409,11 +469,7 @@
 										<span aria-hidden="true">&times;</span>
 									</button>
 								</div>
-								<div class="modal-body" id="content_modal">
-								</div>
-								<div class="modal-footer justify-content-between align-items-center">
-									<button type="submit" class="btn btn-primary save"><i class="fa fa-save"></i>Save</button>
-									<button type="button" class="btn btn-danger" onclick="$('#content_modal').html('')" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
+								<div id="content_modal">
 								</div>
 							</div>
 						</div>
@@ -787,6 +843,37 @@
 			$('#modelId').modal('show')
 			$('.modal-title').text('Edit IK')
 			$('#content_modal').load(siteurl + active_controller + 'edit_guide/' + id)
+
+		})
+
+		/* UPLOAD RECORDS */
+
+		$(document).on('click', '.view-record', function() {
+			const id = $(this).data('id')
+			if (id) {
+				$('.modal-title').html('View Records')
+				$('#content_modal').load(siteurl + active_controller + 'view_record/' + id)
+				$('#modelId').modal('show')
+			} else {
+				Swal.fire('Warning!!', 'Not available data to process', 'waring', 2000);
+			}
+		})
+
+
+		$(document).on('click', '#add_record', function() {
+			const id = $('#procedure_id').val() || null;
+			$('#modelId').modal('show')
+			$('.modal-title').text('Add Records')
+			$('#content_modal').load(siteurl + active_controller + 'upload_record/' + id)
+
+		})
+
+		$(document).on('click', '.edit-record', function() {
+			const id = $(this).data('id') || null;
+			const procedure_id = $('#procedure_id').val() || null;
+			$('#modelId').modal('show')
+			$('.modal-title').text('Edit Records')
+			$('#content_modal').load(siteurl + active_controller + 'edit_record/' + id)
 
 		})
 
