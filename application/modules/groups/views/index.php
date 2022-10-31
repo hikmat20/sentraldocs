@@ -13,10 +13,10 @@
 					<table id="example1" class="table table-condensed table-sm">
 						<thead>
 							<tr class="table-secondary">
-								<th width="80px">#</th>
-								<th width="20%">Group Name</th>
+								<th width="20">#</th>
+								<th width="15%">Group Name</th>
 								<th width="">Description</th>
-								<th width="70px">Opsi</th>
+								<th width="15%" class="text-center">Opsi</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -26,13 +26,17 @@
 										<td><?= $n; ?></td>
 										<td><?= $record->nm_group ?></td>
 										<td><?= $record->ket ?></td>
-										<td class="d-flex justify-content-between">
+										<td class="text-center">
+											<a class="btn btn-xs btn-icon btn-primary" id="view" data-id="<?= $record->id_group; ?>" title="Access Group"><i class="fa fa-search"></i>
+											</a>
 											<a class="btn btn-xs btn-icon btn-primary" id="access" href="<?= base_url($this->uri->segment(1) . '/permissions/' . $record->id_group); ?>" data-id="<?= $record->id_group; ?>" title="Access Group"><i class="fa fa-key"></i>
 											</a>
-											<a class="btn btn-xs btn-icon btn-warning" id="edit" href="javascript:void(0)" data-id="<?= $record->id_group; ?>" title="Edit"><i class="fa fa-pen"></i>
-											</a>
-											<a class="btn btn-icon btn-danger btn-xs" href="javascript:void(0)" data-id="<?= $record->id_group; ?>" title="Delete"><i class="fa fa-trash"></i>
-											</a>
+											<?php if ($record->company_id) : ?>
+												<a class="btn btn-xs btn-icon btn-warning" id="edit" href="javascript:void(0)" data-id="<?= $record->id_group; ?>" title="Edit"><i class="fa fa-pen"></i>
+												</a>
+												<a class="btn btn-icon btn-danger btn-xs" href="javascript:void(0)" data-id="<?= $record->id_group; ?>" title="Delete"><i class="fa fa-trash"></i>
+												</a>
+											<?php endif; ?>
 										</td>
 									</tr>
 							<?php endforeach;
@@ -65,7 +69,25 @@
 			</div>
 			<div class="modal-footer justify-content-between">
 				<button type="button" class="btn btn-primary" id="save"><i class="fa fa-save mr-1"></i>Save</button>
-				<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="ModalView" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+	<div class="modal-dialog modal-xl" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="head_title">View Access</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="modalDataView">
+
+			</div>
+			<div class="modal-footer justify-content-end">
+				<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
 			</div>
 		</div>
 	</div>
@@ -91,6 +113,13 @@
 		$("#head_title").html("<i class='fa fa-users mr-2'></i><b>Add Group</b>");
 		$("#Modal").modal();
 		$("#modalData").load(siteurl + active_controller + 'create');
+	});
+
+	$(document).on('click', '#view', function() {
+		const id = $(this).data('id')
+		$("#head_title").html("<i class='fa fa-users mr-2'></i><b>View Access</b>");
+		$("#ModalView").modal();
+		$("#modalDataView").load(siteurl + active_controller + 'view/' + id);
 	});
 
 	$(document).on('click', '#edit', function() {

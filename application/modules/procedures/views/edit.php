@@ -1,3 +1,16 @@
+<style>
+	.btn-opsi {
+		display: none;
+	}
+
+	tr:hover .btn-opsi {
+		display: block;
+	}
+
+	tr:hover .text-name {
+		color: #0bb783;
+	}
+</style>
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
 	<div class="d-flex flex-column-fluid">
 		<div class="container">
@@ -365,115 +378,154 @@
 							</div>
 							<div class="tab-pane fade" id="form" role="tabpanel" aria-labelledby="form-tab">
 								<button type="button" class="btn btn-primary mb-3" id="add_form"><i class="fa fa-plus"></i> Add Form</button>
-								<table class="table table-bordered table-hover">
-									<thead>
-										<tr class="table-light">
-											<th width="50" class="text-center">No</th>
-											<th class="text-center">Name</th>
-											<th width="200" class="text-center">Update</th>
-											<th width="150" class="text-center">Opis</th>
-										</tr>
-									</thead>
-									<tbody>
-										<?php if (isset($getForms)) : $n = 0; ?>
-											<?php foreach ($getForms as $form) : $n++; ?>
+								<div id="form-data-content">
+									<table class="table table-bordered table-hover">
+										<thead>
+											<tr class="table-light">
+												<th width="50" class="text-center">No</th>
+												<th class="text-center">Name</th>
+												<th width="50" class="text-center">File</th>
+												<th width="200" class="text-center">Update</th>
+												<th width="150" class="text-center">Opis</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php if (isset($getForms)) : $n = 0; ?>
+												<?php foreach ($getForms as $form) : $n++; ?>
+													<tr>
+														<td class="text-center"><?= $n; ?></td>
+														<td class=""><?= $form->name; ?></td>
+														<td class="text-center">
+															<?php if ($form->file_name) : ?>
+																<button type="button" class="btn p-0 btn-sm btn-link text-success btn-icon view-form" data-id="<?= $form->id; ?>"><i class="fas fa-file-pdf text-success"></i></button>
+															<?php else : ?>
+																<i class="fa fa-times text-danger"></i>
+															<?php endif; ?>
+														</td>
+														<td class="text-center"><?= $form->created_at; ?></td>
+														<td class="text-center">
+															<button type="button" class="btn btn-sm btn-icon btn-warning shadow-sm edit-form" data-id="<?= $form->id; ?>"><i class="fa fa-edit"></i></button>
+															<button type="button" class="btn btn-sm btn-icon btn-danger shadow-sm delete-form" data-id="<?= $form->id; ?>"><i class="fa fa-trash"></i></button>
+														</td>
+													</tr>
+												<?php endforeach; ?>
+											<?php else : ?>
 												<tr>
-													<td class="text-center"><?= $n; ?></td>
-													<td class=""><?= $form->name; ?></td>
-													<td class="text-center"><?= $form->created_at; ?></td>
-													<td class="text-center">
-														<button type="button" class="btn btn-sm btn-icon btn-primary shadow-sm view-form" data-id="<?= $form->id; ?>"><i class="fas fa-file-pdf"></i></button>
-														<button type="button" class="btn btn-sm btn-icon btn-warning shadow-sm edit-form" data-id="<?= $form->id; ?>"><i class="fa fa-edit"></i></button>
-														<button type="button" class="btn btn-sm btn-icon btn-danger shadow-sm delete-form" data-id="<?= $form->id; ?>"><i class="fa fa-trash"></i></button>
+													<td colspan="3" class="text-center py-3">
+														<h5 class="text-light-secondary">~ No data available~ </h5>
 													</td>
 												</tr>
-											<?php endforeach; ?>
-										<?php else : ?>
-											<tr>
-												<td colspan="3" class="text-center py-3">
-													<h5 class="text-light-secondary">~ No data available~ </h5>
-												</td>
-											</tr>
-										<?php endif; ?>
-									</tbody>
-								</table>
+											<?php endif; ?>
+										</tbody>
+									</table>
+								</div>
 							</div>
 							<div class="tab-pane fade" id="guides" role="tabpanel" aria-labelledby="guides-tab">
 								<button type="button" class="btn btn-primary mb-3" id="add_guide"><i class="fa fa-plus"></i> Add IK</button>
-								<table class="table table-bordered table-hover">
-									<thead>
-										<tr class="table-light">
-											<th width="50" class="text-center">No</th>
-											<th class="text-center">Name</th>
-											<th width="200" class="text-center">Update</th>
-											<th width="150" class="text-center">Opis</th>
-										</tr>
-									</thead>
-									<tbody>
-										<?php if (isset($getGuides)) : $n = 0; ?>
-											<?php foreach ($getGuides as $ik) : $n++; ?>
+								<div id="guide-data-content">
+									<table class="table table-bordered table-hover">
+										<thead>
+											<tr class="table-light">
+												<th width="50" class="text-center">No</th>
+												<th class="text-center">Name</th>
+												<th width="50" class="text-center">File</th>
+												<th width="200" class="text-center">Update</th>
+												<th width="150" class="text-center">Opis</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php if (isset($getGuides)) : $n = 0; ?>
+												<?php foreach ($getGuides as $ik) : $n++; ?>
+													<tr>
+														<td class="text-center"><?= $n; ?></td>
+														<td class=""><?= $ik->name; ?></td>
+														<td class="text-center">
+															<?php if ($ik->file_name) : ?>
+																<button type="button" class="btn p-0 btn-sm btn-link text-success btn-icon view-guide" data-id="<?= $ik->id; ?>"><i class="fas fa-file-pdf text-success"></i></button>
+															<?php else : ?>
+																<i class="fa fa-times text-danger"></i>
+															<?php endif; ?>
+														</td>
+														<td class="text-center"><?= $ik->created_at; ?></td>
+														<td class="text-center">
+															<button type="button" class="btn btn-sm btn-icon btn-warning shadow-sm edit-guide" data-id="<?= $ik->id; ?>"><i class="fa fa-edit"></i></button>
+															<button type="button" class="btn btn-sm btn-icon btn-danger shadow-sm delete-guide" data-id="<?= $ik->id; ?>"><i class="fa fa-trash"></i></button>
+														</td>
+													</tr>
+												<?php endforeach; ?>
+											<?php else : ?>
 												<tr>
-													<td class="text-center"><?= $n; ?></td>
-													<td class=""><?= $ik->name; ?></td>
-													<td class="text-center"><?= $ik->created_at; ?></td>
-													<td class="text-center">
-														<button type="button" class="btn btn-sm btn-icon btn-primary shadow-sm view-guide" data-id="<?= $ik->id; ?>"><i class="fas fa-file-pdf"></i></button>
-														<button type="button" class="btn btn-sm btn-icon btn-warning shadow-sm edit-guide" data-id="<?= $ik->id; ?>"><i class="fa fa-edit"></i></button>
-														<button type="button" class="btn btn-sm btn-icon btn-danger shadow-sm delete-guide" data-id="<?= $ik->id; ?>"><i class="fa fa-trash"></i></button>
+													<td colspan="3" class="text-center py-3">
+														<h5 class="text-light-secondary">~ No data available~ </h5>
 													</td>
 												</tr>
-											<?php endforeach; ?>
-										<?php else : ?>
-											<tr>
-												<td colspan="3" class="text-center py-3">
-													<h5 class="text-light-secondary">~ No data available~ </h5>
-												</td>
-											</tr>
-										<?php endif; ?>
-									</tbody>
-								</table>
+											<?php endif; ?>
+										</tbody>
+									</table>
+								</div>
 							</div>
 							<div class="tab-pane fade" id="records" role="tabpanel" aria-labelledby="records-tab">
-								<button type="button" class="btn btn-primary mb-3" id="add_record"><i class="fa fa-plus"></i> Add Record</button>
-								<table class="table table-bordered table-hover">
-									<thead>
-										<tr class="table-light">
-											<th width="50" class="text-center">No</th>
-											<th class="text-center">Name</th>
-											<th width="200" class="text-center">Update</th>
-											<th width="150" class="text-center">Opis</th>
-										</tr>
-									</thead>
-									<tbody>
-										<?php if (isset($getRecords)) : $n = 0; ?>
-											<?php foreach ($getRecords as $form) : $n++; ?>
+								<div id="data-records">
+									<button type="button" class="btn btn-warning mb-3" id="add_folder"><i class="fa fa-folder-plus"></i> Add Folder</button>
+									<button type="button" class="btn btn-primary mb-3" disabled id="add_record"><i class="fa fa-plus"></i> Add Record</button>
+									<button type="button" class="btn btn-success btn-icon mb-3" id="refresh" title="Refresh"><i class="fa fa-sync-alt"></i></button>
+									<hr>
+									<input type="hidden" id="refresh_id" value="">
+									<table class="table table-hover">
+										<thead>
+											<tr>
+												<th class="py-0">File or Folder Name</th>
+												<th class="py-0">Last Update</th>
+												<th class="py-0">Opsi</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php if (isset($getRecords)) : $n = 0; ?>
+												<?php foreach ($getRecords as $form) : $n++; ?>
+													<tr class="">
+														<td class="py-1">
+															<a href="javascript:void(0)" data-id="<?= $form->id; ?>" class="cursor-pointer folder text-dark">
+																<div class="d-flex justify-content-start align-items-center">
+																	<i class="fa fa-folder text-warning fa-3x mr-3"></i>
+																	<span class="text-name mt-3 h5"><?= $form->name; ?></span>
+																</div>
+															</a>
+														</td>
+														<td class="py-1 text-right">
+															<div class="d-flex justify-content-end align-items-center">
+																<h6 class="mt-4 ml-4"><?= $form->created_at; ?></h6>
+															</div>
+														</td>
+														<td class="py-1 text-right" width="135">
+															<div class="btn-opsi mt-1">
+																<?php if ($form->flag_type == 'FILE') : ?>
+																	<button type="button" class="btn btn-sm btn-icon btn-default view-record" title="View Document" data-id="<?= $form->id; ?>"><i class="fas fa-file-pdf  text-primary"></i></button>
+																	<button type="button" class="btn btn-sm btn-icon btn-white edit-record" title="Edit Document" data-id="<?= $form->id; ?>"><i class="fa fa-edit text-warning"></i></button>
+																<?php else : ?>
+																	<button type="button" class="btn btn-sm btn-icon btn-white edit-folder" title="Edit Folder" data-id="<?= $form->id; ?>"><i class="fa fa-edit text-warning"></i></button>
+																<?php endif; ?>
+																<button type="button" class="btn btn-sm btn-icon btn-white delete-record" title="Delete" data-id="<?= $form->id; ?>"><i class="fa fa-trash text-danger"></i></button>
+															</div>
+														</td>
+													</tr>
+												<?php endforeach; ?>
+											<?php else : ?>
 												<tr>
-													<td class="text-center"><?= $n; ?></td>
-													<td class=""><?= $form->name; ?></td>
-													<td class="text-center"><?= $form->created_at; ?></td>
-													<td class="text-center">
-														<button type="button" class="btn btn-sm btn-icon btn-primary shadow-sm view-record" data-id="<?= $form->id; ?>"><i class="fas fa-file-pdf"></i></button>
-														<button type="button" class="btn btn-sm btn-icon btn-warning shadow-sm edit-record" data-id="<?= $form->id; ?>"><i class="fa fa-edit"></i></button>
-														<button type="button" class="btn btn-sm btn-icon btn-danger shadow-sm delete-record" data-id="<?= $form->id; ?>"><i class="fa fa-trash"></i></button>
+													<td colspan="3" class="text-center py-3">
+														<h5 class="text-light-secondary">~ No data available~ </h5>
 													</td>
 												</tr>
-											<?php endforeach; ?>
-										<?php else : ?>
-											<tr>
-												<td colspan="3" class="text-center py-3">
-													<h5 class="text-light-secondary">~ No data available~ </h5>
-												</td>
-											</tr>
-										<?php endif; ?>
-									</tbody>
-								</table>
+											<?php endif; ?>
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 					</div>
 
 					<!-- Modal -->
 					<div class="modal fade" id="modelId" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
+						<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
 							<div class="modal-content">
 								<div class="modal-header">
 									<h5 class="modal-title">Modal title</h5>
@@ -486,6 +538,23 @@
 							</div>
 						</div>
 					</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalRecord" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Upload Record</h5>
+				<button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form id="form-records">
+				<div id="record-content">
+				</div>
 			</form>
 		</div>
 	</div>
@@ -510,6 +579,7 @@
 				}))
 			)
 		}
+
 		Promise.allSettled = function(promiseList) {
 			return Promise.all(handlePromise(promiseList))
 		}
@@ -649,6 +719,8 @@
 			})
 		})
 
+
+		/* SAVE */
 		$(document).on('submit', '#form-procedure', function(e) {
 			e.preventDefault();
 			let formdata = new FormData($(this)[0])
@@ -752,7 +824,6 @@
 							timer: 2000
 						})
 						$('#modelId').modal('hide')
-						location.reload()
 					} else {
 						Swal.fire({
 							title: 'Warning!',
@@ -772,7 +843,6 @@
 				}
 			})
 		})
-
 
 		$(document).on('change', ".dropzone", function() {
 			readFile(this);
@@ -809,6 +879,7 @@
 				$('.modal-title').html('View Form')
 				$('#content_modal').load(siteurl + active_controller + 'view_form/' + id)
 				$('#modelId').modal('show')
+				$('.modal-dialog').css('max-width', '')
 			} else {
 				Swal.fire('Warning!!', 'Not available data to process', 'waring', 2000);
 			}
@@ -816,9 +887,10 @@
 
 		$(document).on('click', '#add_form', function() {
 			const id = $('#procedure_id').val() || null;
-			$('#modelId').modal('show')
+			$('#modalRecord').modal('show')
+			$('.modal-dialog').css('max-width', '70%')
 			$('.modal-title').text('Add Form')
-			$('#content_modal').load(siteurl + active_controller + 'upload_form/' + id)
+			$('#record-content').load(siteurl + active_controller + 'upload_form/' + id)
 
 		})
 
@@ -826,6 +898,7 @@
 			const id = $(this).data('id') || null;
 			const procedure_id = $('#procedure_id').val() || null;
 			$('#modelId').modal('show')
+			$('.modal-dialog').css('max-width', '')
 			$('.modal-title').text('Edit Form')
 			$('#content_modal').load(siteurl + active_controller + 'edit_form/' + id)
 
@@ -854,7 +927,12 @@
 									icon: 'success',
 									timer: 1500
 								});
+
+
 								$(btn).parents('tr').remove();
+								// $(btn).parents('tr').css('display', 'none').slideUp('slow');
+								// setTimeout(function() {
+								// }, 800)
 
 							} else {
 								Swal.fire('Warning', "Can't delete data. Please try again!", 'warning', 2000)
@@ -868,7 +946,134 @@
 			})
 
 		})
-		// upload IK
+
+		/* SAVE */
+		$(document).on('click', '#save-form', function() {
+			const pro_id = $('#procedure_id').val() || '';
+			let formdata = new FormData($('#form-records')[0])
+			let btn = $('.save')
+
+			$('#description').removeClass('is-invalid')
+			$('#prepared_by').removeClass('is-invalid')
+			$('#approval_id').removeClass('is-invalid')
+			$('#reviewer_id').removeClass('is-invalid')
+			$('#distribute_id').removeClass('is-invalid')
+			$('#image').removeClass('is-invalid')
+
+			const description = $('#description').val();
+			const prepared_by = $('#prepared_by').val();
+			const reviewer_id = $('#reviewer_id').val();
+			const approval_id = $('#approval_id').val();
+			const distribute_id = $('#distribute_id').val();
+			const id_master = $('#id_master').val();
+			const image = $('#image').val();
+			const parent_id = $('#parent_id').val();
+
+			if (description !== undefined && (description == '' || description == null)) {
+				$('#description').addClass('is-invalid')
+				return false;
+			}
+			if (prepared_by !== undefined && (prepared_by == '' || prepared_by == null)) {
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty User Prepared, please input User Prepared  first.....',
+					icon: "warning"
+				});
+				$('#prepared_by').addClass('is-invalid')
+
+				return false;
+			}
+			if ((reviewer_id == '' && reviewer_id != undefined) || (reviewer_id == null && reviewer_id != undefined)) {
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty reviewer, please input reviewer first.....',
+					icon: "warning"
+				});
+				$('#reviewer_id').addClass('is-invalid')
+
+				return false;
+			}
+			if ((approval_id == '' && approval_id != undefined) || (approval_id == null && approval_id != undefined)) {
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty approval, please input approval first!',
+					icon: "warning"
+				});
+				$('#approval_id').addClass('is-invalid')
+
+				return false;
+			}
+
+			if ((distribute_id == '' && distribute_id != undefined) || (distribute_id == null && distribute_id != undefined)) {
+				$('#distribute_id').addClass('is-invalid')
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty distribusi, please input distribusi first.....',
+					icon: "warning"
+				});
+
+				return false;
+			}
+
+			if (image !== undefined && (image == '' || image == null)) {
+				$('#image').addClass('is-invalid')
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty file, please input file first.....',
+					icon: "warning"
+				});
+
+				return false;
+			}
+
+			$.ajax({
+				url: siteurl + active_controller + 'saveForm',
+				data: formdata,
+				type: 'POST',
+				dataType: 'JSON',
+				processData: false,
+				contentType: false,
+				cache: false,
+				beforeSend: function() {
+					btn.attr('disabled', true)
+					btn.html('<i class="spinner spinner-border-sm"></i>Loading...')
+				},
+				complete: function() {
+					btn.attr('disabled', false)
+					btn.html('<i class="fa fa-save"></i>Save')
+				},
+				success: function(result) {
+					if (result.status == 1) {
+						Swal.fire({
+							title: 'Success!',
+							icon: 'success',
+							text: result.msg,
+							timer: 2000
+						})
+						$('.close-btn').click();
+						reload_form(pro_id)
+					} else {
+						Swal.fire({
+							title: 'Warning!',
+							icon: 'warning',
+							text: result.msg,
+							timer: 2000
+						})
+					}
+				},
+				error: function(result) {
+					Swal.fire({
+						title: 'Error!',
+						icon: 'error',
+						text: 'Server timeout, becuase error!',
+						timer: 4000
+					})
+				}
+			})
+		})
+
+
+		/* UPLOAD IK */
 
 		$(document).on('click', '.view-guide', function() {
 			const id = $(this).data('id')
@@ -876,6 +1081,7 @@
 				$('.modal-title').html('View IK')
 				$('#content_modal').load(siteurl + active_controller + 'view_guide/' + id)
 				$('#modelId').modal('show')
+				$('.modal-dialog').css('max-width', '')
 			} else {
 				Swal.fire('Warning!!', 'Not available data to process', 'waring', 2000);
 			}
@@ -883,9 +1089,10 @@
 
 		$(document).on('click', '#add_guide', function() {
 			const id = $('#procedure_id').val() || null;
-			$('#modelId').modal('show')
+			$('#modalRecord').modal('show')
+			$('.modal-dialog').css('max-width', '70%')
 			$('.modal-title').text('Add IK')
-			$('#content_modal').load(siteurl + active_controller + 'upload_guide/' + id)
+			$('#record-content').load(siteurl + active_controller + 'upload_guide/' + id)
 
 		})
 
@@ -893,6 +1100,7 @@
 			const id = $(this).data('id') || null;
 			const procedure_id = $('#procedure_id').val() || null;
 			$('#modelId').modal('show')
+			$('.modal-dialog').css('max-width', '')
 			$('.modal-title').text('Edit IK')
 			$('#content_modal').load(siteurl + active_controller + 'edit_guide/' + id)
 
@@ -935,75 +1143,6 @@
 			})
 
 		})
-		/* UPLOAD RECORDS */
-
-		$(document).on('click', '.view-record', function() {
-			const id = $(this).data('id')
-			if (id) {
-				$('.modal-title').html('View Records')
-				$('#content_modal').load(siteurl + active_controller + 'view_record/' + id)
-				$('#modelId').modal('show')
-			} else {
-				Swal.fire('Warning!!', 'Not available data to process', 'waring', 2000);
-			}
-		})
-
-
-		$(document).on('click', '#add_record', function() {
-			const id = $('#procedure_id').val() || null;
-			$('#modelId').modal('show')
-			$('.modal-title').text('Add Records')
-			$('#content_modal').load(siteurl + active_controller + 'upload_record/' + id)
-
-		})
-
-		$(document).on('click', '.edit-record', function() {
-			const id = $(this).data('id') || null;
-			const procedure_id = $('#procedure_id').val() || null;
-			$('#modelId').modal('show')
-			$('.modal-title').text('Edit Records')
-			$('#content_modal').load(siteurl + active_controller + 'edit_record/' + id)
-
-		})
-
-		$(document).on('click', '.delete-record', function() {
-			const id = $(this).data('id') || null;
-			const btn = $(this)
-			Swal.fire({
-				title: 'Are you sure to delete this data?',
-				icon: 'question',
-				showCancelButton: true,
-				confirmButtonColor: '#DD6B55',
-				confirmButtonText: 'Yes, Delete <i class="fa fa-trash text-white"></i>',
-			}).then((value) => {
-				if (value.isConfirmed) {
-					$.ajax({
-						url: siteurl + active_controller + 'delete_record/' + id,
-						type: 'GET',
-						dataType: 'JSON',
-						success: function(result) {
-							if (result.status == '1') {
-								Swal.fire({
-									title: 'Success!!',
-									text: result.msg,
-									icon: 'success',
-									timer: 1500
-								});
-								$(btn).parents('tr').remove();
-
-							} else {
-								Swal.fire('Warning', "Can't delete data. Please try again!", 'warning', 2000)
-							}
-						},
-						error: function() {
-							Swal.fire('Error!', 'Server timeout. Please try again!', 'error', 3000)
-						}
-					})
-				}
-			})
-
-		})
-
 
 		$(document).on('change', 'input[name="forms[flag_record]"]:checked', function() {
 			const mode = $(this).val()
@@ -1060,7 +1199,424 @@
 		})
 
 
+
+		/* SAVE */
+		$(document).on('click', '#save-guide', function() {
+			const pro_id = $('#procedure_id').val() || '';
+			let formdata = new FormData($('#form-records')[0])
+			let btn = $('.save')
+
+			$('#description').removeClass('is-invalid')
+			$('#prepared_by').removeClass('is-invalid')
+			$('#approval_id').removeClass('is-invalid')
+			$('#reviewer_id').removeClass('is-invalid')
+			$('#distribute_id').removeClass('is-invalid')
+			$('#image').removeClass('is-invalid')
+
+			const description = $('#description').val();
+			const prepared_by = $('#prepared_by').val();
+			const reviewer_id = $('#reviewer_id').val();
+			const approval_id = $('#approval_id').val();
+			const distribute_id = $('#distribute_id').val();
+			const id_master = $('#id_master').val();
+			const image = $('#image').val();
+			const parent_id = $('#parent_id').val();
+
+			if (description !== undefined && (description == '' || description == null)) {
+				$('#description').addClass('is-invalid')
+				return false;
+			}
+			if (prepared_by !== undefined && (prepared_by == '' || prepared_by == null)) {
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty User Prepared, please input User Prepared  first.....',
+					icon: "warning"
+				});
+				$('#prepared_by').addClass('is-invalid')
+
+				return false;
+			}
+			if ((reviewer_id == '' && reviewer_id != undefined) || (reviewer_id == null && reviewer_id != undefined)) {
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty reviewer, please input reviewer first.....',
+					icon: "warning"
+				});
+				$('#reviewer_id').addClass('is-invalid')
+
+				return false;
+			}
+			if ((approval_id == '' && approval_id != undefined) || (approval_id == null && approval_id != undefined)) {
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty approval, please input approval first!',
+					icon: "warning"
+				});
+				$('#approval_id').addClass('is-invalid')
+
+				return false;
+			}
+
+			if ((distribute_id == '' && distribute_id != undefined) || (distribute_id == null && distribute_id != undefined)) {
+				$('#distribute_id').addClass('is-invalid')
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty distribusi, please input distribusi first.....',
+					icon: "warning"
+				});
+
+				return false;
+			}
+
+			if (image !== undefined && (image == '' || image == null)) {
+				$('#image').addClass('is-invalid')
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty file, please input file first.....',
+					icon: "warning"
+				});
+				return false;
+			}
+
+			$.ajax({
+				url: siteurl + active_controller + 'saveGuide',
+				data: formdata,
+				type: 'POST',
+				dataType: 'JSON',
+				processData: false,
+				contentType: false,
+				cache: false,
+				beforeSend: function() {
+					btn.attr('disabled', true)
+					btn.html('<i class="spinner spinner-border-sm"></i>Loading...')
+				},
+				complete: function() {
+					btn.attr('disabled', false)
+					btn.html('<i class="fa fa-save"></i>Save')
+				},
+				success: function(result) {
+					if (result.status == 1) {
+						Swal.fire({
+							title: 'Success!',
+							icon: 'success',
+							text: result.msg,
+							timer: 2000
+						})
+						$('.close-btn').click();
+						reload_guides(pro_id)
+					} else {
+						Swal.fire({
+							title: 'Warning!',
+							icon: 'warning',
+							text: result.msg,
+							timer: 2000
+						})
+					}
+				},
+				error: function(result) {
+					Swal.fire({
+						title: 'Error!',
+						icon: 'error',
+						text: 'Server timeout, becuase error!',
+						timer: 4000
+					})
+				}
+			})
+		})
+
+
+		/* UPLOAD RECORDS */
+
+		$(document).on('click', '.view-record', function() {
+			const id = $(this).data('id')
+			if (id) {
+				$('.modal-title').html('View Records')
+				$('#content_modal').load(siteurl + active_controller + 'view_record/' + id)
+				$('#modelId').modal('show')
+				$('.modal-dialog').css('max-width', '')
+			} else {
+				Swal.fire('Warning!!', 'Not available data to process', 'waring', 2000);
+			}
+		})
+
+		$(document).on('click', '.edit-folder', function() {
+			const id = $(this).data('id')
+			const name = $(this).parents('tr').find('.text-name').text()
+			$('#modelId').modal('show')
+			$('.modal-title').text('Add Folder')
+			$('.modal-dialog').css('max-width', '50%')
+			$('#content_modal').html(`
+			<div class="modal-body row">
+				<div class="col-12">
+					<div class="form-group">
+						<label>New Folder</label>
+						<input type="hidden" class="form-control" placeholder="Folder Name" id="folder_id" name="folder_id" value="` + id + `">
+						<input type="text" class="form-control" placeholder="Folder Name" id="folder_name" name="folder_name" value="` + name + `">
+						<span class="form-text text-danger invalid-feedback">Nama folder harus di isi</span>
+					</div>
+					<div class="d-flex justify-content-between">
+						<button type="button" class="btn btn-success save-folder"><i class="fa fa-save" aria-hidden="true"></i> Save</button>
+						<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Close</button>
+					</div>
+				</div>
+			</div>`);
+		})
+
+		$(document).on('click', '#add_record', function() {
+			const id = $('#procedure_id').val() || null;
+			const parent_id = $('#refresh_id').val() || null
+			$('#modalRecord').modal('show')
+			$('.modal-title').text('Add Records')
+			$('#record-content').load(siteurl + active_controller + 'upload_record/' + id + "/" + parent_id)
+
+		})
+
+		$(document).on('click', '.edit-record', function() {
+			const id = $(this).data('id') || null;
+			const procedure_id = $('#procedure_id').val() || null;
+			$('#modelId').modal('show')
+			$('.modal-title').text('Edit Records')
+			$('#content_modal').load(siteurl + active_controller + 'edit_record/' + id)
+
+		})
+
+		$(document).on('click', '.delete-record', function() {
+			const id = $(this).data('id') || null;
+			const btn = $(this)
+			Swal.fire({
+				title: 'Are you sure to delete this data?',
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonColor: '#DD6B55',
+				confirmButtonText: 'Yes, Delete <i class="fa fa-trash text-white"></i>',
+			}).then((value) => {
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'delete_record/' + id,
+						type: 'GET',
+						dataType: 'JSON',
+						success: function(result) {
+							if (result.status == '1') {
+								Swal.fire({
+									title: 'Success!!',
+									text: result.msg,
+									icon: 'success',
+									timer: 1500
+								});
+								$(btn).parents('tr').fadeOut(1000);
+								setTimeout(function() {
+									$(btn).parents('tr').remove();
+								}, 1200)
+
+							} else {
+								Swal.fire('Warning', "Can't delete data. Please try again!", 'warning', 2000)
+							}
+						},
+						error: function() {
+							Swal.fire('Error!', 'Server timeout. Please try again!', 'error', 3000)
+						}
+					})
+				}
+			})
+
+		})
+
+		/* FOLDER RECORDS */
+
+		$(document).on('click', '#add_folder', function() {
+			$('#modelId').modal('show')
+			$('.modal-title').text('Add Folder')
+			$('.modal-dialog').css('max-width', '50%')
+			$('#content_modal').html(`
+			<div class="modal-body row">
+				<div class="col-12">
+					<div class="form-group">
+						<label>New Folder</label>
+						<input type="text" class="form-control" placeholder="Folder Name" id="folder_name" name="folder_name">
+						<span class="form-text text-danger invalid-feedback">Nama folder harus di isi</span>
+					</div>
+					<div class="d-flex justify-content-between">
+						<button type="button" class="btn btn-success save-folder"><i class="fa fa-save" aria-hidden="true"></i> Save</button>
+						<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Close</button>
+					</div>
+				</div>
+			</div>`);
+		})
+
+		$(document).on('click', '.save-folder', function() {
+			const folder_id = $('#folder_id').val() || null
+			const procedure_id = $('#procedure_id').val()
+			const parent_id = $('#refresh_id').val() || null
+			const btn = $(this)
+			const folder_name = $('#folder_name').val()
+
+			if (folder_name !== undefined && (folder_name == '' || folder_name == null)) {
+				$('#folder_name').addClass('is-invalid')
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty Folder name, please input folder name first.....',
+					icon: "warning"
+				});
+
+				return false;
+			}
+
+			$.ajax({
+				url: siteurl + active_controller + 'saveFolder',
+				data: {
+					folder_id,
+					procedure_id,
+					parent_id,
+					folder_name
+				},
+				type: 'POST',
+				dataType: 'JSON',
+				beforeSend: function() {
+					btn.attr('disabled', true)
+					btn.html('<i class="spinner spinner-border-sm"></i>Loading...')
+				},
+				complete: function() {
+					btn.attr('disabled', false)
+					btn.html('<i class="fa fa-save"></i> Save')
+				},
+				success: function(result) {
+					if (result.status == 1) {
+						Swal.fire({
+							title: 'Success!',
+							icon: 'success',
+							text: result.msg,
+							timer: 2000
+						}).then(function() {
+							$('#modelId').modal('hide')
+							$('#refresh').click()
+						})
+					} else {
+						Swal.fire({
+							title: 'Warning!',
+							icon: 'warning',
+							text: result.msg,
+							timer: 2000
+						})
+					}
+				},
+				error: function(result) {
+					Swal.fire({
+						title: 'Error!',
+						icon: 'error',
+						text: 'Server timeout, becuase error!',
+						timer: 4000
+					})
+				}
+			})
+		})
+
+		$(document).on('click', '.folder', function() {
+			const procedure_id = $('#procedure_id').val()
+			const folder_id = $(this).data('id')
+			$('#refresh_id').val(folder_id) || null
+			if (folder_id) {
+				$('#data-records').load(siteurl + active_controller + 'records_folder/' + folder_id + "/" + procedure_id)
+			}
+		})
+
+		$(document).on('click', '.up_folder', function() {
+			const procedure_id = $('#procedure_id').val()
+			const parent_id = $(this).data('id') || null
+			$('#refresh_id').val(parent_id) || null
+			$('#data-records').load(siteurl + active_controller + 'up_folder/' + parent_id + "/" + procedure_id)
+		})
+
+		$(document).on('click', '#refresh', function() {
+			const procedure_id = $('#procedure_id').val()
+			const refresh_id = $('#refresh_id').val() || null
+			if (refresh_id) {
+				$('#data-records').load(siteurl + active_controller + 'refresh/' + refresh_id + "/" + procedure_id)
+			} else {
+				$('#data-records').load(siteurl + active_controller + 'refresh/' + refresh_id + "/" + procedure_id)
+			}
+		})
+
+		$(document).on('click', '#save-record', function() {
+			let formdata = new FormData($('#form-records')[0])
+			let btn = $('.save')
+			$('#description').removeClass('is-invalid')
+			$('#image').removeClass('is-invalid')
+			const description = $('#description').val();
+			const image = $('#image').val();
+			console.log(description);
+			console.log(image);
+			if (description !== undefined && (description == '' || description == null)) {
+				$('#description').addClass('is-invalid')
+				return false;
+			}
+
+			if (image !== undefined && (image == '' || image == null)) {
+				$('#image').addClass('is-invalid')
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty file, please input file first.....',
+					icon: "warning"
+				});
+
+				return false;
+			}
+
+			$.ajax({
+				url: siteurl + active_controller + '/saveFileRecord',
+				data: formdata,
+				type: 'POST',
+				dataType: 'JSON',
+				processData: false,
+				contentType: false,
+				cache: false,
+				beforeSend: function() {
+					btn.attr('disabled', true)
+					btn.html('<i class="spinner spinner-border-sm"></i>Loading...')
+				},
+				complete: function() {
+					btn.attr('disabled', false)
+					btn.html('<i class="fa fa-save"></i>Save')
+				},
+				success: function(result) {
+					if (result.status == 1) {
+						Swal.fire({
+							title: 'Success!',
+							icon: 'success',
+							text: result.msg,
+							timer: 2000
+						})
+						$('#modelId').modal('hide')
+						$('#refresh').click();
+					} else {
+						Swal.fire({
+							title: 'Warning!',
+							icon: 'warning',
+							text: result.msg,
+							timer: 2000
+						})
+					}
+				},
+				error: function(result) {
+					Swal.fire({
+						title: 'Error!',
+						icon: 'error',
+						text: 'Server timeout, becuase error!',
+						timer: 4000
+					})
+				}
+			})
+		})
+
 	})
+
+
+	function reload_form(pro_id) {
+		$('#form-data-content').load(siteurl + active_controller + 'loadDataForm/' + pro_id)
+	}
+
+	function reload_guides(pro_id) {
+		$('#guide-data-content').load(siteurl + active_controller + 'loadDataGuide/' + pro_id)
+	}
 
 	function readFile(input) {
 		if (input.files && input.files[0]) {

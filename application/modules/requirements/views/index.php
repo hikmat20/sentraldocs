@@ -49,12 +49,7 @@
 													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
-										<?php endforeach;
-									else : ?>
-										<tr>
-											<td colspan="5" class="text-center text-muted">~ Not available data ~</td>
-										</tr>
-									<?php
+									<?php endforeach;
 									endif; ?>
 								</tbody>
 							</table>
@@ -85,12 +80,7 @@
 													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $draft->id; ?>" title="View Data"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
-										<?php endforeach;
-									else : ?>
-										<tr>
-											<td colspan="5" class="text-center text-muted">~ Not available data ~</td>
-										</tr>
-									<?php
+									<?php endforeach;
 									endif; ?>
 								</tbody>
 							</table>

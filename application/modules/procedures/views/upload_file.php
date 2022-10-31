@@ -6,9 +6,10 @@
 				<div class="col-12">
 					<input type="hidden" id="id" name="forms[id]" class="form-control" value="<?= isset($data) ? $data->id : ''; ?>" />
 					<input type="hidden" name="forms[procedure_id]" class="form-control" value="<?= $procedure_id; ?>" />
-					<input type="text" class="form-control" id="description" placeholder="Description" name="forms[description]" value="<?= isset($data) ? $data->name : ''; ?>" autocomplete="off" />
+					<input type="text" class="form-control" id="description" placeholder="Document Name" name="forms[description]" value="<?= isset($data) ? $data->name : ''; ?>" autocomplete="off" />
 					<span class="form-text text-danger invalid-feedback">Deskripsi harus di isi</span>
 				</div>
+
 				<div class="type-form">
 					<?php if ($type == 'form') : ?>
 						<input type="hidden" name="forms[type]" value="form">
@@ -20,22 +21,23 @@
 				</div>
 			</div>
 
-			<div class="row">
-				<label class="col-12 col-form-label"><span class="text-danger">*</span> Prepared By :</label>
-				<div class="col-12">
-					<select name="forms[prepared_by]" id="prepared_by" class="form-control select2">;
-						<option value=""></option>
-						<?php foreach ($users as $usr) : ?>
-							<option value="<?= $usr->id_user; ?>" <?= (isset($data) && $data->prepared_by == $usr->id_user) ? 'selected' : ''; ?>><?= $usr->full_name; ?></option>
-						<?php endforeach; ?>
-					</select>
-					<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+			<?php if ($type !== 'record') : ?>
+				<div class="row">
+					<label class="col-12 col-form-label"><span class="text-danger">*</span> Prepared By :</label>
+					<div class="col-12">
+						<select name="forms[prepared_by]" id="prepared_by" class="form-control select2">;
+							<option value=""></option>
+							<?php foreach ($users as $usr) : ?>
+								<option value="<?= $usr->id_user; ?>" <?= (isset($data) && $data->prepared_by == $usr->id_user) ? 'selected' : ''; ?>><?= $usr->full_name; ?></option>
+							<?php endforeach; ?>
+						</select>
+						<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+					</div>
 				</div>
-			</div>
 
-			<div class="row">
-				<label class="col-12 col-form-label"><span class="text-danger">*</span> This document requires approval :</label>
-				<!-- <div class="col-12 col-form-label">
+				<div class="row">
+					<label class="col-12 col-form-label"><span class="text-danger">*</span> This document requires approval :</label>
+					<!-- <div class="col-12 col-form-label">
 					<div class="radio-inline">
 						<label class="radio radio-primary">
 							<input type="radio" name="forms[need_approval]" checked="checked" value="N" />
@@ -50,9 +52,9 @@
 					</div>
 					<span class="form-text text-muted">pilih salah satu</span>
 				</div> -->
-			</div>
+				</div>
 
-			<?php if ($type !== 'record') : ?>
+
 				<div id="file-type">
 					<div class="form-group row">
 						<label class="col-lg-3 col-form-label text-lg-right"><span class="text-danger">*</span> Review By :</label>
@@ -108,48 +110,49 @@
 			</div>
 		</div>
 
-		<div class="col-6">
-			<div class="row">
-				<label class="col-12 col-form-label">Nomor :</label>
-				<div class="col-12">
-					<input type="text" name="forms[number]" id="number" class="form-control" placeholder="Nomor" value="<?= isset($data) ? $data->number : ''; ?>">
-					<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+		<?php if ($type !== 'record') : ?>
+			<div class="col-6">
+				<div class="row">
+					<label class="col-12 col-form-label">Nomor :</label>
+					<div class="col-12">
+						<input type="text" name="forms[number]" id="number" class="form-control" placeholder="Nomor" value="<?= isset($data) ? $data->number : ''; ?>">
+						<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+					</div>
+				</div>
+
+				<div class="row">
+					<label class="col-12 col-form-label">Determination Date :</label>
+					<div class="col-12">
+						<input type="date" name="forms[determination_date]" id="determination_date" class="form-control datepicker" placeholder="<?= date('Y-m-d'); ?>" value="<?= isset($data) ? $data->determination_date : ''; ?>">
+						<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+					</div>
+				</div>
+
+				<div class="row">
+					<label class="col-12 col-form-label">About :</label>
+					<div class="col-12">
+						<input type="text" name="forms[about]" id="about" class="form-control" placeholder="About" value="<?= isset($data) ? $data->about : ''; ?>">
+						<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+					</div>
+				</div>
+
+				<div class="row">
+					<label class="col-12 col-form-label">Status :</label>
+					<div class="col-12">
+						<input type="text" name="forms[doc_status]" id="doc_status" class="form-control" placeholder="Doc. Status" value="<?= isset($data) ? $data->doc_status : ''; ?>">
+						<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+					</div>
+				</div>
+
+				<div class="row">
+					<label class="col-12 col-form-label">Publisher :</label>
+					<div class="col-12">
+						<input type="text" name="forms[publisher]" id="publisher" class="form-control" placeholder="Publisher" value="<?= isset($data) ? $data->publisher : ''; ?>">
+						<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+					</div>
 				</div>
 			</div>
-
-			<div class="row">
-				<label class="col-12 col-form-label">Determination Date :</label>
-				<div class="col-12">
-					<input type="date" name="forms[determination_date]" id="determination_date" class="form-control datepicker" placeholder="<?= date('Y-m-d'); ?>" value="<?= isset($data) ? $data->determination_date : ''; ?>">
-					<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
-				</div>
-			</div>
-
-			<div class="row">
-				<label class="col-12 col-form-label">About :</label>
-				<div class="col-12">
-					<input type="text" name="forms[about]" id="about" class="form-control" placeholder="About" value="<?= isset($data) ? $data->about : ''; ?>">
-					<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
-				</div>
-			</div>
-
-			<div class="row">
-				<label class="col-12 col-form-label">Status :</label>
-				<div class="col-12">
-					<input type="text" name="forms[doc_status]" id="doc_status" class="form-control" placeholder="Doc. Status" value="<?= isset($data) ? $data->doc_status : ''; ?>">
-					<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
-				</div>
-			</div>
-
-			<div class="row">
-				<label class="col-12 col-form-label">Publisher :</label>
-				<div class="col-12">
-					<input type="text" name="forms[publisher]" id="publisher" class="form-control" placeholder="Publisher" value="<?= isset($data) ? $data->publisher : ''; ?>">
-					<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
-				</div>
-			</div>
-		</div>
-
+		<?php endif; ?>
 	</div>
 </div>
 

@@ -22,7 +22,7 @@ class Groups extends Admin_Controller
 
     public function index()
     {
-        $data = $this->db->get_where('groups', ['company_id' => $this->company])->result();
+        $data = $this->db->get_where('groups', ['active' => 'Y', 'id_group !=' => '1'])->result();
         $this->template->set('results', $data);
         $this->template->render('index');
     }
@@ -36,38 +36,17 @@ class Groups extends Admin_Controller
     public function save()
     {
         $data = $this->input->post();
-
         $this->db->trans_begin();
 
         if (isset($data)) {
-            foreach ($data['menus'] as $menus) {
-                $check = $this->db->get_where('group_menus', ['id' => $menus['id']])->num_rows();
-                $menus['read'] = isset($menus['read']) ? $menus['read'] : '0';
-                $menus['create'] = isset($menus['create']) ? $menus['create'] : '0';
-                $menus['update'] = isset($menus['update']) ? $menus['update'] : '0';
-                $menus['delete'] = isset($menus['delete']) ? $menus['delete'] : '0';
-
-                if ($check > 0) {
-                    $this->db->update('group_menus', $menus, ['id' => $menus['id']]);
-                } else {
-                    $this->db->insert('group_menus', $menus);
-                }
+            $data['nm_group'] = $data['name'];
+            unset($data['name']);
+            if (isset($data['id'])) {
+                $this->db->update('groups', $data, ['id_group' => $data['id']]);
+            } else {
+                $data['company_id'] = (isset($this->company) && $this->company) ? $this->company : null;
+                $this->db->insert('groups', $data);
             }
-            foreach ($data['submenus'] as $submenus) {
-                $check = $this->db->get_where('group_menus', ['id' => $submenus['id']])->num_rows();
-                $submenus['read'] = isset($submenus['read']) ? $submenus['read'] : '0';
-                $submenus['create'] = isset($submenus['create']) ? $submenus['create'] : '0';
-                $submenus['update'] = isset($submenus['update']) ? $submenus['update'] : '0';
-                $submenus['delete'] = isset($submenus['delete']) ? $submenus['delete'] : '0';
-
-                if ($check > 0) {
-                    $this->db->update('group_menus', $submenus, ['id' => $submenus['id']]);
-                } else {
-                    $this->db->insert('group_menus', $submenus);
-                }
-            }
-
-
 
             if ($this->db->trans_status() === FALSE) {
                 $this->db->trans_rollback();
@@ -77,6 +56,64 @@ class Groups extends Admin_Controller
                 );
             } else {
                 $this->db->trans_commit();
+                $Arr_Return        = array(
+                    'status'       => 1,
+                    'msg'        => 'Save Process Success... '
+                );
+            }
+        } else {
+            $Arr_Return         = array(
+                'status'        => 0,
+                'msg'           => 'Data not valid...'
+            );
+        }
+
+        echo json_encode($Arr_Return);
+    }
+
+    public function save_permission()
+    {
+        $data = $this->input->post();
+
+        $this->db->trans_begin();
+        if (isset($data['menus'])) {
+
+            foreach ($data['menus'] as $menus) {
+                $check = $this->db->get_where('group_menus', ['id' => $menus['id']])->num_rows();
+                $menus['read'] = isset($menus['read']) ? '1' : '0';
+                $menus['create'] = isset($menus['create']) ? '1' : '0';
+                $menus['update'] = isset($menus['update']) ? '1' : '0';
+                $menus['delete'] = isset($menus['delete']) ? '1' : '0';
+
+                if ($check > 0) {
+                    $this->db->update('group_menus', $menus, ['id' => $menus['id']]);
+                } else {
+                    $this->db->insert('group_menus', $menus);
+                }
+            }
+            foreach ($data['submenus'] as $submenus) {
+                $check = $this->db->get_where('group_menus', ['id' => $submenus['id']])->num_rows();
+                $submenus['read'] = isset($submenus['read']) ? '1' : '0';
+                $submenus['create'] = isset($submenus['create']) ? '1' : '0';
+                $submenus['update'] = isset($submenus['update']) ? '1' : '0';
+                $submenus['delete'] = isset($submenus['delete']) ? '1' : '0';
+
+                if ($check > 0) {
+                    $this->db->update('group_menus', $submenus, ['id' => $submenus['id']]);
+                } else {
+                    $this->db->insert('group_menus', $submenus);
+                }
+            }
+            if ($this->db->trans_status() === FALSE) {
+                // if ($this->db->affected_rows() <= 0) {
+                $this->db->trans_rollback();
+                $Arr_Return        = array(
+                    'status'        => 0,
+                    'msg'         => 'Save Process Failed. Please Try Again...'
+                );
+            } else {
+                $this->db->trans_commit();
+
                 $Arr_Return        = array(
                     'status'       => 1,
                     'msg'        => 'Save Process Success... '
@@ -149,6 +186,22 @@ class Groups extends Admin_Controller
         // $this->template->set('menus', $menus);
         // $this->template->set('submenus', $ArrSubmenu);
         $this->template->render('permission');
+    }
+
+    public function view($id)
+    {
+        $group   = $this->db->get_where('groups', ['id_group' => $id])->row();
+        // $menus = $this->db->order_by('menu_id', 'ASC')->get_where('view_group_menus', ['parent_id' => '0'])->result();
+        // $submenus = $this->db->order_by('parent_id', 'ASC')->get_where('view_group_menus', ['parent_id !=' => '0'])->result();
+        // $ArrSubmenu = [];
+        // foreach ($submenus as $key => $sub) {
+        //     $ArrSubmenu[$sub->parent_id][$key] = $sub;
+        // }
+
+        $this->template->set('group', $group);
+        // $this->template->set('menus', $menus);
+        // $this->template->set('submenus', $ArrSubmenu);
+        $this->template->render('view');
     }
 
 

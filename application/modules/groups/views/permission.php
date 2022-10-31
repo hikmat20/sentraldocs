@@ -27,7 +27,6 @@
                                     <th class="text-center" width="120px">Create</th>
                                     <th class="text-center" width="120px">Update</th>
                                     <th class="text-center" width="120px">Delete</th>
-                                    <th class="text-center" width="120px">Full Access</th>
                                 </tr>
                             </thead>
                             <?= $this->menu_generator->group_menus(); ?>
@@ -83,7 +82,7 @@
                 cancelButtonText: "No, cancel process!",
             }).then((value) => {
                 if (value.isConfirmed) {
-                    var baseurl = siteurl + active_controller + 'save';
+                    var baseurl = siteurl + active_controller + 'save_permission';
                     $.ajax({
                         url: baseurl,
                         type: "POST",

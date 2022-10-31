@@ -483,28 +483,31 @@ class Menu_generator
 
 	// GROUP MENUS
 
-	public function group_menus()
+	public function group_menus($disabled = null)
 	{
+
 		$html = '';
 		$group      = $this->ci->session->group->id_group;
 		$company    = $this->ci->session->company->id_perusahaan;
 
 		$ArrMenu    = array();
-		$Query    = "SELECT * FROM view_group_menus WHERE `company_id`='$company' and group_id='$group' ORDER BY parent_id,id ASC";
+		$Query    = "SELECT * FROM menus WHERE `status`='1' ORDER BY parent_id,id ASC";
 		$count        = $this->ci->db->query($Query)->num_rows();
 		if ($count > 0) {
 			$results        = $this->ci->db->query($Query)->result_array();
+
 
 			foreach ($results as $key => $val) {
 				$ArrMenu[$key]['Menu']['id']          = $val['id'];
 				$ArrMenu[$key]['Menu']['title']       = $val['title'];
 				$ArrMenu[$key]['Menu']['parent_id']   = $val['parent_id'];
-				$ArrMenu[$key]['Menu']['read']   = $val['read'];
-				$ArrMenu[$key]['Menu']['create']   = $val['create'];
-				$ArrMenu[$key]['Menu']['update']   = $val['update'];
-				$ArrMenu[$key]['Menu']['delete']   = $val['delete'];
-				$ArrMenu[$key]['Menu']['approve']   = $val['approve'];
-				$ArrMenu[$key]['Menu']['download']   = $val['download'];
+
+				// $ArrMenu[$key]['Menu']['read']   = $val['read'];
+				// $ArrMenu[$key]['Menu']['create']   = $val['create'];
+				// $ArrMenu[$key]['Menu']['update']   = $val['update'];
+				// $ArrMenu[$key]['Menu']['delete']   = $val['delete'];
+				// $ArrMenu[$key]['Menu']['approve']   = $val['approve'];
+				// $ArrMenu[$key]['Menu']['download']   = $val['download'];
 			}
 
 			$childs = array();
@@ -533,12 +536,21 @@ class Menu_generator
 			}
 			$Menus = isset($childs[0]) ? $childs[0] : array();
 
-			$this->render_menus($Menus);
+			$this->render_menus($Menus, 0, $disabled);
 		}
 	}
 
-	private function render_menus($Menus, $dept = 0)
+	private function render_menus($Menus, $dept = 0, $disabled = null)
 	{
+
+		$group_menus = $this->ci->db->get_where('view_group_menus', ['group_id' => '3', 'company_id' => '1'])->result_array();
+		foreach ($group_menus as $grp) {
+			$ArrMenu[$grp['menu_id']] = $grp;
+		}
+		// echo '<pre>';
+		// print_r($ArrMenu);
+		// echo '</pre>';
+
 		//if first render echo wrapper
 		if ($dept == 0) {
 			echo '<tbody>';
@@ -547,14 +559,25 @@ class Menu_generator
 
 		//loop children
 		foreach ($Menus as $key => $value) {
+			$in_array = isset($ArrMenu[$value['id']]) ? $ArrMenu[$value['id']] : '';
+
 			$path = $value['title'] == '' ? '#' : base_url() .  strtolower($value['title']);
 			if (array_key_exists('child', $value)) {
-				echo "<tr class='parent'>
+				echo "<tr class='parent table-light'>
 				<th><input type='hidden' name='menus[" . $value['parent_id']  . $key . "][id]' value='" . $value['id'] . "'>" . ucwords($value['title']) . "</th>
 				<td class='text-center'>
+					<div class='checkbox-inline d-flex justify-content-center m-auto' >
+						<label class='checkbox checkbox-light-primary d-flex justify-content-center d-inline-block w-100px'>
+							<input " . (($disabled) ? 'disabled' : '') . " class='form-check-input parent parent-read parent-read-" . $value['id'] . "' " . (($in_array && ($in_array['read'] == '1')) ? 'checked' : '') . "  type='checkbox' name='menus[" . $value['parent_id']  . $key . "][read]' data-action='read' data-id='" . $value['id'] . "' value=''>
+							<span></span>
+
+						</label>
+					</div>
+				</td>
+				<td class='text-center'>
 					<div class='checkbox-inline d-flex justify-content-center m-auto'>
 						<label class='checkbox checkbox-light-primary d-flex justify-content-center d-inline-block w-100px'>
-							<input class='form-check-input parent parent-read parent-read-" . $value['id'] . "' " . (($value['read'] == '1') ? 'checked' : '') . " type='checkbox' name='menus[" . $value['parent_id']  . $key . "][read]' data-action='read' data-id='" . $value['id'] . "' value='" . $value['read'] . "'>
+							<input " . (($disabled) ? 'disabled' : '') . " class='form-check-input parent parent-create parent-create-" . $value['id'] . "' " . (($in_array && ($in_array['create'] == '1')) ? 'checked' : '') . " type='checkbox' name='menus[" . $value['parent_id']  . $key . "][create]' data-action='create' data-id='" . $value['id'] . "' value=''>
 							<span></span>
 						</label>
 					</div>
@@ -562,7 +585,7 @@ class Menu_generator
 				<td class='text-center'>
 					<div class='checkbox-inline d-flex justify-content-center m-auto'>
 						<label class='checkbox checkbox-light-primary d-flex justify-content-center d-inline-block w-100px'>
-							<input class='form-check-input parent parent-create parent-create-" . $value['id'] . "' " . (($value['create'] == '1') ? 'checked' : '') . " type='checkbox' name='menus[" . $value['parent_id']  . $key . "][create]' data-action='create' data-id='" . $value['id'] . "' value='" . $value['create'] . "'>
+							<input " . (($disabled) ? 'disabled' : '') . " class='form-check-input parent parent-update parent-update-" . $value['id'] . "' " . (($in_array && ($in_array['update'] == '1')) ? 'checked' : '') . " type='checkbox' name='menus[" . $value['parent_id']  . $key . "][update]' data-action='update' data-id='" . $value['id'] . "' value=''>
 							<span></span>
 						</label>
 					</div>
@@ -570,28 +593,12 @@ class Menu_generator
 				<td class='text-center'>
 					<div class='checkbox-inline d-flex justify-content-center m-auto'>
 						<label class='checkbox checkbox-light-primary d-flex justify-content-center d-inline-block w-100px'>
-							<input class='form-check-input parent parent-update parent-update-" . $value['id'] . "' " . (($value['update'] == '1') ? 'checked' : '') . " type='checkbox' name='menus[" . $value['parent_id']  . $key . "][update]' data-action='update' data-id='" . $value['id'] . "' value='" . $value['update'] . "'>
-							<span></span>
-						</label>
-					</div>
-				</td>
-				<td class='text-center'>
-					<div class='checkbox-inline d-flex justify-content-center m-auto'>
-						<label class='checkbox checkbox-light-primary d-flex justify-content-center d-inline-block w-100px'>
-							<input class='form-check-input parent parent-delete parent-delete-" . $value['id'] . "' " . (($value['delete'] == '1') ? 'checked' : '') . " type='checkbox' name='menus[" . $value['parent_id']  . $key . "][delete]' data-action='delete' data-id='" . $value['id'] . "' value='" . $value['delete'] . "'>
-							<span></span>
-						</label>
-					</div>
-				</td>
-				<td class='text-center'>
-					<div class='checkbox-inline d-flex justify-content-center m-auto'>
-						<label class='checkbox checkbox-light-primary d-flex justify-content-center d-inline-block w-100px'>
-							<input class='form-check-input parent-full-access' type='checkbox' name='' id='' value='1'>
+							<input " . (($disabled) ? 'disabled' : '') . " class='form-check-input parent parent-delete parent-delete-" . $value['id'] . "' " . (($in_array && ($in_array['delete'] == '1')) ? 'checked' : '') . " type='checkbox' name='menus[" . $value['parent_id']  . $key . "][delete]' data-action='delete' data-id='" . $value['id'] . "' value=''>
 							<span></span>
 						</label>
 					</div>
 				</td>";
-				$this->render_menus($value['child'], $dept + 1);
+				$this->render_menus($value['child'], $dept + 1, $disabled);
 				echo ('</tr>');
 			} else {
 				echo "<tr class='children'>
@@ -600,7 +607,7 @@ class Menu_generator
 				<td class='text-center'>
 					<div class='checkbox-inline d-flex justify-content-center m-auto'>
 						<label class='checkbox checkbox-outline d-flex justify-content-center d-inline-block w-100px'>
-							<input class='form-check-input child child-read child-read-" . $value['parent_id'] . "' " . (($value['read'] == '1') ? 'checked' : '') . " type='checkbox' name='submenus[" . $value['parent_id'] . $key . "][read]' data-id='" . $value['id'] . "' data-parent='" . $value['parent_id'] . "' data-action='read' value='" . $value['read'] . "'>
+							<input " . (($disabled) ? 'disabled' : '') . " class='form-check-input child child-read child-read-" . $value['parent_id'] . "' " . (($in_array && ($in_array['read'] == '1')) ? 'checked' : '') . " type='checkbox' name='submenus[" . $value['parent_id'] . $key . "][read]' data-id='" . $value['id'] . "' data-parent='" . $value['parent_id'] . "' data-action='read' value=''>
 							<span></span>
 						</label>
 					</div>
@@ -608,7 +615,7 @@ class Menu_generator
 				<td class='text-center'>
 					<div class='checkbox-inline d-flex justify-content-center m-auto'>
 						<label class='checkbox checkbox-outline d-flex justify-content-center d-inline-block w-100px'>
-							<input class='form-check-input child child-create child-create-" . $value['parent_id'] . "' " . (($value['create'] == '1') ? 'checked' : '') . " type='checkbox' name='submenus[" . $value['parent_id'] . $key . "][create]' data-parent='" . $value['parent_id'] . "' data-id='" . $value['id'] . "' data-action='create' value='" . $value['create'] . "'>
+							<input " . (($disabled) ? 'disabled' : '') . " class='form-check-input child child-create child-create-" . $value['parent_id'] . "'" . (($in_array && ($in_array['create'] == '1')) ? 'checked' : '') . "  type='checkbox' name='submenus[" . $value['parent_id'] . $key . "][create]' data-parent='" . $value['parent_id'] . "' data-id='" . $value['id'] . "' data-action='create' value=''>
 							<span></span>
 						</label>
 					</div>
@@ -616,7 +623,7 @@ class Menu_generator
 				<td class='text-center'>
 					<div class='checkbox-inline d-flex justify-content-center m-auto'>
 						<label class='checkbox checkbox-outline d-flex justify-content-center d-inline-block w-100px'>
-							<input class='form-check-input child child-update child-update-" . $value['parent_id'] . "' " . (($value['update'] == '1') ? 'checked' : '') . " type='checkbox' name='submenus[" . $value['parent_id'] . $key . "][update]' data-parent='" . $value['parent_id'] . "' data-id='" . $value['id'] . "' data-action='update' value='" . $value['update'] . "'>
+							<input " . (($disabled) ? 'disabled' : '') . " class='form-check-input child child-update child-update-" . $value['parent_id'] . "' " . (($in_array && ($in_array['update'] == '1')) ? 'checked' : '') . " type='checkbox' name='submenus[" . $value['parent_id'] . $key . "][update]' data-parent='" . $value['parent_id'] . "' data-id='" . $value['id'] . "' data-action='update' value=''>
 							<span></span>
 						</label>
 					</div>
@@ -624,20 +631,11 @@ class Menu_generator
 				<td class='text-center'>
 					<div class='checkbox-inline d-flex justify-content-center m-auto'>
 						<label class='checkbox checkbox-outline d-flex justify-content-center d-inline-block w-100px'>
-							<input class='form-check-input child child-delete child-delete-" . $value['parent_id'] . "' " . (($value['delete'] == '1') ? 'checked' : '') . " type='checkbox' name='submenus[" . $value['parent_id']  . $key . "][delete]' data-parent='" . $value['parent_id'] . "' data-id='" . $value['id'] . "' data-action='delete' value='" . $value['delete'] . "'>
+							<input " . (($disabled) ? 'disabled' : '') . " class='form-check-input child child-delete child-delete-" . $value['parent_id'] . "' " . (($in_array && ($in_array['delete'] == '1')) ? 'checked' : '') . " type='checkbox' name='submenus[" . $value['parent_id']  . $key . "][delete]' data-parent='" . $value['parent_id'] . "' data-id='" . $value['id'] . "' data-action='delete' value=''>
 							<span></span>
 						</label>
 					</div>
-				</td>
-				<td class='text-center'>
-					<div class='checkbox-inline d-flex justify-content-center m-auto'>
-						<label class='checkbox checkbox-outline d-flex justify-content-center d-inline-block w-100px'>
-							<input class='form-check-input' type='checkbox' name='' id='' value='1'>
-							<span></span>
-						</label>
-					</div>
-				</td>
-				";
+				</td>";
 			}
 			echo ('</tr>');
 		}
