@@ -3,7 +3,7 @@
 <button type="button" class="btn btn-success btn-icon mb-3" id="refresh" title="Refresh"><i class="fa fa-sync-alt"></i></button>
 <hr>
 
-<input type="hidden" id="refresh_id" value="<?= $parent_id; ?>">
+<input type="hidden" id="refresh_id" value="<?= ($parent_id) ?: ''; ?>">
 <table class="table table-hover">
   <thead>
     <tr>
@@ -17,7 +17,7 @@
       <?php if (!$EOF) : ?>
         <tr>
           <td colspan="3" class="py-1">
-            <a href="javascript:void(0)" title="Up Folder" data-id="<?= $parent_id; ?>" class="cursor-pointer up_folder text-dark">
+            <a href="javascript:void(0)" title="Up Folder" data-id="<?= ($parent_id) ?: ''; ?>" class="cursor-pointer up_folder text-dark">
               <div class="d-flex justify-content-start align-items-center">
                 <i class="fa fa-level-up-alt text-success mr-3"></i>
                 <span class="text-name mt-3 h5"><i class="fa fa-ellipsis-h"></i></span>
