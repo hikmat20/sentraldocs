@@ -1659,13 +1659,11 @@
 		$(document).on('click', '#save-record', function() {
 			let formdata = new FormData($('#form-records')[0])
 			let btn = $('.save')
-			alert('reords')
 			$('#description').removeClass('is-invalid')
 			$('#image').removeClass('is-invalid')
 			const description = $('#description').val();
 			const image = $('#image').val();
-			console.log(description);
-			console.log(image);
+
 			if (description !== undefined && (description == '' || description == null)) {
 				$('#description').addClass('is-invalid')
 				return false;
@@ -1706,7 +1704,7 @@
 							text: result.msg,
 							timer: 2000
 						})
-						$('#modelId').modal('hide')
+						$('#modalRecord').modal('hide')
 						$('#refresh').click();
 					} else {
 						Swal.fire({
