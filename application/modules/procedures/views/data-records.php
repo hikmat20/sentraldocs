@@ -4,6 +4,7 @@
 <hr>
 
 <input type="hidden" id="refresh_id" value="<?= ($parent_id) ?: ''; ?>">
+
 <table class="table table-hover">
   <thead>
     <tr>
@@ -60,16 +61,18 @@
         </tr>
       <?php endforeach; ?>
     <?php else : ?>
-      <tr>
-        <td colspan="3" class="py-1">
-          <a href="javascript:void(0)" title="Up Folder" data-id="<?= $parent_id; ?>" class="cursor-pointer up_folder text-dark">
-            <div class="d-flex justify-content-start align-items-center">
-              <i class="fa fa-level-up-alt text-success mr-3"></i>
-              <span class="text-name mt-3 h5"><i class="fa fa-ellipsis-h"></i></span>
-            </div>
-          </a>
-        </td>
-      </tr>
+      <?php if (!$EOF) : ?>
+        <tr>
+          <td colspan="3" class="py-1">
+            <a href="javascript:void(0)" title="Up Folder" data-id="<?= ($parent_id) ?: ''; ?>" class="cursor-pointer up_folder text-dark">
+              <div class="d-flex justify-content-start align-items-center">
+                <i class="fa fa-level-up-alt text-success mr-3"></i>
+                <span class="text-name mt-3 h5"><i class="fa fa-ellipsis-h"></i></span>
+              </div>
+            </a>
+          </td>
+        </tr>
+      <?php endif; ?>
       <tr>
         <td colspan="3" class="text-center py-3">
           <h5 class="text-gray">~ No data available~ </h5>

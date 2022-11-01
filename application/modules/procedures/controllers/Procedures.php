@@ -1119,7 +1119,8 @@ class Procedures extends Admin_Controller
 
 	public function up_folder($id = null, $procedure_id = null)
 	{;
-
+		$parent_id = "";
+		$EOF = true;
 		if ($id != 'null') {
 			$parent_id = $this->db->get_where('dir_records', ['id' => $id])->row()->parent_id;
 			if ($parent_id) {
@@ -1147,6 +1148,7 @@ class Procedures extends Admin_Controller
 
 	public function refresh($id = '', $procedure_id = null)
 	{
+		$EOF = true;
 		if ($id != 'null') {
 			$getRecords = $this->db->get_where('dir_records', ['procedure_id' => $procedure_id, 'parent_id' => $id, 'status !=' => 'DEL'])->result();
 			$EOF = false;
@@ -1157,7 +1159,7 @@ class Procedures extends Admin_Controller
 
 		$this->template->set([
 			'getRecords' 	=> $getRecords,
-			'parent_id' 	=> $id,
+			'parent_id' 	=> ($id == 'null') ? '' : $id,
 			'EOF'			=> $EOF,
 		]);
 

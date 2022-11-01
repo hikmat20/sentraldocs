@@ -1444,9 +1444,9 @@
 		})
 
 		$(document).on('click', '.save-folder', function() {
-			const folder_id = $('#folder_id').val() || null
+			const folder_id = $('#folder_id').val() || ''
 			const procedure_id = $('#procedure_id').val()
-			const parent_id = $('#refresh_id').val() || null
+			const parent_id = $('#refresh_id').val() || ''
 			const btn = $(this)
 			const folder_name = $('#folder_name').val()
 
@@ -1539,6 +1539,7 @@
 		$(document).on('click', '#save-record', function() {
 			let formdata = new FormData($('#form-records')[0])
 			let btn = $('.save')
+			alert('reords')
 			$('#description').removeClass('is-invalid')
 			$('#image').removeClass('is-invalid')
 			const description = $('#description').val();
@@ -1562,7 +1563,7 @@
 			}
 
 			$.ajax({
-				url: siteurl + active_controller + '/saveFileRecord',
+				url: siteurl + active_controller + 'saveFileRecord',
 				data: formdata,
 				type: 'POST',
 				dataType: 'JSON',
