@@ -307,7 +307,7 @@
 										<div id="MediaVideo" class="collapse in" role="tabpanel" aria-labelledby="sectionMediaVideo">
 											<div class="card-body">
 												<div class="mb-3">
-													<h4 class="">Embed Link Video</h4>
+													<h4 class="">Embed Video Link</h4>
 													<div class="mt-1 mb-2">
 														<div class="row">
 															<div class="input-group">

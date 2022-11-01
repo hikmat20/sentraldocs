@@ -25,7 +25,8 @@ class Procedures extends Admin_Controller
 		date_default_timezone_set("Asia/Bangkok");
 		$this->status = [
 			'0' => '<span class="badge badge-danger">Invalid</span>',
-			'1' => '<span class="badge badge-primary">Valid</span>'
+			'1' => '<span class="badge badge-primary">Publish</span>',
+			'DFT' => '<span class="badge badge-secondary">Draft</span>'
 		];
 
 		$this->sts = [
