@@ -51,9 +51,13 @@ class Procedures extends Admin_Controller
 	public function add()
 	{
 		$grProcess	= $this->db->get_where('group_procedure', ['status' => 'ACT'])->result();
+		$users 		= $this->db->get_where('users', ['status' => 'ACT', 'id_user !=' => '1'])->result();
+		$jabatan 	= $this->db->get('tbl_jabatan')->result();
 
 		$this->template->set([
 			'grProcess' 	=> $grProcess,
+			'users' 		=> $users,
+			'jabatan' 		=> $jabatan,
 
 		]);
 
@@ -303,6 +307,17 @@ class Procedures extends Admin_Controller
 			echo json_encode($Return);
 			return false;
 		}
+	}
+
+	public function loadFlow($id)
+	{
+		$Data_detail = '';
+		if ($id) {
+			$Data_detail 	= $this->db->get_where('procedure_details', ['procedure_id' => $id, 'status' => '1'])->result();
+		}
+
+		$this->template->set('detail', $Data_detail);
+		$this->template->render('data-flow');
 	}
 
 	public function saveFileRecord()

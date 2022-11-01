@@ -307,7 +307,7 @@
 										<div id="MediaVideo" class="collapse in" role="tabpanel" aria-labelledby="sectionMediaVideo">
 											<div class="card-body">
 												<div class="mb-3">
-													<h4 class="">Link Video</h4>
+													<h4 class="">Embed Link Video</h4>
 													<div class="mt-1 mb-2">
 														<div class="row">
 															<div class="input-group">
@@ -749,9 +749,9 @@
 					</div>
 				</div> 
 				<div class="modal-footer justify-content-between align-items-center mb-3">
-						<button type="submit" class="btn btn-sm btn-primary w-100px save"><i class="fas fa-save"></i>Save</button>
-						<button type="button" class="btn btn-sm btn-danger w-100px" onclick="setTimeout(function(){$('#content_modal').html('')},1500)" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
-					</div> 
+					<button type="submit" class="btn btn-sm btn-primary w-100px save"><i class="fas fa-save"></i>Save</button>
+					<button type="button" class="btn btn-sm btn-danger w-100px" onclick="setTimeout(function(){$('#content_modal').html('')},1500)" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
+				</div> 
 			</div> 
 			`;
 
@@ -766,36 +766,41 @@
 			let desc = $(this).parents('tr').find('td:eq(2)').text();
 			let reldoc = $(this).parents('tr').find('td:eq(3)').text();
 
-			let html = `
-			<div class="form-group">
-				<label class="">Nomor</label>
-				<div class="">
-					<input type="hidden" name="flow[id]" class="form-control" value="` + id + `" >
-					<input type="text" name="flow[number]" id="number" class="form-control" required placeholder="Nomor" value="` + number + `">
-					<small class="text-danger invalid-feedback">Nomor</small>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="">PIC</label>
-				<div class="">
-					<input type="text" name="flow[pic]" id="pic" class="form-control" required placeholder="PIC" value="` + pic + `">
-					<small class="text-danger invalid-feedback">PIC</small>
-				</div>
-			</div>
-			<div class="form-group">
-				<label for="description" class="">Deskripsi</label>
-				<div class="">
-					<textarea rows="5" name="flow[description]" id="description" class="form-control" placeholder="Deskripsi" aria-describedby="helpId">` + desc + `</textarea>
-					<small class="text-danger invalid-feedback">Deskripsi</small>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="">Dok. Terkait</label>
-				<div class="">
-					<textarea rows="5" name="flow[relate_doc]" id="relate_doc" class="form-control" required placeholder="Dokumen terkait" aria-describedby="helpId">` + reldoc + `</textarea>
-					<small class="text-danger invalid-feedback">Dokumen terkait</small>
-				</div>
-			</div> 
+			let html = `<div class="modal-body">
+					<div class="form-group">
+						<label class="">Nomor</label>
+						<div class="">
+							<input type="hidden" name="flow[id]" class="form-control" value="` + id + `" >
+							<input type="text" name="flow[number]" id="number" class="form-control" required placeholder="Nomor" value="` + number + `">
+							<small class="text-danger invalid-feedback">Nomor</small>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="">PIC</label>
+						<div class="">
+							<input type="text" name="flow[pic]" id="pic" class="form-control" required placeholder="PIC" value="` + pic + `">
+							<small class="text-danger invalid-feedback">PIC</small>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="description" class="">Deskripsi</label>
+						<div class="">
+							<textarea rows="5" name="flow[description]" id="description" class="form-control" placeholder="Deskripsi" aria-describedby="helpId">` + desc + `</textarea>
+							<small class="text-danger invalid-feedback">Deskripsi</small>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="">Dok. Terkait</label>
+						<div class="">
+							<textarea rows="5" name="flow[relate_doc]" id="relate_doc" class="form-control" required placeholder="Dokumen terkait" aria-describedby="helpId">` + reldoc + `</textarea>
+							<small class="text-danger invalid-feedback">Dokumen terkait</small>
+						</div>
+					</div> 
+				</div> 
+				<div class="modal-footer justify-content-between align-items-center mb-3">
+					<button type="submit" class="btn btn-sm btn-primary w-100px save"><i class="fas fa-save"></i>Save</button>
+					<button type="button" class="btn btn-sm btn-danger w-100px" onclick="setTimeout(function(){$('#content_modal').html('')},1500)" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
+				</div> 
 			`;
 
 			$('#content_modal').html(html)
@@ -804,6 +809,7 @@
 
 		$(document).on('click', '.delete_flow', function() {
 			let id = $(this).data('id')
+			const btn = $(this)
 			Swal.fire({
 				title: 'Are you sure to delete this data?',
 				icon: 'question',
@@ -824,7 +830,7 @@
 									icon: 'success',
 									timer: 1500
 								}).then(() => {
-									location.reload()
+									btn.parents('tr').fadeOut('1500')
 								})
 
 							} else {
@@ -862,10 +868,6 @@
 			const image = $('#image').val();
 			const parent_id = $('#parent_id').val();
 			console.log(description);
-			if (description !== undefined && (description == '' || description == null)) {
-				$('#description').addClass('is-invalid')
-				return false;
-			}
 			if (prepared_by !== undefined && (prepared_by == '' || prepared_by == null)) {
 				Swal.fire({
 					title: "Error Message!",
@@ -873,7 +875,7 @@
 					icon: "warning"
 				});
 				$('#prepared_by').addClass('is-invalid')
-
+				$('#approvalDocs').addClass('show');
 				return false;
 			}
 			if ((reviewer_id == '' && reviewer_id != undefined) || (reviewer_id == null && reviewer_id != undefined)) {
@@ -883,7 +885,7 @@
 					icon: "warning"
 				});
 				$('#reviewer_id').addClass('is-invalid')
-
+				$('#approvalDocs').addClass('show');
 				return false;
 			}
 			if ((approval_id == '' && approval_id != undefined) || (approval_id == null && approval_id != undefined)) {
@@ -893,7 +895,7 @@
 					icon: "warning"
 				});
 				$('#approval_id').addClass('is-invalid')
-
+				$('#approvalDocs').addClass('show');
 				return false;
 			}
 
@@ -904,23 +906,12 @@
 					text: 'Empty distribusi, please input distribusi first.....',
 					icon: "warning"
 				});
-
-				return false;
-			}
-
-			if (image !== undefined && (image == '' || image == null)) {
-				$('#image').addClass('is-invalid')
-				Swal.fire({
-					title: "Error Message!",
-					text: 'Empty file, please input file first.....',
-					icon: "warning"
-				});
-
+				$('#approvalDocs').addClass('show');
 				return false;
 			}
 
 			$.ajax({
-				url: siteurl + active_controller + '/save',
+				url: siteurl + active_controller + 'save',
 				data: formdata,
 				type: 'POST',
 				dataType: 'JSON',
@@ -944,6 +935,7 @@
 							timer: 2000
 						})
 						$('#modelId').modal('hide')
+						$('#flowDetail table tbody').load(siteurl + active_controller + 'loadFlow/' + result.id)
 					} else {
 						Swal.fire({
 							title: 'Warning!',

@@ -256,7 +256,7 @@
 										<div id="MediaVideo" class="collapse in" role="tabpanel" aria-labelledby="sectionMediaVideo">
 											<div class="card-body">
 												<div class="mb-3">
-													<h4 class="">Link Video</h4>
+													<h4 class="">Embed Link Video</h4>
 													<div class="mt-1 mb-2">
 														<div class="row">
 															<div class="input-group">
@@ -303,6 +303,122 @@
 											</div>
 										</div>
 									</div>
+
+									<!-- APPROVAL -->
+									<div class="card border-0 mb-3" style="border-radius: 10px;">
+										<div class="card-header bg-light border-0 py-4 cursor-pointer" role="tab" id="sectionApproval" style="border-radius: 10px;">
+											<h4 class="mb-0 font-weight-bolder" data-toggle="collapse" data-parent="#accProcedure" href="#approvalDocs" aria-expanded="true" aria-controls="approvalDocs">
+												DATA APPROVAL
+											</h4>
+										</div>
+										<div id="approvalDocs" class="collapse in" role="tabpanel" aria-labelledby="sectionApproval">
+											<div class="card-body">
+												<div class="row">
+													<div class="col-6">
+														<div class="form-group row">
+															<label class="col-12 col-form-label"><span class="text-danger">*</span> Prepared By :</label>
+															<div class="col-12">
+																<select name="prepared_by" id="prepared_by" class="form-control select2">;
+																	<option value=""></option>
+																	<?php foreach ($users as $usr) : ?>
+																		<option value="<?= $usr->id_user; ?>"><?= $usr->full_name; ?></option>
+																	<?php endforeach; ?>
+																</select>
+																<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+															</div>
+														</div>
+
+														<div class="form-group">
+															<h5 class="col-12 px-0"><span class="text-danger">*</span> This document requires approval :</h5>
+														</div>
+
+														<div class="form-group row">
+															<label class="col-lg-3"><span class="text-danger">*</span> Review By</label>
+															<div class="col-lg-9">
+																<select name="reviewer_id" id="reviewer_id" class="form-control select2">;
+																	<option value=""></option>
+																	<?php foreach ($jabatan as $jbt) : ?>
+																		<option value="<?= $jbt->id; ?>"><?= $jbt->nm_jabatan; ?></option>
+																	<?php endforeach; ?>
+																</select>
+																<span class="form-text text-danger invalid-feedback"><span class="text-danger">*</span> Review By harus di isi</span>
+															</div>
+														</div>
+
+														<div class="form-group row">
+															<label class="col-lg-3"><span class="text-danger">*</span> Approval By</label>
+															<div class="col-lg-9">
+																<select name="approval_id" id="approval_id" class="form-control select2">;
+																	<option value=""></option>
+																	<?php foreach ($jabatan as $jbt) : ?>
+																		<option value="<?= $jbt->id; ?>"><?= $jbt->nm_jabatan; ?></option>
+																	<?php endforeach; ?>
+																</select>
+																<span class="form-text text-danger invalid-feedback">Approval By harus di isi</span>
+															</div>
+														</div>
+
+														<div class="form-group row">
+															<label class="col-lg-3"><span class="text-danger">*</span> Distribusi</label>
+															<div class="col-lg-9">
+																<select name="distribute_id[]" multiple id="distribute_id" data-placeholder="Choose an options" class="form-control select2">;
+																	<option value=""></option>
+																	<?php foreach ($jabatan as $jbt) : ?>
+																		<option value="<?= $jbt->id; ?>"><?= $jbt->nm_jabatan; ?></option>
+																	<?php endforeach; ?>
+																</select>
+																<span class="form-text text-danger invalid-feedback">Distribusi By harus di isi</span>
+															</div>
+														</div>
+
+													</div>
+
+													<div class="col-6">
+														<div class="row">
+															<label class="col-12 col-form-label">Nomor :</label>
+															<div class="col-12">
+																<input type="text" name="number" id="number" class="form-control" placeholder="Nomor" value="">
+																<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+															</div>
+														</div>
+
+														<div class="row">
+															<label class="col-12 col-form-label">Determination Date :</label>
+															<div class="col-12">
+																<input type="date" name="determination_date" id="determination_date" class="form-control datepicker" placeholder="<?= date('Y-m-d'); ?>" value="">
+																<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+															</div>
+														</div>
+
+														<div class="row">
+															<label class="col-12 col-form-label">About :</label>
+															<div class="col-12">
+																<input type="text" name="about" id="about" class="form-control" placeholder="About" value="">
+																<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+															</div>
+														</div>
+
+														<div class="row">
+															<label class="col-12 col-form-label">Status :</label>
+															<div class="col-12">
+																<input type="text" name="doc_status" id="doc_status" class="form-control" placeholder="Doc. Status" value="">
+																<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+															</div>
+														</div>
+
+														<div class="row">
+															<label class="col-12 col-form-label">Publisher :</label>
+															<div class="col-12">
+																<input type="text" name="publisher" id="publisher" class="form-control" placeholder="Publisher" value="">
+																<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
 								</div>
 								<div class="tab-pane fade" id="form" role="tabpanel" aria-labelledby="form-tab">
 									<button type="button" class="btn btn-primary mb-3" id="add_form"><i class="fa fa-plus"></i> Add Form</button>
@@ -489,11 +605,7 @@
 			const image = $('#image').val();
 			const parent_id = $('#parent_id').val();
 
-			console.log(description);
-			if (description !== undefined && (description == '' || description == null)) {
-				$('#description').addClass('is-invalid')
-				return false;
-			}
+
 			if (prepared_by !== undefined && (prepared_by == '' || prepared_by == null)) {
 				Swal.fire({
 					title: "Error Message!",
@@ -501,7 +613,7 @@
 					icon: "warning"
 				});
 				$('#prepared_by').addClass('is-invalid')
-
+				$('#approvalDocs').addClass('show');
 				return false;
 			}
 			if ((reviewer_id == '' && reviewer_id != undefined) || (reviewer_id == null && reviewer_id != undefined)) {
@@ -511,7 +623,7 @@
 					icon: "warning"
 				});
 				$('#reviewer_id').addClass('is-invalid')
-
+				$('#approvalDocs').addClass('show');
 				return false;
 			}
 			if ((approval_id == '' && approval_id != undefined) || (approval_id == null && approval_id != undefined)) {
@@ -521,7 +633,7 @@
 					icon: "warning"
 				});
 				$('#approval_id').addClass('is-invalid')
-
+				$('#approvalDocs').addClass('show');
 				return false;
 			}
 			if ((distribute_id == '' && distribute_id != undefined) || (distribute_id == null && distribute_id != undefined)) {
@@ -531,24 +643,13 @@
 					text: 'Empty distribusi, please input distribusi first.....',
 					icon: "warning"
 				});
-
-				return false;
-			}
-
-			if (image != undefined && (image == '' || image == null)) {
-				$('#image').addClass('is-invalid')
-				Swal.fire({
-					title: "Error Message!",
-					text: 'Empty file, please input file first.....',
-					icon: "warning"
-				});
-
+				$('#approvalDocs').addClass('show');
 				return false;
 			}
 
 
 			$.ajax({
-				url: siteurl + active_controller + '/save',
+				url: siteurl + active_controller + 'save',
 				data: formdata,
 				type: 'POST',
 				dataType: 'JSON',
