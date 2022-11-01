@@ -70,11 +70,19 @@ class Procedures extends Admin_Controller
 			$getForms	= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
 			$getGuides	= $this->db->get_where('dir_guides', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
 			$getRecords	= $this->db->get_where('dir_records', ['procedure_id' => $id, 'status !=' => 'DEL', 'flag_type' => 'FOLDER', 'parent_id' => null])->result();
+			$users 		= $this->db->get_where('users', ['status' => 'ACT', 'id_user !=' => '1'])->result();
 			$jabatan 	= $this->db->get('tbl_jabatan')->result();
+
+			// $this->template->set([
+			// 	'jabatan' 		=> $jabatan,
+			// 	'procedure_id' 	=> $id,
+			// 	'type' 			=> "form",
+			// ]);
 
 			$this->template->set([
 				'title' 		=> 'Edit Procedures',
 				'data' 			=> $Data,
+				'users' 		=> $users,
 				'detail' 		=> $Data_detail,
 				'getForms' 		=> $getForms,
 				'getGuides' 	=> $getGuides,
@@ -117,10 +125,8 @@ class Procedures extends Admin_Controller
 	{
 		$Data 			= $this->input->post();
 		$Data_flow 		= $this->input->post('flow');
-		$Data_forms 		= $this->input->post('forms');
 
-		unset($Data['forms']);
-		$this->db->trans_begin();
+
 		if ($Data) {
 			if (isset($_FILES)) {
 				$images = $this->upload_images();
@@ -128,16 +134,12 @@ class Procedures extends Admin_Controller
 				($images['image2']) ? $Data['image_flow_2'] = $images['image2'] : '';
 				($images['image3']) ? $Data['image_flow_3'] = $images['image3'] : '';
 			}
-
-
-			// isset($Data['delete_image_1']) ? $Data['image_flow_1'] = null : null;
-			// isset($Data['delete_image_2']) ? $Data['image_flow_2'] = null : null;
-			// isset($Data['delete_image_3']) ? $Data['image_flow_3'] = null : null;
-
 			$Data['company_id'] = $this->company;
+			$dist 					= isset($Data['distribute_id']) ? implode(",", $Data['distribute_id']) : null;
+			$Data['distribute_id']	= $dist;
 
 			unset($Data['flow']);
-			unset($Data['flag_type']);
+			$this->db->trans_begin();
 			if (isset($Data['id'])) {
 				$Data['modified_by'] = $this->auth->user_id();
 				$Data['modified_at'] = date('Y-m-d H:i:s');
@@ -164,9 +166,9 @@ class Procedures extends Admin_Controller
 			}
 		}
 
-		if (isset($Data_forms) && $Data_forms) {
-			$this->_save_upload();
-		}
+		// if (isset($Data_forms) && $Data_forms) {
+		// 	$this->_save_upload();
+		// }
 
 		if ($this->db->trans_status() === FALSE) {
 			$this->db->trans_rollback();

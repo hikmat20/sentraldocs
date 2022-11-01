@@ -9,8 +9,8 @@
   <thead>
     <tr>
       <th class="py-0">File or Folder Name</th>
-      <th class="py-0">Last Update</th>
-      <th class="py-0">Opsi</th>
+      <th class="py-0 text-right">Last Update</th>
+      <th class="py-0 text-center">Opsi</th>
     </tr>
   </thead>
   <tbody>

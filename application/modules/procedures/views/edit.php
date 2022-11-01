@@ -369,13 +369,131 @@
 											</div>
 										</div>
 									</div>
+
+									<!-- APPROVAL -->
+									<div class="card border-0 mb-3" style="border-radius: 10px;">
+										<div class="card-header bg-light border-0 py-4 cursor-pointer" role="tab" id="sectionApproval" style="border-radius: 10px;">
+											<h4 class="mb-0 font-weight-bolder" data-toggle="collapse" data-parent="#accProcedure" href="#approvalDocs" aria-expanded="true" aria-controls="approvalDocs">
+												DATA APPROVAL
+											</h4>
+										</div>
+										<div id="approvalDocs" class="collapse in" role="tabpanel" aria-labelledby="sectionApproval">
+											<div class="card-body">
+												<div class="row">
+													<div class="col-6">
+														<div class="form-group row">
+															<label class="col-12 col-form-label"><span class="text-danger">*</span> Prepared By :</label>
+															<div class="col-12">
+																<select name="prepared_by" id="prepared_by" class="form-control select2">;
+																	<option value=""></option>
+																	<?php foreach ($users as $usr) : ?>
+																		<option value="<?= $usr->id_user; ?>" <?= (isset($data) && $data->prepared_by == $usr->id_user) ? 'selected' : ''; ?>><?= $usr->full_name; ?></option>
+																	<?php endforeach; ?>
+																</select>
+																<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+															</div>
+														</div>
+
+														<div class="form-group">
+															<h5 class="col-12 px-0"><span class="text-danger">*</span> This document requires approval :</h5>
+														</div>
+
+														<div class="form-group row">
+															<label class="col-lg-3"><span class="text-danger">*</span> Review By</label>
+															<div class="col-lg-9">
+																<select name="reviewer_id" id="reviewer_id" class="form-control select2">;
+																	<option value=""></option>
+																	<?php foreach ($jabatan as $jbt) : ?>
+																		<option value="<?= $jbt->id; ?>" <?= (isset($data) && $data->reviewer_id == $jbt->id) ? 'selected' : ''; ?>><?= $jbt->nm_jabatan; ?></option>
+																	<?php endforeach; ?>
+																</select>
+																<span class="form-text text-danger invalid-feedback"><span class="text-danger">*</span> Review By harus di isi</span>
+															</div>
+														</div>
+
+														<div class="form-group row">
+															<label class="col-lg-3"><span class="text-danger">*</span> Approval By</label>
+															<div class="col-lg-9">
+																<select name="approval_id" id="approval_id" class="form-control select2">;
+																	<option value=""></option>
+																	<?php foreach ($jabatan as $jbt) : ?>
+																		<option value="<?= $jbt->id; ?>" <?= (isset($data) && $data->approval_id == $jbt->id) ? 'selected' : ''; ?>><?= $jbt->nm_jabatan; ?></option>
+																	<?php endforeach; ?>
+																</select>
+																<span class="form-text text-danger invalid-feedback">Approval By harus di isi</span>
+															</div>
+														</div>
+
+														<div class="form-group row">
+															<label class="col-lg-3"><span class="text-danger">*</span> Distribusi</label>
+															<div class="col-lg-9">
+																<select name="distribute_id[]" multiple id="distribute_id" data-placeholder="Choose an options" class="form-control select2">;
+																	<option value=""></option>
+																	<?php foreach ($jabatan as $jbt) : ?>
+																		<option value="<?= $jbt->id; ?>" <?= isset($data) ? ((in_array($jbt->id, explode(',', $data->distribute_id))) ? 'selected' : '') : ''; ?>><?= $jbt->nm_jabatan; ?></option>
+																	<?php endforeach; ?>
+																</select>
+																<span class="form-text text-danger invalid-feedback">Distribusi By harus di isi</span>
+															</div>
+														</div>
+
+													</div>
+
+													<div class="col-6">
+														<div class="row">
+															<label class="col-12 col-form-label">Nomor :</label>
+															<div class="col-12">
+																<input type="text" name="number" id="number" class="form-control" placeholder="Nomor" value="<?= isset($data) ? $data->number_publish : ''; ?>">
+																<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+															</div>
+														</div>
+
+														<div class="row">
+															<label class="col-12 col-form-label">Determination Date :</label>
+															<div class="col-12">
+																<input type="date" name="determination_date" id="determination_date" class="form-control datepicker" placeholder="<?= date('Y-m-d'); ?>" value="<?= isset($data) ? $data->determination_date : ''; ?>">
+																<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+															</div>
+														</div>
+
+														<div class="row">
+															<label class="col-12 col-form-label">About :</label>
+															<div class="col-12">
+																<input type="text" name="about" id="about" class="form-control" placeholder="About" value="<?= isset($data) ? $data->about : ''; ?>">
+																<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+															</div>
+														</div>
+
+														<div class="row">
+															<label class="col-12 col-form-label">Status :</label>
+															<div class="col-12">
+																<input type="text" name="doc_status" id="doc_status" class="form-control" placeholder="Doc. Status" value="<?= isset($data) ? $data->doc_status : ''; ?>">
+																<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+															</div>
+														</div>
+
+														<div class="row">
+															<label class="col-12 col-form-label">Publisher :</label>
+															<div class="col-12">
+																<input type="text" name="publisher" id="publisher" class="form-control" placeholder="Publisher" value="<?= isset($data) ? $data->publisher : ''; ?>">
+																<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+
 								</div>
 								<hr>
-								<div class="mb-6">
+								<div class="mb-6 d-flex justify-content-between align-items-center">
 									<button class="btn btn-primary w-100px" id="save"><i class="fa fa-save"></i>Save</button>
+									<a href="<?= base_url($this->uri->segment(1)); ?>" class="btn btn-danger"><i class="fa fa-reply"></i>Back</a>
 								</div>
 
 							</div>
+
 							<div class="tab-pane fade" id="form" role="tabpanel" aria-labelledby="form-tab">
 								<button type="button" class="btn btn-primary mb-3" id="add_form"><i class="fa fa-plus"></i> Add Form</button>
 								<div id="form-data-content">
@@ -420,6 +538,7 @@
 									</table>
 								</div>
 							</div>
+
 							<div class="tab-pane fade" id="guides" role="tabpanel" aria-labelledby="guides-tab">
 								<button type="button" class="btn btn-primary mb-3" id="add_guide"><i class="fa fa-plus"></i> Add IK</button>
 								<div id="guide-data-content">
@@ -464,6 +583,7 @@
 									</table>
 								</div>
 							</div>
+
 							<div class="tab-pane fade" id="records" role="tabpanel" aria-labelledby="records-tab">
 								<div id="data-records">
 									<button type="button" class="btn btn-warning mb-3" id="add_folder"><i class="fa fa-folder-plus"></i> Add Folder</button>
@@ -475,8 +595,8 @@
 										<thead>
 											<tr>
 												<th class="py-0">File or Folder Name</th>
-												<th class="py-0">Last Update</th>
-												<th class="py-0">Opsi</th>
+												<th class="py-0 text-right">Last Update</th>
+												<th class="py-0 text-center">Opsi</th>
 											</tr>
 										</thead>
 										<tbody>
