@@ -7,13 +7,13 @@
 		</a>
 	</li>
 	<li class="nav-item">
-		<a href="javascript:void(0)" id="back" data-id="<?= $id; ?>" data-procedure="<?= $procedure_id; ?>" class="nav-link py-2 px-3 <?= ($EOF) ? 'disabled' : ''; ?>">
+		<a href="javascript:void(0)" id="back" data-id="<?= ($id) ?: ''; ?>" data-procedure="<?= $procedure_id; ?>" class="nav-link py-2 px-3 <?= ($EOF) ? 'disabled' : ''; ?>">
 			<i class="fa fa-arrow-up mr-2"></i>
 			Up Folder
 		</a>
 	</li>
 	<li class="nav-item">
-		<a href="javascript:void(0)" id="refresh" data-id="<?= $id; ?>" data-procedure="<?= $procedure_id; ?>" class="nav-link py-2 px-3">
+		<a href="javascript:void(0)" id="refresh" data-id="<?= ($id) ?: ''; ?>" data-procedure="<?= $procedure_id; ?>" class="nav-link py-2 px-3">
 			<i class="fa fa-sync-alt mr-2"></i>
 			Refresh
 		</a>

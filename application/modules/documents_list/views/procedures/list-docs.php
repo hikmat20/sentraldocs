@@ -70,9 +70,9 @@
 								<span class="nav-icon ">
 									<i class="fa fa-file-alt"></i>
 								</span>
-								<span class="text-white h5 my-0">Record
+								<span class="text-white h5 my-0">Records
 									<small class="">
-										<div class="badge bg-white rounded-circle text-warning"><?= (isset($records)) ? count($records) : '0'; ?></div>
+										<div class="badge bg-white rounded-circle text-warning"><?= (isset($countRecords)) ? ($countRecords) : '0'; ?></div>
 									</small>
 								</span>
 							</a>
