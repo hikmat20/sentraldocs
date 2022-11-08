@@ -3,12 +3,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Documents_list extends Admin_Controller
 {
-	/*
- * @author Yunaz
- * @copyright Copyright (c) 2016, Yunaz
- * 
- * This is controller for Penerimaan
- */
 	public function __construct()
 	{
 		parent::__construct();
@@ -97,9 +91,9 @@ class Documents_list extends Admin_Controller
 	{
 		if (isset($id)) {
 			$procedure 		= $this->db->get_where('view_procedures', ['id' => $id])->result();
-			$forms 			= $this->db->order_by('name', 'ASC')->get_where('dir_forms', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
-			$guides 		= $this->db->order_by('name', 'ASC')->get_where('dir_guides', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
-			$records 		= $this->db->order_by('name', 'ASC')->get_where('dir_records', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
+			$forms 			= $this->db->order_by('name', 'ASC')->get_where('dir_forms', ['procedure_id' => $id, 'status' => 'PUB'])->result();
+			$guides 		= $this->db->order_by('name', 'ASC')->get_where('dir_guides', ['procedure_id' => $id, 'status' => 'PUB'])->result();
+			$records 		= $this->db->order_by('name', 'ASC')->get_where('dir_records', ['procedure_id' => $id, 'status !=' => 'DEL', 'flag_type' => 'FOLDER'])->result();
 
 			$this->template->set([
 				'procedure' 		=> $procedure,
@@ -108,11 +102,10 @@ class Documents_list extends Admin_Controller
 				'records' 			=> $records,
 				'MainData' 			=> $this->MainData
 			]);
-
 			$this->template->render('procedures/list-docs');
 		} else {
 			$groups 		= $this->db->get_where('group_procedure', ['status' => 'ACT'])->result();
-			$procedures 	= $this->db->get_where('view_procedures', ['company_id' => $this->company, 'status' => '1', 'deleted_by' => null])->result_array();
+			$procedures 	= $this->db->get_where('view_procedures', ['company_id' => $this->company, 'status' => 'PUB', 'deleted_by' => null])->result_array();
 
 			foreach ($procedures as $pro) {
 				$ArrPro[$pro['group_procedure']][] = $pro;
@@ -139,5 +132,45 @@ class Documents_list extends Admin_Controller
 		]);
 
 		$this->template->render('procedures/view-docs');
+	}
+
+	/* PROCEDURES */
+	/* ========== */
+
+	public function getRecords($methode = null,  $procedure_id = null, $id = null)
+	{
+		if ($methode == 'home') {
+			$records = $this->db->get_where('dir_records', ['company_id' => $this->company, 'procedure_id' => $procedure_id, 'parent_id' => null, 'status' => 'PUB', 'flag_type' => 'FOLDER'])->result();
+			$EOF = true;
+		} elseif ($methode == 'back') {
+			$parent_id = $this->db->get_where('dir_records', ['id' => $id])->row()->parent_id;
+			if ($parent_id > 0) {
+				$records = $this->db->get_where('dir_records', ['company_id' => $this->company, 'procedure_id' => $procedure_id, 'parent_id' => $parent_id, 'status' => 'PUB', 'flag_type' => 'FOLDER'])->result();
+				$EOF = false;
+			} else {
+				$records = $this->db->get_where('dir_records', ['company_id' => $this->company, 'procedure_id' => $procedure_id, 'parent_id' => null, 'status' => 'PUB', 'flag_type' => 'FOLDER'])->result();
+				$EOF = true;
+			}
+		} elseif ($methode == 'refresh') {
+			if ($id) {
+				$records = $this->db->get_where('dir_records', ['company_id' => $this->company, 'procedure_id' => $procedure_id, 'parent_id' => $id, 'status' => 'PUB', 'flag_type' => 'FOLDER'])->result();
+				$EOF = false;
+			} else {
+				$records = $this->db->get_where('dir_records', ['company_id' => $this->company, 'procedure_id' => $procedure_id, 'parent_id' => null, 'status' => 'PUB', 'flag_type' => 'FOLDER'])->result();
+				$EOF = true;
+			}
+		} elseif ($methode == 'find') {
+			$records = $this->db->get_where('dir_records', ['company_id' => $this->company, 'procedure_id' => $procedure_id, 'parent_id' => $id, 'status' => 'PUB'])->result();
+			$EOF = false;
+		}
+
+		$this->template->set([
+			'id' 			=> $id,
+			'EOF' 			=> $EOF,
+			'procedure_id' 	=> $procedure_id,
+			'records' 		=> $records,
+		]);
+
+		$this->template->render('procedures/records');
 	}
 }

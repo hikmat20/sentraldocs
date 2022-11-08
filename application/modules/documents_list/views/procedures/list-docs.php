@@ -1,3 +1,9 @@
+<style>
+	.record-item:hover td,
+	.record-item:hover td>span {
+		color: #0bb783;
+	}
+</style>
 <div class="content d-flex flex-column flex-column-fluid p-0">
 	<div class="d-flex flex-column-fluid justify-content-between align-items-top">
 		<div class="container">
@@ -169,35 +175,65 @@
 									</table>
 								</div>
 								<div class="tab-pane fade" id="data_record" role="tabpanel" aria-labelledby="tab_record">
-									<table class="table table-condensed table-hover">
-										<thead>
-											<tr class="">
-												<th class="h5 border-2 border-bottom-secondary" width="15px">No.</th>
-												<th class="h5 border-2 border-bottom-secondary text-center">File Name</th>
-												<th class="h5 border-2 border-bottom-secondary text-center" width="50px">View</th>
-											</tr>
-										</thead>
-										<tbody>
-											<?php if (isset($records)) :
-												$no = 0;
-												foreach ($records as $lsRec) : $no++; ?>
-													<tr class="cursor-pointer">
-														<td class="h6 text-dark"><?= $no; ?></td>
-														<td class="h4 text-dark d-flex align-items-center my-0"><i class="fa fa-file-alt text-warning fa-2x mr-4"></i>
-															<span class="mt-2"><?= $lsRec->name; ?></span>
-														</td>
-														<td class="h6 text-center" style="vertical-align: middle;">
-															<button type="button" class="btn btn-icon btn-xs shadow-xs btn-info view-record" data-id="<?= $lsRec->id; ?>" data-toggle="tooltip" data-theme="dark" title="View Document"><i class="fa fa-eye"></i></button>
-														</td>
-													</tr>
-												<?php endforeach;
-											else : ?>
-												<tr>
-													<td colspan="2" class="text-center h4"><i>No data available</i></td>
+									<div id="data-records">
+										<!-- Nav tabs -->
+										<ul class="nav pb-2 nav-success nav-tabs nav-pills" id="navId">
+											<li class="nav-item">
+												<a href="javascript:void(0)" id="home" data-id="" data-procedure="<?= $procedure[0]->id; ?>" class="nav-link py-2 px-3">
+													<i class="fa fa-home mr-2"></i>
+													Home
+												</a>
+											</li>
+											<li class="nav-item">
+												<a href="javascript:void(0)" id="back" data-parent="<?= isset($parent_id) ? $parent_id : ''; ?>" data-procedure="<?= $procedure[0]->id; ?>" class="disabled nav-link py-2 px-3">
+													<i class="fa fa-arrow-up mr-2"></i>
+													Up Folder
+												</a>
+											</li>
+											<li class="nav-item">
+												<a href="javascript:void(0)" id="refresh" data-parent="<?= isset($parent_id) ? $parent_id : ''; ?>" data-procedure="<?= $procedure[0]->id; ?>" class="nav-link py-2 px-3">
+													<i class="fa fa-sync-alt mr-2"></i>
+													Refresh
+												</a>
+											</li>
+										</ul>
+										<table class="table table-condensed table-hover">
+											<thead>
+												<tr class="">
+													<th class="py-1">File Name</th>
+													<th class="py-1 text-center" width="50px"></th>
+													<th class="py-1 text-right" width="150">Last Update</th>
 												</tr>
-											<?php endif; ?>
-										</tbody>
-									</table>
+											</thead>
+											<tbody>
+												<?php if (isset($records)) :
+													$no = 0;
+													foreach ($records as $lsRec) : $no++; ?>
+														<tr class="cursor-pointer record-item" data-id="<?= $lsRec->id; ?>" data-procedure="<?= $procedure[0]->id; ?>">
+															<td class="h4 text-dark d-flex align-items-center my-0 pt-1">
+																<?php if ($lsRec->flag_type == 'FOLDER') : ?>
+																	<i class="fa fa-folder text-warning fa-2x mr-4"></i>
+																<?php else : ?>
+																	<i class="fa fa-file-alt text-info fa-2x mr-4"></i>
+																<?php endif; ?>
+																<span class="mt-2"><?= $lsRec->name; ?></span>
+															</td>
+															<td class="h6 text-center pt-1" style="vertical-align: middle;">
+																<?php if ($lsRec->flag_type == 'FILE') : ?>
+																	<button type="button" class="btn btn-icon btn-xs shadow-xs btn-info view-record" data-id="<?= $lsRec->id; ?>" data-toggle="tooltip" data-theme="dark" title="View Document"><i class="fa fa-eye"></i></button>
+																<?php endif; ?>
+															</td>
+															<td style="vertical-align: middle;" class="text-right pt-1"><?= ($lsRec->modified_at) ?: $lsRec->created_at; ?></td>
+														</tr>
+													<?php endforeach;
+												else : ?>
+													<tr>
+														<td colspan="2" class="text-center h4"><i>No data available</i></td>
+													</tr>
+												<?php endif; ?>
+											</tbody>
+										</table>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -257,11 +293,39 @@
 		$(document).ready(function() {
 			$(document).on('click', '.view-procedure', function() {
 				const id = $(this).data('id') || ''
-
 				if (id) {
 					$('#modelId').modal('show')
 					$('#data-file').load(siteurl + active_controller + 'view_procedure/' + id)
 				}
 			})
+		})
+
+		$(document).on('click', '#home', function() {
+			const procedure_id = $(this).data('procedure')
+			const url = siteurl + active_controller + 'getRecords/home/' + procedure_id;
+			$('#data-records').load(url)
+			// alert(url)
+		})
+		$(document).on('click', '#back', function() {
+			const id = $(this).data('id')
+			const procedure_id = $(this).data('procedure')
+			const url = siteurl + active_controller + 'getRecords/back/' + procedure_id + "/" + id
+			$('#data-records').load(url)
+			// alert(url)
+		})
+		$(document).on('click', '#refresh', function() {
+			const id = $(this).data('id') || ''
+			const procedure_id = $(this).data('procedure')
+			const url = siteurl + active_controller + 'getRecords/refresh/' + procedure_id + "/" + id
+			$('#data-records').load(url)
+			// alert(url)
+		})
+
+		$(document).on('click', '.record-item', function() {
+			const id = $(this).data('id')
+			const procedure_id = $(this).data('procedure')
+			const url = siteurl + active_controller + 'getRecords/find/' + procedure_id + '/' + id
+			$('#data-records').load(url)
+			// alert(url)
 		})
 	</script>

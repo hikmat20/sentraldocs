@@ -75,7 +75,11 @@
 																<select name="status" id="status" class="form-control select2">
 																	<option value=""></option>
 																	<option value="DFT" <?= ($data->status == 'DFT') ? 'selected' : ''; ?>>Draft</option>
-																	<option value="1" <?= ($data->status == '1') ? 'selected' : ''; ?>>Publish</option>
+																	<option value="REV" <?= ($data->status == 'REV') ? 'selected' : ''; ?>>Review</option>
+																	<option value="COR" <?= ($data->status == 'COR') ? 'selected' : ''; ?>>Correction</option>
+																	<option value="APV" <?= ($data->status == 'APV') ? 'selected' : ''; ?>>Approval</option>
+																	<option value="RVI" <?= ($data->status == 'RVI') ? 'selected' : ''; ?>>Revision</option>
+																	<option value="PUB" <?= ($data->status == 'PUB') ? 'selected' : ''; ?>>Publish</option>
 																</select>
 															</div>
 														</div>

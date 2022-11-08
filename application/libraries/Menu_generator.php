@@ -452,15 +452,15 @@ class Menu_generator
 
 		//loop children
 		foreach ($Menus as $key => $value) {
-			$path = $value['link'] == '' ? '#' : base_url() .  strtolower($value['link']);
+			$path = $value['link'] == '' ? 'javascript:void()' : base_url() .  strtolower($value['link']);
 			$icons = $value['icon'];
 
 			if (array_key_exists('child', $value)) {
 				echo "<li class='menu-item menu-item-submenu'>
-						<a href='" . $path . "' class='menu-link'>
+						<a href='" . $path . "' class='menu-link menu-toggle'>
 								<i class='$icons text-info mr-3 my-auto'></i>
 		                		<span class='menu-text'><h6 class='m-0'>" . ucwords($value['title']) . "</h6></span>
-								<i class='menu-arrow h6 my-auto menu-toggle'></i>
+								<i class='menu-arrow h6 my-auto'></i>
 		        			</a>";
 				echo ("<div class='menu-submenu'>
 						<i class='menu-arrow'></i>

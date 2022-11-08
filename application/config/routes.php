@@ -60,6 +60,9 @@ $route['/directory'] = '404';
 /* List Documents */
 $route['list/procedures'] = 'documents_list/procedures';
 $route['list/procedures/(:any)'] = 'documents_list/procedures/$1';
+$route['list/getRecords/(:any)/(:any)/(:any)'] = 'documents_list/getRecords/$1/$2/$3';
+$route['list/getRecords/(:any)/(:any)'] = 'documents_list/getRecords/$1/$2';
+$route['list/getRecords/(:any)'] = 'documents_list/getRecords/$1';
 $route['list/(:any)/(:any)'] = 'documents_list/$1/$2';
 $route['list/(:any)'] = 'documents_list/find/$1';
 $route['list'] = 'dashboard';

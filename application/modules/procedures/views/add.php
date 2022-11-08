@@ -482,6 +482,7 @@
 						<hr>
 						<div class="d-flex justify-content-between align-items-center mb-3">
 							<button type="submit" class="btn btn-primary save"><i class="fa fa-save"></i>Save</button>
+							<a href="<?= base_url($this->uri->segment(1)); ?>" class="btn btn-danger"><i class="fa fa-reply"></i>Back</a>
 						</div>
 					</div>
 				</div>
