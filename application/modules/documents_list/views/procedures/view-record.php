@@ -9,7 +9,7 @@
 			</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link" data-toggle="tab" href="#home">
+			<a class="nav-link" data-toggle="tab" href="#history">
 				<span class="nav-icon">
 					<i class="fa fa-history"></i>
 				</span>
@@ -28,7 +28,7 @@
 		<?php endif; ?>
 		<hr>
 	</div>
-	<div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+	<div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
 		<div class="row overflow-auto">
 			<div class="col-md-2"></div>
 			<div class="col-md-8">
@@ -48,8 +48,6 @@
                             </div>
                         </div> -->
 						<?php if (isset($history)) :
-
-
 							foreach ($history as $his) : ?>
 								<div class="timeline-item">
 									<div class="timeline-media <?= ($his->status == 'OPN') ? 'bg-light-success' : 'bg-light-danger'; ?>">
@@ -60,7 +58,7 @@
 										<span class="font-weight-bolder text-danger"> <?= $his->updated_at; ?></span>
 										<?= $sts[$his->status]; ?>
 										<p class="font-weight-normal text-dark-50 pt-1">
-											<strong for="">Processed by <?= $his->updated_by; ?></strong>
+											<strong for="">Processed by <?= isset($ArrUsr[$his->updated_by]) ? $ArrUsr[$his->updated_by] : '-'; ?></strong>
 										</p>
 										<p>
 											<?= $his->note; ?>

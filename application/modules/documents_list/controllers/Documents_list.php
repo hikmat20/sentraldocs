@@ -138,8 +138,16 @@ class Documents_list extends Admin_Controller
 	public function view_record($id)
 	{
 		$record 			= $this->db->get_where('dir_records', ['id' => $id])->row();
+		$history			= $this->db->order_by('updated_at', 'ASC')->get_where('directory_log', ['directory_id' => $id])->result();
+		$users = $this->db->get_where('users', ['status' => 'ACT'])->result();
+		foreach ($users as $user) {
+			$ArrUsr[$user->id_user] = $user;
+		}
 		$this->template->set([
 			'record' 			=> $record,
+			'history' 			=> $history,
+			'sts'				=> $this->sts,
+			'ArrUsr'			=> $ArrUsr
 		]);
 
 		$this->template->render('procedures/view-record');
