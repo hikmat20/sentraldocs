@@ -135,6 +135,16 @@ class Documents_list extends Admin_Controller
 		$this->template->render('procedures/view-docs');
 	}
 
+	public function view_record($id)
+	{
+		$record 			= $this->db->get_where('dir_records', ['id' => $id])->row();
+		$this->template->set([
+			'record' 			=> $record,
+		]);
+
+		$this->template->render('procedures/view-record');
+	}
+
 	/* PROCEDURES */
 	/* ========== */
 

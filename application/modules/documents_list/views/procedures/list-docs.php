@@ -299,6 +299,15 @@
 				}
 			})
 		})
+		$(document).ready(function() {
+			$(document).on('click', '.view-record', function() {
+				const id = $(this).data('id') || ''
+				if (id) {
+					$('#modelId').modal('show')
+					$('#data-file').load(siteurl + active_controller + 'view_record/' + id)
+				}
+			})
+		})
 
 		$(document).on('click', '#home', function() {
 			const procedure_id = $(this).data('procedure')

@@ -31,7 +31,7 @@
 		<?php if (($records)) :
 			$no = 0;
 			foreach ($records as $lsRec) : $no++; ?>
-				<tr class="cursor-pointer record-item" data-procedure="<?= $procedure_id; ?>" data-id="<?= $lsRec->id; ?>">
+				<tr class="cursor-pointer <?= ($lsRec->flag_type == 'FOLDER') ? 'record-item' : ''; ?>  " data-procedure="<?= $procedure_id; ?>" data-id="<?= $lsRec->id; ?>">
 					<td class="h4 text-dark d-flex align-items-center my-0 pt-1">
 						<?php if ($lsRec->flag_type == 'FOLDER') : ?>
 							<i class="fa fa-folder text-warning fa-2x mr-4"></i>

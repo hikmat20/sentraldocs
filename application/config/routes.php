@@ -64,6 +64,7 @@ $route['list/getRecords/(:any)/(:any)/(:any)'] = 'documents_list/getRecords/$1/$
 $route['list/getRecords/(:any)/(:any)'] = 'documents_list/getRecords/$1/$2';
 $route['list/getRecords/(:any)'] = 'documents_list/getRecords/$1';
 $route['list/(:any)/(:any)'] = 'documents_list/$1/$2';
+$route['list/view_records/(:any)'] = 'documents_list/view_record/$1';
 $route['list/(:any)'] = 'documents_list/find/$1';
 $route['list'] = 'dashboard';
 
