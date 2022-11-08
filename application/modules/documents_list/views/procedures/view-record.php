@@ -58,7 +58,7 @@
 										<span class="font-weight-bolder text-danger"> <?= $his->updated_at; ?></span>
 										<?= $sts[$his->status]; ?>
 										<p class="font-weight-normal text-dark-50 pt-1">
-											<strong for="">Processed by <?= isset($ArrUsr[$his->updated_by]) ? $ArrUsr[$his->updated_by] : '-'; ?></strong>
+											<strong for="">Processed by <?= isset($ArrUsr[$his->updated_by]->full_name) ? $ArrUsr[$his->updated_by] : '-'; ?></strong>
 										</p>
 										<p>
 											<?= $his->note; ?>
