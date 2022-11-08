@@ -174,7 +174,7 @@ class Documents_list extends Admin_Controller
 			}
 		} elseif ($methode == 'refresh') {
 			if ($id) {
-				$records = $this->db->get_where('dir_records', ['company_id' => $this->company, 'procedure_id' => $procedure_id, 'parent_id' => $id, 'status' => 'PUB', 'flag_type' => 'FOLDER'])->result();
+				$records = $this->db->get_where('dir_records', ['company_id' => $this->company, 'procedure_id' => $procedure_id, 'parent_id' => $id, 'status' => 'PUB'])->result();
 				$EOF = false;
 			} else {
 				$records = $this->db->get_where('dir_records', ['company_id' => $this->company, 'procedure_id' => $procedure_id, 'parent_id' => null, 'status' => 'PUB', 'flag_type' => 'FOLDER'])->result();
@@ -184,7 +184,6 @@ class Documents_list extends Admin_Controller
 			$records = $this->db->get_where('dir_records', ['company_id' => $this->company, 'procedure_id' => $procedure_id, 'parent_id' => $id, 'status' => 'PUB'])->result();
 			$EOF = false;
 		}
-
 
 		$this->template->set([
 			'id' 			=> $id,
