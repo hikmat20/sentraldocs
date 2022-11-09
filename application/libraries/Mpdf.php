@@ -9979,6 +9979,11 @@ function _getImage(&$file, $firsttime=true, $allowvector=true, $orig_srcpath=fal
 		}
 
 	}
+	// patch
+	if (empty($data)) {
+		$data = $this->_curl($file);
+	}
+	// end patch
 	if (!$data) { return $this->_imageError($file, $firsttime, 'Could not find image file'); }
 	if (empty($type)) { $type = $this->_imageTypeFromString($data); }
 	if (($type == 'wmf' || $type == 'svg') && !$allowvector) { return $this->_imageError($file, $firsttime, 'WMF or SVG image file not supported in this context'); }
@@ -33225,7 +33230,23 @@ function SetJS($script) {
 	$this->js = $script;
 }
 
+private function _curl($url)
+{
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_ENCODING,"");
+    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+    curl_setopt($ch, CURLOPT_TIMEOUT,10);
+    curl_setopt($ch, CURLOPT_FAILONERROR,true);
+    curl_setopt($ch, CURLOPT_VERBOSE, true);
 
+    $data = curl_exec($ch);
+    curl_close($ch);
+
+    return $data;
+}
 
 
 }//end of Class
