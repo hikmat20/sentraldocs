@@ -114,7 +114,7 @@ class Cross_reference extends Admin_Controller
 			$other_docs = array_combine(array_column($Detail, 'chapter_id'), array_column($Detail, 'other_docs'));
 		}
 
-		$procedures 	= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => '1'])->result_array();
+		$procedures 	= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => 'PUB'])->result_array();
 		$list_procedure = [];
 		foreach ($procedures as $pro) {
 			$list_procedure[$pro['id']] = "<span class='badge badge-success m-1'>" . $pro['name'] . "</span>";
