@@ -127,21 +127,21 @@
           <?php if ($procedure->image_flow_1) : ?>
             <tr>
               <td>
-                <img height="600px" src="<?= base_url("/image_flow/$procedure->image_flow_1"); ?>" alt="image_flow_1" class="img-fluid">
+                <img height="600px" src="<?= base_url("image_flow/$procedure->image_flow_1"); ?>" alt="image_flow_1" class="img-fluid">
               </td>
             </tr>
           <?php endif; ?>
           <?php if ($procedure->image_flow_2) : ?>
             <tr>
               <td>
-                <img height="600px" src="<?= base_url("/image_flow/$procedure->image_flow_2"); ?>" alt="image_flow_2" class="img-fluid">
+                <img height="600px" src="<?= base_url("image_flow/$procedure->image_flow_2"); ?>" alt="image_flow_2" class="img-fluid">
               </td>
             </tr>
           <?php endif; ?>
           <?php if ($procedure->image_flow_3) : ?>
             <tr>
               <td>
-                <img height="600px" src="<?= base_url("/image_flow/$procedure->image_flow_3"); ?>" alt="image_flow_3" class="img-fluid">
+                <img height="600px" src="<?= base_url("image_flow/$procedure->image_flow_3"); ?>" alt="image_flow_3" class="img-fluid">
               </td>
             </tr>
           <?php endif; ?>
