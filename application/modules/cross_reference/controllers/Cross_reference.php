@@ -135,7 +135,7 @@ class Cross_reference extends Admin_Controller
 
 	public function cross()
 	{
-		$Data 			= $this->db->get_where('requirements', ['company_id' => $this->company, 'status' => '1'])->result();
+		$Data 			= $this->db->get_where('requirements', ['status' => '1'])->result();
 
 		$this->template->set([
 			'Data' 				=> $Data,
