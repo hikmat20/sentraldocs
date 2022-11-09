@@ -98,11 +98,11 @@ class Cross_reference extends Admin_Controller
 	{
 		$Detail 		= $ArrPro = [];
 		$other_docs 	= '';
-
-		$DataStd 		= $this->db->get_where('requirements', ['id' => $id])->row();
-		$DetailStd 		= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result_array();
-
 		$Data 			= $this->db->get_where('view_cross_references', ['company_id' => $this->company, 'id' => $id])->row();
+
+		$DataStd 		= $this->db->get_where('requirements', ['id' => $Data->requirement_id])->row();
+		$DetailStd 		= $this->db->get_where('requirement_details', ['requirement_id' => $Data->requirement_id])->result_array();
+
 
 		if ($Data) {
 			$Detail 		= $this->db->get_where('view_cross_reference_details', ['requirement_id' => $Data->requirement_id, 'reference_id' => $Data->id])->result_array();
