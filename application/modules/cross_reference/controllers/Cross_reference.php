@@ -54,7 +54,7 @@ class Cross_reference extends Admin_Controller
 
 	public function process_to_pasal()
 	{
-		$data		= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => '1', 'deleted_at' => null])->result();
+		$data		= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => 'PUB', 'deleted_at' => null])->result();
 
 		$this->template->set('title', 'Cross Reference (Pasal to Proses)');
 		$this->template->set('data', $data);
@@ -74,7 +74,7 @@ class Cross_reference extends Admin_Controller
 		$Data = $this->db->get()->result();
 
 		$Data_detail 	= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result();
-		$procedure 		= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => '1', 'deleted_by' => null])->result();
+		$procedure 		= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => 'PUB', 'deleted_by' => null])->result();
 
 		$this->template->set('Data', $Data);
 		$this->template->set('Data_detail', $Data_detail);
@@ -86,7 +86,7 @@ class Cross_reference extends Admin_Controller
 	{
 		$Data 			= $this->db->get_where('requirements', ['company_id' => $this->company, 'id' => $id])->row();
 		$Data_detail 	= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result();
-		$procedure 		= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => '1', 'deleted_by' => null])->result();
+		$procedure 		= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => 'PUB', 'deleted_by' => null])->result();
 
 		$this->template->set('Data', $Data);
 		$this->template->set('Data_detail', $Data_detail);
@@ -152,7 +152,7 @@ class Cross_reference extends Admin_Controller
 		$Procedure		= array_combine(array_column($DetailCross, 'chapter_id'), array_column($DetailCross, 'procedure_id'));
 		$other_docs 	= array_combine(array_column($DetailCross, 'chapter_id'), array_column($DetailCross, 'other_docs'));
 
-		$procedures 	= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => '1'])->result();
+		$procedures 	= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => 'PUB'])->result();
 		$list_procedure = [];
 		foreach ($procedures as $pro) {
 			$list_procedure[$pro->id] = "<span class='badge badge-success m-1'>" . $pro->name . "</span>";

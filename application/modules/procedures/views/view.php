@@ -49,7 +49,7 @@
           </tr>
         </thead>
         <tbody>
-          <?php if ($data->image_flow_1 && $data->image_flow_2 && $data->image_flow_3) : ?>
+          <?php if ($data->image_flow_1 || $data->image_flow_2 || $data->image_flow_3) : ?>
             <?php if ($data->image_flow_1) : ?>
               <tr>
                 <td>

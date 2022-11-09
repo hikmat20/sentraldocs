@@ -81,7 +81,7 @@
 			</div>
 		</div>
 
-		<div class="col-6">
+		<!-- <div class="col-6">
 			<div class="row">
 				<label class="col-12 col-form-label">Nomor :</label>
 				<div class="col-12">
@@ -121,7 +121,7 @@
 					<span class="form-text text-danger invalid-feedback">Prepared By harus di isi</span>
 				</div>
 			</div>
-		</div>
+		</div> -->
 	</div>
 </div>
 

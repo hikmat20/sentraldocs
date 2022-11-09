@@ -1213,4 +1213,36 @@ class Procedures extends Admin_Controller
 
 		$this->template->render('data-records');
 	}
+
+
+
+	/* PRINTOUT */
+	public function printOut($id = null)
+	{
+		$mpdf = new Mpdf();
+		$procedure = $this->db->get_where('procedures', ['id' => $id])->row();
+		$flowDetail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id])->result();
+		$users 				= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
+		$jabatan 			= $this->db->get('tbl_jabatan')->result();
+		$ArrUsr 			= $ArrJab = [];
+
+		foreach ($users as $usr) {
+			$ArrUsr[$usr->id_user] = $usr;
+		}
+
+		foreach ($jabatan as $jab) {
+			$ArrJab[$jab->id] = $jab;
+		}
+
+
+		$Data = [
+			'procedure' => $procedure,
+			'detail' => $flowDetail,
+			'ArrUsr' => $ArrUsr,
+			'ArrJab' => $ArrJab,
+		];
+		$data = $this->load->view('printout', $Data, TRUE);
+		$mpdf->WriteHTML($data);
+		$mpdf->Output();
+	}
 }
