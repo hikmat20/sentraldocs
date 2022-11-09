@@ -98,13 +98,9 @@ class Cross_reference extends Admin_Controller
 	{
 		$Detail 		= $ArrPro = [];
 		$other_docs 	= '';
-		$Data 			= $this->db->get_where('view_cross_references', ['company_id' => $this->company, 'id' => $id])->row();
-
-		$DataStd 		= $this->db->get_where('requirements', ['id' => $Data->requirement_id])->row();
-		$DetailStd 		= $this->db->get_where('requirement_details', ['requirement_id' => $Data->requirement_id])->result_array();
-
-
+		$Data 			= $this->db->get_where('view_cross_references', ['company_id' => $this->company, 'requirement_id' => $id])->row();
 		if ($Data) {
+			$DetailStd 		= $this->db->get_where('requirement_details', ['requirement_id' => $Data->requirement_id])->result_array();
 			$Detail 		= $this->db->get_where('view_cross_reference_details', ['requirement_id' => $Data->requirement_id, 'reference_id' => $Data->id])->result_array();
 			$combine = array_combine(array_column($Detail, 'chapter_id'), array_column($Detail, 'procedure_id'));
 			foreach ($combine as $k => $com) {
@@ -112,25 +108,28 @@ class Cross_reference extends Admin_Controller
 			}
 
 			$other_docs = array_combine(array_column($Detail, 'chapter_id'), array_column($Detail, 'other_docs'));
+			$procedures 	= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => 'PUB'])->result_array();
+			$list_procedure = [];
+			foreach ($procedures as $pro) {
+				$list_procedure[$pro['id']] = "<span class='badge badge-success m-1'>" . $pro['name'] . "</span>";
+			}
+			$this->template->set([
+				'Data' 				=> $Data,
+				'Detail' 			=> $Detail,
+				'list_procedure' 	=> $list_procedure,
+				'procedures' 		=> $procedures,
+				'DetailStd' 		=> $DetailStd,
+				'ArrPro' 			=> $ArrPro,
+				'other_docs' 		=> $other_docs,
+			]);
+			$this->template->render('edit');
+		} else {
+			$data = [
+				'heading' 	=> 'Error!',
+				'message' 	=> 'Data not found..'
+			];
+			$this->template->render('../views/errors/html/error_404_custome', $data);
 		}
-
-		$procedures 	= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => 'PUB'])->result_array();
-		$list_procedure = [];
-		foreach ($procedures as $pro) {
-			$list_procedure[$pro['id']] = "<span class='badge badge-success m-1'>" . $pro['name'] . "</span>";
-		}
-
-		$this->template->set([
-			'DataStd' 			=> $DataStd,
-			'Data' 				=> $Data,
-			'Detail' 			=> $Detail,
-			'list_procedure' 	=> $list_procedure,
-			'procedures' 		=> $procedures,
-			'DetailStd' 		=> $DetailStd,
-			'ArrPro' 			=> $ArrPro,
-			'other_docs' 		=> $other_docs,
-		]);
-		$this->template->render('edit');
 	}
 
 	public function cross()

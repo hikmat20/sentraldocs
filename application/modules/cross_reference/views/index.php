@@ -34,7 +34,7 @@
 										<td><?= $status[$dt->status]; ?></td>
 										<td>
 											<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-											<a href="<?= base_url($this->uri->segment(1) . '/cross_pasal/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $dt->id; ?>" title="Edit"><i class="fa fa-edit"></i></a>
+											<a href="<?= base_url($this->uri->segment(1) . '/cross_pasal/' . $dt->requirement_id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $dt->id; ?>" title="Edit"><i class="fa fa-edit"></i></a>
 											<!-- <button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button> -->
 										</td>
 									</tr>

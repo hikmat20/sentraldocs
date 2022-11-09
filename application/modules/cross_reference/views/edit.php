@@ -11,11 +11,11 @@
 						<div class="row">
 							<div class="col-md-6">
 								<input type="hidden" name="id" value="<?= isset($Data->id) ? $Data->id : ''; ?>">
-								<input type="hidden" name="requirement_id" value="<?= $DataStd->id; ?>">
+								<input type="hidden" name="requirement_id" value="<?= $Data->requirement_id; ?>">
 								<div class="mb-1 row flex-nowrap">
 									<label for="Name" class="col-3 col-form-label font-weight-bold">Standard</label>
 									<div class="col-10">
-										<input type="text" readonly class="mb-5 form-control bg-light-secondary form-control-solid" id="Name" placeholder="Name of Requirement" value="<?= $DataStd->name; ?>" />
+										<input type="text" readonly class="mb-5 form-control bg-light-secondary form-control-solid" id="Name" placeholder="Name of Requirement" value="<?= $Data->name; ?>" />
 										<button class="btn btn-primary" type="submit" id="save"><i class="fa fa-save"></i>Save</button>
 									</div>
 								</div>
