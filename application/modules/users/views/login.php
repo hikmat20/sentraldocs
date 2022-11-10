@@ -34,7 +34,7 @@
                             <i class="fa fa-user"></i>
                             <i class="fa fa-key"></i>
                             <div class="form-group first">
-                                <input type="text" name="inisial" class="form-control" placeholder="Inisial" value="<?= set_value('inisial') ?>" required autofocus>
+                                <input type="text" name="inisial" class="form-control" placeholder="Company" value="<?= set_value('inisial') ?>" required autofocus>
                             </div>
                             <div class="form-group">
                                 <input type="text" name="username" class="form-control" placeholder="Username" value="<?= set_value('username') ?>" required>
