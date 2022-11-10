@@ -989,10 +989,10 @@
 		$(document).on('click', '.edit-form', function() {
 			const id = $(this).data('id') || null;
 			const procedure_id = $('#procedure_id').val() || null;
-			$('#modelId').modal('show')
-			$('.modal-dialog').css('max-width', '')
+			$('#modalRecord').modal('show')
+			// $('.modal-dialog').css('max-width', '')
 			$('.modal-title').text('Edit Form')
-			$('#content_modal').load(siteurl + active_controller + 'edit_form/' + id)
+			$('#record-content').load(siteurl + active_controller + 'edit_form/' + id)
 
 		})
 
@@ -1191,10 +1191,10 @@
 		$(document).on('click', '.edit-guide', function() {
 			const id = $(this).data('id') || null;
 			const procedure_id = $('#procedure_id').val() || null;
-			$('#modelId').modal('show')
+			$('#modalRecord').modal('show')
 			$('.modal-dialog').css('max-width', '')
 			$('.modal-title').text('Edit IK')
-			$('#content_modal').load(siteurl + active_controller + 'edit_guide/' + id)
+			$('#record-content').load(siteurl + active_controller + 'edit_guide/' + id)
 
 		})
 
@@ -1289,8 +1289,6 @@
 			}
 
 		})
-
-
 
 		/* SAVE */
 		$(document).on('click', '#save-guide', function() {
@@ -1431,45 +1429,90 @@
 			}
 		})
 
-		$(document).on('click', '.edit-folder', function() {
-			const id = $(this).data('id')
-			const name = $(this).parents('tr').find('.text-name').text()
-			$('#modelId').modal('show')
-			$('.modal-title').text('Add Folder')
-			$('.modal-dialog').css('max-width', '50%')
-			$('#content_modal').html(`
-			<div class="modal-body row">
-				<div class="col-12">
-					<div class="form-group">
-						<label>New Folder</label>
-						<input type="hidden" class="form-control" placeholder="Folder Name" id="folder_id" name="folder_id" value="` + id + `">
-						<input type="text" class="form-control" placeholder="Folder Name" id="folder_name" name="folder_name" value="` + name + `">
-						<span class="form-text text-danger invalid-feedback">Nama folder harus di isi</span>
-					</div>
-					<div class="d-flex justify-content-between">
-						<button type="button" class="btn btn-success save-folder"><i class="fa fa-save" aria-hidden="true"></i> Save</button>
-						<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Close</button>
-					</div>
-				</div>
-			</div>`);
-		})
-
 		$(document).on('click', '#add_record', function() {
 			const id = $('#procedure_id').val() || null;
 			const parent_id = $('#refresh_id').val() || null
 			$('#modalRecord').modal('show')
 			$('.modal-title').text('Add Records')
 			$('#record-content').load(siteurl + active_controller + 'upload_record/' + id + "/" + parent_id)
-
 		})
 
 		$(document).on('click', '.edit-record', function() {
 			const id = $(this).data('id') || null;
 			const procedure_id = $('#procedure_id').val() || null;
-			$('#modelId').modal('show')
+			$('#modalRecord').modal('show')
 			$('.modal-title').text('Edit Records')
-			$('#content_modal').load(siteurl + active_controller + 'edit_record/' + id)
+			$('#record-content').load(siteurl + active_controller + 'edit_record/' + id)
+		})
 
+		$(document).on('click', '#save-record', function() {
+			let formdata = new FormData($('#form-records')[0])
+			let btn = $('.save')
+			$('#description').removeClass('is-invalid')
+			$('#image').removeClass('is-invalid')
+			const description = $('#description').val();
+			const image = $('#image').val();
+
+			if (description !== undefined && (description == '' || description == null)) {
+				$('#description').addClass('is-invalid')
+				return false;
+			}
+
+			if (image !== undefined && (image == '' || image == null)) {
+				$('#image').addClass('is-invalid')
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty file, please input file first.....',
+					icon: "warning"
+				});
+
+				return false;
+			}
+
+			$.ajax({
+				url: siteurl + active_controller + 'saveFileRecord',
+				data: formdata,
+				type: 'POST',
+				dataType: 'JSON',
+				processData: false,
+				contentType: false,
+				cache: false,
+				beforeSend: function() {
+					btn.attr('disabled', true)
+					btn.html('<i class="spinner spinner-border-sm"></i>Loading...')
+				},
+				complete: function() {
+					btn.attr('disabled', false)
+					btn.html('<i class="fa fa-save"></i>Save')
+				},
+				success: function(result) {
+					if (result.status == 1) {
+						Swal.fire({
+							title: 'Success!',
+							icon: 'success',
+							text: result.msg,
+							timer: 2000
+						})
+						$('#modalRecord').modal('hide')
+						$('#refresh').click();
+					} else {
+						Swal.fire({
+							title: 'Warning!',
+							icon: 'warning',
+							text: result.msg,
+							timer: 2000
+						})
+					}
+				},
+				error: function(result) {
+					Swal.fire({
+						title: 'Error!',
+						icon: 'error',
+						text: 'Server timeout, becuase error!',
+						timer: 4000
+					})
+				}
+			})
 		})
 
 		$(document).on('click', '.delete-record', function() {
@@ -1525,6 +1568,29 @@
 					<div class="form-group">
 						<label>New Folder</label>
 						<input type="text" class="form-control" placeholder="Folder Name" id="folder_name" name="folder_name">
+						<span class="form-text text-danger invalid-feedback">Nama folder harus di isi</span>
+					</div>
+					<div class="d-flex justify-content-between">
+						<button type="button" class="btn btn-success save-folder"><i class="fa fa-save" aria-hidden="true"></i> Save</button>
+						<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times" aria-hidden="true"></i> Close</button>
+					</div>
+				</div>
+			</div>`);
+		})
+
+		$(document).on('click', '.edit-folder', function() {
+			const id = $(this).data('id')
+			const name = $(this).parents('tr').find('.text-name').text()
+			$('#modelId').modal('show')
+			$('.modal-title').text('Add Folder')
+			$('.modal-dialog').css('max-width', '50%')
+			$('#content_modal').html(`
+			<div class="modal-body row">
+				<div class="col-12">
+					<div class="form-group">
+						<label>New Folder</label>
+						<input type="hidden" class="form-control" placeholder="Folder Name" id="folder_id" name="folder_id" value="` + id + `">
+						<input type="text" class="form-control" placeholder="Folder Name" id="folder_name" name="folder_name" value="` + name + `">
 						<span class="form-text text-danger invalid-feedback">Nama folder harus di isi</span>
 					</div>
 					<div class="d-flex justify-content-between">
@@ -1626,76 +1692,6 @@
 			} else {
 				$('#data-records').load(siteurl + active_controller + 'refresh/' + refresh_id + "/" + procedure_id)
 			}
-		})
-
-		$(document).on('click', '#save-record', function() {
-			let formdata = new FormData($('#form-records')[0])
-			let btn = $('.save')
-			$('#description').removeClass('is-invalid')
-			$('#image').removeClass('is-invalid')
-			const description = $('#description').val();
-			const image = $('#image').val();
-
-			if (description !== undefined && (description == '' || description == null)) {
-				$('#description').addClass('is-invalid')
-				return false;
-			}
-
-			if (image !== undefined && (image == '' || image == null)) {
-				$('#image').addClass('is-invalid')
-				Swal.fire({
-					title: "Error Message!",
-					text: 'Empty file, please input file first.....',
-					icon: "warning"
-				});
-
-				return false;
-			}
-
-			$.ajax({
-				url: siteurl + active_controller + 'saveFileRecord',
-				data: formdata,
-				type: 'POST',
-				dataType: 'JSON',
-				processData: false,
-				contentType: false,
-				cache: false,
-				beforeSend: function() {
-					btn.attr('disabled', true)
-					btn.html('<i class="spinner spinner-border-sm"></i>Loading...')
-				},
-				complete: function() {
-					btn.attr('disabled', false)
-					btn.html('<i class="fa fa-save"></i>Save')
-				},
-				success: function(result) {
-					if (result.status == 1) {
-						Swal.fire({
-							title: 'Success!',
-							icon: 'success',
-							text: result.msg,
-							timer: 2000
-						})
-						$('#modalRecord').modal('hide')
-						$('#refresh').click();
-					} else {
-						Swal.fire({
-							title: 'Warning!',
-							icon: 'warning',
-							text: result.msg,
-							timer: 2000
-						})
-					}
-				},
-				error: function(result) {
-					Swal.fire({
-						title: 'Error!',
-						icon: 'error',
-						text: 'Server timeout, becuase error!',
-						timer: 4000
-					})
-				}
-			})
 		})
 
 	})

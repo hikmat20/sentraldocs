@@ -672,7 +672,7 @@ class Procedures extends Admin_Controller
 			'users' 		=> $users,
 			'type' 			=> "form",
 		]);
-		$this->template->render('upload_file');
+		$this->template->render('upload_file_form');
 	}
 
 	public function delete_form($id = null)
@@ -892,7 +892,7 @@ class Procedures extends Admin_Controller
 			'users' 		=> $users,
 			'type' 			=> "guide",
 		]);
-		$this->template->render('upload_file');
+		$this->template->render('upload_file_guide');
 	}
 
 	public function delete_guide($id = null)
@@ -1107,7 +1107,7 @@ class Procedures extends Admin_Controller
 			'users' 		=> $users,
 			'type' 			=> "record",
 		]);
-		$this->template->render('upload_file');
+		$this->template->render('upload_file_record');
 	}
 
 	public function delete_record($id = null)
