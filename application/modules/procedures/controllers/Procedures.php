@@ -200,13 +200,13 @@ class Procedures extends Admin_Controller
 
 		if ($Data_flow) {
 			$Data_flow['procedure_id'] = $pro_id;
-			if (isset($Data_flow['id']) || $Data_flow['id']) {
-				$Data_flow['relate_doc'] = json_encode($Data_flow['relate_doc']);
+			if (isset($Data_flow['id']) && $Data_flow['id']) {
+				$Data_flow['relate_doc'] = isset($Data_flow['relate_doc']) ? json_encode($Data_flow['relate_doc']) : '-';
 				$Data_flow['modified_by'] = $this->auth->user_id();
 				$Data_flow['modified_at'] = date('Y-m-d H:i:s');
 				$this->db->update('procedure_details', $Data_flow, ['id' => $Data_flow['id']]);
 			} else {
-				$Data_flow['relate_doc'] = json_encode($Data_flow['relate_doc']);
+				$Data_flow['relate_doc'] = isset($Data_flow['relate_doc']) ? json_encode($Data_flow['relate_doc']) : '-';
 				$Data_flow['created_by'] = $this->auth->user_id();
 				$Data_flow['created_at'] = date('Y-m-d H:i:s');
 				$this->db->insert('procedure_details', $Data_flow);
