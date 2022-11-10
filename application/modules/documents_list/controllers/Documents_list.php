@@ -125,7 +125,7 @@ class Documents_list extends Admin_Controller
 	public function view_procedure($id)
 	{
 		$docs 			= $this->db->get_where('view_procedures', ['id' => $id])->row();
-		$detail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id])->result();
+		$detail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id, 'status' => '1'])->result();
 		$users 				= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
 		$jabatan 			= $this->db->get('tbl_jabatan')->result();
 		$ArrUsr 			= $ArrJab = [];
