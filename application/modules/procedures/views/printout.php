@@ -179,7 +179,7 @@
 
     <br>
     <h3>FLOW DETAIL</h3>
-    <table class="table-data">
+    <table class="table-data" style="font-size: 11px;">
       <thead>
         <tr class="table-secondary">
           <th class="py-1 text-center">No.</th>
@@ -195,12 +195,24 @@
               <td class="text-center"><?= $dtl->number; ?></td>
               <td class="text-center"><?= $dtl->pic; ?></td>
               <td><?= $dtl->description; ?></td>
-              <td class=""><?= $dtl->relate_doc; ?></td>
+              <td class="">
+                <?php $relDocs = json_decode($dtl->relate_doc); ?>
+                <?php if (is_array($relDocs)) : ?>
+                  <ul>
+                    <?php foreach ($relDocs as $relDoc) { ?>
+                      <li><?= $ArrForms[$relDoc]->name; ?></li>
+                    <?php } ?>
+                  </ul>
+                <?php else : ?>
+                  <?= $dtl->relate_doc; ?>
+                <?php endif; ?>
+              </td>
             </tr>
           <?php endforeach;
         else : ?>
           <tr>
-            <td colspan="4" class="text-center">~ Not available data ~</td>
+            <td colspan=" 4" class="text-center">~ Not available data ~
+            </td>
           </tr>
         <?php endif; ?>
       </tbody>

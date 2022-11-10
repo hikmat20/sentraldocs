@@ -1259,10 +1259,14 @@ class Procedures extends Admin_Controller
 		$mpdf = new Mpdf();
 		$procedure = $this->db->get_where('procedures', ['id' => $id])->row();
 		$flowDetail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id])->result();
+		$getForms	= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
 		$users 				= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
 		$jabatan 			= $this->db->get('tbl_jabatan')->result();
-		$ArrUsr 			= $ArrJab = [];
+		$ArrUsr 			= $ArrJab = $ArrForms = [];
 
+		foreach ($getForms as $frm) {
+			$ArrForms[$frm->id] = $frm;
+		}
 		foreach ($users as $usr) {
 			$ArrUsr[$usr->id_user] = $usr;
 		}
@@ -1277,6 +1281,7 @@ class Procedures extends Admin_Controller
 			'detail' => $flowDetail,
 			'ArrUsr' => $ArrUsr,
 			'ArrJab' => $ArrJab,
+			'ArrForms' => $ArrForms,
 		];
 		$data = $this->load->view('printout', $Data, TRUE);
 		$mpdf->WriteHTML($data);
