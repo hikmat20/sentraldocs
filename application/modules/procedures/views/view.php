@@ -127,7 +127,16 @@
                         <td class="text-center"><?= $dtl->number; ?></td>
                         <td class="text-center"><?= $dtl->pic; ?></td>
                         <td><?= $dtl->description; ?></td>
-                        <td class=""><?= $dtl->relate_doc; ?></td>
+                        <td class="">
+                          <?php $relDocs = json_decode($dtl->relate_doc); ?>
+                          <?php if (is_array($relDocs)) : ?>
+                            <?php foreach ($relDocs as $relDoc) { ?>
+                              <span class="badge bg-success btn btn-success view-form mb-1" data-id="<?= $relDoc; ?>"><?= $ArrForms[$relDoc]->name; ?></span>
+                            <?php } ?>
+                          <?php else : ?>
+                            <?= $dtl->relate_doc; ?>
+                          <?php endif; ?>
+                        </td>
                       </tr>
                     <?php endforeach;
                   else : ?>

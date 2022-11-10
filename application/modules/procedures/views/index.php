@@ -285,6 +285,20 @@
 	</div>
 </div>
 
+<div class="modal fade" id="modelId" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Modal title</h5>
+				<button type="button" class="close" onclick="$('#content_modal').html('')" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div id="content_modal">
+			</div>
+		</div>
+	</div>
+</div>
 <script>
 	$(document).ready(function() {
 		$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
@@ -516,6 +530,18 @@
 					})
 				}
 			})
+		})
+
+		$(document).on('click', '.view-form', function() {
+			const id = $(this).data('id')
+			if (id) {
+				$('.modal-title').html('View Form')
+				$('#content_modal').load(siteurl + active_controller + 'view_form/' + id)
+				$('#modelId').modal('show')
+				$('.modal-dialog').css('max-width', '')
+			} else {
+				Swal.fire('Warning!!', 'Not available data to process', 'waring', 2000);
+			}
 		})
 	})
 
