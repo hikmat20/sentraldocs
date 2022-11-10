@@ -128,7 +128,7 @@ class Procedures extends Admin_Controller
 	{
 		$Data 				= $this->db->get_where('procedures', ['id' => $id, 'company_id' => $this->company,  'status' => 'PUB'])->row();
 		$users 				= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
-		$getForms			= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'active' => 'Y'])->result();
+		$getForms			= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
 		$jabatan 			= $this->db->get('tbl_jabatan')->result();
 		$ArrUsr 			= $ArrJab = $ArrForms = [];
 
@@ -145,7 +145,7 @@ class Procedures extends Admin_Controller
 		}
 
 		if ($Data) {
-			$Data_detail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id])->result();
+			$Data_detail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id, 'status' => '1'])->result();
 			$this->template->set([
 				'title' 		=> 'Procedures',
 				'data' 			=> $Data,
