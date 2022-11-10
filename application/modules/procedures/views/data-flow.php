@@ -6,9 +6,18 @@
 			<td style="vertical-align:middle;" class="text-center"><?= $dtl->number; ?></td>
 			<td style="vertical-align:middle;" class="text-center"><?= $dtl->pic; ?></td>
 			<td><?= $dtl->description; ?></td>
-			<td style="vertical-align: middle;"><?= $dtl->relate_doc; ?></td>
+			<td style="vertical-align: middle;">
+				<?php $relDocs = json_decode($dtl->relate_doc); ?>
+				<?php if (is_array($relDocs)) : ?>
+					<?php foreach ($relDocs as $relDoc) { ?>
+						<span class="badge bg-success btn btn-success view-form mb-1" data-id="<?= $relDoc; ?>"><?= $ArrForms[$relDoc]->name; ?></span>
+					<?php } ?>
+				<?php else : ?>
+					<?= $dtl->relate_doc; ?>
+				<?php endif; ?>
+			</td>
 			<td class="text-center" style="vertical-align: middle;">
-				<button type="button" class="btn btn-warning btn-icon rounded-circle btn-sm edit_flow" data-id="<?= $dtl->id; ?>"><i class="fa fa-edit"></i></button>
+				<button type="button" class="btn btn-warning btn-icon rounded-circle btn-sm edit_flow" data-proc_id="<?= $dtl->procedure_id; ?>" data-id="<?= $dtl->id; ?>"><i class="fa fa-edit"></i></button>
 				<button type="button" class="btn btn-danger btn-icon rounded-circle btn-sm delete_flow" data-id="<?= $dtl->id; ?>"><i class="fa fa-trash"></i></button>
 			</td>
 		</tr>

@@ -1,6 +1,6 @@
 <div class="modal-body">
-	<div class="row">
-		<div class="col-6">
+	<div class="container">
+		<div class="">
 			<div class="row">
 				<label class="col-12 col-form-label"><span class="text-danger">*</span> Document Name :</label>
 				<div class="col-12">

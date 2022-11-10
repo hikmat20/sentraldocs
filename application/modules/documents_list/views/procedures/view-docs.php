@@ -69,6 +69,8 @@
 		<?php endif; ?>
 	</tbody>
 </table>
+
+<!-- VIDEO -->
 <table class="table table-bordered mb-6">
 	<thead>
 		<tr class="table-secondary">
@@ -86,6 +88,8 @@
 			</tr>
 		<?php endif; ?>
 </table>
+
+<!-- FLOW -->
 <table class="table table-bordered">
 	<thead>
 		<tr class="table-secondary">
@@ -107,7 +111,16 @@
 					<td class="text-center"><?= $dtl->number; ?></td>
 					<td class="text-center"><?= $dtl->pic; ?></td>
 					<td><?= $dtl->description; ?></td>
-					<td class=""><?= $dtl->relate_doc; ?></td>
+					<td class="">
+						<?php $relDocs = json_decode($dtl->relate_doc); ?>
+						<?php if (is_array($relDocs)) : ?>
+							<?php foreach ($relDocs as $relDoc) { ?>
+								<span class="badge bg-success btn btn-success view-form-2 mb-1" data-id="<?= $relDoc; ?>"><?= $ArrForms[$relDoc]->name; ?></span>
+							<?php } ?>
+						<?php else : ?>
+							<?= $dtl->relate_doc; ?>
+						<?php endif; ?>
+					</td>
 				</tr>
 		<?php endforeach;
 		endif; ?>

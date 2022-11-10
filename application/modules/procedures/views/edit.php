@@ -336,7 +336,7 @@
 										</div>
 										<div id="flowDetail" class="collapse in" role="tabpanel" aria-labelledby="sectionFlowDetail">
 											<div class="card-body">
-												<button type="button" class="btn btn-primary btn-sm mb-3" id="add_flow"><i class="fa fa-plus mr-2"></i>Add Flow</button>
+												<button type="button" class="btn btn-primary btn-sm mb-3" id="add_flow" data-id="<?= $data->id; ?>"><i class="fa fa-plus mr-2"></i>Add Flow</button>
 												<table class="table table-sm table-bordered">
 													<thead class="text-center ">
 														<tr class="table-light">
@@ -356,9 +356,18 @@
 																	<td style="vertical-align:middle;" class="text-center"><?= $dtl->number; ?></td>
 																	<td style="vertical-align:middle;" class="text-center"><?= $dtl->pic; ?></td>
 																	<td><?= $dtl->description; ?></td>
-																	<td style="vertical-align: middle;"><?= $dtl->relate_doc; ?></td>
+																	<td style="vertical-align: middle;">
+																		<?php $relDocs = json_decode($dtl->relate_doc); ?>
+																		<?php if (is_array($relDocs)) : ?>
+																			<?php foreach ($relDocs as $relDoc) { ?>
+																				<span class="badge bg-success btn btn-success view-form mb-1" data-id="<?= $relDoc; ?>"><?= $ArrForms[$relDoc]->name; ?></span>
+																			<?php } ?>
+																		<?php else : ?>
+																			<?= $dtl->relate_doc; ?>
+																		<?php endif; ?>
+																	</td>
 																	<td class="text-center" style="vertical-align: middle;">
-																		<button type="button" class="btn btn-warning btn-icon rounded-circle btn-sm edit_flow" data-id="<?= $dtl->id; ?>"><i class="fa fa-edit"></i></button>
+																		<button type="button" data-proc_id="<?= $data->id; ?>" class="btn btn-warning btn-icon rounded-circle btn-sm edit_flow" data-id="<?= $dtl->id; ?>"><i class="fa fa-edit"></i></button>
 																		<button type="button" class="btn btn-danger btn-icon rounded-circle btn-sm delete_flow" data-id="<?= $dtl->id; ?>"><i class="fa fa-trash"></i></button>
 																	</td>
 																</tr>
@@ -649,7 +658,7 @@
 
 					<!-- Modal -->
 					<div class="modal fade" id="modelId" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+						<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 							<div class="modal-content">
 								<div class="modal-header">
 									<h5 class="modal-title">Modal title</h5>
@@ -723,91 +732,58 @@
 		});
 
 		$(document).on('click', '#add_flow', function() {
-			let html = `<div class="modal-body">
-				<div class="form-group">
-					<label class="">Nomor</label>
-					<div class="">
-						<input type="text" name="flow[number]" id="number" class="form-control" required placeholder="Nomor" aria-describedby="helpId">
-						<small class="text-danger invalid-feedback">Nomor</small>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="">PIC</label>
-					<div class="">
-						<input type="text" name="flow[pic]" id="pic" class="form-control" required placeholder="PIC" aria-describedby="helpId">
-						<small class="text-danger invalid-feedback">PIC</small>
-					</div>
-				</div>
-				<div class="form-group">
-					<label for="description" class="">Deskripsi</label>
-					<div class="">
-						<textarea rows="5" name="flow[description]" id="description" class="form-control" placeholder="Deskripsi" aria-describedby="helpId"></textarea>
-						<small class="text-danger invalid-feedback">Deskripsi</small>
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="">Dok. Terkait</label>
-					<div class="">
-						<textarea rows="5" name="flow[relate_doc]" id="relate_doc" class="form-control" required placeholder="Dokumen terkait" aria-describedby="helpId" /></textarea>
-						<small class="text-danger invalid-feedback">Dokumen terkait</small>
-					</div>
-				</div> 
-				<div class="modal-footer justify-content-between align-items-center mb-3">
-					<button type="submit" class="btn btn-sm btn-primary w-100px save"><i class="fas fa-save"></i>Save</button>
-					<button type="button" class="btn btn-sm btn-danger w-100px" onclick="setTimeout(function(){$('#content_modal').html('')},1500)" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
-				</div> 
-			</div> 
-			`;
-
-			$('#content_modal').html(html)
+			const proc_id = $(this).data('id')
+			const url = siteurl + active_controller + 'add_flow/' + proc_id
+			$('#content_modal').load(url)
 			$('#modelId').modal('show')
 		})
 
 		$(document).on('click', '.edit_flow', function() {
 			let id = $(this).data('id')
-			let number = $(this).parents('tr').find('td:eq(0)').text();
-			let pic = $(this).parents('tr').find('td:eq(1)').text();
-			let desc = $(this).parents('tr').find('td:eq(2)').text();
-			let reldoc = $(this).parents('tr').find('td:eq(3)').text();
+			// let number = $(this).parents('tr').find('td:eq(0)').text();
+			// let pic = $(this).parents('tr').find('td:eq(1)').text();
+			// let desc = $(this).parents('tr').find('td:eq(2)').text();
+			// let reldoc = $(this).parents('tr').find('td:eq(3)').text();
 
-			let html = `<div class="modal-body">
-					<div class="form-group">
-						<label class="">Nomor</label>
-						<div class="">
-							<input type="hidden" name="flow[id]" class="form-control" value="` + id + `" >
-							<input type="text" name="flow[number]" id="number" class="form-control" required placeholder="Nomor" value="` + number + `">
-							<small class="text-danger invalid-feedback">Nomor</small>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="">PIC</label>
-						<div class="">
-							<input type="text" name="flow[pic]" id="pic" class="form-control" required placeholder="PIC" value="` + pic + `">
-							<small class="text-danger invalid-feedback">PIC</small>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="description" class="">Deskripsi</label>
-						<div class="">
-							<textarea rows="5" name="flow[description]" id="description" class="form-control" placeholder="Deskripsi" aria-describedby="helpId">` + desc + `</textarea>
-							<small class="text-danger invalid-feedback">Deskripsi</small>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="">Dok. Terkait</label>
-						<div class="">
-							<textarea rows="5" name="flow[relate_doc]" id="relate_doc" class="form-control" required placeholder="Dokumen terkait" aria-describedby="helpId">` + reldoc + `</textarea>
-							<small class="text-danger invalid-feedback">Dokumen terkait</small>
-						</div>
-					</div> 
-				</div> 
-				<div class="modal-footer justify-content-between align-items-center mb-3">
-					<button type="submit" class="btn btn-sm btn-primary w-100px save"><i class="fas fa-save"></i>Save</button>
-					<button type="button" class="btn btn-sm btn-danger w-100px" onclick="setTimeout(function(){$('#content_modal').html('')},1500)" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
-				</div> 
-			`;
-
-			$('#content_modal').html(html)
+			// let html = `<div class="modal-body">
+			// 		<div class="form-group">
+			// 			<label class="">Nomor</label>
+			// 			<div class="">
+			// 				<input type="hidden" name="flow[id]" class="form-control" value="` + id + `" >
+			// 				<input type="text" name="flow[number]" id="number" class="form-control" required placeholder="Nomor" value="` + number + `">
+			// 				<small class="text-danger invalid-feedback">Nomor</small>
+			// 			</div>
+			// 		</div>
+			// 		<div class="form-group">
+			// 			<label class="">PIC</label>
+			// 			<div class="">
+			// 				<input type="text" name="flow[pic]" id="pic" class="form-control" required placeholder="PIC" value="` + pic + `">
+			// 				<small class="text-danger invalid-feedback">PIC</small>
+			// 			</div>
+			// 		</div>
+			// 		<div class="form-group">
+			// 			<label for="description" class="">Deskripsi</label>
+			// 			<div class="">
+			// 				<textarea rows="5" name="flow[description]" id="description" class="form-control" placeholder="Deskripsi" aria-describedby="helpId">` + desc + `</textarea>
+			// 				<small class="text-danger invalid-feedback">Deskripsi</small>
+			// 			</div>
+			// 		</div>
+			// 		<div class="form-group">
+			// 			<label class="">Dok. Terkait</label>
+			// 			<div class="">
+			// 				<textarea rows="5" name="flow[relate_doc]" id="relate_doc" class="form-control" required placeholder="Dokumen terkait" aria-describedby="helpId">` + reldoc + `</textarea>
+			// 				<small class="text-danger invalid-feedback">Dokumen terkait</small>
+			// 			</div>
+			// 		</div> 
+			// 	</div> 
+			// 	<div class="modal-footer justify-content-between align-items-center mb-3">
+			// 		<button type="submit" class="btn btn-sm btn-primary w-100px save"><i class="fas fa-save"></i>Save</button>
+			// 		<button type="button" class="btn btn-sm btn-danger w-100px" onclick="setTimeout(function(){$('#content_modal').html('')},1500)" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
+			// 	</div> 
+			// `;
+			const proc_id = $(this).data('proc_id')
+			const url = siteurl + active_controller + 'edit_flow/' + proc_id + "/" + id
+			$('#content_modal').load(url)
 			$('#modelId').modal('show')
 		})
 
@@ -1004,7 +980,7 @@
 		$(document).on('click', '#add_form', function() {
 			const id = $('#procedure_id').val() || null;
 			$('#modalRecord').modal('show')
-			$('.modal-dialog').css('max-width', '70%')
+			// $('.modal-dialog').css('max-width', '70%')
 			$('.modal-title').text('Add Form')
 			$('#record-content').load(siteurl + active_controller + 'upload_form/' + id)
 
@@ -1206,7 +1182,7 @@
 		$(document).on('click', '#add_guide', function() {
 			const id = $('#procedure_id').val() || null;
 			$('#modalRecord').modal('show')
-			$('.modal-dialog').css('max-width', '70%')
+			// $('.modal-dialog').css('max-width', '70%')
 			$('.modal-title').text('Add IK')
 			$('#record-content').load(siteurl + active_controller + 'upload_guide/' + id)
 
