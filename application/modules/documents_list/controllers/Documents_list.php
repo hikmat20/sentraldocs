@@ -91,8 +91,8 @@ class Documents_list extends Admin_Controller
 	{
 		if (isset($id)) {
 			$procedure 		= $this->db->get_where('view_procedures', ['id' => $id])->result();
-			$forms 			= $this->db->order_by('name', 'ASC')->get_where('dir_forms', ['procedure_id' => $id, 'status' => 'PUB'])->result();
-			$guides 		= $this->db->order_by('name', 'ASC')->get_where('dir_guides', ['procedure_id' => $id, 'status' => 'PUB'])->result();
+			$forms 			= $this->db->order_by('name', 'ASC')->get_where('dir_forms', ['procedure_id' => $id, 'active' => 'Y'])->result();
+			$guides 		= $this->db->order_by('name', 'ASC')->get_where('dir_guides', ['procedure_id' => $id, 'active' => 'Y'])->result();
 			$records 		= $this->db->order_by('name', 'ASC')->get_where('dir_records', ['procedure_id' => $id, 'status' => 'PUB', 'flag_type' => 'FOLDER', 'company_id' => $this->company, 'parent_id' => null])->result();
 			$countRecords 	= $this->db->get_where('dir_records', ['procedure_id' => $id, 'status' => 'PUB', 'flag_type' => 'FILE', 'company_id' => $this->company])->num_rows();
 
@@ -126,10 +126,23 @@ class Documents_list extends Admin_Controller
 	{
 		$docs 			= $this->db->get_where('view_procedures', ['id' => $id])->row();
 		$detail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id])->result();
+		$users 				= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
+		$jabatan 			= $this->db->get('tbl_jabatan')->result();
+		$ArrUsr 			= $ArrJab = [];
+
+		foreach ($users as $usr) {
+			$ArrUsr[$usr->id_user] = $usr;
+		}
+
+		foreach ($jabatan as $jab) {
+			$ArrJab[$jab->id] = $jab;
+		}
 		$this->template->set([
 			'docs' 			=> $docs,
 			'detail' 		=> $detail,
-			'MainData' 		=> $this->MainData
+			'MainData' 		=> $this->MainData,
+			'ArrUsr' 		=> $ArrUsr,
+			'ArrJab' 		=> $ArrJab,
 		]);
 
 		$this->template->render('procedures/view-docs');
@@ -151,6 +164,23 @@ class Documents_list extends Admin_Controller
 		]);
 
 		$this->template->render('procedures/view-record');
+	}
+	public function view_form($id)
+	{
+		$form 			= $this->db->get_where('dir_forms', ['id' => $id])->row();
+		$history			= $this->db->order_by('updated_at', 'ASC')->get_where('directory_log', ['directory_id' => $id])->result();
+		$users = $this->db->get_where('users', ['status' => 'ACT'])->result();
+		foreach ($users as $user) {
+			$ArrUsr[$user->id_user] = $user;
+		}
+		$this->template->set([
+			'form' 			=> $form,
+			'history' 			=> $history,
+			'sts'				=> $this->sts,
+			'ArrUsr'			=> $ArrUsr
+		]);
+
+		$this->template->render('procedures/view-form');
 	}
 
 	/* PROCEDURES */

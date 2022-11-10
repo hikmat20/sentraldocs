@@ -113,3 +113,50 @@
 		endif; ?>
 	</tbody>
 </table>
+
+<!-- APPROVAL -->
+<table class="table table-bordered">
+	<thead>
+		<tr class="table-secondary">
+			<th>
+				<h3>DATA APPROVAL</h3>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<table class="table table-bordered table-sm">
+					<tr>
+						<th width="180">Prepared By</th>
+						<td><?= ($docs->reviewer_id) ? $ArrUsr[$docs->prepared_by]->full_name : '-'; ?></td>
+					</tr>
+					<tr>
+						<th style="vertical-align: middle;" rowspan="2">Review By</th>
+						<td><?= ($docs->reviewer_id) ? $ArrJab[$docs->reviewer_id]->nm_jabatan : '-'; ?></td>
+					</tr>
+					<tr>
+						<td><?= ($docs->reviewed_by) ? $ArrUsr[$docs->reviewed_by]->full_name : '-'; ?></td>
+					</tr>
+					<tr>
+						<th style="vertical-align: middle;" rowspan="2">Approval By</th>
+						<td><?= ($docs->approval_id) ? $ArrJab[$docs->approval_id]->nm_jabatan : '-'; ?></td>
+					</tr>
+					<tr>
+						<td><?= ($docs->approved_by) ? $ArrUsr[$docs->approved_by]->full_name : '-'; ?></td>
+					</tr>
+					<tr>
+						<th style="vertical-align: middle;">Distribution By</th>
+						<td>
+							<?php $lsJab = explode(',', $docs->distribute_id);
+							foreach ($lsJab as $jab) {
+								echo ($jab) ? $ArrJab[$jab]->nm_jabatan . "<br>" : '-';
+							}
+							?>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</tbody>
+</table>
