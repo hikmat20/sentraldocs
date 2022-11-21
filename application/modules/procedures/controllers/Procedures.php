@@ -146,6 +146,7 @@ class Procedures extends Admin_Controller
 
 		if ($Data) {
 			$Data_detail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id, 'status' => '1'])->result();
+
 			$this->template->set([
 				'title' 		=> 'Procedures',
 				'data' 			=> $Data,

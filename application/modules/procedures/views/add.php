@@ -62,7 +62,7 @@
 																<select name="status" id="status" class="form-control select2">
 																	<option value=""></option>
 																	<option value="DFT">Draft</option>
-																	<option value="1">Publish</option>
+																	<option value="PUB">Publish</option>
 																</select>
 															</div>
 														</div>
@@ -75,19 +75,26 @@
 														<div class="form-group">
 															<label class="font-size-h5"><strong><span class="text-danger">*</span> Nama Proses</strong></label>
 															<div class="">
-																<textarea rows="5" name="name" id="name" required class="form-control" rows="5" placeholder="Nama Proses" aria-describedby="helpId"></textarea>
+																<textarea rows="5" name="name" id="name" class="form-control" rows="5" placeholder="Nama Proses" aria-describedby="helpId"></textarea>
 																<small class="text-danger invalid-feedback">Nama Proses</small>
 															</div>
 														</div>
 														<div class="form-group">
-															<label class="font-size-h5"><strong><span class="text-danger">*</span> Objektif Proses</strong></label>
+															<label class="font-size-h5"><strong><span class="text-danger">*</span> Ruang Lingkup</strong></label>
 															<div class="">
-																<textarea rows="5" name="object" id="object" required class="form-control" rows="5" placeholder="Objektif Proses" aria-describedby="helpId"></textarea>
-																<small class="text-danger invalid-feedback">Objektif Proses</small>
+																<textarea rows="5" name="scope" id="scope" class="form-control" rows="5" placeholder="Ruang Lingkup" aria-describedby="helpId"></textarea>
+																<small class="text-danger invalid-feedback">Ruang Lingkup</small>
 															</div>
 														</div>
 													</div>
 													<div class="col-md-6">
+														<div class="form-group">
+															<label class="font-size-h5"><strong><span class="text-danger">*</span> Objektif Proses</strong></label>
+															<div class="">
+																<textarea rows="5" name="object" id="object" class="form-control" rows="5" placeholder="Objektif Proses" aria-describedby="helpId"></textarea>
+																<small class="text-danger invalid-feedback">Objektif Proses</small>
+															</div>
+														</div>
 														<div class="form-group">
 															<label class="font-size-h5"><strong><span class="text-danger">*</span> Performa Indikator</strong></label>
 															<div class="">
@@ -95,13 +102,7 @@
 																<small class="text-danger invalid-feedback">Performa Indikator</small>
 															</div>
 														</div>
-														<div class="form-group">
-															<label class="font-size-h5"><strong>Ruang Lingkup</strong></label>
-															<div class="">
-																<textarea rows="5" name="scope" id="scope" class="form-control" rows="5" placeholder="Ruang Lingkup" aria-describedby="helpId"></textarea>
-																<small class="text-danger invalid-feedback">Ruang Lingkup</small>
-															</div>
-														</div>
+
 													</div>
 													<div class="col-md-12">
 														<div class="form-group">
@@ -535,17 +536,21 @@
 		Promise.allSettled = function(promiseList) {
 			return Promise.all(handlePromise(promiseList))
 		}
+
 		tinymce.init({
-			selector: 'textarea.textarea',
-			height: 500,
+			selector: 'textarea',
+			height: 100,
 			resize: true,
-			plugins: 'preview   importcss  searchreplace autolink autosave save ' +
+			plugins: 'autoresize autosave emoticons preview importcss searchreplace autolink autosave save ' +
 				'directionality  visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
-			toolbar: 'undo redo | blocks | ' +
+			toolbar: 'restoredraft preview searchreplace | undo redo | blocks ' +
 				'bold italic backcolor forecolor | alignleft aligncenter ' +
 				'alignright alignjustify | template codesample bullist numlist outdent indent | link image ' +
-				'removeformat | help',
-			content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+				'table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol' +
+				'removeformat emoticons | help',
+			content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+			autoresize_bottom_margin: 50,
+			link_default_protocol: 'https'
 			// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
 		});
 
@@ -596,7 +601,16 @@
 			$('#reviewer_id').removeClass('is-invalid')
 			$('#distribute_id').removeClass('is-invalid')
 			$('#image').removeClass('is-invalid')
+			$('#group_procedure').removeClass('is-invalid')
+			$('#status').removeClass('is-invalid')
+			$('#name').removeClass('is-invalid')
+			$('#scope').removeClass('is-invalid')
+			$('#object').removeClass('is-invalid')
+			$('#performance').removeClass('is-invalid')
 
+
+
+			const group_procedure = $('#group_procedure').val();
 			const description = $('#description').val();
 			const prepared_by = $('#prepared_by').val();
 			const reviewer_id = $('#reviewer_id').val();
@@ -605,8 +619,72 @@
 			const id_master = $('#id_master').val();
 			const image = $('#image').val();
 			const parent_id = $('#parent_id').val();
+			const status = $('#status').val();
+			const name = $('#name').val()
+			const scope = $('#scope').val()
+			const object = $('#object').val()
+			const performance = $('#performance').val()
 
-
+			if (group_procedure !== undefined && (group_procedure == '' || group_procedure == null)) {
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty Group Procedure, please input Group Procedure  first.....',
+					icon: "warning"
+				});
+				$('#group_procedure').addClass('is-invalid')
+				// $('#approvalDocs').addClass('show');
+				return false;
+			}
+			if (status !== undefined && (status == '' || status == null)) {
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty Status, please input Status first.....',
+					icon: "warning"
+				});
+				$('#status').addClass('is-invalid')
+				// $('#approvalDocs').addClass('show');
+				return false;
+			}
+			if (name !== undefined && (name == '' || name == null)) {
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty Name Procedure, please input Name Procedure first.....',
+					icon: "warning"
+				});
+				$('#name').addClass('is-invalid')
+				// $('#approvalDocs').addClass('show');
+				return false;
+			}
+			if (scope !== undefined && (scope == '' || scope == null)) {
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty Ruang Lingkup, please input Ruang Lingkup first.....',
+					icon: "warning"
+				});
+				$('#scope').addClass('is-invalid')
+				// $('#approvalDocs').addClass('show');
+				return false;
+			}
+			if (object !== undefined && (object == '' || object == null)) {
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty Objective Process, please input Objective Process first.....',
+					icon: "warning"
+				});
+				$('#object').addClass('is-invalid')
+				// $('#approvalDocs').addClass('show');
+				return false;
+			}
+			if (performance !== undefined && (performance == '' || performance == null)) {
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty Performa Indikator, please input Performa Indikator first.....',
+					icon: "warning"
+				});
+				$('#performance').addClass('is-invalid')
+				// $('#approvalDocs').addClass('show');
+				return false;
+			}
 			if (prepared_by !== undefined && (prepared_by == '' || prepared_by == null)) {
 				Swal.fire({
 					title: "Error Message!",

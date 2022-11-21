@@ -242,8 +242,9 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="modalForm" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg modal-dialog-centered">
+
+<div class="modal fade" id="modalForm" data-backdrop="static" data-keyboard="true" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
 		<div class="modal-content">
 			<form class="form-horiontal" id="form-input">
 				<div class="modal-header">
@@ -252,8 +253,7 @@
 						<div class="fa fa-times"></div>
 					</span>
 				</div>
-				<div class="modal-body">
-
+				<div class="modal-body overflow-auto">
 				</div>
 				<div class="modal-footer">
 					<button type="submit" class="btn btn-primary" id="save"><i class="fa fa-save"></i>Save</button>
@@ -264,18 +264,17 @@
 	</div>
 </div>
 
-<div class="modal fade" id="modalView" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modalView" data-keyboard="false" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
 	<div class="modal-dialog modal-xl modal-dialog-centered">
 		<div class="modal-content">
 			<form class="form-horiontal" id="form-input">
 				<div class="modal-header">
-					<h5 class="modal-title" id="staticBackdropLabel">View Procedure</h5>
+					<h5 class="modal-title" id="modal-view">View Procedure</h5>
 					<span type="button" onclick="$('#name').val('')" class="btn-close" data-dismiss="modal" aria-label="Close">
-						<div class="fa fa-times"></div>
+						<i class="fa fa-times"></i>
 					</span>
 				</div>
 				<div class="modal-body">
-
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-dismiss="modal" onclick="$('#name').val('')"><i class="fa fa-times"></i>Close</button>
@@ -299,6 +298,136 @@
 		</div>
 	</div>
 </div>
+
+<div class="modal fade px-0 py-0 modalViewImg" id="" tabindex="-1" role="dialog" aria-labelledby="modelTitleImg" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 90%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="modelTitleImg">Modal title</h5>
+				<span type="button" class="btn-close" aria-label="Close">
+					<i class="fa fa-times"></i>
+				</span>
+			</div>
+			<div class="modal-body overflow-auto">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="modalViewImg" class="modal-img">
+	<span class="close-modal">&times;</span>
+	<img class="modal-content-img" id="img01">
+</div>
+
+<style>
+	/* #myImg {
+		border-radius: 5px;
+		cursor: pointer;
+		transition: 0.3s;
+	}
+
+	#myImg:hover {
+		opacity: 0.7;
+	} */
+
+	/* The Modal (background) */
+	.modal-img {
+		display: none;
+		/* Hidden by default */
+		position: fixed;
+		/* Stay in place */
+		z-index: 9999;
+		/* Sit on top */
+		padding-top: 100px;
+		/* Location of the box */
+		left: 0;
+		top: 0;
+		width: 100%;
+		/* Full width */
+		height: 100%;
+		/* Full height */
+		overflow: auto;
+		/* Enable scroll if needed */
+		background-color: rgb(0, 0, 0);
+		/* Fallback color */
+		background-color: rgba(0, 0, 0, 0.9);
+		/* Black w/ opacity */
+	}
+
+	/* Modal Content (image) */
+	.modal-img .modal-content-img {
+		margin: auto;
+		display: block;
+		width: 100%;
+		/* max-width: 700px; */
+	}
+
+	/* Caption of Modal Image */
+	#caption {
+		margin: auto;
+		display: block;
+		width: 80%;
+		max-width: 700px;
+		text-align: center;
+		color: #ccc;
+		padding: 10px 0;
+		height: 150px;
+	}
+
+	/* Add Animation */
+	.modal-img .modal-content-img,
+	#caption {
+		-webkit-animation-name: zoom;
+		-webkit-animation-duration: 0.6s;
+		animation-name: zoom;
+		animation-duration: 0.6s;
+	}
+
+	@-webkit-keyframes zoom {
+		from {
+			-webkit-transform: scale(0)
+		}
+
+		to {
+			-webkit-transform: scale(1)
+		}
+	}
+
+	@keyframes zoom {
+		from {
+			transform: scale(0)
+		}
+
+		to {
+			transform: scale(1)
+		}
+	}
+
+	/* The Close Button */
+	.close-modal {
+		position: absolute;
+		top: 15px;
+		right: 35px;
+		color: #f1f1f1;
+		font-size: 40px;
+		font-weight: bold;
+		transition: 0.3s;
+	}
+
+	.close-modal:hover,
+	.close-modal:focus {
+		color: #bbb;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	/* 100% Image Width on Smaller Screens */
+	@media only screen and (max-width: 700px) {
+		.modal-content-img {
+			width: 100%;
+		}
+	}
+</style>
 <script>
 	$(document).ready(function() {
 		$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
@@ -543,6 +672,44 @@
 				Swal.fire('Warning!!', 'Not available data to process', 'waring', 2000);
 			}
 		})
+
+		/* PREVIEW IMAGE */
+		$(document).on('click', '.view-image', function() {
+			const urlImg = $(this).parents('.dropzone-wrapper').find('img').attr('src')
+			const img = "<img src='" + urlImg + "' class='img-'>"
+			// $('#modalViewImg').modal('show')
+			// $('#modalViewImg .modal-body').html(img)
+			// var reader = new FileReader();
+
+
+			// reader.onload = function(e) {
+			// 	console.log(e)
+			// 	var htmlPreview = '<img width="150" src="' + e.target.result + '" />';
+			// 	boxZone.append(htmlPreview);
+			// };
+
+			// Get the modal
+			var modal = document.getElementById("modalViewImg");
+
+			// Get the image and insert it inside the modal - use its "alt" text as a caption
+			// var img = document.getElementById("myImg");
+			var modalImg = document.getElementById("img01");
+			// var captionText = document.getElementById("caption");
+			// img.onclick = function() {
+			modal.style.display = "block";
+			modalImg.src = urlImg;
+			// 	captionText.innerHTML = this.alt;
+			// }
+
+			// Get the <span> element that closes the modal
+			var span = document.getElementsByClassName("close-modal")[0];
+
+			// When the user clicks on <span> (x), close the modal
+			span.onclick = function() {
+				modal.style.display = "none";
+			}
+		})
+
 	})
 
 	function load_tinymce(el) {
