@@ -127,7 +127,7 @@ class Procedures extends Admin_Controller
 	public function view($id = '')
 	{
 		$Data 				= $this->db->get_where('procedures', ['id' => $id, 'company_id' => $this->company,  'status' => 'PUB'])->row();
-		$users 				= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
+		$users 				= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1'])->result();
 		$getForms			= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
 		$jabatan 			= $this->db->get('tbl_jabatan')->result();
 		$ArrUsr 			= $ArrJab = $ArrForms = [];
