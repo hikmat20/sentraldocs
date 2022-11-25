@@ -72,14 +72,8 @@
 														<div class="form-group">
 															<label class="font-size-h5"><strong><span class="text-danger">*</span> Status</strong></label>
 															<div class="">
-																<select name="status" id="status" class="form-control select2">
-																	<option value=""></option>
-																	<option value="DFT" <?= ($data->status == 'DFT') ? 'selected' : ''; ?>>Draft</option>
-																	<option value="REV" <?= ($data->status == 'REV') ? 'selected' : ''; ?>>Review</option>
-																	<option value="COR" <?= ($data->status == 'COR') ? 'selected' : ''; ?>>Correction</option>
-																	<option value="APV" <?= ($data->status == 'APV') ? 'selected' : ''; ?>>Approval</option>
-																	<option value="RVI" <?= ($data->status == 'RVI') ? 'selected' : ''; ?>>Revision</option>
-																	<option value="PUB" <?= ($data->status == 'PUB') ? 'selected' : ''; ?>>Publish</option>
+																<select name="status" id="status" class="form-control select2" <?= ($data->status == 'DFT') ? '' : 'disabled'; ?>>
+																	<option value="<?= ($data->status) ?: 'DFT'; ?>" selected><?= ($data->status) ? $sts[$data->status] : 'Draft'; ?></option>
 																</select>
 															</div>
 														</div>
@@ -512,6 +506,7 @@
 											<tr class="table-light">
 												<th width="50" class="text-center">No</th>
 												<th class="text-center">Name</th>
+												<th width="100" class="text-">Link Form</th>
 												<th width="50" class="text-center">File</th>
 												<th width="200" class="text-center">Update</th>
 												<th width="150" class="text-center">Opis</th>
@@ -523,6 +518,11 @@
 													<tr>
 														<td class="text-center"><?= $n; ?></td>
 														<td class=""><?= $form->name; ?></td>
+														<td class="text-center">
+															<a href="<?= $form->link_form; ?>">
+																<span class="badge bg-primary text-white">Link Form</span>
+															</a>
+														</td>
 														<td class="text-center">
 															<?php if ($form->file_name) : ?>
 																<button type="button" class="btn p-0 btn-sm btn-link text-success btn-icon view-form" data-id="<?= $form->id; ?>"><i class="fas fa-file-pdf text-success"></i></button>

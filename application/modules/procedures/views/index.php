@@ -15,7 +15,7 @@
 					<!-- Nav tabs -->
 					<ul class="nav nav-tabs nav-success nav-sm nav-pills pb-3 mb-3" id="myTab" role="tablist">
 						<li class="nav-item" role="presentation">
-							<a class="nav-link active p-2" id="published-tab" data-toggle="tab" data-target="#published" type="button" role="tab" aria-controls="published" aria-selected="true">Published <span class="badge badge-circle bg-white text-primary ml-2"><?= count($dataPub); ?></span></a>
+							<a class="nav-link active p-2" id="draft-tab" data-toggle="tab" data-target="#draft" type="button" role="tab" aria-controls="draft" aria-selected="false">Draft <span class="badge bg-white badge-circle text-secondary ml-2"><?= count($dataDraft); ?></span></a>
 						</li>
 						<li class="nav-item" role="presentation">
 							<a class="nav-link p-2" id="review-tab" data-toggle="tab" data-target="#review" type="button" role="tab" aria-controls="review" aria-selected="true">Review <span class="badge badge-circle bg-white text-warning ml-2"><?= count($dataRev); ?></span></a>
@@ -30,38 +30,50 @@
 							<a class="nav-link p-2" id="Revision-tab" data-toggle="tab" data-target="#Revision" type="button" role="tab" aria-controls="Revision" aria-selected="true">Revision <span class="badge badge-circle bg-white text-success ml-2"><?= count($dataRvi); ?></span></a>
 						</li>
 						<li class="nav-item" role="presentation">
-							<a class="nav-link p-2" id="draft-tab" data-toggle="tab" data-target="#draft" type="button" role="tab" aria-controls="draft" aria-selected="false">Draft <span class="badge bg-white badge-circle text-secondary ml-2"><?= count($dataDraft); ?></span></a>
+							<a class="nav-link p-2" id="published-tab" data-toggle="tab" data-target="#published" type="button" role="tab" aria-controls="published" aria-selected="true">Published <span class="badge badge-circle bg-white text-primary ml-2"><?= count($dataPub); ?></span></a>
 						</li>
 					</ul>
 
 					<!-- Tab panes -->
 					<div class="tab-content ">
-						<!-- Published -->
-						<div class="tab-pane fade active show" id="published" role="tabpanel" aria-labelledby="published-tab">
-							<table id="example1" class="table table-bordered table-sm table-condensed table-hover datatable">
+
+						<!-- Draft -->
+						<div class="tab-pane fade active show" id="draft" role="tabpanel" aria-labelledby="draft-tab">
+							<table id="example2" class="table table-bordered table-sm table-hover datatable">
 								<thead class="text-center table-light">
 									<tr class="text-center">
 										<th class="py-2" width="40">No.</th>
 										<th class="py-2 text-left">Nama</th>
-										<th class="py-2" width="150">Status</th>
-										<th class="py-2" width="150">Action</th>
+										<th class="py-2" width="100">Status</th>
+										<th class="py-2" width="100">Action</th>
 									</tr>
 								</thead>
 								<tbody>
-									<?php if (isset($dataPub) && $dataPub) :
+									<?php if (isset($dataDraft) && $dataDraft) :
 										$n = 0;
-										foreach ($dataPub as $dt) : $n++; ?>
+										foreach ($dataDraft as $draft) : $n++; ?>
 											<tr class="text-center">
 												<td class="py-2"><?= $n; ?></td>
 												<td class="py-2 text-left">
-													<h5 class="my-0"><?= $dt->name; ?></h5>
+													<h5 class="my-0"><?= $draft->name; ?></h5>
 												</td>
-												<td class="py-2"><?= $status[$dt->status]; ?></td>
+												<td class="py-2"><?= $status[$draft->status]; ?></td>
 												<td class="py-2">
-													<a href="<?= base_url($this->uri->segment(1) . '/printout/' . $dt->id); ?>" target="_blank" class="btn btn-sm btn-icon rounded-circle btn-light print" data-id="<?= $dt->id; ?>" title="Print Data"><i class="fa fa-print"></i></a>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning" data-id="<?= $dt->id; ?>" title="Edit Data"><i class="fa fa-edit"></i></a>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button>
+													<a href="<?= base_url($this->uri->segment(1) . '/printout/' . $draft->id); ?>" target="_blank" class="btn btn-sm btn-icon rounded-circle btn-light print" data-status="<?= $draft->status; ?>" data-id="<?= $draft->id; ?>" title="Print Data"><i class="fa fa-print"></i></a>
+													<div class="dropdown open d-inline">
+														<button class="btn btn-light-success btn-sm btn-icon rounded-circle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+															<i class="fa fa-cog"></i>
+														</button>
+														<div class="dropdown-menu" aria-labelledby="triggerId">
+															<button type="button" class="dropdown-item view text-info" data-status="<?= $draft->status; ?>" data-id="<?= $draft->id; ?>" title="View Data"><i class="fa fa-search mr-2 text-info"></i>View</button>
+															<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $draft->id); ?>" class="dropdown-item text-warning" data-id="<?= $draft->id; ?>" title="Edit Data"><i class="fa fa-edit mr-2 text-warning"></i>Edit</a>
+															<div class="dropdown-divider my-0"></div>
+															<button type="button" class="dropdown-item text-primary review" data-id="<?= $draft->id; ?>" title="Process to Review"><i class="fa fa-sync mr-2 text-primary"></i>Process to Review</button>
+															<div class="dropdown-divider my-0"></div>
+															<button type="button" class="dropdown-item delete text-danger" data-id="<?= $draft->id; ?>" title="Delete Data"><i class="fa fa-trash mr-2 text-danger"></i>Delete</button>
+														</div>
+													</div>
+
 												</td>
 											</tr>
 									<?php endforeach;
@@ -92,9 +104,8 @@
 												</td>
 												<td class="py-2"><?= $status[$dt->status]; ?></td>
 												<td class="py-2">
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-													<!-- <a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning" data-id="<?= $dt->id; ?>" title="Edit Data"><i class="fa fa-edit"></i></a> -->
-													<!-- <button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button> -->
+													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
+													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-light-danger cancle-review" data-id="<?= $dt->id; ?>" title="Cancel Review"><i class="fa fa-undo"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -125,7 +136,7 @@
 												</td>
 												<td class="py-2"><?= $status[$dt->status]; ?></td>
 												<td class="py-2">
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
+													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
 													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning" data-id="<?= $dt->id; ?>" title="Edit Data"><i class="fa fa-edit"></i></a>
 													<!-- <button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button> -->
 												</td>
@@ -158,7 +169,7 @@
 												</td>
 												<td class="py-2"><?= $status[$dt->status]; ?></td>
 												<td class="py-2">
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
+													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
 													<!-- <a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning" data-id="<?= $dt->id; ?>" title="Edit Data"><i class="fa fa-edit"></i></a> -->
 													<!-- <button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button> -->
 												</td>
@@ -202,9 +213,9 @@
 							</table>
 						</div>
 
-						<!-- Draft -->
-						<div class="tab-pane fade " id="draft" role="tabpanel" aria-labelledby="draft-tab">
-							<table id="example2" class="table table-bordered table-sm table-hover datatable">
+						<!-- Published -->
+						<div class="tab-pane fade" id="published" role="tabpanel" aria-labelledby="published-tab">
+							<table id="example1" class="table table-bordered table-sm table-condensed table-hover datatable">
 								<thead class="text-center table-light">
 									<tr class="text-center">
 										<th class="py-2" width="40">No.</th>
@@ -214,19 +225,18 @@
 									</tr>
 								</thead>
 								<tbody>
-									<?php if (isset($dataDraft) && $dataDraft) :
+									<?php if (isset($dataPub) && $dataPub) :
 										$n = 0;
-										foreach ($dataDraft as $draft) : $n++; ?>
+										foreach ($dataPub as $dt) : $n++; ?>
 											<tr class="text-center">
 												<td class="py-2"><?= $n; ?></td>
 												<td class="py-2 text-left">
-													<h5 class="my-0"><?= $draft->name; ?></h5>
+													<h5 class="my-0"><?= $dt->name; ?></h5>
 												</td>
-												<td class="py-2"><?= $status[$draft->status]; ?></td>
+												<td class="py-2"><?= $status[$dt->status]; ?></td>
 												<td class="py-2">
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $draft->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $draft->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning" data-id="<?= $draft->id; ?>" title="Edit Data"><i class="fa fa-edit"></i></a>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $draft->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button>
+													<a href="<?= base_url($this->uri->segment(1) . '/printout/' . $dt->id); ?>" target="_blank" class="btn btn-sm btn-icon rounded-circle btn-light print" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="Print Data"><i class="fa fa-print"></i></a>
+													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -234,6 +244,7 @@
 								</tbody>
 							</table>
 						</div>
+
 					</div>
 				</div>
 			</div>
@@ -320,16 +331,6 @@
 </div>
 
 <style>
-	/* #myImg {
-		border-radius: 5px;
-		cursor: pointer;
-		transition: 0.3s;
-	}
-
-	#myImg:hover {
-		opacity: 0.7;
-	} */
-
 	/* The Modal (background) */
 	.modal-img {
 		display: none;
@@ -553,8 +554,9 @@
 
 		$(document).on('click', '.view', function() {
 			let id = $(this).data('id')
+			let status = $(this).data('status')
 			$.ajax({
-				url: siteurl + active_controller + 'view/' + id,
+				url: siteurl + active_controller + 'view/' + id + "/" + status,
 				type: 'GET',
 				success: function(result) {
 					if (result) {
@@ -598,6 +600,80 @@
 
 							} else {
 								Swal.fire('Warning', "Can't delete data. Please try again!", 'warning', 2000)
+							}
+						},
+						error: function() {
+							Swal.fire('Error!', 'Server timeout. Please try again!', 'error', 3000)
+						}
+					})
+				}
+			})
+
+		})
+
+		$(document).on('click', '.review', function() {
+			let id = $(this).data('id')
+			Swal.fire({
+				title: 'Are you sure to review this data?',
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonText: 'Yes',
+			}).then((value) => {
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'review/' + id,
+						type: 'GET',
+						dataType: 'JSON',
+						success: function(result) {
+							if (result.status == '1') {
+								Swal.fire({
+									title: 'Success!!',
+									text: result.msg,
+									icon: 'success',
+									timer: 1500
+								}).then(() => {
+									location.reload()
+								})
+
+							} else {
+								Swal.fire('Warning', result.msg, 'warning', 2000)
+							}
+						},
+						error: function() {
+							Swal.fire('Error!', 'Server timeout. Please try again!', 'error', 3000)
+						}
+					})
+				}
+			})
+
+		})
+
+		$(document).on('click', '.cancle-review', function() {
+			let id = $(this).data('id')
+			Swal.fire({
+				title: 'Are you sure to cancle review this data?',
+				icon: 'question',
+				showCancelButton: true,
+				confirmButtonText: 'Yes, Cancel <i class="fa fa-undo text-white"></i>',
+			}).then((value) => {
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'cancel_review/' + id,
+						type: 'GET',
+						dataType: 'JSON',
+						success: function(result) {
+							if (result.status == '1') {
+								Swal.fire({
+									title: 'Success!!',
+									text: result.msg,
+									icon: 'success',
+									timer: 1500
+								}).then(() => {
+									location.reload()
+								})
+
+							} else {
+								Swal.fire('Warning', result.msg, 'warning', 2000)
 							}
 						},
 						error: function() {

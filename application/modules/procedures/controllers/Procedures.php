@@ -111,6 +111,7 @@ class Procedures extends Admin_Controller
 				'getRecords' 	=> $getRecords,
 				'jabatan' 		=> $jabatan,
 				'ArrForms' 		=> $ArrForms,
+				'sts' 			=> $this->sts,
 			]);
 
 			$this->template->set('grProcess', $grProcess);
@@ -124,9 +125,9 @@ class Procedures extends Admin_Controller
 		}
 	}
 
-	public function view($id = '')
+	public function view($id = '', $status = 'PUB')
 	{
-		$Data 				= $this->db->get_where('procedures', ['id' => $id, 'company_id' => $this->company,  'status' => 'PUB'])->row();
+		$Data 				= $this->db->get_where('procedures', ['id' => $id, 'company_id' => $this->company,  'status' => $status])->row();
 		$users 				= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1'])->result();
 		$getForms			= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
 		$jabatan 			= $this->db->get('tbl_jabatan')->result();
@@ -196,6 +197,14 @@ class Procedures extends Admin_Controller
 				$Data['created_at'] = date('Y-m-d H:i:s');
 				$this->db->insert('procedures', $Data);
 				$pro_id = $this->db->order_by('id', 'DESC')->get_where('procedures')->row()->id;
+				$thisData = $this->db->get_where('procedures', ['company_id' => $this->company, 'name' => $Data['name']])->row();
+				$dataLog = [
+					'directory_id' 	=> $thisData->id,
+					'new_status' 	=> $thisData->status,
+					'doc_type' 		=> 'Procedure',
+					'note' 			=> 'New input data procedure',
+				];
+				$this->_update_history($dataLog);
 			}
 		}
 
@@ -213,10 +222,6 @@ class Procedures extends Admin_Controller
 				$this->db->insert('procedure_details', $Data_flow);
 			}
 		}
-
-		// if (isset($Data_forms) && $Data_forms) {
-		// 	$this->_save_upload();
-		// }
 
 		if ($this->db->trans_status() === FALSE) {
 			$this->db->trans_rollback();
@@ -457,8 +462,13 @@ class Procedures extends Admin_Controller
 					$this->db->update('dir_records', $data, ['id' => $id]);
 				}
 
-				$data['note'] = $note;
-				$this->_update_history($data);
+				$dataLog = [
+					'directory_id' 	=> $id,
+					'new_status' 	=> $data['status'],
+					'doc_type' 		=> 'Record',
+					'note'			=> 'Upload file'
+				];
+				$this->_update_history($dataLog);
 
 			else :
 				$error_msg = $this->upload->display_errors();
@@ -497,15 +507,9 @@ class Procedures extends Admin_Controller
 
 	private function _update_history($data)
 	{
-		$dataLog = [
-			'directory_id'  => $data['id'],
-			'status' 	 	=> $data['status'],
-			'note' 		    => $data['note'],
-			'updated_by'    => $this->auth->user_id(),
-			'updated_at'    => date('Y-m-d H:i:s'),
-		];
-
-		$this->db->insert('directory_log', $dataLog);
+		$data['updated_by']    = $this->auth->user_id();
+		$data['updated_at']    = date('Y-m-d H:i:s');
+		$this->db->insert('directory_log', $data);
 	}
 
 	function delete_procedure($id)
@@ -514,7 +518,7 @@ class Procedures extends Admin_Controller
 		if (($id)) {
 			$data['deleted_by'] = $this->auth->user_id();
 			$data['deleted_at'] = date('Y-m-d H:i:s');
-			$data['status'] = '0';
+			$data['status'] = 'DEL';
 			$this->db->update('procedures', $data, ['company_id' => $this->company, 'id' => $id]);
 		}
 
@@ -529,6 +533,78 @@ class Procedures extends Admin_Controller
 			$Return		= array(
 				'status'		=> 1,
 				'msg'			=> 'Data Procedure successfully delete..',
+			);
+		}
+		echo json_encode($Return);
+	}
+
+	function review($id)
+	{
+		$this->db->trans_begin();
+		if (($id)) {
+			$thisData = $this->db->get_where('procedures', ['id' => $id])->row();
+			$data['modified_by'] = $this->auth->user_id();
+			$data['modified_at'] = date('Y-m-d H:i:s');
+			$data['status'] = 'REV';
+			$this->db->update('procedures', $data, ['company_id' => $this->company, 'id' => $id]);
+			$dataLog = [
+				'directory_id' 			=> $id,
+				'old_status'	=> $thisData->status,
+				'new_status' 	=> $data['status'],
+				'note' 			=> 'Update data procedure',
+				'doc_type' 		=> 'Procedure',
+			];
+
+			$this->_update_history($dataLog);
+		}
+
+		if ($this->db->trans_status() === FALSE) {
+			$this->db->trans_rollback();
+			$Return		= array(
+				'status'		=> 0,
+				'msg'			=> 'Can\'t process this data. Please try again.',
+			);
+		} else {
+			$this->db->trans_commit();
+			$Return		= array(
+				'status'		=> 1,
+				'msg'			=> 'Data Procedure successfully processed for review..',
+			);
+		}
+		echo json_encode($Return);
+	}
+
+	function cancel_review($id)
+	{
+		$this->db->trans_begin();
+		if (($id)) {
+			$thisData = $this->db->get_where('procedures', ['id' => $id])->row();
+			$data['modified_by'] = $this->auth->user_id();
+			$data['modified_at'] = date('Y-m-d H:i:s');
+			$data['status'] = 'DFT';
+			$this->db->update('procedures', $data, ['company_id' => $this->company, 'id' => $id]);
+			$dataLog = [
+				'directory_id' 			=> $id,
+				'old_status' 	=> $thisData->status,
+				'new_status' 	=> $data['status'],
+				'doc_type' 		=> 'Procedure',
+				'note'			=> 'Cancel review data procdedure'
+			];
+
+			$this->_update_history($dataLog);
+		}
+
+		if ($this->db->trans_status() === FALSE) {
+			$this->db->trans_rollback();
+			$Return		= array(
+				'status'		=> 0,
+				'msg'			=> 'Can\'t cancle this data. Please try again.',
+			);
+		} else {
+			$this->db->trans_commit();
+			$Return		= array(
+				'status'		=> 1,
+				'msg'			=> 'Data Procedure successfully canceled for review..',
 			);
 		}
 		echo json_encode($Return);
@@ -714,118 +790,119 @@ class Procedures extends Admin_Controller
 	public function saveForm()
 	{
 		$data = $this->input->post('forms');
-
-		if ($_FILES['forms_image']) {
-			if (!is_dir("./directory/FORMS")) {
-				mkdir("./directory/FORMS", 0755, TRUE);
-				chmod("./directory/FORMS", 0755);  // octal; correct value of mode
-				chown("./directory/FORMS", 'www-data');
-			}
-			$config['upload_path'] 		= "./directory/FORMS"; //path folder
-			$config['allowed_types'] 	= 'pdf'; //type yang dapat diakses bisa anda sesuaikan
-			$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
-			// $config['file_name'] 		= $new_name;
+		if ($data) {
 			$id 						= (!$data['id']) ? uniqid(date('m')) : $data['id'];
+			$data['id']	    		= $id;
+			$data['name']	    	= $data['description'];
+			$data['company_id']		= $this->company;
+			$check 					= $this->db->get_where('dir_forms', ['id' => $id])->num_rows();
+			$note 					= isset($data['note']) ? $data['note'] : null;
+			$data['status']			= isset($data['status']) ? $data['status'] : 'OPN';
+			unset($data['note']);
+			unset($data['type']);
 
-
-			$this->upload->initialize($config);
-			if ($this->upload->do_upload('forms_image')) :
-				$file 		= $this->upload->data();
-				$file_name  = $file['file_name'];
-				$size  		= $file['file_size'];
-				$ext     	= $file['file_ext'];
-
-				$data['id']	    		= $id;
-				$data['name']	    	= $data['description'];
-				$data['file_name']		= $file_name;
-				$data['size']			= $size;
-				$data['ext']			= $ext;
-				$data['company_id']		= $this->company;
-				// $data['flag_type']		= 'FILE';
-				$dist 					= isset($data['distribute_id']) ? implode(",", $data['distribute_id']) : null;
-				$data['distribute_id']	= $dist;
-				$old_file 				= isset($data['old_file']) ? $data['old_file'] : null;
-				unset($data['old_file']);
-
-				if ($old_file != null) {
-					if (file_exists("./directory/FORMS/" . $old_file)) {
-						unlink("./directory/FORMS/" . $old_file);
-					}
+			if (isset($_FILES['forms_image'])) {
+				if (!is_dir("./directory/FORMS")) {
+					mkdir("./directory/FORMS", 0755, TRUE);
+					chmod("./directory/FORMS", 0755);  // octal; correct value of mode
+					chown("./directory/FORMS", 'www-data');
 				}
+				$config['upload_path'] 		= "./directory/FORMS"; //path folder
+				$config['allowed_types'] 	= 'pdf'; //type yang dapat diakses bisa anda sesuaikan
+				$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
+				// $config['file_name'] 		= $new_name;
 
-				$check = $this->db->get_where('dir_forms', ['id' => $id])->num_rows();
-				$note = isset($data['note']) ? $data['note'] : null;
-				$data['status']			= isset($data['status']) ? $data['status'] : 'OPN';
-				unset($data['note']);
-				unset($data['type']);
-				if (intval($check) == '0') {
-					$data['created_by']		= $this->auth->user_id();
-					$data['created_at']		= date('Y-m-d H:i:s');
-					$data['note']			= 'First Upload File';
-					$this->db->insert('dir_forms', $data);
-				} else {
-					$data['modified_by']	= $this->auth->user_id();
-					$data['modified_at']	= date('Y-m-d H:i:s');
-					$data['note']			= 'Re-upload File';
-					$this->db->update('dir_forms', $data, ['id' => $id]);
-				}
 
-				$data['note'] = $note;
-				$this->_update_history($data);
+				$this->upload->initialize($config);
+				if ($this->upload->do_upload('forms_image')) :
+					$file 					= $this->upload->data();
+					$data['size']  			= $file['file_size'];
+					$data['ext']     		= $file['file_ext'];
+					$data['file_name']  	= $file['file_name'];
+					// $data['flag_type']		= 'FILE';
+					// $dist 					= isset($data['distribute_id']) ? implode(",", $data['distribute_id']) : null;
+					// $data['distribute_id']	= $dist;
+					$old_file 				= isset($data['old_file']) ? $data['old_file'] : null;
+					unset($data['old_file']);
 
-				if (isset($data['distribute_id'])) {
-					foreach ($this->input->post('forms')['distribute_id'] as $key => $value) {
-						$cek = $this->db->where(['id_jabatan' => $value, 'id_file' => $data['id']])->get('distribusi')->row();
-						$arr_dist = [
-							'id_file' => $this->input->post('id'),
-							'id_jabatan' => $value,
-							'created_by' => $this->auth->user_id(),
-							'created_at' => date('Y-m-d H:i:s'),
-						];
-
-						if ($cek) {
-							$this->db->update('distribusi', $arr_dist, ['id' => $cek->id]);
-						} else if (!$cek) {
-							$this->db->insert('distribusi', $arr_dist);
-						} else {
-							$this->db->delete('distribusi', ['id' => $cek->id]);
+					if ($old_file != null) {
+						if (file_exists("./directory/FORMS/" . $old_file)) {
+							unlink("./directory/FORMS/" . $old_file);
 						}
-					}
-				};
+					};
 
-			else :
-				$error_msg = $this->upload->display_errors();
-				$this->db->trans_rollback();
-				$Return = [
-					'status' => 0,
-					'msg'	 => $error_msg
-				];
-				echo json_encode($Return);
-				return false;
-			endif;
-			if ($this->db->trans_status() === 'FALSE') {
-				$this->db->trans_rollback();
-				$Return = [
-					'status' => 0,
-					'msg'	 => 'File Form gagal diupload, silahkan coba lagi.'
-				];
-				echo json_encode($Return);
-				return false;
-			} else {
-				$this->db->trans_commit();
-				$Return = [
-					'status' => 1,
-					'msg'	 => 'File Form berhasil di upload. Terima kasih'
-				];
-				echo json_encode($Return);
+				else :
+					$error_msg = $this->upload->display_errors();
+					$this->db->trans_rollback();
+					$Return = [
+						'status' => 0,
+						'msg'	 => $error_msg
+					];
+					echo json_encode($Return);
+					return false;
+				endif;
+				if ($this->db->trans_status() === 'FALSE') {
+					$this->db->trans_rollback();
+					$Return = [
+						'status' => 0,
+						'msg'	 => 'File Form gagal diupload, silahkan coba lagi.'
+					];
+					echo json_encode($Return);
+					return false;
+				} else {
+					$this->db->trans_commit();
+					$Return = [
+						'status' => 1,
+						'msg'	 => 'File Form berhasil di upload. Terima kasih'
+					];
+					echo json_encode($Return);
+				}
 			}
-		} else {
+
+			if (intval($check) == '0') {
+				$data['created_by']		= $this->auth->user_id();
+				$data['created_at']		= date('Y-m-d H:i:s');
+				$data['note']			= 'First Upload File';
+				$this->db->insert('dir_forms', $data);
+			} else {
+				$data['modified_by']	= $this->auth->user_id();
+				$data['modified_at']	= date('Y-m-d H:i:s');
+				$data['note']			= 'Re-upload File';
+				$this->db->update('dir_forms', $data, ['id' => $id]);
+			}
+
+			$dataLog = [
+				'directory_id' 	=> $id,
+				'new_status' 	=> $data['status'],
+				'doc_type' 		=> 'Form',
+				'note'			=> 'Upload file'
+			];
+			$this->_update_history($dataLog);
+		}
+
+		if ($this->db->trans_status() === 'FALSE') {
+			$this->db->trans_rollback();
 			$Return = [
 				'status' => 0,
-				'msg'	 => 'No file or data to upload document..'
+				'msg'	 => 'File Form gagal diupload, silahkan coba lagi.'
 			];
-			echo json_encode($Return);
+		} else {
+			$this->db->trans_commit();
+			$Return = [
+				'status' => 1,
+				'msg'	 => 'File Form berhasil di upload. Terima kasih'
+			];
 		}
+
+		echo json_encode($Return);
+
+		// else {
+		// 	$Return = [
+		// 		'status' => 0,
+		// 		'msg'	 => 'No file or data to upload document..'
+		// 	];
+		// }
+
 	}
 
 	public function loadDataForm($procedure_id = null)
@@ -999,8 +1076,13 @@ class Procedures extends Admin_Controller
 					$this->db->update('dir_guides', $data, ['id' => $id]);
 				}
 
-				$data['note'] = $note;
-				$this->_update_history($data);
+				$dataLog = [
+					'directory_id' 	=> $id,
+					'new_status' 	=> $data['status'],
+					'doc_type' 		=> 'IK',
+					'note'			=> 'Upload file'
+				];
+				$this->_update_history($dataLog);
 
 				if (isset($data['distribute_id'])) {
 					foreach ($this->input->post('forms')['distribute_id'] as $key => $value) {
@@ -1265,10 +1347,10 @@ class Procedures extends Admin_Controller
 	/* PRINTOUT */
 	public function printOut($id = null)
 	{
-		$mpdf = new Mpdf();
-		$procedure = $this->db->get_where('procedures', ['id' => $id])->row();
+		$mpdf 				= new Mpdf();
+		$procedure 			= $this->db->get_where('procedures', ['id' => $id])->row();
 		$flowDetail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id])->result();
-		$getForms	= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
+		$getForms			= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
 		$users 				= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
 		$jabatan 			= $this->db->get('tbl_jabatan')->result();
 		$ArrUsr 			= $ArrJab = $ArrForms = [];

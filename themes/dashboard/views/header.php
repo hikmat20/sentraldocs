@@ -233,20 +233,15 @@
                     </button>
                   </li>
                   <li class="menu-item <?= (check_class('dashboard', TRUE)) ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
-                    <a href="<?= base_url('/dashboard'); ?>" class="menu-link bg-warning" style="border-radius: 14px 1px 14px 1px  ;">
+                    <a href="<?= base_url('/dashboard'); ?>" class="menu-link" style="border-radius: 14px 1px 14px 1px  ;">
                       <span class="menu-text text-white h5 my-0"><i class="fa fa-home mr-3 text-white"></i> Dashboard</span>
                     </a>
                   </li>
-
-                  <!-- <?php //if ($this->group_id == '2') : 
-                        ?>
-                    <li class="menu-item <?= (check_class('docs', TRUE)) ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
-                      <a href="<?= base_url('/docs'); ?>" class="menu-link bg-warning" style="border-radius: 14px 1px 14px 1px  ;">
-                        <span class="menu-text text-white h5 my-0"><i class="fa fa-file-alt mr-3 text-white"></i> Manage Docs</span>
-                      </a>
-                    </li>
-                  <?php //endif; 
-                  ?> -->
+                  <li class="menu-item <?= (check_class('monitoring', TRUE)) ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
+                    <a href="<?= base_url('/monitoring'); ?>" class="menu-link" style="border-radius: 14px 1px 14px 1px  ;">
+                      <span class="menu-text text-white h5 my-0"><i class="fa fa-tasks mr-3 text-white"></i> Monitoring</span>
+                    </a>
+                  </li>
                 </ul>
                 <!--end::Header Nav-->
               </div>

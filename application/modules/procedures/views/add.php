@@ -60,9 +60,7 @@
 															<label class="font-size-h5"><strong><span class="text-danger">*</span> Status</strong></label>
 															<div class="">
 																<select name="status" id="status" class="form-control select2">
-																	<option value=""></option>
-																	<option value="DFT">Draft</option>
-																	<option value="PUB">Publish</option>
+																	<option value="DFT" selected>Draft</option>
 																</select>
 															</div>
 														</div>
@@ -490,7 +488,7 @@
 
 				<!-- Modal -->
 				<div class="modal fade" id="modelId" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
+					<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
 								<h5 class="modal-title">Modal title</h5>
@@ -498,14 +496,12 @@
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
-							<div class="modal-body">
-								<div class="container-fluid" id="content_modal">
-								</div>
+							<div class="modal-body" id="content_modal">
 							</div>
-							<div class="modal-footer justify-content-between align-items-center">
+							<!-- <div class="modal-footer justify-content-between align-items-center">
 								<button type="submit" class="btn btn-primary save"><i class="fa fa-save"></i>Save</button>
 								<button type="button" class="btn btn-danger" onclick="$('#content_modal').html('')" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
-							</div>
+							</div> -->
 						</div>
 					</div>
 				</div>
@@ -555,6 +551,13 @@
 		});
 
 		$(document).on('click', '#add_flow', function() {
+			const proc_id = $(this).data('id')
+			const url = siteurl + active_controller + 'add_flow/' + proc_id
+			$('#content_modal').load(url)
+			$('#modelId').modal('show')
+		})
+
+		$(document).on('click', '#wadd_flow', function() {
 			let html = `
 			<div class="form-group">
 				<label class="">Nomor</label>
