@@ -116,26 +116,27 @@
 		</div>
 	</div>
 
-	<!-- Modal -->
-	<div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-		<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
-			<div class="modal-content" data-scroll="true" data-height="700">
-				<div class="modal-header">
-					<h5 class="modal-title">View Document</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body pt-1" id="data-file">
-					File not found
-				</div>
-				<div class="modal-footer py-2">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				</div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+		<div class="modal-content" data-scroll="true" data-height="700">
+			<div class="modal-header">
+				<h5 class="modal-title">View Document</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body pt-1" id="data-file">
+				File not found
+			</div>
+			<div class="modal-footer py-2">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>
 </div>
+
 <style>
 	.btn-action {
 		display: none;

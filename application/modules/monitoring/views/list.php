@@ -44,7 +44,21 @@
                     <?= $sts[$list->status] ?>
                   </td>
                   <td class="text-center">
-                    <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-pirmary btn-icon update-review btn-warning btn-xs shadow-sm"><i class="fa fa-cog"></i></button>
+                    <?php if ($list->status == 'APV') : ?>
+                      <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-info btn-icon approve btn-xs shadow-sm"><i class="fa fa-cog"></i></button>
+                    <?php endif; ?>
+                    <?php if ($list->status == 'REV') : ?>
+                      <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-warning btn-icon review btn-xs shadow-sm"><i class="fa fa-cog"></i></button>
+                    <?php endif; ?>
+                    <?php if ($list->status == 'COR') : ?>
+                      <!-- <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-danger btn-icon correction btn-xs shadow-sm"><i class="fa fa-cog"></i></button> -->
+                    <?php endif; ?>
+                    <?php if ($list->status == 'PUB') : ?>
+                      <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-success btn-icon view btn-xs shadow-sm"><i class="fa fa-eye"></i></button>
+                    <?php endif; ?>
+                    <?php if ($list->status == 'RVI') : ?>
+                      <!-- <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-danger btn-icon revision btn-xs shadow-sm"><i class="fa fa-cog"></i></button> -->
+                    <?php endif; ?>
                   </td>
                 </tr>
             <?php endforeach;
@@ -56,23 +70,42 @@
   </div>
 </div>
 
-<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-    <div class="modal-content" style="min-height: 650px;">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Review File</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <i aria-hidden="true" class="ki ki-close"></i>
-        </button>
-      </div>
-      <div class="modal-body pt-0" data-scroll="true" id="viewReviewData"></div>
-      <!-- <div class="modal-footer py-1">
-				<button type="button" class="btn btn-light-primary save-upload font-weight-bold">Save</button>
-				<button type="button" class="btn btn-light-warning font-weight-bold" data-dismiss="modal" onclick="setTimeout(function(){$('#viewData').html('')},1000)">Close</button>
-			</div> -->
+<div class="modal fade" id="Modal" data-backdrop="static" data-keyboard="true" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content" data-scroll="true" style="height:650px;">
+      <form class="form-horiontal" id="form-review">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+          <span type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <div class="fa fa-times"></div>
+          </span>
+        </div>
+        <div class="modal-body overflow-auto">
+          <div id="content-modal"></div>
+        </div>
+      </form>
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="Modal2" data-backdrop="static" data-keyboard="true" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content" data-scroll="true" style="height:650px;">
+      <form class="form-horiontal" id="form-revision">
+        <div class="modal-header">
+          <h5 class="modal-title">Modal title</h5>
+          <span type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <div class="fa fa-times"></div>
+          </span>
+        </div>
+        <div class="modal-body overflow-auto">
+          <div id="content-modal2"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 
 <style>
   p {
@@ -90,6 +123,14 @@
       lengthChange: false
     })
 
+    /* SELECT one */
+    $(document).on('change', '.status', function() {
+      if ($(this).is(':checked')) {
+        $('.status').prop('checked', false)
+        $(this).prop('checked', true)
+      }
+    })
+
     // #column3_search is a <input type="text"> element
     $('#search').on('paste input', function() {
       table
@@ -97,96 +138,283 @@
         .search(this.value)
         .draw();
     });
-  })
-  $(document).on('click', '.update-review', function() {
-    const id = $(this).data('id')
-    $('#reviewModal').modal('show')
-    $('#viewReviewData').load(siteurl + active_controller + 'load_form_review/' + id)
-  })
 
-  $(document).on('click', '#save-review', function() {
-    $('#invalid-action').addClass('d-none')
-    $('#note').removeClass('is-invalid')
+    $(document).on('click', '.review', function() {
+      const id = $(this).data('id')
+      const type = $(this).data('type')
+      $('#Modal').modal('show')
+      $('#content-modal').load(siteurl + active_controller + 'load_form_review/' + id + "/" + type)
+    })
 
-    const id = $('#id').val();
-    const status = $('input[name="status"]').is(':checked');
-    const note = $('#note').val();
-    const btn = $(this)
-    if (status == '' || status == null) {
-      $('#invalid-action').removeClass('d-none')
-      return false;
-    }
-    if ((note == '' && status == 'COR') || (note == null && status == 'COR')) {
-      // Swal.fire({
-      // 	title: "Error Message!",
-      // 	text: 'Empty User Prepared, please input User Prepared  first.....',
-      // 	icon: "warning"
-      // });
-      $('#note').addClass('is-invalid')
-      return false;
-    }
+    $(document).on('click', '.approve', function() {
+      const id = $(this).data('id')
+      const type = $(this).data('type')
+      $('#Modal').modal('show')
+      $('#content-modal').load(siteurl + active_controller + 'load_form_approval/' + id + "/" + type)
+    })
 
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You will not be able to process again this data!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, Process it!",
-      cancelButtonText: "No, cancel process!",
-    }).then((value) => {
-      if (value.isConfirmed) {
-        var formData = new FormData($('#form-review')[0]);
-        var baseurl = siteurl + active_controller + 'save_review';
-        $.ajax({
-          url: baseurl,
-          type: "POST",
-          data: formData,
-          processData: false,
-          contentType: false,
-          cache: false,
-          dataType: 'json',
-          beforeSend: function() {
-            btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...')
-          },
-          complete: function() {
-            btn.prop('disabled', false).html('<span class="fa fa-send" role="status" aria-hidden="true"></span> Submit Review')
-          },
-          success: function(data) {
-            if (data.status == 1) {
-              Swal.fire({
-                title: "Success!",
-                text: data.msg,
-                icon: "success",
-                timer: 1500,
-                showCancelButton: false,
-                showConfirmButton: false,
-                allowOutsideClick: false
-              }).then(() => {
-                location.reload()
-                $('#reviewModal').modal('hide')
-                // $('#viewReviewData').html('')
-              });
-            } else {
-              if (data.status == 0) {
-                Swal.fire({
-                  title: "Failed!",
-                  html: data.msg,
-                  icon: "warning",
-                  timer: 3000,
-                });
-              }
-            }
-          },
-          error: function() {
-            Swal.fire({
-              title: "Error Message !",
-              text: 'An Error Occured During Process. Please try again..',
-              icon: "warning",
-              timer: 3000,
-            });
-          }
-        });
+    $(document).on('click', '.correction', function() {
+      const id = $(this).data('id')
+      const type = $(this).data('type')
+      $('#Modal').modal('show')
+      $('#content-modal').load(siteurl + active_controller + 'load_form_correction/' + id + "/" + type)
+    })
+
+    $(document).on('click', '.revision', function() {
+      const id = $(this).data('id')
+      const type = $(this).data('type')
+      $('#Modal2').modal('show')
+      $('#content-modal2').load(siteurl + active_controller + 'load_form_revision/' + id + "/" + type)
+    })
+
+    $(document).on('click', '.view', function() {
+      const id = $(this).data('id')
+      const type = $(this).data('type')
+      $('#Modal').modal('show')
+      $('#content-modal').load(siteurl + active_controller + 'view/' + id + "/" + type)
+    })
+
+
+    $(document).on('click', '#save-review', function() {
+      $('#invalid-action').addClass('d-none')
+      $('#note').removeClass('is-invalid')
+
+      const id = $('#id').val();
+      const status = $('input[name="status"]').is(':checked');
+      const note = $('#note').val();
+      const btn = $(this)
+      if (status == '' || status == null) {
+        $('#invalid-action').removeClass('d-none')
+        return false;
       }
+      if ((note == '' && status == 'COR') || (note == null && status == 'COR')) {
+        $('#note').addClass('is-invalid')
+        return false;
+      }
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You will not be able to process again this data!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Process it!",
+        cancelButtonText: "No, cancel process!",
+      }).then((value) => {
+        if (value.isConfirmed) {
+          var formData = new FormData($('#form-review')[0]);
+          var baseurl = siteurl + active_controller + 'save_review';
+          $.ajax({
+            url: baseurl,
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            dataType: 'json',
+            beforeSend: function() {
+              btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...')
+            },
+            complete: function() {
+              btn.prop('disabled', false).html('<span class="fa fa-send" role="status" aria-hidden="true"></span> Submit Review')
+            },
+            success: function(data) {
+              if (data.status == 1) {
+                Swal.fire({
+                  title: "Success!",
+                  text: data.msg,
+                  icon: "success",
+                  timer: 1500,
+                  showCancelButton: false,
+                  showConfirmButton: false,
+                  allowOutsideClick: false
+                }).then(() => {
+                  location.reload()
+                  $('#Modal').modal('hide')
+                  // $('#content-modal').html('')
+                });
+              } else {
+                if (data.status == 0) {
+                  Swal.fire({
+                    title: "Failed!",
+                    html: data.msg,
+                    icon: "warning",
+                    timer: 3000,
+                  });
+                }
+              }
+            },
+            error: function() {
+              Swal.fire({
+                title: "Error Message !",
+                text: 'An Error Occured During Process. Please try again..',
+                icon: "warning",
+                timer: 3000,
+              });
+            }
+          });
+        }
+      });
     });
-  });
+
+    $(document).on('click', '#save-approval', function() {
+      $('#invalid-action').addClass('d-none')
+      $('#note').removeClass('is-invalid')
+
+      const id = $('#id').val();
+      const status = $('input[name="status"]').is(':checked');
+      const note = $('#note').val();
+      const btn = $(this)
+      if (status == '' || status == null) {
+        $('#invalid-action').removeClass('d-none')
+        return false;
+      }
+      if ((note == '' && status == 'COR') || (note == null && status == 'COR')) {
+        $('#note').addClass('is-invalid')
+        return false;
+      }
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You will not be able to process again this data!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Process it!",
+        cancelButtonText: "No, cancel process!",
+      }).then((value) => {
+        if (value.isConfirmed) {
+          var formData = new FormData($('#form-review')[0]);
+          var baseurl = siteurl + active_controller + 'save_approval';
+          $.ajax({
+            url: baseurl,
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            dataType: 'json',
+            beforeSend: function() {
+              btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...')
+            },
+            complete: function() {
+              btn.prop('disabled', false).html('<span class="fa fa-send" role="status" aria-hidden="true"></span> Submit Review')
+            },
+            success: function(data) {
+              if (data.status == 1) {
+                Swal.fire({
+                  title: "Success!",
+                  text: data.msg,
+                  icon: "success",
+                  timer: 1500,
+                  showCancelButton: false,
+                  showConfirmButton: false,
+                  allowOutsideClick: false
+                }).then(() => {
+                  location.reload()
+                  $('#Modal').modal('hide')
+                  // $('#content-modal').html('')
+                });
+              } else {
+                if (data.status == 0) {
+                  Swal.fire({
+                    title: "Failed!",
+                    html: data.msg,
+                    icon: "warning",
+                    timer: 3000,
+                  });
+                }
+              }
+            },
+            error: function() {
+              Swal.fire({
+                title: "Error Message !",
+                text: 'An Error Occured During Process. Please try again..',
+                icon: "warning",
+                timer: 3000,
+              });
+            }
+          });
+        }
+      });
+    });
+
+    $(document).on('click', '.save-revision', function() {
+      $('#invalid-action').addClass('d-none')
+      $('#note').removeClass('is-invalid')
+
+      const id = $('#id').val();
+      const reason = $('#note').val();
+      const btn = $(this)
+      const btn_text = $(this).html()
+
+      if ((reason == '') || (reason == null)) {
+        $('#note').addClass('is-invalid')
+        return false;
+      }
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You will not be able to process again this data!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Process it!",
+        cancelButtonText: "No, cancel process!",
+      }).then((value) => {
+        if (value.isConfirmed) {
+          var formData = new FormData($('#form-revision')[0]);
+          var baseurl = siteurl + active_controller + 'save_revision';
+          $.ajax({
+            url: baseurl,
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            dataType: 'json',
+            beforeSend: function() {
+              btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...')
+            },
+            complete: function() {
+              console.log(btn);
+              btn.prop('disabled', false).html(btn_text)
+            },
+            success: function(data) {
+              if (data.status == 1) {
+                Swal.fire({
+                  title: "Success!",
+                  text: data.msg,
+                  icon: "success",
+                  timer: 1500,
+                  showCancelButton: false,
+                  showConfirmButton: false,
+                  allowOutsideClick: false
+                }).then(() => {
+                  location.reload()
+                  $('#Modal').modal('hide')
+                  // $('#content-modal').html('')
+                });
+              } else {
+                if (data.status == 0) {
+                  Swal.fire({
+                    title: "Failed!",
+                    html: data.msg,
+                    icon: "warning",
+                    timer: 3000,
+                  });
+                }
+              }
+            },
+            error: function() {
+              Swal.fire({
+                title: "Error Message !",
+                text: 'An Error Occured During Process. Please try again..',
+                icon: "error",
+                timer: 3000,
+              });
+            }
+          });
+        }
+      });
+    });
+
+  })
 </script>

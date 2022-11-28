@@ -18,11 +18,11 @@
         </li>
     </ul>
 </div>
+
 <div class="tab-content mt-5">
     <div class="tab-pane fade show active" id="filetab" role="tabpanel" aria-labelledby="file-">
         <?php if ($type == 'procedures') : ?>
-            <iframe class="w-100" style="height: 450px;" src="<?= base_url("procedures/printOut/" . $file->id); ?>#toolbar=0&navpanes=0" frameborder="1"></iframe>
-            <!-- <iframe class="w-100" style="height: 450px;" src="<?= base_url("directory/$/$file->file_name"); ?>?time=<?= time(); ?> #toolbar=0&navpanes=0" frameborder="1"></iframe> -->
+            <iframe class="w-100" style="height: 350px;" src="<?= base_url("procedures/printOut/" . $file->id); ?>#toolbar=0&navpanes=0" frameborder="1"></iframe>
         <?php endif; ?>
         <hr>
         <div class="row">
@@ -34,13 +34,24 @@
                     <div class="mb-3">
                         <div class="checkbox-inline">
                             <label class="status checkbox checkbox-outline checkbox-outline-2x checkbox-primary">
-                                <input type="checkbox" id="status" name="status" value="PUB" />
+                                <input type="checkbox" class="status" name="status" value="PUB" />
                                 <span></span>
-                                I Aggree, file ready to publish.
+                                <strong>Publish Document</strong>
                             </label>
-                            <p class="pl-8 text-dark-50"><small>Dengan persetujuan ini menyatakan bahwa file yang sudah di approve otomatis akan di publish</small></p>
                             <span class="pl-8 invalid-feedback text-danger">Ceklist terlebuh dahulu.</span>
                         </div>
+                        <span class="pl-8">I Aggree, file ready to publish.</span>
+                    </div>
+                    <div class="mb-3">
+                        <div class="checkbox-inline">
+                            <label class="status checkbox checkbox-outline checkbox-outline-2x checkbox-danger">
+                                <input type="checkbox" class="status" name="status" value="COR" />
+                                <span></span>
+                                <strong>Correction Document</strong>
+                            </label>
+                            <span class="pl-8 invalid-feedback text-danger">Ceklist terlebuh dahulu.</span>
+                        </div>
+                        <span class="pl-8">This document still needs to be corrected.</span>
                     </div>
                     <div class="form-group row">
                         <textarea name="note" id="note" class="form-control" placeholder="Reason"></textarea>
@@ -59,30 +70,15 @@
                 <label for="">Tracking File</label>
                 <div class="timeline timeline-5">
                     <div class="timeline-items">
-                        <!-- <div class="timeline-item">
-                            <div class="timeline-media bg-light-primary">
-                                <i class="fa fa-upload text-success"></i>
-                            </div>
-                            <div class="timeline-desc timeline-desc-light-primary">
-                                <span class="font-weight-bolder text-primary"> <?= date('Y-m-d'); ?> 09:30 AM</span>
-                                <span class="label label-pill label-inline label-light-danger">Upload File</span>
-                                <p class="font-weight-normal text-dark-50 pb-2">
-                                    To start a blog, think of a topic about and first brainstorm ways to write details
-                                </p>
-                            </div>
-                        </div> -->
                         <?php if (isset($history)) :
-
-
                             foreach ($history as $his) : ?>
                                 <div class="timeline-item">
-                                    <div class="timeline-media <?= ($his->status == 'OPN') ? 'bg-light-success' : 'bg-light-danger'; ?>">
-                                        <span class="<?= ($his->status == 'OPN') ? 'fa fa-upload text-success' : 'fa fa-circle text-danger'; ?>"></span>
+                                    <div class="timeline-media <?= ($his->new_status == 'OPN') ? 'bg-light-success' : 'bg-light-danger'; ?>">
+                                        <span class="<?= ($his->new_status == 'OPN') ? 'fa fa-upload text-success' : 'fa fa-circle text-danger'; ?>"></span>
                                     </div>
-
                                     <div class="timeline-desc timeline-desc-light-danger">
                                         <span class="font-weight-bolder text-danger"> <?= $his->updated_at; ?></span>
-                                        <?= $sts[$his->status]; ?>
+                                        <?= $sts[$his->new_status]; ?>
                                         <p class="font-weight-normal text-dark-50 pt-1">
                                             <strong for="">Processed by <?= $his->updated_by; ?></strong>
                                         </p>

@@ -18,27 +18,27 @@
         </li>
     </ul>
     <div class="tab-content mt-5">
-        <div class="tab-pane fade show active" id="file" role="tabpanel" aria-labelledby="file-tab">
-            <div style="width:92%;height:400px;background-color: red;position: absolute;opacity: 0;"></div>
+        <div class="tab-pane position-relative fade show active" id="file" role="tabpanel" aria-labelledby="file-tab">
+            <div style="width:92%;min-height:100%;background-color: red;position: absolute;opacity: 0;"></div>
 
-            <?php if ($file->ext == '.pdf' || $file->ext == '.PDF') :
-                if ($type == 'form') {
-                    $dir = 'FORMS';
-                } else if ($type == 'guide') {
-                    $dir = 'GUIDES';
-                } else if ($type == 'record') {
-                    $dir = 'RECORDS';
-                }
-            ?>
-                <?php if ($file->link_form) : ?>
-                    <iframe src="<?= $file->link_form ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
-                <?php else : ?>
-                    <?php if ($file->file_name) : ?>
+            <?php if ($file->link_form) : ?>
+                <iframe src="<?= $file->link_form ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
+            <?php else : ?>
+                <?php if ($file->file_name) : ?>
+                    <?php if ($file->ext == '.pdf' || $file->ext == '.PDF') :
+                        if ($type == 'form') {
+                            $dir = 'FORMS';
+                        } else if ($type == 'guide') {
+                            $dir = 'GUIDES';
+                        } else if ($type == 'record') {
+                            $dir = 'RECORDS';
+                        }
+                    ?>
                         <iframe src="<?= base_url("directory/$dir/$file->file_name"); ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
+                    <?php else : ?>
+                        <iframe src="https://docs.google.com/gview?embedded=true&url=<?= base_url("directory/$dir/$file->file_name"); ?>&rm=minimal#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
                     <?php endif; ?>
                 <?php endif; ?>
-            <?php else : ?>
-                <iframe src="https://docs.google.com/gview?embedded=true&url=<?= base_url("directory/$dir/$file->file_name"); ?>&rm=minimal#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
             <?php endif; ?>
             <hr>
         </div>

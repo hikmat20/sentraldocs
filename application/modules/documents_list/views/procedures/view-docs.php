@@ -1,3 +1,4 @@
+<!-- DETAIL PROCEDURE -->
 <table class="table table-bordered rounded-lg mb-6">
 	<tr>
 		<th class="table-dark text-center">
@@ -37,36 +38,140 @@
 		</td>
 	</tr>
 </table>
+
+<!-- SIPOCOR -->
 <table class="table table-bordered mb-6">
 	<thead>
 		<tr class="table-secondary">
-			<th>
-				<h3>FLOW PROCEDURE</h3>
+			<th colspan="2">
+				<h3>SIPOCOR</h3>
 			</th>
 		</tr>
 	</thead>
 	<tbody>
-		<?php if ($docs->image_flow_1) : ?>
-			<tr>
-				<td>
-					<img src="<?= base_url("/image_flow/$docs->image_flow_1"); ?>" alt="image_flow_1" class="img-fluid">
-				</td>
-			</tr>
-		<?php endif; ?>
-		<?php if ($docs->image_flow_2) : ?>
-			<tr>
-				<td>
-					<img src="<?= base_url("/image_flow/$docs->image_flow_2"); ?>" alt="image_flow_2" class="img-fluid">
-				</td>
-			</tr>
-		<?php endif; ?>
-		<?php if ($docs->image_flow_3) : ?>
-			<tr>
-				<td>
-					<img src="<?= base_url("/image_flow/$docs->image_flow_3"); ?>" alt="image_flow_3" class="img-fluid">
-				</td>
-			</tr>
-		<?php endif; ?>
+		<tr>
+			<td width="50%">
+				<label for="Supplier" class="font-weight-bold font-size-"><strong>1. Supplier</strong></label>
+				<div class="">
+					<?= $docs->supplier; ?>
+				</div>
+			</td>
+			<td>
+				<label for="Input" class="font-weight-bold font-size-"><strong>2. Input</strong></label>
+				<div class="">
+					<?= $docs->input; ?>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label for="Proses" class="font-weight-bold font-size-"><strong>3. Proses</strong></label>
+				<div class="">
+					<?= $docs->process; ?>
+				</div>
+			</td>
+			<td>
+				<label for="Output" class="font-weight-bold font-size-"><strong>4. Output</strong></label>
+				<div class="">
+					<?= $docs->output; ?>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label for="Customer" class="font-weight-bold font-size-"><strong>5. Customer</strong></label>
+				<div class="">
+					<?= $docs->customer; ?>
+				</div>
+			</td>
+			<td>
+				<label for="Objective" class="font-weight-bold font-size-"><strong>6. Objective</strong></label>
+				<div class="">
+					<?= $docs->objective; ?>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<label for="Risk" class="font-weight-bold font-size-"><strong>7. Risk</strong></label>
+				<div class="">
+					<?= $docs->risk; ?>
+				</div>
+			</td>
+			<td>
+				<label for="mitigation" class="font-weight-bold font-size-"><strong>8. Mitigation</strong></label>
+				<div class="">
+					<?= $docs->mitigation; ?>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<!-- FLOW IMAGE -->
+<table class="table table-bordered mb-6">
+	<thead>
+		<tr class="table-secondary">
+			<th>
+				<h3>FLOW IMAGE</h3>
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>
+				<?php if ($docs->image_flow_1 || $docs->image_flow_2 || $docs->image_flow_3) : ?>
+					<div class="d-flex justify-content-start align-items-center">
+						<?php if ($docs->image_flow_1) : ?>
+							<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 200px;height:200px;border:1px solid #eaeaea">
+								<div class="dropzone-desc">
+									<?php if ($docs->image_flow_1) : ?>
+										<img src="<?= base_url("image_flow/$docs->image_flow_1"); ?>" alt="image_flow_1" class="img-fluid">
+									<?php endif; ?>
+								</div>
+								<?php if ($docs->image_flow_1) : ?>
+									<div class="middle d-flex justify-content-center align-items-center">
+										<button type="button" class="btn btn-sm mr-1 btn-icon btn-default view-image rounded-circle"><i class="fa fa-search"></i></button>
+									</div>
+								<?php endif; ?>
+							</div>
+						<?php endif; ?>
+
+						<?php if ($docs->image_flow_2) : ?>
+							<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 200px;height:200px;border:1px solid #eaeaea">
+								<div class="dropzone-desc">
+									<?php if ($docs->image_flow_2) : ?>
+										<img src="<?= base_url("image_flow/$docs->image_flow_2"); ?>" alt="image_flow_2" class="img-fluid">
+									<?php endif; ?>
+								</div>
+								<?php if ($docs->image_flow_2) : ?>
+									<div class="middle d-flex justify-content-center align-items-center">
+										<button type="button" class="btn btn-sm mr-1 btn-icon btn-default view-image rounded-circle"><i class="fa fa-search"></i></button>
+									</div>
+								<?php endif; ?>
+							</div>
+						<?php endif; ?>
+
+						<?php if ($docs->image_flow_3) : ?>
+							<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 200px;height:200px;border:1px solid #eaeaea">
+								<div class="dropzone-desc">
+									<?php if ($docs->image_flow_3) : ?>
+										<img src="<?= base_url("image_flow/$docs->image_flow_3"); ?>" alt="image_flow_3" class="img-fluid">
+									<?php endif; ?>
+								</div>
+								<?php if ($docs->image_flow_3) : ?>
+									<div class="middle d-flex justify-content-center align-items-center">
+										<button type="button" class="btn btn-sm mr-1 btn-icon btn-default view-image rounded-circle"><i class="fa fa-search"></i></button>
+									</div>
+								<?php endif; ?>
+							</div>
+						<?php endif; ?>
+					</div>
+				<?php else : ?>
+					<span class="text-center">~ Not available data ~</span>
+				<?php endif; ?>
+			</td>
+		</tr>
 	</tbody>
 </table>
 

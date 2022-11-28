@@ -27,7 +27,6 @@
             <div class="col-md-8">
                 <form id="form-review">
                     <input type="hidden" name="id" id="id" value="<?= $file->id; ?>">
-                    <input type="hidden" name="parent_id" id="parent_id" value="<?= $file->parent_id; ?>">
                     <div class="form-group row">
                         <label class="col-form-label font-weight-bold">Description</label>
                         <input type="text" name="description" id="description" class="form-control required" value="<?= $file->name; ?>">
@@ -81,13 +80,13 @@
 
                             foreach ($history as $his) : ?>
                                 <div class="timeline-item">
-                                    <div class="timeline-media <?= ($his->status == 'OPN') ? 'bg-light-success' : 'bg-light-danger'; ?>">
-                                        <span class="<?= ($his->status == 'OPN') ? 'fa fa-upload text-success' : 'fa fa-circle text-danger'; ?>"></span>
+                                    <div class="timeline-media <?= ($his->new_status == 'OPN') ? 'bg-light-success' : 'bg-light-danger'; ?>">
+                                        <span class="<?= ($his->new_status == 'OPN') ? 'fa fa-upload text-success' : 'fa fa-circle text-danger'; ?>"></span>
                                     </div>
 
                                     <div class="timeline-desc timeline-desc-light-danger">
                                         <span class="font-weight-bolder text-danger"> <?= $his->updated_at; ?></span>
-                                        <?= $sts[$his->status]; ?>
+                                        <?= $sts[$his->new_status]; ?>
                                         <p class="font-weight-normal text-dark-50 pt-1">
                                             <strong for="">Processed by <?= $his->updated_by; ?></strong>
                                         </p>

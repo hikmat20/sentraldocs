@@ -20,43 +20,41 @@
 </div>
 <div class="tab-content mt-5">
     <div class="tab-pane fade show active" id="file" role="tabpanel" aria-labelledby="file-tab">
-        <iframe class="w-100" style="height: 450px;" src="<?= base_url("procedures/printOut/" . $file->id); ?>#toolbar=0&navpanes=0" frameborder="1"></iframe>
+        <iframe class="w-100" style="height: 350px;" src="<?= base_url("procedures/printOut/" . $file->id); ?>#toolbar=0&navpanes=0" frameborder="1"></iframe>
         <hr>
         <div class="row">
             <div class="col-md-2"></div>
             <div class="col-md-8">
-                <form id="form-review">
-                    <input type="hidden" name="id" id="id" value="<?= $file->id; ?>">
-                    <div class="form-group">
-                        <label class="col-form-label font-weight-bold">Action Review</label>
-                        <div class="div">
-                            <span id="invalid-action" class="d-none text-danger">Pilih salah satu Action</span>
-                        </div>
-                        <div class="col-form-label mb-3">
-                            <div class="radio-inline">
-                                <label class="radio radio-outline radio-outline-2x radio-primary">
-                                    <input type="radio" name="status" value="APV" />
-                                    <span></span>
-                                    I agree to this file, and continue to the next process
-                                </label>
-                            </div>
-                            <span class="form-text text-muted">Ready to Approval Process</span>
-                        </div>
-                        <div class="col-form-label mb-3">
-                            <div class="radio-inline">
-                                <label class="radio radio-outline radio-outline-2x radio-danger">
-                                    <input type="radio" name="status" value="COR" />
-                                    <span></span>
-                                    I don't agree, because some need corrections
-                                </label>
-                            </div>
-                            <span class="form-text text-muted">write down the reason</span>
-                            <textarea name="note" id="note" class="form-control" placeholder="Reason"></textarea>
-                            <span class="invalid-feedback text-danger">Harus di isi</span>
-                        </div>
-                        <button type="button" class="btn btn-light-primary" id="save-review"><i class="fab fa-telegram-plane"></i>Submit Review</button>
+                <input type="hidden" name="id" id="id" value="<?= $file->id; ?>">
+                <div class="form-group">
+                    <label class="col-form-label font-weight-bold">Action Review</label>
+                    <div class="div">
+                        <span id="invalid-action" class="d-none text-danger">Pilih salah satu Action</span>
                     </div>
-                </form>
+                    <div class="col-form-label mb-3">
+                        <div class="radio-inline">
+                            <label class="radio radio-outline radio-outline-2x radio-primary">
+                                <input type="radio" name="status" value="APV" />
+                                <span></span>
+                                I agree to this file, and continue to the next process
+                            </label>
+                        </div>
+                        <span class="form-text text-muted">Ready to Approval Process</span>
+                    </div>
+                    <div class="col-form-label mb-3">
+                        <div class="radio-inline">
+                            <label class="radio radio-outline radio-outline-2x radio-danger">
+                                <input type="radio" name="status" value="COR" />
+                                <span></span>
+                                I don't agree, because some need corrections
+                            </label>
+                        </div>
+                        <span class="form-text text-muted">write down the reason</span>
+                        <textarea name="note" id="note" class="form-control" placeholder="Reason"></textarea>
+                        <span class="invalid-feedback text-danger">Harus di isi</span>
+                    </div>
+                    <button type="button" class="btn btn-light-primary" id="save-review"><i class="fab fa-telegram-plane"></i>Submit Review</button>
+                </div>
             </div>
         </div>
     </div>

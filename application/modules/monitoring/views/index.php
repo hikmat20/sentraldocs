@@ -28,7 +28,7 @@
 				<div class="w-250px mr-5 mb-lg-5">
 					<div class="card border-0 shadow-lg rounded-lg " style="background-color: rgba(255, 255, 255,100);">
 						<div class="card-body p-2 text-center">
-							<h5 class="font-weight-bolder text-warning" style="font-size: 48px;"><?= $dtProcedureApv; ?></h5>
+							<h5 class="font-weight-bolder text-warning" style="font-size: 48px;"><?= $dtProcedureCor; ?></h5>
 							<p>Documents</p>
 						</div>
 						<h6 class="card-title text-center px-4">

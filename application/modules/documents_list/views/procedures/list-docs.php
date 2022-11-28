@@ -263,114 +263,274 @@
 			</div>
 		</div>
 	</div>
+</div>
 
-	<!-- Modal -->
-	<div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-		<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
-			<div class="modal-content" data-scroll="true" data-height="700">
-				<div class="modal-header">
-					<h5 class="modal-title">View Document</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body pt-1  py-5" id="data-file">
-					<h3 class="text-center">File not found</h3>
-				</div>
-				<div class="modal-footer py-2">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-				</div>
+<!-- Modal -->
+<div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+	<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+		<div class="modal-content" data-scroll="true" data-height="700">
+			<div class="modal-header">
+				<h5 class="modal-title">View Document</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body pt-1  py-5" id="data-file">
+				<h3 class="text-center">File not found</h3>
+			</div>
+			<div class="modal-footer py-2">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="modalViewForm" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-		<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
-			<div class="modal-content" data-scroll="true" data-height="700">
-				<div class="modal-header">
-					<h5 class="modal-title">View Document</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body pt-1  py-5" id="data-file">
-					<h3 class="text-center">File not found</h3>
-				</div>
-				<div class="modal-footer py-2">
-					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-				</div>
+</div>
+<div class="modal fade" id="modalViewForm" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+	<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+		<div class="modal-content" data-scroll="true" data-height="700">
+			<div class="modal-header">
+				<h5 class="modal-title">View Document</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body pt-1  py-5" id="data-file">
+				<h3 class="text-center">File not found</h3>
+			</div>
+			<div class="modal-footer py-2">
+				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>
+</div>
 
-	<script>
-		function show(id) {
-			$('#modelId').modal('show')
-			$('#data-file').load(siteurl + active_controller + 'show/' + id)
+<div id="modalViewImg" class="modal-img">
+	<div class="d-flex w-100 position-fixed justify-content-center" style="top:20px;z-index: inherit;">
+		<button type="button" class="btn btn-sm shadow-xs border w-60px btn-icon bg-white mr-2 no-zoom" title="Normal"><i class="fa fa-sync-alt"></i></button>
+		<button type="button" class="btn btn-sm shadow-xs border w-60px btn-icon bg-white mr-2 zoom-out" title="Zoom Out"><i class="fa fa-minus"></i></button>
+		<button type="button" class="btn btn-sm shadow-xs border w-60px btn-icon bg-white mr-2 zoom-in" title="Zoom In"><i class="fa fa-plus"></i></button>
+		<button type="button" class="btn btn-sm shadow-xs border w-60px btn-icon bg-white mr-2" id="close-modal"><i class="fa fa-times"></i></button>
+	</div>
+
+	<img class="modal-content-img" id="img01">
+</div>
+
+<style>
+	/* The Modal (background) */
+	.modal-img {
+		display: none;
+		/* Hidden by default */
+		position: fixed;
+		/* Stay in place */
+		z-index: 9999;
+		/* Sit on top */
+		padding-top: 100px;
+		/* Location of the box */
+		left: 0;
+		top: 0;
+		width: 100%;
+		/* Full width */
+		height: 100%;
+		/* Full height */
+		overflow: auto;
+		/* Enable scroll if needed */
+		background-color: rgb(0, 0, 0);
+		/* Fallback color */
+		background-color: rgba(0, 0, 0, 0.9);
+		/* Black w/ opacity */
+	}
+
+	/* Modal Content (image) */
+	.modal-img .modal-content-img {
+		margin: auto;
+		display: block;
+		width: 100%;
+		/* max-width: 700px; */
+	}
+
+	/* Caption of Modal Image */
+	#caption {
+		margin: auto;
+		display: block;
+		width: 80%;
+		max-width: 700px;
+		text-align: center;
+		color: #ccc;
+		padding: 10px 0;
+		height: 150px;
+	}
+
+	/* Add Animation */
+	.modal-img .modal-content-img,
+	#caption {
+		-webkit-animation-name: zoom;
+		-webkit-animation-duration: 0.6s;
+		animation-name: zoom;
+		animation-duration: 0.6s;
+	}
+
+	@-webkit-keyframes zoom {
+		from {
+			-webkit-transform: scale(0)
 		}
 
-		$(document).ready(function() {
-			$(document).on('click', '.view-procedure', function() {
-				const id = $(this).data('id') || ''
-				if (id) {
-					$('#modelId').modal('show')
-					$('#data-file').load(siteurl + active_controller + 'view_procedure/' + id)
-				}
-			})
-		})
-		$(document).ready(function() {
-			$(document).on('click', '.view-record', function() {
-				const id = $(this).data('id') || ''
-				if (id) {
-					$('#modelId').modal('show')
-					$('#data-file').load(siteurl + active_controller + 'view_record/' + id)
-				}
-			})
-		})
-		$(document).ready(function() {
-			$(document).on('click', '.view-form', function() {
-				const id = $(this).data('id') || ''
-				if (id) {
-					$('#modelId').modal('show')
-					$('#data-file').load(siteurl + active_controller + 'view_form/' + id)
-				}
-			})
-		})
-		$(document).ready(function() {
-			$(document).on('click', '.view-form-2', function() {
-				const id = $(this).data('id') || ''
-				if (id) {
-					$('#modalViewForm').modal('show')
-					$('#modalViewForm').find('#data-file').load(siteurl + active_controller + 'view_form/' + id)
-				}
-			})
-		})
+		to {
+			-webkit-transform: scale(1)
+		}
+	}
 
-		$(document).on('click', '#home', function() {
-			const procedure_id = $(this).data('procedure')
-			const url = siteurl + active_controller + 'getRecords/home/' + procedure_id;
-			$('#data-records').load(url)
-			// alert(url)
-		})
-		$(document).on('click', '#back', function() {
-			const id = $(this).data('id')
-			const procedure_id = $(this).data('procedure')
-			const url = siteurl + active_controller + 'getRecords/back/' + procedure_id + "/" + id
-			$('#data-records').load(url)
-			// alert(url)
-		})
-		$(document).on('click', '#refresh', function() {
+	@keyframes zoom {
+		from {
+			transform: scale(0)
+		}
+
+		to {
+			transform: scale(1)
+		}
+	}
+
+	/* The Close Button */
+	.close-modal {
+		position: absolute;
+		top: 15px;
+		right: 35px;
+		color: #f1f1f1;
+		font-size: 40px;
+		font-weight: bold;
+		transition: 0.3s;
+	}
+
+	.close-modal:hover,
+	.close-modal:focus {
+		color: #bbb;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	/* 100% Image Width on Smaller Screens */
+	@media only screen and (max-width: 700px) {
+		.modal-content-img {
+			width: 100%;
+		}
+	}
+</style>
+
+
+<script>
+	function show(id) {
+		$('#modelId').modal('show')
+		$('#data-file').load(siteurl + active_controller + 'show/' + id)
+	}
+
+	$(document).ready(function() {
+		$(document).on('click', '.view-procedure', function() {
 			const id = $(this).data('id') || ''
-			const procedure_id = $(this).data('procedure')
-			const url = siteurl + active_controller + 'getRecords/refresh/' + procedure_id + "/" + id
-			$('#data-records').load(url)
-			// alert(url)
+			if (id) {
+				$('#modelId').modal('show')
+				$('#data-file').load(siteurl + active_controller + 'view_procedure/' + id)
+			}
 		})
+	})
 
-		$(document).on('click', '.record-item', function() {
-			const id = $(this).data('id')
-			const procedure_id = $(this).data('procedure')
-			const url = siteurl + active_controller + 'getRecords/find/' + procedure_id + '/' + id
-			$('#data-records').load(url)
-			// alert(url)
+	$(document).ready(function() {
+		$(document).on('click', '.view-record', function() {
+			const id = $(this).data('id') || ''
+			if (id) {
+				$('#modelId').modal('show')
+				$('#data-file').load(siteurl + active_controller + 'view_record/' + id)
+			}
 		})
-	</script>
+	})
+
+	$(document).ready(function() {
+		$(document).on('click', '.view-form', function() {
+			const id = $(this).data('id') || ''
+			if (id) {
+				$('#modelId').modal('show')
+				$('#data-file').load(siteurl + active_controller + 'view_form/' + id)
+			}
+		})
+	})
+
+	$(document).ready(function() {
+		$(document).on('click', '.view-form-2', function() {
+			const id = $(this).data('id') || ''
+			if (id) {
+				$('#modalViewForm').modal('show')
+				$('#modalViewForm').find('#data-file').load(siteurl + active_controller + 'view_form/' + id)
+			}
+		})
+	})
+
+	$(document).on('click', '#home', function() {
+		const procedure_id = $(this).data('procedure')
+		const url = siteurl + active_controller + 'getRecords/home/' + procedure_id;
+		$('#data-records').load(url)
+		// alert(url)
+	})
+
+	$(document).on('click', '#back', function() {
+		const id = $(this).data('id')
+		const procedure_id = $(this).data('procedure')
+		const url = siteurl + active_controller + 'getRecords/back/' + procedure_id + "/" + id
+		$('#data-records').load(url)
+		// alert(url)
+	})
+
+	$(document).on('click', '#refresh', function() {
+		const id = $(this).data('id') || ''
+		const procedure_id = $(this).data('procedure')
+		const url = siteurl + active_controller + 'getRecords/refresh/' + procedure_id + "/" + id
+		$('#data-records').load(url)
+		// alert(url)
+	})
+
+	$(document).on('click', '.record-item', function() {
+		const id = $(this).data('id')
+		const procedure_id = $(this).data('procedure')
+		const url = siteurl + active_controller + 'getRecords/find/' + procedure_id + '/' + id
+		$('#data-records').load(url)
+		// alert(url)
+	})
+
+	/* PREVIEW IMAGE */
+	$(document).on('click', '.view-image', function() {
+		const urlImg = $(this).parents('.dropzone-wrapper').find('img').attr('src')
+		const img = "<img src='" + urlImg + "' class='img-'>"
+		// Get the modal
+		var modal = document.getElementById("modalViewImg");
+
+		// Get the image and insert it inside the modal - use its "alt" text as a caption
+		// var img = document.getElementById("myImg");
+		var modalImg = document.getElementById("img01");
+		// var captionText = document.getElementById("caption");
+		// img.onclick = function() {
+		modal.style.display = "block";
+		modalImg.src = urlImg;
+		// 	captionText.innerHTML = this.alt;
+		// }
+
+		// Get the <span> element that closes the modal
+		var span = document.getElementById("close-modal");
+
+		// When the user clicks on <span> (x), close the modal
+		span.onclick = function() {
+			modal.style.display = "none";
+		}
+	})
+
+	/* ZOOM-IN & ZOOM-OUT */
+
+	let n = 100
+	$(document).on('click', '.zoom-in', function() {
+		n = n + 5
+		$('.modal-img img.modal-content-img ').css('width', n + '%')
+	})
+	$(document).on('click', '.zoom-out', function() {
+		n = n - 5
+		$('.modal-img img.modal-content-img ').css('width', n + "%")
+	})
+	$(document).on('click', '.no-zoom', function() {
+		n = 100
+		$('.modal-img img.modal-content-img ').css('width', n + "%")
+	})
+</script>

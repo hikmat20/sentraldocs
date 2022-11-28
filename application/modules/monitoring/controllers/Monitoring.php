@@ -24,6 +24,7 @@ class Monitoring extends Admin_Controller
 			'COR' => '<span class="label label-light-danger label-pill label-inline mr-2">Need Correction</span>',
 			'APV' => '<span class="label label-light-info label-pill label-inline mr-2">Waiting Approval</span>',
 			'PUB' => '<span class="label label-light-success label-pill label-inline mr-2">Published</span>',
+			'RVI' => '<span class="label label-light-danger label-pill label-inline mr-2">Revision</span>',
 		];
 	}
 
@@ -53,7 +54,7 @@ class Monitoring extends Admin_Controller
 
 		$dtProc = $this->db->get_where('procedures', ['company_id' => $this->company, 'status !=' => 'DEL'])->result();
 
-		$rev = $cor = $pub = $apv = $rvi = 0;
+		$rev 	= $cor = $pub = $apv = $rvi = 0;
 		foreach ($dtProc as $value) {
 			if ($value->status == 'REV') {
 				$rev = $rev + 1;
@@ -96,6 +97,17 @@ class Monitoring extends Admin_Controller
 		$this->template->render('index');
 	}
 
+	public function view($id = null, $type = null)
+	{
+		$file 		= $this->db->get_where('procedures', ['id' => $id])->row();
+		$history	= $this->db->order_by('updated_at', 'ASC')->get_where('directory_log', ['directory_id' => $id])->result();
+		$this->template->set('sts', $this->sts);
+		$this->template->set('file', $file);
+		$this->template->set('type', $type);
+		$this->template->set('history', $history);
+		$this->template->render('view');
+	}
+
 
 	/* REVIEW PROCESS */
 
@@ -103,7 +115,6 @@ class Monitoring extends Admin_Controller
 	{
 		/* REVIEW */
 		$procedures 	= $this->db->get_where('view_procedures', ['company_id' => $this->company, 'status' => 'REV'])->result();
-
 		$users = $this->db->get_where('users')->result();
 
 		$ArrUsers = [];
@@ -187,16 +198,13 @@ class Monitoring extends Admin_Controller
 		$this->template->render('list');
 	}
 
-	public function load_form_correction($id)
+	public function load_form_correction($id = null, $type = null)
 	{
-		$file 		= $this->db->get_where('view_directories', ['id' => $id])->row();
-		$dir_name 	= $this->db->get_where('view_directories', ['id' => $file->parent_id])->row()->name;
+		$file 		= $this->db->get_where('procedures', ['id' => $id])->row();
 		$history	= $this->db->order_by('updated_at', 'ASC')->get_where('directory_log', ['directory_id' => $id])->result();
-		$jabatan 	= $this->db->get('tbl_jabatan')->result();
-		$this->template->set('dir_name', $dir_name);
-		$this->template->set('jabatan', $jabatan);
 		$this->template->set('sts', $this->sts);
 		$this->template->set('file', $file);
+		$this->template->set('type', $type);
 		$this->template->set('history', $history);
 		$this->template->render('correction/correction-form');
 	}
@@ -285,8 +293,6 @@ class Monitoring extends Admin_Controller
 	public function save_approval()
 	{
 		$data = $this->input->post();
-		$this->load->library(array('Mpdf'));
-
 		if ($data) {
 			$this->db->trans_begin();
 			$this->Monitor_model->approval($data);
@@ -318,7 +324,7 @@ class Monitoring extends Admin_Controller
 	public function publised()
 	{
 		/* CORRECTION */
-		$procedures 	= $this->db->get_where('view_procedures', ['company_id' => $this->company, 'status' => 'PUB'])->result();
+		$procedures 	= $this->db->order_by('modified_at', 'DESC')->get_where('view_procedures', ['company_id' => $this->company, 'status' => 'PUB'])->result();
 		$users = $this->db->get_where('users')->result();
 
 		$ArrUsers = [];
@@ -327,7 +333,7 @@ class Monitoring extends Admin_Controller
 		}
 
 		$this->template->set([
-			'title'			=> 'CORRECTION PROCEDURES',
+			'title'			=> 'PUBLISHED PROCEDURES',
 			'procedures' 	=> $procedures,
 			'sts'			=> $this->sts,
 			'ArrUsers'		=> $ArrUsers,
@@ -417,5 +423,70 @@ class Monitoring extends Admin_Controller
 		];
 
 		echo json_encode($collback);
+	}
+
+
+	/* PUBLISHED PROCESS */
+	public function revision()
+	{
+		/* CORRECTION */
+		$procedures 	= $this->db->get_where('view_procedures', [
+			'company_id' => $this->company, 'status' => 'RVI'
+		])->result();
+		$users = $this->db->get_where('users')->result();
+
+		$ArrUsers = [];
+		foreach ($users as $user) {
+			$ArrUsers[$user->id_user] = $user;
+		}
+
+		$this->template->set([
+			'title'			=> 'REVISION PROCEDURES',
+			'procedures' 	=> $procedures,
+			'sts'			=> $this->sts,
+			'ArrUsers'		=> $ArrUsers,
+		]);
+		$this->template->render('list');
+	}
+
+	public function load_form_revision($id, $type = null)
+	{
+		$file 		= $this->db->get_where('procedures', ['id' => $id])->row();
+		$history	= $this->db->order_by('updated_at', 'ASC')->get_where('directory_log', ['directory_id' => $id])->result();
+		$this->template->set('sts', $this->sts);
+		$this->template->set('file', $file);
+		$this->template->set('type', $type);
+		$this->template->set('history', $history);
+		$this->template->render('revision-form');
+	}
+
+	public function save_revision()
+	{
+		$data = $this->input->post();
+		if ($data) {
+			$this->db->trans_begin();
+			$data['status'] = 'RVI';
+			$this->Monitor_model->revision($data);
+			if ($this->db->trans_status() === FALSE) {
+				$this->db->trans_rollback();
+				$Return = [
+					'status' => 0,
+					'msg'	 => 'Failed revision document file. Please try again later.!'
+				];
+			} else {
+				$this->db->trans_commit();
+				$Return = [
+					'status' => 1,
+					'msg'	 => 'Success revision document file...'
+				];
+			}
+		} else {
+			$Return = [
+				'status' => 0,
+				'msg'	 => 'Data not valid.'
+			];
+		}
+
+		echo json_encode($Return);
 	}
 }

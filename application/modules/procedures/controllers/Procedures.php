@@ -48,6 +48,11 @@ class Procedures extends Admin_Controller
 		$dataApv		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null, 'status' => 'APV'])->result();
 		$dataPub		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null, 'status' => 'PUB'])->result();
 		$dataRvi		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null, 'status' => 'RVI'])->result();
+		$noteRevision	= $this->db->distinct('directory_id')->order_by('updated_at', 'DESC')->select('*')->get_where('directory_log', ['doc_type' => 'Procedure', 'new_status' => 'RVI'])->result();
+		$ArrReason = [];
+		foreach ($noteRevision as $rvi) {
+			$ArrReason[$rvi->directory_id] = $rvi;
+		};
 
 		$this->template->set('title', 'List of Procedures');
 		$this->template->set([
@@ -57,6 +62,7 @@ class Procedures extends Admin_Controller
 			'dataApv' 	=> $dataApv,
 			'dataPub' 	=> $dataPub,
 			'dataRvi' 	=> $dataRvi,
+			'ArrReason' => $ArrReason,
 		]);
 		$this->template->set('status', $this->sts);
 		$this->template->render('index');

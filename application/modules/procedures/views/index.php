@@ -139,6 +139,7 @@
 													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
 													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning" data-id="<?= $dt->id; ?>" title="Edit Data"><i class="fa fa-edit"></i></a>
 													<!-- <button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button> -->
+													<button type="button" class="btn btn-icon btn-primary review rounded-circle btn-sm" data-id="<?= $dt->id; ?>" title="Process to Review"><i class="fa fa-sync"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -187,24 +188,28 @@
 									<tr class="text-center">
 										<th class="py-2" width="40">No.</th>
 										<th class="py-2 text-left">Nama</th>
+										<th class="py-2 text-left">Reason</th>
 										<th class="py-2" width="150">Status</th>
 										<th class="py-2" width="150">Action</th>
 									</tr>
 								</thead>
 								<tbody>
-									<?php if (isset($dataARvi) && $dataARvi) :
+									<?php if (isset($dataRvi) && $dataRvi) :
 										$n = 0;
-										foreach ($dataARvi as $dt) : $n++; ?>
+										foreach ($dataRvi as $dt) : $n++; ?>
 											<tr class="text-center">
 												<td class="py-2"><?= $n; ?></td>
 												<td class="py-2 text-left">
 													<h5 class="my-0"><?= $dt->name; ?></h5>
 												</td>
+												<td class="py-2 text-left">
+													<?= $ArrReason[$dt->id]->note; ?>
+												</td>
 												<td class="py-2"><?= $status[$dt->status]; ?></td>
 												<td class="py-2">
 													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
 													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning" data-id="<?= $dt->id; ?>" title="Edit Data"><i class="fa fa-edit"></i></a>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button>
+													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-success review" data-id="<?= $dt->id; ?>" title="Process to Review"><i class="fa fa-sync-alt"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -566,7 +571,6 @@
 					} else {
 						Swal.fire('Warning', 'Data not valid. Please try again!', 'warning', 3000)
 					}
-
 				},
 				error: function() {
 					Swal.fire('Error!', 'Server timeout. Please try again!', 'error', 5000)
