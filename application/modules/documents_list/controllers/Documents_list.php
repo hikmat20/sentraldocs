@@ -78,6 +78,7 @@ class Documents_list extends Admin_Controller
 	public function show($id)
 	{
 		$file 		= $this->db->get_where('directory', ['id' => $id])->row();
+		// pre
 		$dir_name 	= $this->db->get_where('directory', ['id' => $file->parent_id])->row()->name;
 		$history	= $this->db->order_by('updated_at', 'ASC')->get_where('directory_log', ['directory_id' => $id])->result();
 		$this->template->set('dir_name', $dir_name);

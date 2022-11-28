@@ -30,7 +30,13 @@
                     $dir = 'RECORDS';
                 }
             ?>
-                <iframe src="<?= base_url("directory/$dir/$file->file_name"); ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
+                <?php if ($file->link_form) : ?>
+                    <iframe src="<?= $file->link_form ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
+                <?php else : ?>
+                    <?php if ($file->file_name) : ?>
+                        <iframe src="<?= base_url("directory/$dir/$file->file_name"); ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
+                    <?php endif; ?>
+                <?php endif; ?>
             <?php else : ?>
                 <iframe src="https://docs.google.com/gview?embedded=true&url=<?= base_url("directory/$dir/$file->file_name"); ?>&rm=minimal#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
             <?php endif; ?>
@@ -58,8 +64,8 @@
                             <?php if (isset($history)) :
                                 foreach ($history as $his) : ?>
                                     <div class="timeline-item">
-                                        <div class="timeline-media <?= ($his->status == 'OPN') ? 'bg-light-success' : 'bg-light-danger'; ?>">
-                                            <span class="<?= ($his->status == 'OPN') ? 'fa fa-upload text-success' : 'fa fa-circle text-danger'; ?>"></span>
+                                        <div class="timeline-media <?= ($his->new_status == 'OPN') ? 'bg-light-success' : 'bg-light-danger'; ?>">
+                                            <span class="<?= ($his->new_status == 'OPN') ? 'fa fa-upload text-success' : 'fa fa-circle text-danger'; ?>"></span>
                                         </div>
 
                                         <div class="timeline-desc timeline-desc-light-danger">
@@ -85,6 +91,6 @@
         </div>
     </div>
     <div class="justify-content-end d-flex">
-        <button type="button" class="btn btn-danger" onclick="setTimeout(function(){$('#content_modal').html('')},500)" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
+        <button type="button" class="btn btn-danger" onclick="$('#modelId').modal('hide');setTimeout(function(){$('#content_modal').html('')},500)"><i class="fa fa-times"></i>Close</button>
     </div>
 </div>

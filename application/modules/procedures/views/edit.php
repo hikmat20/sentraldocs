@@ -519,8 +519,8 @@
 														<td class="text-center"><?= $n; ?></td>
 														<td class=""><?= $form->name; ?></td>
 														<td class="text-center">
-															<a href="<?= $form->link_form; ?>">
-																<span class="badge bg-primary text-white">Link Form</span>
+															<a target="_blank" href="<?= $form->link_form; ?>">
+																<span class="badge bg-primary text-white"><?= $form->link_form; ?></span>
 															</a>
 														</td>
 														<td class="text-center">
@@ -995,6 +995,37 @@
 
 		})
 
+
+		/* change form type */
+		$(document).on('change', 'input[name="form_type"]:checked', function() {
+			const form_type = $(this).val()
+
+			if (form_type == 'upload_file') {
+				html = `
+					<div class="form-group row mb-0">
+						<label class="col-12 col-form-label"><span class="text-danger">*</span> Upload Document :</label>
+						<div class="col-12">
+							<input type="file" name="forms_image" id="image" class="form-control" placeholder="Upload File">
+							<span class="form-text text-muted">File type : PDF</span>
+							<span class="form-text text-danger invalid-feedback">Upload Document By harus di isi</span>
+						</div>
+					</div>`
+			} else if (form_type == 'online_form') {
+				html = `
+					<div class="form-group row">
+						<label class="col-12 col-form-label"><span class="text-danger">*</span> Link Google Form</label>
+						<div class="col-12">
+							<div class="input-group mb-3">
+								<span class="input-group-text rounded-right-0"><i class="fa fa-link"></i></span>
+								<input type="text" class="form-control" id="link-form" placeholder="Link Form" name="forms[link_form]" value="" autocomplete="off" />
+							</div>
+							<span class="form-text text-danger invalid-feedback">Link Form harus di isi</span>
+						</div>
+					</div>`
+			}
+			$('#type-form').html(html)
+		})
+
 		$(document).on('click', '.delete-form', function() {
 			const id = $(this).data('id') || null;
 			const btn = $(this)
@@ -1056,6 +1087,7 @@
 			$('#scope').removeClass('is-invalid')
 			$('#object').removeClass('is-invalid')
 			$('#performance').removeClass('is-invalid')
+			$('#link-form').removeClass('is-invalid')
 
 
 
@@ -1073,6 +1105,7 @@
 			const scope = $('#scope').val()
 			const object = $('#object').val()
 			const performance = $('#performance').val()
+			const link_form = $('#link-form').val()
 
 			if (group_procedure !== undefined && (group_procedure == '' || group_procedure == null)) {
 				Swal.fire({
@@ -1134,11 +1167,21 @@
 				// $('#approvalDocs').addClass('show');
 				return false;
 			}
-
 			if (description !== undefined && (description == '' || description == null)) {
 				$('#description').addClass('is-invalid')
 				return false;
 			}
+			if (link_form !== undefined && (link_form == '' || name == null)) {
+				Swal.fire({
+					title: "Error Message!",
+					text: 'Empty Link form, please input link form first.....',
+					icon: "warning"
+				});
+				$('#link-form').addClass('is-invalid')
+				// $('#approvalDocs').addClass('show');
+				return false;
+			}
+
 			if (prepared_by !== undefined && (prepared_by == '' || prepared_by == null)) {
 				Swal.fire({
 					title: "Error Message!",
@@ -1209,6 +1252,7 @@
 					btn.html('<i class="fa fa-save"></i>Save')
 				},
 				success: function(result) {
+					console.log(result);
 					if (result.status == 1) {
 						Swal.fire({
 							title: 'Success!',

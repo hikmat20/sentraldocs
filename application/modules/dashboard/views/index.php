@@ -56,7 +56,7 @@
 					</div>
 				</div>
 			</div>
-			<h1 class="text-white mb-5 mt-0 pt-0 font-weight-bolder bg-white-o-0 rounded-lg px-10 py-5">RECENT ACTIVITY</h1>
+			<!-- <h1 class="text-white mb-5 mt-0 pt-0 font-weight-bolder bg-white-o-0 rounded-lg px-10 py-5">RECENT ACTIVITY</h1>
 			<div class="container justify-content-center">
 				<div class="card">
 					<div class="card-body">
@@ -84,6 +84,6 @@
 						</table>
 					</div>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>

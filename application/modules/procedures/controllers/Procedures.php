@@ -791,7 +791,7 @@ class Procedures extends Admin_Controller
 	{
 		$data = $this->input->post('forms');
 		if ($data) {
-			$id 						= (!$data['id']) ? uniqid(date('m')) : $data['id'];
+			$id 					= (!$data['id']) ? uniqid(date('m')) : $data['id'];
 			$data['id']	    		= $id;
 			$data['name']	    	= $data['description'];
 			$data['company_id']		= $this->company;
@@ -811,7 +811,6 @@ class Procedures extends Admin_Controller
 				$config['allowed_types'] 	= 'pdf'; //type yang dapat diakses bisa anda sesuaikan
 				$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
 				// $config['file_name'] 		= $new_name;
-
 
 				$this->upload->initialize($config);
 				if ($this->upload->do_upload('forms_image')) :
@@ -836,27 +835,11 @@ class Procedures extends Admin_Controller
 					$this->db->trans_rollback();
 					$Return = [
 						'status' => 0,
-						'msg'	 => $error_msg
+						'msg'	 => $error_msg . ' File Form gagal diupload, silahkan coba lagi.'
 					];
 					echo json_encode($Return);
 					return false;
 				endif;
-				if ($this->db->trans_status() === 'FALSE') {
-					$this->db->trans_rollback();
-					$Return = [
-						'status' => 0,
-						'msg'	 => 'File Form gagal diupload, silahkan coba lagi.'
-					];
-					echo json_encode($Return);
-					return false;
-				} else {
-					$this->db->trans_commit();
-					$Return = [
-						'status' => 1,
-						'msg'	 => 'File Form berhasil di upload. Terima kasih'
-					];
-					echo json_encode($Return);
-				}
 			}
 
 			if (intval($check) == '0') {
@@ -877,6 +860,7 @@ class Procedures extends Admin_Controller
 				'doc_type' 		=> 'Form',
 				'note'			=> 'Upload file'
 			];
+
 			$this->_update_history($dataLog);
 		}
 
@@ -895,14 +879,6 @@ class Procedures extends Admin_Controller
 		}
 
 		echo json_encode($Return);
-
-		// else {
-		// 	$Return = [
-		// 		'status' => 0,
-		// 		'msg'	 => 'No file or data to upload document..'
-		// 	];
-		// }
-
 	}
 
 	public function loadDataForm($procedure_id = null)

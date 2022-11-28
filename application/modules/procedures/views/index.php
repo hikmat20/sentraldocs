@@ -236,7 +236,7 @@
 												<td class="py-2"><?= $status[$dt->status]; ?></td>
 												<td class="py-2">
 													<a href="<?= base_url($this->uri->segment(1) . '/printout/' . $dt->id); ?>" target="_blank" class="btn btn-sm btn-icon rounded-circle btn-light print" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="Print Data"><i class="fa fa-print"></i></a>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
+													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -276,8 +276,8 @@
 </div>
 
 <div class="modal fade" id="modalView" data-keyboard="false" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
-	<div class="modal-dialog modal-xl modal-dialog-centered">
-		<div class="modal-content">
+	<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+		<div class="modal-content" data-scroll="true" data-height="700">
 			<form class="form-horiontal" id="form-input">
 				<div class="modal-header">
 					<h5 class="modal-title" id="modal-view">View Procedure</h5>
@@ -429,6 +429,7 @@
 		}
 	}
 </style>
+
 <script>
 	$(document).ready(function() {
 		$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
