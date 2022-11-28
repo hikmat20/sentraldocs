@@ -9,7 +9,7 @@
 				</div>
 			</div> -->
 
-			<h1 class="text-white mb-5 mt-0 pt-0 font-weight-bolder bg-white-o-0 rounded-lg px-10 py-5">PUBLUSHED DOCUMENTS</h1>
+			<h1 class="text-white mb-5 mt-0 pt-0 font-weight-bolder bg-white-o-0 rounded-lg px-10 py-5">PUBLISHED DOCUMENTS</h1>
 			<div class="row justify-content-center">
 				<div class="col-md-10 mb-10">
 					<div class="row">
@@ -26,7 +26,7 @@
 							</div>
 						</div>
 
-						<div class="col-md-2 col-md-3 px-5">
+						<!-- <div class="col-md-2 col-md-3 px-5">
 							<div class="card border-0 shadow-lg " style="border-radius: 30px 5px 30px 5px;background-color: rgba(255, 255, 255, 0.50);">
 								<div class="card-body pb-1 d-flex justify-content-center align-items-center" style="min-height: 120px;">
 									<img src="<?= base_url('assets/images/dashboard/manual-peraturan.png'); ?>" alt="MANUAL DAN PERATURAN PERUSAHAAN" class="img-fluid" style="height: 150px;">
@@ -37,7 +37,7 @@
 									</a>
 								</h6>
 							</div>
-						</div>
+						</div> -->
 
 						<?php foreach ($Data as $dt) : ?>
 							<div class="col-md-3 px-5">

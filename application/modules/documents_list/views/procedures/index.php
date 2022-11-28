@@ -18,7 +18,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-9">
+				<div class="col-md-12">
 					<ul class="nav nav-warning nav-pills nav-bolder" id="myTab2" role="tablist">
 						<?php $n = 0;
 						foreach ($groups as $grp) : $n++; ?>
@@ -53,7 +53,7 @@
 												<thead>
 													<tr class="">
 														<th class="h5 border-2 border-bottom-secondary" width="15px">No.</th>
-														<th class="h5 border-2 border-bottom-secondary text-center">File Name</th>
+														<th class="h5 border-2 border-bottom-secondary">File Name</th>
 														<th class="h5 border-2 border-bottom-secondary text-center" width="50px"></th>
 													</tr>
 												</thead>
@@ -61,7 +61,7 @@
 													<?php $no = 0;
 													foreach ($ArrPro[$grp->id] as $list) : $no++; ?>
 														<!-- ondblclick="location.href = siteurl+active_controller+'procedures/<?= $list['id']; ?>'" -->
-														<tr class="cursor-pointer">
+														<tr class="cursor-pointer list-document">
 															<td class="h6 text-dark"><?= $no; ?></td>
 															<td class="h5 text-dark d-flex align-items-center my-0 py-2">
 																<i class="fa fa-folder text-warning fa-2x mr-2 pt-0"></i>
@@ -70,7 +70,9 @@
 																</strong>
 															</td>
 															<td class="h6 text-center">
-																<a href="<?= base_url($this->uri->segment(1) . '/procedures/' . $list['id']); ?>" class="btn btn-primary btn-icon btn-xs shadow-xs"><i class="fas fa-chevron-right"></i></a>
+																<div class="btn-action">
+																	<a href="<?= base_url($this->uri->segment(1) . '/procedures/' . $list['id']); ?>" class="btn btn-primary btn-icon btn-xs shadow-xs"><i class="fas fa-chevron-right"></i></a>
+																</div>
 															</td>
 														</tr>
 													<?php endforeach; ?>
@@ -89,7 +91,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-3">
+				<!-- <div class="col-md-3">
 					<div class="card mt-15 border-0 shadow-lg" style="background-color: srgba(255,255,255,0.85);">
 						<div class="card-body pt-5 px-5">
 							<div class="d-flex flex-center mb-3">
@@ -109,7 +111,7 @@
 
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</div>
 		</div>
 	</div>
@@ -133,10 +135,19 @@
 			</div>
 		</div>
 	</div>
+</div>
+<style>
+	.btn-action {
+		display: none;
+	}
 
-	<script>
-		function show(id) {
-			$('#modelId').modal('show')
-			$('#data-file').load(siteurl + active_controller + 'show/' + id)
-		}
-	</script>
+	.list-document:hover .btn-action {
+		display: block;
+	}
+</style>
+<script>
+	function show(id) {
+		$('#modelId').modal('show')
+		$('#data-file').load(siteurl + active_controller + 'show/' + id)
+	}
+</script>
