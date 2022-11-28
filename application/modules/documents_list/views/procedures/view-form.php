@@ -21,12 +21,20 @@
 <div class="tab-content mt-5">
 	<div class="tab-pane fade show active" id="file" role="tabpanel" aria-labelledby="file-tab">
 		<div style="width:92%;height:400px;background-color: red;position: absolute;opacity: 0;"></div>
-		<?php if ($form->ext == '.pdf' || $form->ext == '.PDF') : ?>
-			<iframe src="<?= base_url("directory/FORMS/$form->file_name"); ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
+
+		<?php if ($form->link_form) : ?>
+			<iframe src="<?= $form->link_form; ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
 		<?php else : ?>
-			<iframe src="https://docs.google.com/gview?embedded=true&url=<?= base_url("directory/FORMS/$form->file_name"); ?>&rm=minimal#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
+			<?php if ($form->ext == '.pdf' || $form->ext == '.PDF') : ?>
+				<iframe src="<?= base_url("directory/FORMS/$form->file_name"); ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
+			<?php else : ?>
+				<iframe src="https://docs.google.com/gview?embedded=true&url=<?= base_url("directory/FORMS/$form->file_name"); ?>&rm=minimal#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
+			<?php endif; ?>
 		<?php endif; ?>
 		<hr>
+		<?php if ($form->link_form) : ?>
+			<a href="<?= $form->link_form; ?>" target="_blank" class="btn btn-primary"><i class="fa fa-link"></i>Link to Form</a>
+		<?php endif; ?>
 	</div>
 	<div class="tab-pane fade" id="history" role="tabpanel" aria-labelledby="history-tab">
 		<div class="row overflow-auto">
@@ -50,13 +58,13 @@
 						<?php if (isset($history)) :
 							foreach ($history as $his) : ?>
 								<div class="timeline-item">
-									<div class="timeline-media <?= ($his->status == 'OPN') ? 'bg-light-success' : 'bg-light-danger'; ?>">
-										<span class="<?= ($his->status == 'OPN') ? 'fa fa-upload text-success' : 'fa fa-circle text-danger'; ?>"></span>
+									<div class="timeline-media <?= ($his->new_status == 'OPN') ? 'bg-light-success' : 'bg-light-danger'; ?>">
+										<span class="<?= ($his->new_status == 'OPN') ? 'fa fa-upload text-success' : 'fa fa-circle text-danger'; ?>"></span>
 									</div>
 
 									<div class="timeline-desc timeline-desc-light-danger">
 										<span class="font-weight-bolder text-danger"> <?= $his->updated_at; ?></span>
-										<?= $sts[$his->status]; ?>
+										<?= $sts[$his->new_status]; ?>
 										<p class="font-weight-normal text-dark-50 pt-1">
 											<strong for="">Processed by <?= isset($ArrUsr[$his->updated_by]) ? $ArrUsr[$his->updated_by]->full_name : '-'; ?></strong>
 										</p>
