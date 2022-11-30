@@ -22,7 +22,7 @@
     <div class="tab-pane fade show active" id="file" role="tabpanel" aria-labelledby="file-tab">
         <div style="width:92%;height:400px;background-color: red;position: absolute;opacity: 0;"></div>
 
-        <?php if ($file->link_form) : ?>
+        <?php if (isset($file->link_form)) : ?>
             <iframe src="<?= $file->link_form; ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
         <?php endif; ?>
         <?php if ($file->ext == '.pdf' || $file->ext == '.PDF') : ?>
