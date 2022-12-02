@@ -5,13 +5,11 @@
 				<div class="card-header">
 					<h2 class="mt-5"><i class="<?= $icon; ?> mr-2"></i><?= $title; ?></h2>
 					<div class="mt-4 float-right ">
-						<button type="button" class="btn btn-primary cross" title="Cross Pasal to Proses">Cross Pasal to Proses</button>
+						<!-- <button type="button" class="btn btn-primary cross" title="Cross Pasal to Proses">Cross Pasal to Proses</button> -->
 						<!-- <a href="<?= base_url($this->uri->segment(1) . '/pasal_to_process'); ?>" class="btn btn-primary" title="Cross Pasal to Proses">
 							Cross Pasal to Proses
 						</a> -->
-						<a href="<?= base_url($this->uri->segment(1) . '/process_to_pasal'); ?>" class="btn btn-success" title="Cross Proses to Pasal">
-							Cross Proses to Pasal
-						</a>
+						<a href="<?= base_url($this->uri->segment(1) . '/process_to_pasal'); ?>" class="btn btn-success" title="Cross Proses to Pasal">Cross Proses to Pasal</a>
 					</div>
 				</div>
 				<div class="card-body">
@@ -20,7 +18,7 @@
 							<tr class="text-center">
 								<th width="40">No.</th>
 								<th class="text-left">Nama</th>
-								<th width="100">Status</th>
+
 								<th width="150">Action</th>
 							</tr>
 						</thead>
@@ -31,11 +29,10 @@
 									<tr class="text-center">
 										<td><?= $n; ?></td>
 										<td class="text-left"><?= $dt->name; ?></td>
-										<td><?= $status[$dt->status]; ?></td>
 										<td>
+											<a href="<?= base_url($this->uri->segment(1) . '/print_cross/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-secondary print" data-id="<?= $dt->id; ?>" title="Print"><i class="fa fa-print"></i></a>
 											<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-											<a href="<?= base_url($this->uri->segment(1) . '/cross_pasal/' . $dt->requirement_id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $dt->id; ?>" title="Edit"><i class="fa fa-edit"></i></a>
-											<!-- <button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button> -->
+											<a href="<?= base_url($this->uri->segment(1) . '/cross_pasal/' . $dt->standard_id); ?>" class="btn btn-sm btn-icon rounded-circle btn-primary edit" data-id="<?= $dt->id; ?>" title="Edit"><i class="fa fa-random"></i></a>
 										</td>
 									</tr>
 							<?php endforeach;

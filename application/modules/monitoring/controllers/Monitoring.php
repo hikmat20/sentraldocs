@@ -30,7 +30,6 @@ class Monitoring extends Admin_Controller
 
 	public function index()
 	{
-
 		/* REVIEW */
 		// $dtProcedureRev = $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => 'REV'])->num_rows();
 		$dtGuidesRev 	= 0; // $this->db->get_where('dir_guides', ['company_id' => $this->company, 'status' => 'REV'])->num_rows();
@@ -115,6 +114,7 @@ class Monitoring extends Admin_Controller
 	{
 		/* REVIEW */
 		$procedures 	= $this->db->get_where('view_procedures', ['company_id' => $this->company, 'status' => 'REV'])->result();
+		$ArrPosts 		= $this->ArrPosts;
 		$users = $this->db->get_where('users')->result();
 
 		$ArrUsers = [];
@@ -127,6 +127,7 @@ class Monitoring extends Admin_Controller
 			'procedures' 	=> $procedures,
 			'sts'			=> $this->sts,
 			'ArrUsers'		=> $ArrUsers,
+			'ArrPosts'		=> $ArrPosts,
 		]);
 
 		$this->template->render('list');
@@ -146,7 +147,6 @@ class Monitoring extends Admin_Controller
 	public function save_review()
 	{
 		$data = $this->input->post();
-
 
 		if ($data) {
 			$this->db->trans_begin();
@@ -173,7 +173,6 @@ class Monitoring extends Admin_Controller
 
 		echo json_encode($Return);
 	}
-
 	/* END REVIEW PROCESS */
 
 
@@ -194,6 +193,7 @@ class Monitoring extends Admin_Controller
 			'procedures' 	=> $procedures,
 			'sts'			=> $this->sts,
 			'ArrUsers'		=> $ArrUsers,
+			'ArrPosts'		=> $this->ArrPosts,
 		]);
 		$this->template->render('list');
 	}
@@ -248,7 +248,6 @@ class Monitoring extends Admin_Controller
 
 		echo json_encode($Return);
 	}
-
 	/* END CORRECTION PROCESS */
 
 
@@ -269,6 +268,7 @@ class Monitoring extends Admin_Controller
 			'procedures' 	=> $procedures,
 			'sts'			=> $this->sts,
 			'ArrUsers'		=> $ArrUsers,
+			'ArrPosts'		=> $this->ArrPosts,
 		]);
 		$this->template->render('list');
 	}
@@ -280,7 +280,7 @@ class Monitoring extends Admin_Controller
 		}
 
 		$history	= $this->db->order_by('updated_at', 'ASC')->get_where('directory_log', ['directory_id' => $id])->result();
-		$jabatan 	= $this->db->get('tbl_jabatan')->result();
+		$jabatan 	= $this->db->get('positions')->result();
 
 		$this->template->set('jabatan', $jabatan);
 		$this->template->set('sts', $this->sts);
@@ -337,6 +337,7 @@ class Monitoring extends Admin_Controller
 			'procedures' 	=> $procedures,
 			'sts'			=> $this->sts,
 			'ArrUsers'		=> $ArrUsers,
+			'ArrPosts'		=> $this->ArrPosts,
 		]);
 		$this->template->render('list');
 	}
@@ -445,6 +446,7 @@ class Monitoring extends Admin_Controller
 			'procedures' 	=> $procedures,
 			'sts'			=> $this->sts,
 			'ArrUsers'		=> $ArrUsers,
+			'ArrPosts'		=> $this->ArrPosts,
 		]);
 		$this->template->render('list');
 	}

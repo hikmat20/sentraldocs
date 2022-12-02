@@ -14,6 +14,7 @@
 								<div class="mb-3 row flex-nowrap">
 									<label for="" class="col-3 col-form-label font-weight-bold">Copmany</label>
 									<div class="col-6">
+										<input type="hidden" name="id" value="<?= $Data->id; ?>">
 										<select name="company_id" id="status" class="form-control select2">
 											<option value=""></option>
 											<?php foreach ($Companies as $comp) : ?>
@@ -23,15 +24,15 @@
 									</div>
 								</div>
 								<div class="mb-3 row flex-nowrap">
-									<label for="" class="col-3 col-form-label font-weight-bold">Descriptions</label>
-									<div class="col-6">
-										<textarea name="descriptions" id="desc" class="form-control" rows="5" placeholder="Descriptions"><?= $Data->descriptions; ?></textarea>
-									</div>
-								</div>
-								<div class="mb-3 row flex-nowrap">
 									<label for="" class="col-3 col-form-label font-weight-bold">Start Date</label>
 									<div class="col-6">
 										<input type="date" name="sdate" id="sdate" class="form-control" value="<?= $Data->sdate; ?>">
+									</div>
+								</div>
+								<div class="mb-3 row flex-nowrap">
+									<label for="" class="col-3 col-form-label font-weight-bold">Descriptions</label>
+									<div class="col-6">
+										<textarea name="descriptions" id="desc" class="form-control" rows="5" placeholder="Descriptions"><?= $Data->descriptions; ?></textarea>
 									</div>
 								</div>
 							</div>
@@ -50,22 +51,26 @@
 									<thead class="text-center ">
 										<tr class="table-light">
 											<th class="py-2" width="50">No</th>
-											<th class="py-2 text-start">Standard Name</th>
+											<th class="py-2 text-start" width="350">Standard Name</th>
 											<th class="py-2">Descriptions</th>
-											<th class="py-2" width="100">Status</th>
 											<th class="py-2" width="80">Action</th>
 										</tr>
 									</thead>
 									<tbody>
-										<?php if ($datStd) : ?>
+										<?php if (isset($datStd)) : ?>
 											<?php $n = 0;
 											foreach ($datStd as $std) : $n++; ?>
 												<tr>
-													<td class="text-center"><?= $n; ?></td>
-													<td class=""><?= $std->name; ?></td>
-													<td class="text-center"><?= $std->descriptions; ?></td>
-													<td class="text-center"><?= $std->status; ?></td>
-													<td class="text-center"></td>
+													<td class="text-center"><?= $n; ?>
+													</td>
+													<td class="">
+														<span class="dataIdStd d-none"><?= $std->standard_id; ?></span>
+														<?= $std->name; ?>
+													</td>
+													<td class=""><?= $std->descriptions; ?></td>
+													<td class="text-center">
+														<button type="button" class="btn btn-danger btn-icon btn-xs del-row-std" data-id="<?= $std->id; ?>"><i class="fa fa-trash" aria-hidden="true"></i></button>
+													</td>
 												</tr>
 											<?php endforeach; ?>
 										<?php else : ?>
@@ -91,21 +96,19 @@
 									<thead class="text-center ">
 										<tr class="table-light">
 											<th class="py-2" width="50">No</th>
-											<th class="py-2">Regulations Name</th>
+											<th class="py-2" width="350">Regulations Name</th>
 											<th class="py-2">Descriptions</th>
-											<th class="py-2" width="100">Status</th>
 											<th class="py-2" width="80">Action</th>
 										</tr>
 									</thead>
 									<tbody>
-										<?php if ($dataReg) : ?>
+										<?php if (isset($dataReg)) : ?>
 											<?php $n = 0;
 											foreach ($dataReg as $reg) : $n++; ?>
 												<tr>
 													<td class="text-center"><?= $n; ?></td>
 													<td class=""><?= $reg->name; ?></td>
 													<td class="text-center"><?= $reg->descriptions; ?></td>
-													<td class="text-center"><?= $reg->status; ?></td>
 													<td class="text-center"></td>
 												</tr>
 											<?php endforeach; ?>
@@ -120,8 +123,10 @@
 							</div>
 						</div>
 					</div>
-					<div class="card-footer">
+					<div class="card-footer justify-content-between d-flex">
 						<button type="submit" class="btn btn-primary w-100px save"><i class="fa fa-save"></i>Save</button>
+						<a href="<?= base_url($this->uri->segment(1)); ?>" class="btn btn-danger"><i class="fa fa-reply"></i>Back</a>
+
 					</div>
 				</div>
 			</form>
@@ -166,7 +171,7 @@
 							timer: 2000
 						})
 						$('#modelId').modal('hide')
-						location.href = siteurl + active_controller + '/edit/' + result.id
+						location.href = siteurl + active_controller + 'edit/' + result.id
 						console.log(result);
 					} else {
 						Swal.fire({
@@ -198,21 +203,15 @@
 					<small class="fa fa-plus text-sm"></small>
 				</td>
 				<td>
-					<select class="form-control select2" name="standard[` + num + `][standard_id]">
+					<select class="form-control select2 selectStd" name="standards[` + num + `][standard_id]">
 						<option value=""></option>
-						<option value="1">test</option>
-						<option value="2">test2</option>
+						<?php foreach ($standards as $std) : ?>
+							<option value="<?= $std->id; ?>"><?= $std->name; ?></option>
+						<?php endforeach; ?>
 					</select>
 				</td>
 				<td>
-					<input name="standard[` + num + `][descriptions]" placeholder="Descriptions" type="text" class="form-control" maxLength="200">
-				</td>
-				<td>
-					<select class="form-control select2" name="standard[` + num + `][status]">
-						<option value=""></option>
-						<option value="1">test</option>
-						<option value="2">test2</option>
-					</select>
+					<input name="standards[` + num + `][descriptions]" placeholder="Descriptions" type="text" class="form-control" maxLength="200">
 				</td>
 				<td class="text-center" style="vertical-align:middle;">
 					<button type="button" class="btn btn-danger btn-icon btn-xs del-row-std"><i class="fa fa-trash" aria-hidden="true"></i></button>
@@ -230,10 +229,65 @@
 				allowClear: true,
 				width: '100%'
 			})
+			selectStd()
+		})
+
+		$(document).on('change', '.selectStd', function() {
+			selectStd()
 		})
 
 		$(document).on('click', '.del-row-std', function() {
-			$(this).parents('tr').remove()
+			const id = $(this).data('id')
+			const btn = $(this)
+
+			if (id != undefined && (id !== null || id !== '')) {
+				Swal.fire({
+					title: 'Confirmation!',
+					text: 'Are you sure want to be delete this data?',
+					icon: 'question',
+					showCancelButton: true,
+				}).then((value) => {
+					if (value.isConfirmed) {
+						$.ajax({
+							url: siteurl + active_controller + 'delete',
+							type: 'POST',
+							data: {
+								id
+							},
+							dataType: 'JSON',
+							beforeSend: function() {
+								btn.html('<span class="spinner-border spinner-border-sm"></span>').prop('disabled', true)
+							},
+							complete: function() {
+								btn.html('<span class="fa fa-trash"></span>').prop('disabled', false)
+							},
+							success: function(result) {
+								if (result.status == 1) {
+									Swal.fire('Success!', result.msg, 'success', 1500)
+									btn.parents('tr').addClass('table-danger')
+									btn.parents('tr').hide('slow')
+									setTimeout(() => {
+										btn.parents('tr').remove()
+									}, 500);
+								} else {
+									Swal.fire('Failed!', result.msg, 'warning', 1500)
+								}
+							},
+							error: function() {
+								Swal.fire('Error!', 'Server timeout. Error!', 'error', 1500)
+							}
+						})
+					}
+				})
+
+			} else {
+				btn.parents('tr').addClass('table-warning')
+				btn.parents('tr').hide('fast')
+				setTimeout(function() {
+					btn.parents('tr').remove()
+				}, 500);
+			}
+			selectStd()
 		})
 
 		$(document).on('click', '#add_regulation', function() {
@@ -245,21 +299,14 @@
 					<small class="fa fa-plus text-sm"></small>
 				</td>
 				<td>
-					<select class="form-control select2" name="regulation[` + num + `][regulation_id]">
+					<select class="form-control select2" name="regulations[` + num + `][regulation_id]">
 						<option value=""></option>
 						<option value="1">test</option>
 						<option value="2">test2</option>
 					</select>
 				</td>
 				<td>
-					<input name="regulation[` + num + `][descriptions]" placeholder="Descriptions" type="text" class="form-control" maxLength="200">
-				</td>
-				<td>
-					<select class="form-control select2" name="regulation[` + num + `][status]">
-						<option value=""></option>
-						<option value="1">test</option>
-						<option value="2">test2</option>
-					</select>
+					<input name="regulations[` + num + `][descriptions]" placeholder="Descriptions" type="text" class="form-control" maxLength="200">
 				</td>
 				<td class="text-center" style="vertical-align:middle;">
 					<button type="button" class="btn btn-danger btn-icon btn-xs del-row-reg"><i class="fa fa-trash" aria-hidden="true"></i></button>
@@ -284,4 +331,33 @@
 		})
 
 	})
+
+	function selectStd() {
+		const selectedValue = [];
+		$('.selectStd')
+			.find(':selected')
+			.filter(function(idx, el) {
+				return $(el).attr('value');
+			})
+			.each(function(idx, el) {
+				selectedValue.push($(el).attr('value'));
+			});
+		$('.dataIdStd').each(function(idx, el) {
+			selectedValue.push($(el).text());
+		});
+
+		$('.selectStd')
+			.find('option')
+			.each(function(idx, option) {
+				if (selectedValue.indexOf($(option).attr('value')) > -1) {
+					if ($(option).is(':checked')) {
+						return;
+					} else {
+						$(this).attr('disabled', true);
+					}
+				} else {
+					$(this).attr('disabled', false);
+				}
+			});
+	}
 </script>

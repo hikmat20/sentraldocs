@@ -60,13 +60,13 @@
 												<input type="hidden" name="detail[<?= $n; ?>][chapter]" value="<?= $dtl['id'] ?>">
 											</td>
 											<td class="">
-												<?= ($dtl['desc_indo']) ? limit_text(strip_tags($dtl['desc_indo']), 100) . ' <a href="#read" class="link view_pasal" data-id="' . $dtl['id'] . '">[read]</a>' : '-'; ?></td>
+												<?= ($dtl['desc_indo']) ? limit_text(strip_tags($dtl['desc_indo']), 100) . ' <a href="#read" class="link view_pasal" data-id="' . $dtl['id'] . '">[read]</a>' : ''; ?></td>
 											</td>
 											<td class="">
-												<?= ($dtl['desc_eng']) ? limit_text(strip_tags($dtl['desc_eng']), 100) . ' <a href="#read" class="link view_pasal" data-id="' . $dtl['id'] . '">[read]</a>' : '-'; ?></td>
+												<?= ($dtl['desc_eng']) ? limit_text(strip_tags($dtl['desc_eng']), 100) . ' <a href="#read" class="link view_pasal" data-id="' . $dtl['id'] . '">[read]</a>' : ''; ?></td>
 											</td>
 											<td class="text-center">
-												<?php if ($dtl['desc_indo'] && $dtl['desc_eng']) : ?>
+												<?php if ($dtl['desc_indo'] || $dtl['desc_eng']) : ?>
 													<select name="detail[<?= $n; ?>][procedure_id][]" multiple class="select2 form-control">
 														<option value=""></option>
 														<?php
@@ -77,7 +77,7 @@
 												<?php endif; ?>
 											</td>
 											<td>
-												<?php if ($dtl['desc_indo'] && $dtl['desc_eng']) : ?>
+												<?php if ($dtl['desc_indo'] || $dtl['desc_eng']) : ?>
 													<input type="text" class="form-control" placeholder="Dokumen lain" name="detail[<?= $n; ?>][other_docs]" value="<?= isset($other_docs[$dtl['id']]) ? ($other_docs[$dtl['id']]) : ''; ?>">
 												<?php endif; ?>
 											</td>

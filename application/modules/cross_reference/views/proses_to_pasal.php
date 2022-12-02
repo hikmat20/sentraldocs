@@ -21,6 +21,7 @@
 								</select>
 							</div>
 						</div>
+						<hr>
 						<div class="load_data"></div>
 
 					</form>

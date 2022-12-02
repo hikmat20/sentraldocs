@@ -22,7 +22,7 @@ class Cross_reference extends Admin_Controller
 			'Aktifitas/aktifitas_model'
 		));
 
-		$this->template->set('title', 'List Procedures');
+		$this->template->set('title', 'Cross References');
 		$this->template->set('icon', 'fa fa-cog');
 
 		date_default_timezone_set("Asia/Bangkok");
@@ -34,9 +34,7 @@ class Cross_reference extends Admin_Controller
 
 	public function index()
 	{
-		$data		= $this->db->get_where('view_cross_references', ['company_id' => $this->company, 'status' => '1', 'deleted_at' => null])->result();
-
-		$this->template->set('title', 'Cross Reference');
+		$data		= $this->db->get_where('view_cross_references', ['company_id' => $this->company])->result();
 		$this->template->set('data', $data);
 		$this->template->set('status', $this->status);
 		$this->template->render('index');
@@ -54,7 +52,7 @@ class Cross_reference extends Admin_Controller
 
 	public function process_to_pasal()
 	{
-		$data		= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => 'PUB', 'deleted_at' => null])->result();
+		$data		= $this->db->get_where('procedures', ['company_id' => $this->company, 'status !=' => 'DEL', 'deleted_at' => null])->result();
 
 		$this->template->set('title', 'Cross Reference (Pasal to Proses)');
 		$this->template->set('data', $data);
@@ -65,20 +63,33 @@ class Cross_reference extends Admin_Controller
 	public function select_procedure($id = '')
 	{
 		// $Data 			= $this->db->get_where('view_cross_reference_details', ['procedure_id like' => "%$id%"])->result();
+
 		$this->db->select('*')->from('view_cross_reference_details');
-		$this->db->group_start();
 		$this->db->where("find_in_set($id, procedure_id)");
-		// foreach ([$id] as $value) {
-		// }
-		$this->db->group_end();
+		$this->db->where("company_id", '1');
 		$Data = $this->db->get()->result();
 
-		$Data_detail 	= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result();
-		$procedure 		= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => 'PUB', 'deleted_by' => null])->result();
+		$ArrData = [];
+		foreach ($Data as $dt) {
+			$ArrData['id'][$dt->requirement_id] = $dt->requirement_id;
+			$ArrData['standards'][$dt->requirement_id][] = $dt;
+		}
+		$ArrStd = [];
+		foreach ($Data as $dtstd) {
+			$ArrStd[$dtstd->requirement_id] = $dtstd;
+		}
 
-		$this->template->set('Data', $Data);
-		$this->template->set('Data_detail', $Data_detail);
-		$this->template->set('procedure', $procedure);
+		$Data_detail 	= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result();
+		$procedure 		= $this->db->get_where('procedures', ['company_id' => $this->company, 'status !=' => 'DEL'])->result();
+
+		$this->template->set([
+			'Data' 			=> $Data,
+			'ArrData' 		=> $ArrData,
+			'ArrStd' 		=> $ArrStd,
+			'Data_detail' 	=> $Data_detail,
+			'procedure' 	=> $procedure,
+		]);
+
 		$this->template->render('load_proses');
 	}
 
@@ -101,10 +112,10 @@ class Cross_reference extends Admin_Controller
 
 		$DataStd 		= $this->db->get_where('requirements', ['id' => $id])->row();
 		$DetailStd 		= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result_array();
-		$Data 			= $this->db->get_where('view_cross_references', ['company_id' => $this->company, 'requirement_id' => $id])->row();
+		$crossData 			= $this->db->get_where('view_cross_references', ['company_id' => $this->company, 'standard_id' => $id])->row();
 
-		if ($Data) {
-			$Detail 		= $this->db->get_where('view_cross_reference_details', ['requirement_id' => $Data->requirement_id, 'reference_id' => $Data->id])->result_array();
+		if ($crossData) {
+			$Detail 		= $this->db->get_where('view_cross_reference_details', ['requirement_id' => $crossData->standard_id, 'reference_id' => $crossData->id])->result_array();
 			$combine = array_combine(array_column($Detail, 'chapter_id'), array_column($Detail, 'procedure_id'));
 			foreach ($combine as $k => $com) {
 				$ArrPro[$k] = explode(",", $com);
@@ -122,7 +133,7 @@ class Cross_reference extends Admin_Controller
 
 		$this->template->set([
 			'DataStd' 			=> $DataStd,
-			'Data' 				=> $Data,
+			'Data' 				=> $crossData,
 			'Detail' 			=> $Detail,
 			'list_procedure' 	=> $list_procedure,
 			'procedures' 		=> $procedures,
@@ -253,5 +264,45 @@ class Cross_reference extends Admin_Controller
 		}
 
 		echo json_encode($Return);
+	}
+
+	public function print_cross($id = null)
+	{
+		$mpdf = new Mpdf('', '', '', 5, 5, 5, 5);
+
+		$crossStd  		= $this->db->get_where('view_cross_references', ['id' => $id])->row();
+		$dtlCross 		= $this->db->get_where('view_cross_reference_details', ['reference_id' => $id])->result();
+
+		$procedures 	= $this->db->get_where('procedures', ['company_id' => $this->company, 'status !=' => 'DEL'])->result();
+		$lsProcedure 	= [];
+		$ArrDtlCross 	= [];
+		$DataStd 		= [];
+
+		foreach ($dtlCross as $dtl) {
+			$ArrDtlCross[] = explode(",", $dtl->procedure_id);
+		}
+
+
+		foreach ($ArrDtlCross as $arr) {
+			foreach ($arr as $value) {
+				$lsProcedure[$value] = $value;
+				$this->db->select('*')->from('view_cross_reference_details');
+				$this->db->where("find_in_set($value, procedure_id)");
+				$this->db->where("reference_id", $id);
+				$this->db->where("company_id", $this->company);
+				$DataStd[$value][] = $this->db->get()->row();
+			}
+		}
+
+		$Data = [
+			'crossStd' 		=> $crossStd,
+			'DataStd' 		=> $DataStd,
+			'procedures' 	=> $procedures,
+			'lsProcedure' 	=> $lsProcedure,
+		];
+
+		$data = $this->load->view('printout', $Data, TRUE);
+		$mpdf->WriteHTML($data);
+		$mpdf->Output();
 	}
 }
