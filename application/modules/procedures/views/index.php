@@ -331,7 +331,13 @@
 </div>
 
 <div id="modalViewImg" class="modal-img">
-	<span class="close-modal">&times;</span>
+	<div class="d-flex w-100 position-fixed justify-content-center" style="top:20px;z-index: inherit;">
+		<button type="button" class="btn btn-sm shadow-xs border w-60px btn-icon bg-white mr-2 no-zoom" title="Normal"><i class="fa fa-sync-alt"></i></button>
+		<button type="button" class="btn btn-sm shadow-xs border w-60px btn-icon bg-white mr-2 zoom-out" title="Zoom Out"><i class="fa fa-minus"></i></button>
+		<button type="button" class="btn btn-sm shadow-xs border w-60px btn-icon bg-white mr-2 zoom-in" title="Zoom In"><i class="fa fa-plus"></i></button>
+		<button type="button" class="btn btn-sm shadow-xs border w-60px btn-icon bg-white mr-2" id="close-modal"><i class="fa fa-times"></i></button>
+	</div>
+
 	<img class="modal-content-img" id="img01">
 </div>
 
@@ -783,12 +789,28 @@
 			// }
 
 			// Get the <span> element that closes the modal
-			var span = document.getElementsByClassName("close-modal")[0];
+			var btn = document.getElementById("close-modal");
 
 			// When the user clicks on <span> (x), close the modal
-			span.onclick = function() {
+			btn.onclick = function() {
 				modal.style.display = "none";
 			}
+		})
+
+		/* ZOOM-IN & ZOOM-OUT */
+
+		let n = 100
+		$(document).on('click', '.zoom-in', function() {
+			n = n + 5
+			$('.modal-img img.modal-content-img ').css('width', n + '%')
+		})
+		$(document).on('click', '.zoom-out', function() {
+			n = n - 5
+			$('.modal-img img.modal-content-img ').css('width', n + "%")
+		})
+		$(document).on('click', '.no-zoom', function() {
+			n = 100
+			$('.modal-img img.modal-content-img ').css('width', n + "%")
 		})
 
 	})

@@ -72,7 +72,7 @@ class Procedures extends Admin_Controller
 	{
 		$grProcess	= $this->db->get_where('group_procedure', ['status' => 'ACT'])->result();
 		$users 		= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
-		$jabatan 	= $this->db->get('tbl_jabatan')->result();
+		$jabatan 	= $this->db->get('positions')->result();
 
 		$this->template->set([
 			'grProcess' 	=> $grProcess,
@@ -96,7 +96,7 @@ class Procedures extends Admin_Controller
 			$getGuides	= $this->db->get_where('dir_guides', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
 			$getRecords	= $this->db->get_where('dir_records', ['procedure_id' => $id, 'status !=' => 'DEL', 'flag_type' => 'FOLDER', 'parent_id' => null])->result();
 			$users 		= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
-			$jabatan 	= $this->db->get('tbl_jabatan')->result();
+			$jabatan 	= $this->db->get('positions')->result();
 
 			// $this->template->set([
 			// 	'jabatan' 		=> $jabatan,
@@ -136,7 +136,7 @@ class Procedures extends Admin_Controller
 		$Data 				= $this->db->get_where('procedures', ['id' => $id, 'company_id' => $this->company,  'status' => $status])->row();
 		$users 				= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1'])->result();
 		$getForms			= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
-		$jabatan 			= $this->db->get('tbl_jabatan')->result();
+		$jabatan 			= $this->db->get('positions')->result();
 		$ArrUsr 			= $ArrJab = $ArrForms = [];
 
 		foreach ($getForms as $frm) {
@@ -730,7 +730,7 @@ class Procedures extends Admin_Controller
 	public function upload_form($id = null)
 	{
 		$users 		= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
-		$jabatan 	= $this->db->get('tbl_jabatan')->result();
+		$jabatan 	= $this->db->get('positions')->result();
 
 		$this->template->set([
 			'jabatan' 		=> $jabatan,
@@ -744,7 +744,7 @@ class Procedures extends Admin_Controller
 	public function edit_form($id = null)
 	{
 		$users 		= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
-		$jabatan 	= $this->db->get('tbl_jabatan')->result();
+		$jabatan 	= $this->db->get('positions')->result();
 		$data = $this->db->get_where('dir_forms', ['id' => $id])->row();
 
 
@@ -926,7 +926,7 @@ class Procedures extends Admin_Controller
 	public function upload_guide($id = null)
 	{
 		$users 		= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
-		$jabatan 	= $this->db->get('tbl_jabatan')->result();
+		$jabatan 	= $this->db->get('positions')->result();
 
 		$this->template->set([
 			'jabatan' 		=> $jabatan,
@@ -941,7 +941,7 @@ class Procedures extends Admin_Controller
 	{
 
 		$users 		= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
-		$jabatan 	= $this->db->get('tbl_jabatan')->result();
+		$jabatan 	= $this->db->get('positions')->result();
 		$data = $this->db->get_where('dir_guides', ['id' => $id])->row();
 
 
@@ -1145,7 +1145,7 @@ class Procedures extends Admin_Controller
 	public function upload_record($id = null, $parent_id = null)
 	{
 		$users 		= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
-		$jabatan 	= $this->db->get('tbl_jabatan')->result();
+		$jabatan 	= $this->db->get('positions')->result();
 
 		$this->template->set([
 			'jabatan' 		=> $jabatan,
@@ -1161,7 +1161,7 @@ class Procedures extends Admin_Controller
 	{
 
 		$users 		= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
-		$jabatan 	= $this->db->get('tbl_jabatan')->result();
+		$jabatan 	= $this->db->get('positions')->result();
 		$data = $this->db->get_where('dir_records', ['id' => $id])->row();
 
 
@@ -1334,7 +1334,7 @@ class Procedures extends Admin_Controller
 		$flowDetail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id])->result();
 		$getForms			= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
 		$users 				= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
-		$jabatan 			= $this->db->get('tbl_jabatan')->result();
+		$jabatan 			= $this->db->get('positions')->result();
 		$ArrUsr 			= $ArrJab = $ArrForms = [];
 
 		foreach ($getForms as $frm) {

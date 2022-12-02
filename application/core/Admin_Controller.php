@@ -25,9 +25,15 @@ class Admin_Controller extends Base_Controller
         $idt                = $this->identitas_model->find(1);
         $this->user_data    = $this->auth->userdata();
         $this->company      = $this->session->company->id_perusahaan;
-        $this->group_id      = $this->session->group->id_group;
+        $this->group_id     = $this->session->group->id_group;
         $this->form_validation->set_error_delimiters('', '');
 
+        $positions = $this->db->get_where('positions', ['assign_user' => $this->auth->user_id()])->result();
+        $ArrPos = [];
+        foreach ($positions as $pos) {
+            $ArrPos[] = $pos->id;
+        }
+        $this->ArrPosts         = $ArrPos;
         // Pagination config
         $this->pager = array(
             'full_tag_open'     => '<ul class="pagination pull-right" style="margin: 0 0 0;">',

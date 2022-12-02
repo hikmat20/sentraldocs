@@ -56,13 +56,13 @@
 
                             foreach ($history as $his) : ?>
                                 <div class="timeline-item">
-                                    <div class="timeline-media <?= ($his->status == 'OPN') ? 'bg-light-success' : 'bg-light-danger'; ?>">
-                                        <span class="<?= ($his->status == 'OPN') ? 'fa fa-upload text-success' : 'fa fa-circle text-danger'; ?>"></span>
+                                    <div class="timeline-media <?= ($his->new_status == 'OPN') ? 'bg-light-success' : 'bg-light-danger'; ?>">
+                                        <span class="<?= ($his->new_status == 'OPN') ? 'fa fa-upload text-success' : 'fa fa-circle text-danger'; ?>"></span>
                                     </div>
 
                                     <div class="timeline-desc timeline-desc-light-danger">
                                         <span class="font-weight-bolder text-danger"> <?= $his->updated_at; ?></span>
-                                        <?= $sts[$his->status]; ?>
+                                        <?= $sts[$his->new_status]; ?>
                                         <p class="font-weight-normal text-dark-50 pt-1">
                                             <strong for="">Processed by <?= $his->updated_by; ?></strong>
                                         </p>

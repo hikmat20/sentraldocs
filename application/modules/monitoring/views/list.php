@@ -20,8 +20,9 @@
             <tr class="table-light">
               <th width="40px">No</th>
               <th>File Name</th>
-              <th width="180px" class="text-center">Created Date</th>
-              <th width="150px" class="text-center">Created By</th>
+              <th class="text-center">Authority</th>
+              <!-- <th width="180px" class="text-center">Created Date</th> -->
+              <!-- <th width="150px" class="text-center">Created By</th> -->
               <th width="150px" class="text-center">Status</th>
               <th width="100px" class="text-center">Action</th>
             </tr>
@@ -38,26 +39,33 @@
                       <span class="h5 mb-0 pt-2"><?= $list->name; ?></span>
                     </div>
                   </td>
-                  <td class="text-center" style="vertical-align: middle;"><?= $list->created_at; ?></td>
-                  <td class="text-center" style="vertical-align: middle;" class="mt-1"><?= $ArrUsers[$list->created_by]->full_name; ?></td>
+                  <td class="text-center" style="vertical-align: middle;"><?= $list->reviewer_name; ?></td>
+                  <!-- <td class="text-center" style="vertical-align: middle;"><?= $list->created_at; ?></td> -->
+                  <!-- <td class="text-center" style="vertical-align: middle;" class="mt-1"><?= $ArrUsers[$list->created_by]->full_name; ?></td> -->
                   <td class="text-center" style="vertical-align: middle;" class="mt-1">
                     <?= $sts[$list->status] ?>
                   </td>
                   <td class="text-center">
-                    <?php if ($list->status == 'APV') : ?>
-                      <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-info btn-icon approve btn-xs shadow-sm"><i class="fa fa-cog"></i></button>
-                    <?php endif; ?>
-                    <?php if ($list->status == 'REV') : ?>
-                      <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-warning btn-icon review btn-xs shadow-sm"><i class="fa fa-cog"></i></button>
-                    <?php endif; ?>
-                    <?php if ($list->status == 'COR') : ?>
-                      <!-- <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-danger btn-icon correction btn-xs shadow-sm"><i class="fa fa-cog"></i></button> -->
-                    <?php endif; ?>
-                    <?php if ($list->status == 'PUB') : ?>
-                      <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-success btn-icon view btn-xs shadow-sm"><i class="fa fa-eye"></i></button>
-                    <?php endif; ?>
-                    <?php if ($list->status == 'RVI') : ?>
-                      <!-- <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-danger btn-icon revision btn-xs shadow-sm"><i class="fa fa-cog"></i></button> -->
+                    <?php if (isset($ArrPosts)) : ?>
+                      <?php if (in_array($list->reviewer_id, $ArrPosts)) : ?>
+                        <?php if ($list->status == 'REV') : ?>
+                          <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-warning btn-icon review btn-xs shadow-sm"><i class="fa fa-cog"></i></button>
+                        <?php endif; ?>
+                      <?php elseif (in_array($list->approval_id, $ArrPosts)) : ?>
+                        <?php if ($list->status == 'APV') : ?>
+                          <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-info btn-icon approve btn-xs shadow-sm"><i class="fa fa-cog"></i></button>
+                        <?php endif; ?>
+                      <?php elseif (in_array($list->prepared_by, $ArrPosts)) : ?>
+                        <?php if ($list->status == 'COR') : ?>
+                          <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-info btn-icon approve btn-xs shadow-sm"><i class="fa fa-cog"></i></button>
+                        <?php endif; ?>
+                      <?php endif; ?>
+                      <?php if ($list->status == 'PUB') : ?>
+                        <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-success btn-icon view btn-xs shadow-sm"><i class="fa fa-eye"></i></button>
+                      <?php else : ?>
+                        <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-success btn-icon view btn-xs shadow-sm"><i class="fa fa-eye"></i></button>
+                      <?php endif; ?>
+
                     <?php endif; ?>
                   </td>
                 </tr>
