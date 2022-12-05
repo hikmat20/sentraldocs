@@ -89,6 +89,7 @@ class Company_reference extends Admin_Controller
 	public function save()
 	{
 		$Data 		= $this->input->post();
+
 		if ($Data) {
 			$this->db->trans_begin();
 			$saved = $this->ReferenceModel->saveData($Data);

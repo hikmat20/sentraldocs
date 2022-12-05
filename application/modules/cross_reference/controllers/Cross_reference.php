@@ -234,6 +234,7 @@ class Cross_reference extends Admin_Controller
 						$this->db->update('cross_reference_details', $dtl, ['id' => $dtl['id']]);
 					} else if (($dtl['procedure_id']) || ($dtl['other_docs'])) {
 						unset($dtl['id']);
+						$dtl['company_id'] = $this->company;
 						$dtl['created_by'] = $this->auth->user_id();
 						$dtl['created_at'] = date('Y-m-d H:i:s');
 						$this->db->insert('cross_reference_details', $dtl);
