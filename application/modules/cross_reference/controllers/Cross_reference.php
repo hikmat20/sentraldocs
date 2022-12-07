@@ -295,8 +295,8 @@ class Cross_reference extends Admin_Controller
 					$this->db->where("find_in_set($value, procedure_id)");
 					$this->db->where("reference_id", $id);
 					$this->db->where("company_id", $this->company);
+					$DataStd[$value][] = $this->db->get()->row();
 				}
-				$DataStd[$value][] = $this->db->get()->row();
 			}
 		}
 		$Data = [
