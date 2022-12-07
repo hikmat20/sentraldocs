@@ -57,30 +57,32 @@
             </thead>
             <tbody>
                 <?php $n = 0;
-                foreach ($lsProcedure as $p) : $n++; ?>
-                    <tr>
-                        <td colspan="3">
-                            <strong><?= $n . ". " . $procedures[$p]->name; ?></strong>
-                        </td>
-                    </tr>
-                    <?php $i = 0;
-                    foreach ($DataStd[$p] as $dt) : $i++; ?>
+                foreach ($lsProcedure as $p) : $n++;
+                    if ($DataStd[$p]) : ?>
                         <tr>
-                            <td><?= $i; ?></td>
-                            <td><?= $dt->chapter; ?></td>
-                            <td>
-                                <?php if ($dt->desc_indo) : ?>
-                                    <strong>Indonesian:</strong>
-                                    <?= $dt->desc_indo; ?>
-                                <?php endif; ?>
-                                <br>
-                                <?php if ($dt->desc_eng) : ?>
-                                    <strong>English:</strong>
-                                    <?= $dt->desc_eng; ?>
-                                <?php endif; ?>
+                            <td colspan="3">
+                                <strong><?= $n . ". " . $procedures[$p]->name; ?></strong>
                             </td>
                         </tr>
-                    <?php endforeach; ?>
+                        <?php $i = 0;
+                        foreach ($DataStd[$p] as $dt) : $i++; ?>
+                            <tr>
+                                <td><?= $i; ?></td>
+                                <td><?= $dt->chapter; ?></td>
+                                <td>
+                                    <?php if ($dt->desc_indo) : ?>
+                                        <strong>Indonesian:</strong>
+                                        <?= $dt->desc_indo; ?>
+                                    <?php endif; ?>
+                                    <br>
+                                    <?php if ($dt->desc_eng) : ?>
+                                        <strong>English:</strong>
+                                        <?= $dt->desc_eng; ?>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                    <?php endforeach;
+                    endif; ?>
                 <?php endforeach; ?>
             </tbody>
         </table>
