@@ -97,7 +97,7 @@ class Cross_reference extends Admin_Controller
 	{
 		$Data 			= $this->db->get_where('requirements', ['company_id' => $this->company, 'id' => $id])->row();
 		$Data_detail 	= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result();
-		$procedure 		= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => 'PUB', 'deleted_by' => null])->result();
+		$procedure 		= $this->db->get_where('procedures', ['company_id' => $this->company, 'status !=' => 'DEL', 'deleted_by' => null])->result();
 
 		$this->template->set('Data', $Data);
 		$this->template->set('Data_detail', $Data_detail);
@@ -124,7 +124,7 @@ class Cross_reference extends Admin_Controller
 			$other_docs = array_combine(array_column($Detail, 'chapter_id'), array_column($Detail, 'other_docs'));
 		}
 
-		$procedures 	= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => 'PUB'])->result_array();
+		$procedures 	= $this->db->get_where('procedures', ['company_id' => $this->company, 'status !=' => 'DEL'])->result_array();
 
 		$list_procedure = [];
 		foreach ($procedures as $pro) {
@@ -163,7 +163,7 @@ class Cross_reference extends Admin_Controller
 		$Procedure		= array_combine(array_column($DetailCross, 'chapter_id'), array_column($DetailCross, 'procedure_id'));
 		$other_docs 	= array_combine(array_column($DetailCross, 'chapter_id'), array_column($DetailCross, 'other_docs'));
 
-		$procedures 	= $this->db->get_where('procedures', ['company_id' => $this->company, 'status' => 'PUB'])->result();
+		$procedures 	= $this->db->get_where('procedures', ['company_id' => $this->company, 'status !=' => 'DEL'])->result();
 		$list_procedure = [];
 		foreach ($procedures as $pro) {
 			$list_procedure[$pro->id] = "<span class='badge badge-success m-1'>" . $pro->name . "</span>";
