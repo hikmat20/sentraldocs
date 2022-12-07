@@ -227,14 +227,14 @@
       </tr>
       <tr>
         <td class="text-left" style="vertical-align: middle;" rowspan="2">Review By</td>
-        <td><?= ($procedure->reviewer_id) ? $ArrJab[$procedure->reviewer_id]->nm_jabatan : '-'; ?></td>
+        <td><?= ($procedure->reviewer_id) ? $ArrJab[$procedure->reviewer_id]->name : '-'; ?></td>
       </tr>
       <tr>
         <td><?= ($procedure->reviewed_by) ? $ArrUsr[$procedure->reviewed_by]->full_name : '-'; ?></td>
       </tr>
       <tr>
         <td class="text-left" style="vertical-align: middle;" rowspan="2">Approval By</td>
-        <td><?= ($procedure->approval_id) ? $ArrJab[$procedure->approval_id]->nm_jabatan : '-'; ?></td>
+        <td><?= ($procedure->approval_id) ? $ArrJab[$procedure->approval_id]->name : '-'; ?></td>
       </tr>
       <tr>
         <td><?= ($procedure->approved_by) ? $ArrUsr[$procedure->approved_by]->full_name : '-'; ?></td>
@@ -244,7 +244,7 @@
         <td>
           <?php $lsJab = explode(',', $procedure->distribute_id);
           foreach ($lsJab as $jab) {
-            echo ($jab) ? $ArrJab[$jab]->nm_jabatan . "<br>" : '-';
+            echo ($jab) ? $ArrJab[$jab]->name . "<br>" : '-';
           }
           ?>
         </td>

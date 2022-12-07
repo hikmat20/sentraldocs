@@ -337,7 +337,7 @@
 																<select name="reviewer_id" id="reviewer_id" class="form-control select2">;
 																	<option value=""></option>
 																	<?php foreach ($jabatan as $jbt) : ?>
-																		<option value="<?= $jbt->id; ?>"><?= $jbt->nm_jabatan; ?></option>
+																		<option value="<?= $jbt->id; ?>"><?= $jbt->name; ?></option>
 																	<?php endforeach; ?>
 																</select>
 																<span class="form-text text-danger invalid-feedback"><span class="text-danger">*</span> Review By harus di isi</span>
@@ -350,7 +350,7 @@
 																<select name="approval_id" id="approval_id" class="form-control select2">;
 																	<option value=""></option>
 																	<?php foreach ($jabatan as $jbt) : ?>
-																		<option value="<?= $jbt->id; ?>"><?= $jbt->nm_jabatan; ?></option>
+																		<option value="<?= $jbt->id; ?>"><?= $jbt->name; ?></option>
 																	<?php endforeach; ?>
 																</select>
 																<span class="form-text text-danger invalid-feedback">Approval By harus di isi</span>
@@ -363,7 +363,7 @@
 																<select name="distribute_id[]" multiple id="distribute_id" data-placeholder="Choose an options" class="form-control select2">;
 																	<option value=""></option>
 																	<?php foreach ($jabatan as $jbt) : ?>
-																		<option value="<?= $jbt->id; ?>"><?= $jbt->nm_jabatan; ?></option>
+																		<option value="<?= $jbt->id; ?>"><?= $jbt->name; ?></option>
 																	<?php endforeach; ?>
 																</select>
 																<span class="form-text text-danger invalid-feedback">Distribusi By harus di isi</span>
