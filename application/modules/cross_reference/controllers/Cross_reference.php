@@ -199,7 +199,6 @@ class Cross_reference extends Admin_Controller
 		if ($Data && $Detail) {
 			if ($Data) {
 				$Data['company_id'] 	 = $this->company;
-
 				if (($id)) {
 					$Data['modified_by'] = $this->auth->user_id();
 					$Data['modified_at'] = date('Y-m-d H:i:s');
@@ -227,19 +226,23 @@ class Cross_reference extends Admin_Controller
 						$dtl['procedure_id'] = $procedure;
 					}
 
-
+					echo '<pre>';
+					print_r($dtl);
+					echo '<pre>';
 					if ((isset($dtl['id']) && $dtl['id'])) {
 						$dtl['modified_by'] = $this->auth->user_id();
 						$dtl['modified_at'] = date('Y-m-d H:i:s');
-						$this->db->update('cross_reference_details', $dtl, ['id' => $dtl['id']]);
+						// $this->db->update('cross_reference_details', $dtl, ['id' => $dtl['id']]);
 					} else if (($dtl['procedure_id']) || ($dtl['other_docs'])) {
 						unset($dtl['id']);
 						$dtl['company_id'] = $this->company;
 						$dtl['created_by'] = $this->auth->user_id();
 						$dtl['created_at'] = date('Y-m-d H:i:s');
-						$this->db->insert('cross_reference_details', $dtl);
+						// $this->db->insert('cross_reference_details', $dtl);
 					}
 				endforeach;
+
+				exit;
 			}
 		} else {
 			$Return		= array(
@@ -287,14 +290,15 @@ class Cross_reference extends Admin_Controller
 		foreach ($ArrDtlCross as $arr) {
 			foreach ($arr as $value) {
 				$lsProcedure[$value] = $value;
-				$this->db->select('*')->from('view_cross_reference_details');
-				$this->db->where("find_in_set($value, procedure_id)");
-				$this->db->where("reference_id", $id);
-				$this->db->where("company_id", $this->company);
+				if ($value) {
+					$this->db->select('*')->from('view_cross_reference_details');
+					$this->db->where("find_in_set($value, procedure_id)");
+					$this->db->where("reference_id", $id);
+					$this->db->where("company_id", $this->company);
+				}
 				$DataStd[$value][] = $this->db->get()->row();
 			}
 		}
-
 		$Data = [
 			'crossStd' 		=> $crossStd,
 			'DataStd' 		=> $DataStd,
