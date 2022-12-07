@@ -158,7 +158,7 @@ class Cross_reference extends Admin_Controller
 	public function view($id = '')
 	{
 		$Data 			= $this->db->get_where('view_cross_references', ['company_id' => $this->company, 'id' => $id])->row();
-		$Detail 		= $this->db->get_where('requirement_details', ['requirement_id' => $Data->requirement_id])->result();
+		$Detail 		= $this->db->get_where('requirement_details', ['requirement_id' => $Data->standard_id])->result();
 		$DetailCross	= $this->db->get_where('view_cross_reference_details', ['reference_id' => $id])->result_array();
 		$Procedure		= array_combine(array_column($DetailCross, 'chapter_id'), array_column($DetailCross, 'procedure_id'));
 		$other_docs 	= array_combine(array_column($DetailCross, 'chapter_id'), array_column($DetailCross, 'other_docs'));
