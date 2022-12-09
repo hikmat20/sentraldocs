@@ -305,4 +305,33 @@ class Cross_reference extends Admin_Controller
 		$mpdf->WriteHTML($data);
 		$mpdf->Output();
 	}
+
+	public function print_cross_pasal_to_process($id = null)
+	{
+		$mpdf = new Mpdf('', '', '', 10, 10, 10, 10);
+
+		$Data 			= $this->db->get_where('view_cross_references', ['company_id' => $this->company, 'id' => $id])->row();
+		$Detail 		= $this->db->get_where('requirement_details', ['requirement_id' => $Data->standard_id])->result();
+		$DetailCross	= $this->db->get_where('view_cross_reference_details', ['reference_id' => $id])->result_array();
+		$Procedure		= array_combine(array_column($DetailCross, 'chapter_id'), array_column($DetailCross, 'procedure_id'));
+		$other_docs 	= array_combine(array_column($DetailCross, 'chapter_id'), array_column($DetailCross, 'other_docs'));
+
+		$procedures 	= $this->db->get_where('procedures', ['company_id' => $this->company, 'status !=' => 'DEL'])->result();
+		$list_procedure = [];
+		foreach ($procedures as $pro) {
+			$list_procedure[$pro->id] = "<span class='badge badge-success m-1'>" . $pro->name . "</span>";
+		}
+
+		$this->template->set([
+			'Data' 				=> $Data,
+			'Detail' 			=> $Detail,
+			'list_procedure' 	=> $list_procedure,
+			'other_docs' 		=> $other_docs,
+			'Procedure' 		=> $Procedure,
+		]);
+
+		$data = $this->template->load_view('printout', $Data, TRUE);
+		$mpdf->WriteHTML($data);
+		$mpdf->Output();
+	}
 }

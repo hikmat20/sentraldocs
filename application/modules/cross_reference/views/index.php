@@ -30,7 +30,7 @@
 										<td><?= $n; ?></td>
 										<td class="text-left"><?= $dt->name; ?></td>
 										<td>
-											<a href="<?= base_url($this->uri->segment(1) . '/print_cross/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-secondary print" data-id="<?= $dt->id; ?>" title="Print"><i class="fa fa-print"></i></a>
+											<a href="<?= base_url($this->uri->segment(1) . '/print_cross_pasal_to_process/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-secondary print" data-id="<?= $dt->id; ?>" title="Print"><i class="fa fa-print"></i></a>
 											<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
 											<a href="<?= base_url($this->uri->segment(1) . '/cross_pasal/' . $dt->standard_id); ?>" class="btn btn-sm btn-icon rounded-circle btn-primary edit" data-id="<?= $dt->id; ?>" title="Edit"><i class="fa fa-random"></i></a>
 										</td>

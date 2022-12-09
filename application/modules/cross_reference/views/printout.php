@@ -15,6 +15,7 @@
 
     table {
         border-collapse: collapse;
+        width: 100%;
     }
 
     table.bordered tr td,
@@ -28,13 +29,17 @@
     }
 
     table tr td {
-        padding: 10px;
+        padding: 5px;
+    }
+
+    .text-center {
+        text-align: center;
     }
 </style>
 
 <body>
 
-    <table>
+    <!-- <table>
         <tbody>
             <tr>
                 <td width="100"><strong>Company</strong></td>
@@ -42,53 +47,49 @@
                 <td>Company Name</td>
             </tr>
         </tbody>
-    </table>
-    <hr>
-    <h2>Standard : <?= $crossStd->name; ?></h2>
-
-    <?php if ($lsProcedure) : ?>
-        <table class="bordered">
-            <thead>
+    </table> -->
+    <!-- <hr> -->
+    <table class="bordered table">
+        <thead>
+            <tr>
+                <th colspan="4" style="padding:10px 0px">
+                    <h2>CROSS REFERENCE <?= strtoupper($Data->name); ?> PASAL TO PROCESS</h2>
+                </th>
+            </tr>
+            <tr>
+                <th width="50" class="text-center">No</th>
+                <th width="350">Pasal</th>
+                <th>Proses Terkait</th>
+                <th width="150">Dokumen Lain</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $n = 0;
+            foreach ($Detail as $dtl) : $n++; ?>
                 <tr>
-                    <th>No</th>
-                    <th width="180">Pasal</th>
-                    <th>Description</th>
+                    <td class="text-center"><?= $n; ?></td>
+                    <td><?= $dtl->chapter; ?></td>
+                    <td>
+                        <ul>
+                            <?php
+                            if (isset($Procedure[$dtl->id])) {
+                                $explode = explode(',', $Procedure[$dtl->id]);
+                                if (isset($explode) && $explode) {
+                                    foreach ($explode as $exp) {
+                                        echo isset($list_procedure[$exp]) ? "<li>" . $list_procedure[$exp] . "</li>" : '';
+                                    }
+                                }
+                            }
+                            ?>
+                        </ul>
+                    </td>
+                    <td><?= isset($other_docs[$dtl->id]) ? ($other_docs[$dtl->id]) : ''; ?></td>
                 </tr>
-            </thead>
-            <tbody>
-                <?php $n = 0;
-                foreach ($lsProcedure as $p) : $n++;
-                    if ($DataStd[$p]) : ?>
-                        <tr>
-                            <td colspan="3">
-                                <strong><?= $n . ". " . $procedures[$p]->name; ?></strong>
-                            </td>
-                        </tr>
-                        <?php $i = 0;
-                        foreach ($DataStd[$p] as $dt) : $i++; ?>
-                            <tr>
-                                <td><?= $i; ?></td>
-                                <td><?= $dt->chapter; ?></td>
-                                <td>
-                                    <?php if ($dt->desc_indo) : ?>
-                                        <strong>Indonesian:</strong>
-                                        <?= $dt->desc_indo; ?>
-                                    <?php endif; ?>
-                                    <br>
-                                    <?php if ($dt->desc_eng) : ?>
-                                        <strong>English:</strong>
-                                        <?= $dt->desc_eng; ?>
-                                    <?php endif; ?>
-                                </td>
-                            </tr>
-                    <?php endforeach;
-                    endif; ?>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    <?php else : ?>
-        <span>~ Not available data ~</span>
-    <?php endif; ?>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+
 </body>
 
 </html>
