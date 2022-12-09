@@ -207,7 +207,7 @@
 												</td>
 												<td class="py-2"><?= $status[$dt->status]; ?></td>
 												<td class="py-2">
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
+													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
 													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning" data-id="<?= $dt->id; ?>" title="Edit Data"><i class="fa fa-edit"></i></a>
 													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-success review" data-id="<?= $dt->id; ?>" title="Process to Review"><i class="fa fa-sync-alt"></i></button>
 												</td>
