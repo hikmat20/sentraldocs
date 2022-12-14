@@ -251,14 +251,14 @@
 					</tr>
 					<tr>
 						<th style="vertical-align: middle;" rowspan="2">Review By</th>
-						<td><?= ($docs->reviewer_id) ? $ArrJab[$docs->reviewer_id]->nm_jabatan : '-'; ?></td>
+						<td><?= ($docs->reviewer_id) ? $ArrJab[$docs->reviewer_id]->name : '-'; ?></td>
 					</tr>
 					<tr>
 						<td><?= ($docs->reviewed_by) ? $ArrUsr[$docs->reviewed_by]->full_name : '-'; ?></td>
 					</tr>
 					<tr>
 						<th style="vertical-align: middle;" rowspan="2">Approval By</th>
-						<td><?= ($docs->approval_id) ? $ArrJab[$docs->approval_id]->nm_jabatan : '-'; ?></td>
+						<td><?= ($docs->approval_id) ? $ArrJab[$docs->approval_id]->name : '-'; ?></td>
 					</tr>
 					<tr>
 						<td><?= ($docs->approved_by) ? $ArrUsr[$docs->approved_by]->full_name : '-'; ?></td>
@@ -268,7 +268,7 @@
 						<td>
 							<?php $lsJab = explode(',', $docs->distribute_id);
 							foreach ($lsJab as $jab) {
-								echo ($jab) ? $ArrJab[$jab]->nm_jabatan . "<br>" : '-';
+								echo ($jab) ? $ArrJab[$jab]->name . "<br>" : '-';
 							}
 							?>
 						</td>
