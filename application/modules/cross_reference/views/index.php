@@ -9,7 +9,8 @@
 						<!-- <a href="<?= base_url($this->uri->segment(1) . '/pasal_to_process'); ?>" class="btn btn-primary" title="Cross Pasal to Proses">
 							Cross Pasal to Proses
 						</a> -->
-						<a href="<?= base_url($this->uri->segment(1) . '/process_to_pasal'); ?>" class="btn btn-success" title="Cross Proses to Pasal">Cross Proses to Pasal</a>
+						<a target="_blank" href="<?= base_url($this->uri->segment(1) . '/process_to_pasal'); ?>" class="btn btn-success" title="Cross Proses to Pasal">Cross Proses to Pasal</a>
+						<a target="_blank" href="<?= base_url($this->uri->segment(1) . '/print_process_to_pasal/' . $company_id); ?>" class="btn btn-secondary btn-icon" title="Print Cross Pasal to Proses"><i class="fa fa-print"></i></a>
 					</div>
 				</div>
 				<div class="card-body">

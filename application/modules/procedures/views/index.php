@@ -13,7 +13,7 @@
 				<div class="card-body">
 
 					<!-- Nav tabs -->
-					<ul class="nav nav-tabs nav-success nav-sm nav-pills pb-3 mb-3" id="myTab" role="tablist">
+					<ul class="nav nav-tabs nav-fill font-weight-bold nav-success nav-sm nav-pills pb-3 mb-3" id="myTab" role="tablist">
 						<li class="nav-item" role="presentation">
 							<a class="nav-link active p-2" id="draft-tab" data-toggle="tab" data-target="#draft" type="button" role="tab" aria-controls="draft" aria-selected="false">Draft <span class="badge bg-white badge-circle text-secondary ml-2"><?= count($dataDraft); ?></span></a>
 						</li>
@@ -31,6 +31,9 @@
 						</li>
 						<li class="nav-item" role="presentation">
 							<a class="nav-link p-2" id="published-tab" data-toggle="tab" data-target="#published" type="button" role="tab" aria-controls="published" aria-selected="true">Published <span class="badge badge-circle bg-white text-primary ml-2"><?= count($dataPub); ?></span></a>
+						</li>
+						<li class="nav-item" role="presentation">
+							<a class="nav-link p-2" id="deletion-tab" data-toggle="tab" data-target="#deletion" type="button" role="tab" aria-controls="deletion" aria-selected="true">Deletion <span class="badge badge-circle bg-white text-danger ml-2"><?= count($dataDel); ?></span></a>
 						</li>
 					</ul>
 
@@ -242,6 +245,39 @@
 												<td class="py-2">
 													<a href="<?= base_url($this->uri->segment(1) . '/printout/' . $dt->id); ?>" target="_blank" class="btn btn-sm btn-icon rounded-circle btn-light print" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="Print Data"><i class="fa fa-print"></i></a>
 													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
+												</td>
+											</tr>
+									<?php endforeach;
+									endif; ?>
+								</tbody>
+							</table>
+						</div>
+
+						<!-- Deletion -->
+						<div class="tab-pane fade" id="deletion" role="tabpanel" aria-labelledby="deletion-tab">
+							<table id="example1" class="table table-bordered table-sm table-condensed table-hover datatable">
+								<thead class="text-center table-light">
+									<tr class="text-center">
+										<th class="py-2" width="40">No.</th>
+										<th class="py-2 text-left">Nama</th>
+										<th class="py-2" width="150">Status</th>
+										<th class="py-2" width="150">Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php if (isset($dataDel) && $dataDel) :
+										$n = 0;
+										foreach ($dataDel as $dt) : $n++; ?>
+											<tr class="text-center">
+												<td class="py-2"><?= $n; ?></td>
+												<td class="py-2 text-left">
+													<h5 class="my-0"><?= $dt->name; ?></h5>
+												</td>
+												<td class="py-2"><?= $status[$dt->status]; ?></td>
+												<td class="py-2">
+													<!-- <a href="<?= base_url($this->uri->segment(1) . '/printout/' . $dt->id); ?>" target="_blank" class="btn btn-sm btn-icon rounded-circle btn-light print" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="Print Data"><i class="fa fa-print"></i></a> -->
+													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
+													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;

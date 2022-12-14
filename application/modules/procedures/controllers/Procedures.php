@@ -36,6 +36,7 @@ class Procedures extends Admin_Controller
 			'APV' => '<span class="label label-info label-pill label-inline mr-2">Waiting Approval</span>',
 			'PUB' => '<span class="label label-success label-pill label-inline mr-2">Published</span>',
 			'RVI' => '<span class="label label-success label-pill label-inline mr-2">Revision</span>',
+			'HLD' => '<span class="label label-light-danger label-pill label-inline mr-2">Hold For Deletion</span>',
 		];
 	}
 
@@ -47,6 +48,7 @@ class Procedures extends Admin_Controller
 		$dataCor		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null, 'status' => 'COR'])->result();
 		$dataApv		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null, 'status' => 'APV'])->result();
 		$dataPub		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null, 'status' => 'PUB'])->result();
+		$dataDel		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null, 'status' => 'HLD', 'deletion_status' => 'APV'])->result();
 		$dataRvi		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null, 'status' => 'RVI'])->result();
 		$noteRevision	= $this->db->distinct('directory_id')->order_by('updated_at', 'DESC')->select('*')->get_where('directory_log', ['doc_type' => 'Procedure', 'new_status' => 'RVI'])->result();
 		$ArrReason = [];
@@ -62,6 +64,7 @@ class Procedures extends Admin_Controller
 			'dataApv' 	=> $dataApv,
 			'dataPub' 	=> $dataPub,
 			'dataRvi' 	=> $dataRvi,
+			'dataDel' 	=> $dataDel,
 			'ArrReason' => $ArrReason,
 		]);
 		$this->template->set('status', $this->sts);

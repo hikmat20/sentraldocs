@@ -36,6 +36,7 @@ class Cross_reference extends Admin_Controller
 	{
 		$data		= $this->db->get_where('view_cross_references', ['company_id' => $this->company])->result();
 		$this->template->set('data', $data);
+		$this->template->set('company_id', $this->company);
 		$this->template->set('status', $this->status);
 		$this->template->render('index');
 	}
@@ -331,6 +332,47 @@ class Cross_reference extends Admin_Controller
 		]);
 
 		$data = $this->template->load_view('printout', $Data, TRUE);
+		$mpdf->WriteHTML($data);
+		$mpdf->Output();
+	}
+
+	public function print_process_to_pasal($id = null)
+	{
+		$mpdf = new Mpdf('', '', '', 10, 10, 10, 10);
+
+		$crossStd  		= $this->db->get_where('view_cross_references', ['company_id' => $id])->row();
+		$dtlCross 		= $this->db->get_where('view_cross_reference_details', ['reference_id' => $crossStd->reference_id])->result();
+
+		$procedures 	= $this->db->get_where('procedures', ['company_id' => $this->company, 'status !=' => 'DEL'])->result();
+		$lsProcedure 	= [];
+		$ArrDtlCross 	= [];
+		$DataStd 		= [];
+
+		foreach ($dtlCross as $dtl) {
+			$ArrDtlCross[] = explode(",", $dtl->procedure_id);
+		}
+
+
+		foreach ($ArrDtlCross as $arr) {
+			foreach ($arr as $value) {
+				$lsProcedure[$value] = $value;
+				if ($value) {
+					$this->db->select('*')->from('view_cross_reference_details');
+					$this->db->where("find_in_set($value, procedure_id)");
+					$this->db->where("reference_id", $crossStd->reference_id);
+					$this->db->where("company_id", $this->company);
+					$DataStd[$value] = $this->db->get()->result();
+				}
+			}
+		}
+		$Data = [
+			'crossStd' 		=> $crossStd,
+			'DataStd' 		=> $DataStd,
+			'procedures' 	=> $procedures,
+			'lsProcedure' 	=> $lsProcedure,
+		];
+
+		$data = $this->template->load_view('printout_bk', $Data, TRUE);
 		$mpdf->WriteHTML($data);
 		$mpdf->Output();
 	}

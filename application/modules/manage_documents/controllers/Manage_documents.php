@@ -40,7 +40,7 @@ class Manage_documents extends Admin_Controller
 		}
 		$mainFolder = $this->db->get_where('view_directories', ['flag_type' => 'FOLDER', 'active' => 'Y', 'status !=' => 'DEL', 'parent_id' => '0', 'company_id' => $this->company])->result();
 		$Data 		= $this->db->get_where('view_directories', ['flag_type' => 'FOLDER', 'active' => 'Y', 'status !=' => 'DEL'])->result();
-		$jabatan 	= $this->db->get('tbl_jabatan')->result();
+		$jabatan 	= $this->db->get('positions')->result();
 		$ArrFolder = [];
 		foreach ($Data as $dir) {
 			$ArrFolder[$dir->parent_id][] = $dir;
@@ -371,7 +371,7 @@ class Manage_documents extends Admin_Controller
 	public function upload($parent_id)
 	{
 		$users 		= $this->db->get_where('users', ['status' => 'ACT', 'id_user !=' => '1'])->result();
-		$jabatan 	= $this->db->get('tbl_jabatan')->result();
+		$jabatan 	= $this->db->get('positions')->result();
 
 		$this->template->set([
 			'jabatan' 		=> $jabatan,
@@ -386,7 +386,7 @@ class Manage_documents extends Admin_Controller
 		$file 		= $this->db->get_where('view_directories', ['id' => $id])->row();
 
 		$users 		= $this->db->get_where('users', ['st_aktif' => '1', 'id_perusahaan' => $this->company, 'id_user !=' => '1'])->result();
-		$jabatan 	= $this->db->get('tbl_jabatan')->result();
+		$jabatan 	= $this->db->get('positions')->result();
 
 		$this->template->set([
 			'file' 			=> $file,
@@ -658,7 +658,7 @@ class Manage_documents extends Admin_Controller
 		$file 		= $this->db->get_where('view_directories', ['id' => $id])->row();
 		$dir_name 	= $this->db->get_where('view_directories', ['id' => $file->parent_id])->row()->name;
 		$history	= $this->db->order_by('updated_at', 'ASC')->get_where('directory_log', ['directory_id' => $id])->result();
-		$jabatan 	= $this->db->get('tbl_jabatan')->result();
+		$jabatan 	= $this->db->get('positions')->result();
 		$this->template->set('dir_name', $dir_name);
 		$this->template->set('jabatan', $jabatan);
 		$this->template->set('sts', $this->sts);
@@ -724,7 +724,7 @@ class Manage_documents extends Admin_Controller
 		$file 		= $this->db->get_where('view_directories', ['id' => $id])->row();
 		$dir_name 	= $this->db->get_where('view_directories', ['id' => $file->parent_id])->row()->name;
 		$history	= $this->db->order_by('updated_at', 'ASC')->get_where('directory_log', ['directory_id' => $id])->result();
-		$jabatan 	= $this->db->get('tbl_jabatan')->result();
+		$jabatan 	= $this->db->get('positions')->result();
 		$this->template->set('dir_name', $dir_name);
 		$this->template->set('jabatan', $jabatan);
 		$this->template->set('sts', $this->sts);

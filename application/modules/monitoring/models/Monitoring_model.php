@@ -155,4 +155,59 @@ class Monitoring_model extends BF_Model
             return false;
         }
     }
+
+    public function deletion($data = null)
+    {
+        if ($data) {
+            $this->db->update(
+                'procedures',
+                [
+                    'status'          => $data['status'],
+                    'deletion_status' => 'OPN',
+                    'modified_by'     => $this->auth->user_id(),
+                    'modified_at'     => date('Y-m-d H:i:s'),
+                ],
+                ['id' => $data['id']]
+            );
+
+            $thisData = $this->db->get_where('procedures', ['id' => $data['id']])->row();
+            $data['directory_id']     = $data['id'];
+            $data['new_status']       = $data['status'];
+            $data['old_status']       = $thisData->status;
+            $data['doc_type']         = 'Procedure';
+            unset($data['id']);
+            unset($data['status']);
+            $this->_update_history($data);
+        } else {
+            return false;
+        }
+    }
+
+    public function rev_deletion($data = null)
+    {
+
+        if ($data) {
+            $this->db->update(
+                'procedures',
+                [
+                    'deletion_status'     => $data['deletion_status'],
+                    'modified_by'     => $this->auth->user_id(),
+                    'modified_at'     => date('Y-m-d H:i:s'),
+                ],
+                ['id' => $data['id']]
+            );
+
+            $thisData = $this->db->get_where('procedures', ['id' => $data['id']])->row();
+            $data['directory_id']     = $data['id'];
+            $data['new_status']       = $data['status'];
+            $data['old_status']       = $thisData->status;
+            $data['doc_type']         = 'Procedure';
+            unset($data['id']);
+            unset($data['status']);
+            unset($data['deletion_status']);
+            $this->_update_history($data);
+        } else {
+            return false;
+        }
+    }
 }

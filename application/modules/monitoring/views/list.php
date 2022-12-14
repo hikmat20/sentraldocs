@@ -51,6 +51,11 @@
                         <?php if ($list->status == 'REV') : ?>
                           <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-warning btn-icon review btn-xs shadow-sm"><i class="fa fa-cog"></i></button>
                         <?php endif; ?>
+                        <?php if ($list->status == 'HLD' && $list->deletion_status == 'OPN') : ?>
+                          <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-warning btn-icon review-del btn-xs shadow-sm"><i class="fa fa-cog"></i></button>
+                        <?php elseif ($list->status == 'HLD' && $list->deletion_status == 'REV') : ?>
+                          <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-info btn-icon approval-del btn-xs shadow-sm"><i class="fa fa-cog"></i></button>
+                        <?php endif; ?>
                       <?php elseif (in_array($list->approval_id, $ArrPosts)) : ?>
                         <?php if ($list->status == 'APV') : ?>
                           <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-info btn-icon approve btn-xs shadow-sm"><i class="fa fa-cog"></i></button>
@@ -63,9 +68,8 @@
                       <?php if ($list->status == 'PUB') : ?>
                         <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-success btn-icon view btn-xs shadow-sm"><i class="fa fa-eye"></i></button>
                       <?php else : ?>
-                        <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-success btn-icon view btn-xs shadow-sm"><i class="fa fa-eye"></i></button>
+                        <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-primary btn-icon view-data btn-xs shadow-sm"><i class="fa fa-eye"></i></button>
                       <?php endif; ?>
-
                     <?php endif; ?>
                   </td>
                 </tr>
@@ -175,6 +179,13 @@
       $('#content-modal2').load(siteurl + active_controller + 'load_form_revision/' + id + "/" + type)
     })
 
+    $(document).on('click', '.deletion', function() {
+      const id = $(this).data('id')
+      const type = $(this).data('type')
+      $('#Modal2').modal('show')
+      $('#content-modal2').load(siteurl + active_controller + 'load_form_deletion/' + id + "/" + type)
+    })
+
     $(document).on('click', '.view', function() {
       const id = $(this).data('id')
       const type = $(this).data('type')
@@ -182,6 +193,12 @@
       $('#content-modal').load(siteurl + active_controller + 'view/' + id + "/" + type)
     })
 
+    $(document).on('click', '.view-data', function() {
+      const id = $(this).data('id')
+      const type = $(this).data('type')
+      $('#Modal').modal('show')
+      $('#content-modal').load(siteurl + active_controller + 'view_data/' + id + "/" + type)
+    })
 
     $(document).on('click', '#save-review', function() {
       $('#invalid-action').addClass('d-none')
@@ -422,6 +439,225 @@
           });
         }
       });
+    });
+
+    $(document).on('click', '.save-deletion', function() {
+      $('#invalid-action').addClass('d-none')
+      $('#note').removeClass('is-invalid')
+
+      const id = $('#id').val();
+      const reason = $('#note').val();
+      const btn = $(this)
+      const btn_text = $(this).html()
+
+      if ((reason == '') || (reason == null)) {
+        $('#note').addClass('is-invalid')
+        return false;
+      }
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You will not be able to process again this data!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Process it!",
+        cancelButtonText: "No, cancel process!",
+      }).then((value) => {
+        if (value.isConfirmed) {
+          var formData = new FormData($('#form-revision')[0]);
+          var baseurl = siteurl + active_controller + 'save_deletion';
+          $.ajax({
+            url: baseurl,
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            cache: false,
+            dataType: 'json',
+            beforeSend: function() {
+              btn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...')
+            },
+            complete: function() {
+              console.log(btn);
+              btn.prop('disabled', false).html(btn_text)
+            },
+            success: function(data) {
+              if (data.status == 1) {
+                Swal.fire({
+                  title: "Success!",
+                  text: data.msg,
+                  icon: "success",
+                  timer: 1500,
+                  showCancelButton: false,
+                  showConfirmButton: false,
+                  allowOutsideClick: false
+                }).then(() => {
+                  location.reload()
+                  $('#Modal').modal('hide')
+                  // $('#content-modal').html('')
+                });
+              } else {
+                if (data.status == 0) {
+                  Swal.fire({
+                    title: "Failed!",
+                    html: data.msg,
+                    icon: "warning",
+                    timer: 3000,
+                  });
+                }
+              }
+            },
+            error: function() {
+              Swal.fire({
+                title: "Error Message !",
+                text: 'An Error Occured During Process. Please try again..',
+                icon: "error",
+                timer: 3000,
+              });
+            }
+          });
+        }
+      });
+    });
+
+    $(document).on('click', '.review-del', function() {
+      const id = $(this).data('id')
+      const type = $(this).data('type')
+      let sts
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You will not be able to process again this data!",
+        icon: "warning",
+        showCancelButton: true,
+        showDenyButton: true,
+        confirmButtonText: "Yes, I Agree",
+        cancelButtonText: "Cancel",
+        denyButtonText: "Reject",
+      }).then((value) => {
+        if (value.isConfirmed || value.isDenied) {
+          var baseurl = siteurl + active_controller + 'save_rev_deletion';
+          if (value.isConfirmed) {
+            var sts = 'REV'
+          } else if (value.isDenied) {
+            var sts = 'REJ'
+          }
+
+          $.ajax({
+            url: baseurl,
+            type: "POST",
+            data: {
+              id,
+              sts
+            },
+            dataType: 'json',
+            success: function(data) {
+              if (data.status == 1) {
+                Swal.fire({
+                  title: "Success!",
+                  text: data.msg,
+                  icon: "success",
+                  timer: 1500,
+                  showCancelButton: false,
+                  showConfirmButton: false,
+                  allowOutsideClick: false
+                }).then(() => {
+                  location.reload()
+                  $('#Modal').modal('hide')
+                  // $('#content-modal').html('')
+                });
+              } else {
+                if (data.status == 0) {
+                  Swal.fire({
+                    title: "Failed!",
+                    html: data.msg,
+                    icon: "warning",
+                    timer: 3000,
+                  });
+                }
+              }
+            },
+            error: function() {
+              Swal.fire({
+                title: "Error Message !",
+                text: 'An Error Occured During Process. Please try again..',
+                icon: "error",
+                timer: 3000,
+              });
+            }
+          });
+        }
+      })
+
+    });
+
+    $(document).on('click', '.approval-del', function() {
+      const id = $(this).data('id')
+      const type = $(this).data('type')
+      let sts
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You will not be able to process again this data!",
+        icon: "warning",
+        showCancelButton: true,
+        showDenyButton: true,
+        confirmButtonText: "Yes, I Agree",
+        cancelButtonText: "Cancel",
+        denyButtonText: "Reject",
+      }).then((value) => {
+        if (value.isConfirmed || value.isDenied) {
+          var baseurl = siteurl + active_controller + 'save_apv_deletion';
+          if (value.isConfirmed) {
+            var sts = 'APV'
+          } else if (value.isDenied) {
+            var sts = 'REJ'
+          }
+
+          $.ajax({
+            url: baseurl,
+            type: "POST",
+            data: {
+              id,
+              sts
+            },
+            dataType: 'json',
+            success: function(data) {
+              if (data.status == 1) {
+                Swal.fire({
+                  title: "Success!",
+                  text: data.msg,
+                  icon: "success",
+                  timer: 1500,
+                  showCancelButton: false,
+                  showConfirmButton: false,
+                  allowOutsideClick: false
+                }).then(() => {
+                  location.reload()
+                  $('#Modal').modal('hide')
+                  // $('#content-modal').html('')
+                });
+              } else {
+                if (data.status == 0) {
+                  Swal.fire({
+                    title: "Failed!",
+                    html: data.msg,
+                    icon: "warning",
+                    timer: 3000,
+                  });
+                }
+              }
+            },
+            error: function() {
+              Swal.fire({
+                title: "Error Message !",
+                text: 'An Error Occured During Process. Please try again..',
+                icon: "error",
+                timer: 3000,
+              });
+            }
+          });
+        }
+      })
+
     });
 
   })

@@ -25,6 +25,7 @@ class Monitoring extends Admin_Controller
 			'APV' => '<span class="label label-light-info label-pill label-inline mr-2">Waiting Approval</span>',
 			'PUB' => '<span class="label label-light-success label-pill label-inline mr-2">Published</span>',
 			'RVI' => '<span class="label label-light-danger label-pill label-inline mr-2">Revision</span>',
+			'HLD' => '<span class="label label-light-secondary text-secondary label-pill label-inline mr-2">Hold</span>',
 		];
 	}
 
@@ -53,7 +54,7 @@ class Monitoring extends Admin_Controller
 
 		$dtProc = $this->db->get_where('procedures', ['company_id' => $this->company, 'status !=' => 'DEL'])->result();
 
-		$rev 	= $cor = $pub = $apv = $rvi = 0;
+		$rev 	= $cor = $pub = $apv = $rvi = $hld = $revDel = $apvDel = $rejDel = 0;
 		foreach ($dtProc as $value) {
 			if ($value->status == 'REV') {
 				$rev = $rev + 1;
@@ -70,6 +71,18 @@ class Monitoring extends Admin_Controller
 			if ($value->status == 'RVI') {
 				$rvi = $rvi + 1;
 			}
+			if (($value->status == 'HLD') && ($value->deletion_status == 'OPN')) {
+				$hld = $hld + 1;
+			}
+			if (($value->status == 'HLD') && ($value->deletion_status == 'REV')) {
+				$revDel = $revDel + 1;
+			}
+			if (($value->status == 'HLD') && ($value->deletion_status == 'APV')) {
+				$apvDel = $apvDel + 1;
+			}
+			if (($value->status == 'HLD') && ($value->deletion_status == 'REJ')) {
+				$rejDel = $rejDel + 1;
+			}
 		}
 
 		$Data = $this->db->order_by('created_at', 'ASC')->get_where('directory', ['parent_id' => '0', 'active' => 'Y', 'status !=' => 'DEL'])->result();
@@ -85,6 +98,10 @@ class Monitoring extends Admin_Controller
 				'dtProcedureCor'    => $cor,
 				'dtProcedureRvi' 	=> $rvi,
 				'dtProcedurePub'	=> $pub,
+				'hld'				=> $hld,
+				'revDel'			=> $revDel,
+				'apvDel'			=> $apvDel,
+				'rejDel'			=> $rejDel,
 				'dtGuidesApv' 		=> $dtGuidesApv,
 				'dtGuidesRev' 		=> $dtGuidesRev,
 				'dtGuidesCor' 		=> $dtGuidesCor,
@@ -100,10 +117,27 @@ class Monitoring extends Admin_Controller
 	{
 		$file 		= $this->db->get_where('procedures', ['id' => $id])->row();
 		$history	= $this->db->order_by('updated_at', 'ASC')->get_where('directory_log', ['directory_id' => $id])->result();
-		$this->template->set('sts', $this->sts);
-		$this->template->set('file', $file);
-		$this->template->set('type', $type);
-		$this->template->set('history', $history);
+		$this->template->set([
+			'sts' => $this->sts,
+			'file' => $file,
+			'type' => $type,
+			'history' => $history,
+			'view_data' => false
+		]);
+		$this->template->render('view');
+	}
+
+	public function view_data($id = null, $type = null)
+	{
+		$file 		= $this->db->get_where('procedures', ['id' => $id])->row();
+		$history	= $this->db->order_by('updated_at', 'ASC')->get_where('directory_log', ['directory_id' => $id])->result();
+		$this->template->set([
+			'sts' => $this->sts,
+			'file' => $file,
+			'type' => $type,
+			'history' => $history,
+			'view_data' => true
+		]);
 		$this->template->render('view');
 	}
 
@@ -490,5 +524,202 @@ class Monitoring extends Admin_Controller
 		}
 
 		echo json_encode($Return);
+	}
+
+	/* REVIEW DELETION */
+
+	public function load_form_deletion($id, $type = null)
+	{
+		$file 		= $this->db->get_where('procedures', ['id' => $id])->row();
+		$history	= $this->db->order_by('updated_at', 'ASC')->get_where('directory_log', ['directory_id' => $id])->result();
+		$this->template->set('sts', $this->sts);
+		$this->template->set('file', $file);
+		$this->template->set('type', $type);
+		$this->template->set('history', $history);
+		$this->template->render('deletion-form');
+	}
+
+	public function save_deletion()
+	{
+		$data = $this->input->post();
+		if ($data) {
+			$this->db->trans_begin();
+			$data['status'] = 'HLD';
+			$this->Monitor_model->deletion($data);
+			if ($this->db->trans_status() === FALSE) {
+				$this->db->trans_rollback();
+				$Return = [
+					'status' => 0,
+					'msg'	 => 'Failed processing this file. Please try again later.!'
+				];
+			} else {
+				$this->db->trans_commit();
+				$Return = [
+					'status' => 1,
+					'msg'	 => 'Success deletion document...'
+				];
+			}
+		} else {
+			$Return = [
+				'status' => 0,
+				'msg'	 => 'Data not valid.'
+			];
+		}
+
+		echo json_encode($Return);
+	}
+
+	public function review_deletion()
+	{
+		/* CORRECTION */
+		$procedures 	= $this->db->get_where('view_procedures', [
+			'company_id' => $this->company,
+			'status' => 'HLD',
+			'deletion_status' => 'OPN'
+		])->result();
+		$users = $this->db->get_where('users')->result();
+
+		$ArrUsers = [];
+		foreach ($users as $user) {
+			$ArrUsers[$user->id_user] = $user;
+		}
+
+		$this->template->set([
+			'title'			=> 'REVIEW DELETION PROCEDURES',
+			'procedures' 	=> $procedures,
+			'sts'			=> $this->sts,
+			'ArrUsers'		=> $ArrUsers,
+			'ArrPosts'		=> $this->ArrPosts,
+		]);
+		$this->template->render('list');
+	}
+
+	public function save_rev_deletion()
+	{
+		$data = $this->input->post();
+
+		if ($data) {
+			$this->db->trans_begin();
+			$data['deletion_status'] = $data['sts'];
+			$data['status'] = 'HLD';
+			if ($data['sts'] == 'REV') {
+				$data['note'] = 'Reviewed';
+			} elseif ($data['sts'] == 'REJ') {
+				$data['note'] = 'Rejected';
+			}
+			unset($data['sts']);
+			$this->Monitor_model->rev_deletion($data);
+			if ($this->db->trans_status() === FALSE) {
+				$this->db->trans_rollback();
+				$Return = [
+					'status' => 0,
+					'msg'	 => 'Failed processing this file. Please try again later.!'
+				];
+			} else {
+				$this->db->trans_commit();
+				$Return = [
+					'status' => 1,
+					'msg'	 => 'Success deletion document...'
+				];
+			}
+		} else {
+			$Return = [
+				'status' => 0,
+				'msg'	 => 'Data not valid.'
+			];
+		}
+
+		echo json_encode($Return);
+	}
+
+	/* APPROVAL DELETION */
+
+	public function approval_deletion()
+	{
+		/* CORRECTION */
+		$procedures 	= $this->db->get_where('view_procedures', [
+			'company_id' => $this->company,
+			'status' => 'HLD',
+			'deletion_status' => 'REV'
+		])->result();
+		$users = $this->db->get_where('users')->result();
+
+		$ArrUsers = [];
+		foreach ($users as $user) {
+			$ArrUsers[$user->id_user] = $user;
+		}
+
+		$this->template->set([
+			'title'			=> 'APPROVAL DELETION PROCEDURES',
+			'procedures' 	=> $procedures,
+			'sts'			=> $this->sts,
+			'ArrUsers'		=> $ArrUsers,
+			'ArrPosts'		=> $this->ArrPosts,
+		]);
+		$this->template->render('list');
+	}
+
+	public function save_apv_deletion()
+	{
+		$data = $this->input->post();
+
+		if ($data) {
+			$this->db->trans_begin();
+			$data['deletion_status'] = $data['sts'];
+			if ($data['sts'] == 'APV') {
+				$data['status'] = 'DEL';
+				$data['note'] = 'Approved';
+			} elseif ($data['sts'] == 'REJ') {
+				$data['status'] = 'HLD';
+				$data['note'] = 'Rejected';
+			}
+			unset($data['sts']);
+			$this->Monitor_model->rev_deletion($data);
+			if ($this->db->trans_status() === FALSE) {
+				$this->db->trans_rollback();
+				$Return = [
+					'status' => 0,
+					'msg'	 => 'Failed processing this file. Please try again later.!'
+				];
+			} else {
+				$this->db->trans_commit();
+				$Return = [
+					'status' => 1,
+					'msg'	 => 'Success deletion document...'
+				];
+			}
+		} else {
+			$Return = [
+				'status' => 0,
+				'msg'	 => 'Data not valid.'
+			];
+		}
+
+		echo json_encode($Return);
+	}
+
+	public function deletion_document()
+	{
+		/* CORRECTION */
+		$procedures 	= $this->db->get_where('view_procedures', [
+			'company_id' => $this->company,
+			'status' => 'HLD',
+			'deletion_status' => 'APV'
+		])->result();
+		$users = $this->db->get_where('users')->result();
+
+		$ArrUsers = [];
+		foreach ($users as $user) {
+			$ArrUsers[$user->id_user] = $user;
+		}
+
+		$this->template->set([
+			'title'			=> 'NEED ACTION TO DELETE PROCEDURES',
+			'procedures' 	=> $procedures,
+			'sts'			=> $this->sts,
+			'ArrUsers'		=> $ArrUsers,
+			'ArrPosts'		=> $this->ArrPosts,
+		]);
+		$this->template->render('list');
 	}
 }
