@@ -45,8 +45,8 @@
 												<td><?= $dt->number; ?></td>
 												<td>
 													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-edit"></i></a>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-trash"></i></button>
+													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $dt->id; ?>" title="Edit Data"><i class="fa fa-edit"></i></a>
+													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -76,8 +76,8 @@
 												<td><?= $draft->number; ?></td>
 												<td>
 													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $draft->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $draft->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $draft->id; ?>" title="View Data"><i class="fa fa-edit"></i></a>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $draft->id; ?>" title="View Data"><i class="fa fa-trash"></i></button>
+													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $draft->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $draft->id; ?>" title="Edit Data"><i class="fa fa-edit"></i></a>
+													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $draft->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
