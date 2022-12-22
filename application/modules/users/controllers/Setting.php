@@ -346,6 +346,8 @@ class Setting extends Admin_Controller
         ];
         if ($data['password']) {
             $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT, $options);
+        } else {
+            unset($data['password']);
         }
 
         // if ($_FILES['profile_avatar']['name']) {
