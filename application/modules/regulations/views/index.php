@@ -58,7 +58,7 @@
 												<td class="text-center p-1">
 													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
 													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-edit"></i></a>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-trash"></i></button>
+													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -141,28 +141,62 @@
 		$(document).on('click', '.view', function() {
 			let id = $(this).data('id')
 			if (id) {
-				$.ajax({
-					url: base_url + active_controller + 'view/' + id,
-					type: 'GET',
-					success: function(res) {
-						if (res) {
-							$('.modal-body').html(res)
-							$('#modalView').modal('show')
-						} else {
-							Swal.fire({
-								title: 'Warinng!',
-								icon: 'warning',
-								text: 'Data not valid, please try again.',
-								timer: 3000
-							})
-						}
-					},
-					error: function(res) {
-						Swal.fire({
-							title: 'Error!',
-							icon: 'error',
-							text: 'Server timeout, error..',
-							timer: 3000
+				$('#modalView').modal('show')
+				$('#modalView .modal-body').load(base_url + active_controller + 'view/' + id)
+			} else {
+				Swal.fire({
+					title: 'Warning!',
+					text: 'Data not valid',
+					icon: 'warning',
+					timer: 2000
+				})
+			}
+		})
+
+		$(document).on('click', '.delete', function() {
+			let id = $(this).data('id')
+			if (id) {
+				Swal.fire({
+					title: 'Confirm!',
+					text: 'Are you sure you want to delete this data??',
+					icon: 'question',
+					showCancelButton: true
+				}).then((value) => {
+					if (value.isConfirmed) {
+						$.ajax({
+							url: base_url + active_controller + 'delete_regulation/' + id,
+							type: 'POST',
+							dataType: 'JSON',
+							data: {
+								id
+							},
+							success: function(res) {
+								if (res.status == 1) {
+									Swal.fire({
+										title: 'Success!',
+										icon: 'success',
+										text: res.msg,
+										timer: 3000
+									}).then(() => {
+										location.reload();
+									})
+								} else {
+									Swal.fire({
+										title: 'Warinng!',
+										icon: 'warning',
+										text: res.msg,
+										timer: 3000
+									})
+								}
+							},
+							error: function(res) {
+								Swal.fire({
+									title: 'Error!',
+									icon: 'error',
+									text: 'Server timeout, error..',
+									timer: 3000
+								})
+							}
 						})
 					}
 				})

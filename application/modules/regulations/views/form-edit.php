@@ -2,9 +2,8 @@
   <div class="d-flex flex-column-fluid">
     <div class="container">
       <form id="form-desc">
-        <h3 for="" class="font-weight-bolder mb-5">Pasa l</h3>
-        <input type="hidden" name="pasal_id" value="<?= $data->id; ?>">
-        <input type="hidden" name="regulation_id" value="<?= $data->regulation_id; ?>">
+        <h3 for="" class="font-weight-bolder mb-5"><?= $desc->pasal_id; ?></h3>
+        <input type="hidden" name="id" value="<?= $desc->id; ?>">
         <table class="table table-bordered pharagraps rounded-lg mb-6">
           <thead>
             <tr class="table-secondary">
@@ -13,10 +12,18 @@
             </tr>
           </thead>
           <tbody>
+            <?php if ($desc) : ?>
+              <tr>
+                <td><i class="fa fa-pen"></i></td>
+                <td>
+                  <textarea name="desc" class="form-control"> <?= $desc->description; ?></textarea>
+                </td>
+                <td></td>
+              </tr>
+            <?php endif; ?>
           </tbody>
         </table>
       </form>
-      <button type="button" class="btn btn-sm btn-success" id="add-desc"><i class="fa fa-plus"></i> Add</button>
     </div>
   </div>
 </div>

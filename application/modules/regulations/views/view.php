@@ -1,33 +1,21 @@
-<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-  <div class="d-flex flex-column-fluid">
-    <div class="container">
-      <table class="table table-bordered rounded-lg mb-6">
-        <tr>
-          <th class="text-center" colspan="4">
-            <h1><?= $Data->name; ?> : <?= $Data->year; ?> - <?= $Data->number; ?></h1>
-          </th>
-        </tr>
-        <tr class="table-secondary">
-          <th width="40" class="text-center">No.</th>
-          <th class="text-center">Pasal</th>
-          <th width="40%" class="text-center">Des. Indonesia</th>
-          <th width="40%" class="text-center">Des. Inggris</th>
-        </tr>
+<h1 class="text-center px-10 mb-10"><?= $Data->name; ?></h1>
+<hr>
+<?php if (isset($Pasal)) : ?>
+  <?php foreach ($Pasal as $psl) : ?>
+    <h3 class="text-center mb-10 font-weight-bolder"><u><?= $psl->name; ?></u></h3>
+    <div class="col-9 m-auto">
+      <table class="table table-sm table-borderless mb-10">
         <tbody>
-          <?php if (isset($List)) : $n = 0;
-            foreach ($List as $list) : $n++;
-          ?>
+          <?php if (isset($ArrDesc)) : $n = 0;
+            foreach ($ArrDesc as $dsc) : $n++; ?>
               <tr>
-                <td><?= $n; ?></td>
-                <td><?= $list->chapter; ?></td>
-                <td><?= $list->desc_indo; ?></td>
-                <td><?= $list->desc_eng; ?></td>
+                <td class="h4"><?= $n; ?></td>
+                <td class="h4"><?= $dsc->description; ?></td>
               </tr>
           <?php endforeach;
           endif; ?>
         </tbody>
       </table>
-
     </div>
-  </div>
-</div>
+  <?php endforeach; ?>
+<?php endif; ?>

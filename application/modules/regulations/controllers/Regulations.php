@@ -76,7 +76,7 @@ class Regulations extends Admin_Controller
 			$ArrRegScp[$dtRegScp->regulation_id][$dtRegScp->scope_id] = $dtRegScp->scope_id;
 		}
 
-		$pasal 					= $this->db->get_where('regulation_pasal', ['regulation_id' => $id])->result();
+		$pasal 					= $this->db->order_by('order', 'ASC')->get_where('regulation_pasal', ['regulation_id' => $id])->result();
 		$regulation_paragraphs 	= $this->db->get_where('regulation_paragraphs', ['regulation_id' => $id])->result();
 
 		$ArrPhar = [];
@@ -107,6 +107,28 @@ class Regulations extends Admin_Controller
 		}
 	}
 
+	/* Pasal */
+	public function add_pasal($reg_id = null)
+	{
+		$this->template->set([
+			'reg_id' => $reg_id
+		]);
+		$this->template->render('form-pasal');
+	}
+
+	public function edit_pasal($id = null)
+	{
+
+		if ($id) {
+			$data = $this->db->get_where('regulation_pasal', ['id' => $id])->row();
+			$this->template->set([
+				'data' => $data
+			]);
+
+			$this->template->render('form-pasal');
+		}
+	}
+
 	public function load_form($id = '')
 	{
 		$data = '';
@@ -125,27 +147,38 @@ class Regulations extends Admin_Controller
 		$this->template->render('form');
 	}
 
-	public function save_desc()
+	public function load_form_edit($id = '')
 	{
-		$data = $this->input->post();
-		echo '<pre>';
-		print_r($data);
-		echo '<pre>';
-		exit;
-	}
+		$desc = '';
+		if ($id) {
+			$desc 	= $this->db->get_where('regulation_paragraphs', ['id' => $id])->row();
+		}
 
+		$this->template->set([
+			'desc' => $desc,
+		]);
+
+		$this->template->render('form-edit');
+	}
 
 
 	/* ======== */
 
 	public function view($id = '')
 	{
-		$Data 	= $this->db->get_where('requirements', ['id' => $id, 'status' => '1'])->row();
-		$Data_list 	= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result();
+		$Data 	= $this->db->get_where('regulations', ['id' => $id])->row();
+		$Pasal 	= $this->db->get_where('regulation_pasal', ['regulation_id' => $id])->result();
+		$Desc 	= $this->db->get_where('regulation_paragraphs', ['regulation_id' => $id])->result();
+
+		$ArrDesc = [];
+		foreach ($Desc as $dsc) {
+			$ArrDesc[$dsc->pasal_id] = $dsc;
+		}
 
 		$this->template->set([
-			'Data' => $Data,
-			'List' => $Data_list
+			'Data' 		=> $Data,
+			'Pasal' 	=> $Pasal,
+			'ArrDesc' 	=> $ArrDesc
 		]);
 
 		$this->template->render('view');
@@ -165,12 +198,13 @@ class Regulations extends Admin_Controller
 	public function save_pasal()
 	{
 		$Data = $this->input->post();
+
 		if ($Data) {
-			$checkname = $this->db->get_where('regulation_pasal', ['name' => $Data['pasal']])->num_rows();
+			$checkname = $this->db->get_where('regulation_pasal', ['name' => $Data['name'], 'regulation_id' => $Data['regulation_id']])->num_rows();
 			if ($checkname > 1) {
 				$Return		= array(
 					'status'		=> 2,
-					'msg'			=> 'Pasal name "' . $Data['pasal'] . '" already exist, please use another name!',
+					'msg'			=> 'Pasal name "' . $Data['name'] . '" already exist, please use another name!',
 				);
 				echo json_encode($Return);
 				return false;
@@ -227,12 +261,15 @@ class Regulations extends Admin_Controller
 		echo json_encode($Return);
 	}
 
-	public function delete($id)
+	public function delete_regulation()
 	{
-		$this->db->trans_begin();
+		$id = $this->input->post('id');
+
 		if (($id)) {
-			$this->db->delete('requirements', ['id' => $id]);
-			$this->db->delete('requirement_details', ['requirement_id' => $id]);
+			$this->db->trans_begin();
+			$this->db->delete('regulations', ['id' => $id]);
+			$this->db->delete('regulation_pasal', ['regulation_id' => $id]);
+			$this->db->delete('regulation_paragraphs', ['regulation_id' => $id]);
 		}
 
 		if ($this->db->trans_status() === FALSE) {
@@ -252,24 +289,122 @@ class Regulations extends Admin_Controller
 		echo json_encode($Return);
 	}
 
-	public function delete_pasal($id)
+	public function delete_pasal()
 	{
-		$this->db->trans_begin();
+		$id = $this->input->post('id');
 		if (($id)) {
-			$this->db->delete('requirement_details', ['id' => $id]);
-		}
-
-		if ($this->db->trans_status() === FALSE) {
-			$this->db->trans_rollback();
+			$this->db->trans_begin();
+			$this->RegModel->deletePasal($id);
+			if ($this->db->trans_status() === FALSE) {
+				$this->db->trans_rollback();
+				$Return		= array(
+					'status'		=> 0,
+					'msg'			=> 'Failed to delete data.. Please try again.',
+				);
+			} else {
+				$this->db->trans_commit();
+				$Return		= array(
+					'status'		=> 1,
+					'msg'			=> 'Successfully deleted data..',
+				);
+			}
+		} else {
 			$Return		= array(
 				'status'		=> 0,
-				'msg'			=> 'Failed to delete data.. Please try again.',
+				'msg'			=> 'Data not valid..',
 			);
+		}
+
+
+		echo json_encode($Return);
+	}
+
+	/* del desc */
+
+	public function save_desc()
+	{
+		$data = $this->input->post();
+
+		if ($data) {
+			$this->db->trans_begin();
+			$this->RegModel->savePasalDesc($data);
+			if ($this->db->trans_status() === FALSE) {
+				$this->db->trans_rollback();
+				$Return		= array(
+					'status'		=> 0,
+					'msg'			=> 'Failed to save description, please try again!',
+				);
+			} else {
+				$this->db->trans_commit();
+				$Return		= array(
+					'status'		=> 1,
+					'msg'			=> 'Successfull to save description',
+				);
+			}
 		} else {
-			$this->db->trans_commit();
 			$Return		= array(
-				'status'		=> 1,
-				'msg'			=> 'Successfully deleted data..',
+				'status'		=> 0,
+				'msg'			=> 'Data not valid, please try again!',
+			);
+		}
+
+		echo json_encode($Return);
+	}
+
+	public function update_desc()
+	{
+		$data = $this->input->post();
+
+		if ($data) {
+			$this->db->trans_begin();
+			$this->RegModel->updatePasalDesc($data);
+			if ($this->db->trans_status() === FALSE) {
+				$this->db->trans_rollback();
+				$Return		= array(
+					'status'		=> 0,
+					'msg'			=> 'Failed to save description, please try again!',
+				);
+			} else {
+				$this->db->trans_commit();
+				$Return		= array(
+					'status'		=> 1,
+					'msg'			=> 'Successfull to save description',
+				);
+			}
+		} else {
+			$Return		= array(
+				'status'		=> 0,
+				'msg'			=> 'Data not valid, please try again!',
+			);
+		}
+
+		echo json_encode($Return);
+	}
+
+	public function del_desc()
+	{
+		$id = $this->input->post('id');
+
+		if ($id) {
+			$this->db->trans_begin();
+			$this->db->delete('regulation_paragraphs', ['id' => $id]);
+			if ($this->db->trans_status() === FALSE) {
+				$this->db->trans_rollback();
+				$Return		= array(
+					'status'		=> 0,
+					'msg'			=> 'Failed to delete description, please try again!',
+				);
+			} else {
+				$this->db->trans_commit();
+				$Return		= array(
+					'status'		=> 1,
+					'msg'			=> 'Successfull to delete description',
+				);
+			}
+		} else {
+			$Return		= array(
+				'status'		=> 0,
+				'msg'			=> 'Data not valid, please try again!',
 			);
 		}
 

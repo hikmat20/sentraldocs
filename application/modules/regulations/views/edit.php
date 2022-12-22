@@ -138,22 +138,22 @@
 						<hr>
 						<div class="d-flex justify-content-between align-items-center mb-3">
 							<h4 class="">List Pasal</h4>
-							<button type="button" class="btn btn-primary btn-sm" id="add_pasal"><i class="fa fa-plus mr-2"></i>Add New Pasal</button>
+							<button type="button" class="btn btn-primary btn-sm" data-id="<?= $data->id; ?>" id="add_pasal"><i class="fa fa-plus mr-2"></i>Add New Pasal</button>
 						</div>
 
 						<div class="card">
-							<div class="card-body text-center">
-								<div class="row">
-									<div class="col-3 border-right-secondary border border-bottom-0 border-left-0 border-top-0">
-										<ul class="nav flex-column nav-pills nav-light-secondary">
-											<?php if ($pasal) : ?>
+							<div class="card-body">
+								<?php if ($pasal) : ?>
+									<div class="row">
+										<div class="col-3 border-right-secondary border border-bottom-0 border-left-0 border-top-0">
+											<ul class="nav flex-column nav-pills nav-secondary">
 												<?php foreach ($pasal as $k => $psl) : ?>
 													<li class="nav-item text-left">
 														<a class="nav-link h4 text-dark d-inline d-flex justify-content-between align-items-center <?= ($k == 0) ? 'active' : ''; ?>" id="pasal-<?= $psl->id; ?>" data-toggle="pill" data-target="#psl-desc-<?= $psl->id; ?>" type="button" role="tab" aria-selected="true">
 															<span><?= ucfirst($psl->name); ?></span>
 															<span class="">
-																<button id='<?= $psl->id; ?>' class='btn px-0 btn-xs text-hover-warning btn-icon edit-phar id-<?= $psl->id; ?>' title='Edit'><i class='fa fa-pen'></i></button>
-																<button id='<?= $psl->id; ?>' class='btn px-0 btn-xs text-hover-danger btn-icon delete-phar id-<?= $psl->id; ?>' title='Delete'><i class='fa fa-trash'></i></button>
+																<button id='<?= $psl->id; ?>' class='btn px-0 btn-xs text-hover-warning btn-icon edit-pasal id-<?= $psl->id; ?>' title='Edit'><i class='fa fa-pen'></i></button>
+																<button id='<?= $psl->id; ?>' class='btn px-0 btn-xs text-hover-danger btn-icon delete-pasal id-<?= $psl->id; ?>' title='Delete'><i class='fa fa-trash'></i></button>
 															</span>
 														</a>
 														<!-- <a href='javascript:void(0)' class="pasal-title d-inline text-hover-primary" role="button" data-toggle="popover" data-trigger="click" data-html="true" data-content="
@@ -162,14 +162,13 @@
 															"><i class="fa fa-cog"></i></a> -->
 													</li>
 												<?php endforeach; ?>
-											<?php endif; ?>
-										</ul>
-									</div>
-									<div class="col-9">
-										<div class="tab-content" id="myTabContent">
-											<?php if ($pasal) : ?>
+											</ul>
+										</div>
+										<div class="col-9">
+											<div class="tab-content" id="list-pasal">
 												<?php foreach ($pasal as $k => $psl) : ?>
-													<div class="tab-pane fade show <?= ($k == 0) ? 'active' : ''; ?>" id="psl-desc-<?= $psl->id; ?>" role="tabpanel">
+													<div class="tab-pane fade show px-5 <?= ($k == 0) ? 'active' : ''; ?>" id="psl-desc-<?= $psl->id; ?>" role="tabpanel">
+														<button type="button" id='<?= $psl->id; ?>' class='btn btn-light-success btn-sm add-phar id-<?= $psl->id; ?> mb-5' title='Add Description'><i class='fa fa-plus-circle'></i> Add Description</button>
 														<table class="table table-borderless mb-5">
 															<!-- <thead class="text-center">
 																<tr class="table-light">
@@ -179,55 +178,34 @@
 																</tr>
 															</thead> -->
 															<tbody>
-																<?php if ($ArrPhar) : $n = 0; ?>
+																<?php if (isset($ArrPhar[$psl->id])) : $n = 0; ?>
 																	<?php foreach ($ArrPhar[$psl->id] as $phar) : $n++; ?>
 																		<tr>
-																			<!-- <td width="30" class="text-center"><?= $n; ?></td> -->
+																			<td width="30" class="text-center"><?= $n; ?></td>
 																			<td class="font-size-lg text-left">
-																				<p><?= $phar->description; ?></p>
+																				<?= $phar->description; ?>
 																			</td>
-																			<td width="50" class="text-center">
-																				<button type="button" data-id="<?= $phar->id; ?>" class="btn btn-xs btn-warning btn-icon"><i class="fa fa-edit"></i></button>
+																			<td width="80" class="text-center">
+																				<button type="button" data-id="<?= $phar->id; ?>" class="btn btn-xs btn-warning btn-icon edit-desc"><i class="fa fa-edit"></i></button>
+																				<button type="button" data-id="<?= $phar->id; ?>" class="btn btn-xs btn-danger btn-icon del-desc"><i class="fa fa-trash"></i></button>
 																			</td>
 																		</tr>
 																	<?php endforeach; ?>
 																<?php else : ?>
 																	<tr>
-																		<td colspan="2" class="text-center text-muted">~ No data avilable ~</td>
+																		<td colspan="2" class="text-muted">~ No data avilable ~</td>
 																	</tr>
 																<?php endif; ?>
 															</tbody>
 														</table>
 													</div>
 												<?php endforeach; ?>
-											<?php endif; ?>
+											</div>
 										</div>
 									</div>
-								</div>
-
-								<h2 class="text-center mb-3 text-muted">Pasal ...</h2>
-								<table class="table table-sm table-condensed table-borderless mb-5">
-									<!-- <thead class="text-center">
-										<tr class="table-light">
-											<th width="50" class="text-center">Ayat</th>
-											<th>Deskipsi</th>
-											<th width="120">Opsi</th>
-										</tr>
-									</thead> -->
-									<tbody>
-										<!-- <tr>
-											<td width="50" class="text-center">1</td>
-											<td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore quasi vel fuga pariatur ab voluptas, laboriosam vero error maiores nostrum.</td>
-											<td width="120" class="text-center">
-												<button type="button" class="btn btn-xs btn-warning btn-icon"><i class="fa fa-edit"></i></button>
-											</td>
-										</tr> -->
-										<tr>
-											<td colspan="3" class="text-center text-muted">~ No data avilable ~</td>
-										</tr>
-									</tbody>
-								</table>
-								<!-- <button type="button" class="btn btn-success btn-sm" id="add_ayat"><i class="fa fa-plus mr-2"></i>Add Pasal</button> -->
+								<?php else : ?>
+									<h5 class="text-center text-muted">~ Not available data ~</h5>
+								<?php endif; ?>
 							</div>
 						</div>
 					</div>
@@ -266,7 +244,24 @@
 						<input type="hidden" name="regulation_id" class="form-control" value="<?= $data->id; ?>" />
 						<input type="text" name="pasal" id="pasal" placeholder="Pasal 1" class="form-control" />
 					</div>
+					<div class="mb-5">
+						<label class="col-form-label font-weight-bold">Order</label>
+						<input type="number" name="order" id="order" placeholder="Order" class="form-control w-25" />
+					</div>
 				</form>
+			</div>
+			<div class="modal-footer justify-content-between align-items-center">
+				<button type="button" class="btn btn-primary px-4" style="transition: width ease 1s" id="save_pasal"><i class="fa fa-save"></i>Save</button>
+				<button type="button" class="btn btn-danger" id="reset" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modelEditPasal" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
 			</div>
 			<div class="modal-footer justify-content-between align-items-center">
 				<button type="button" class="btn btn-primary px-4" style="transition: width ease 1s" id="save_pasal"><i class="fa fa-save"></i>Save</button>
@@ -289,6 +284,20 @@
 		</div>
 	</div>
 </div>
+<div class="modal fade" id="modelEditDesc" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true" style="z-index:1041">
+	<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
+				<p class="text-center">No Data</p>
+			</div>
+			<div class="modal-footer justify-content-between align-items-center">
+				<button type="button" class="btn btn-primary px-4" style="transition: width ease 1s" id="update_desc"><i class="fa fa-save"></i>Save</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <script>
 	$(document).ready(function() {
 		$(document).on('paste keypress', '.numeric', function(e) {
@@ -315,15 +324,10 @@
 			allowClear: true,
 		})
 
-		$(document).on('click', '#add_ayat', function() {
-			const url = siteurl + active_controller + 'loadForm'
-			$('#modelId').modal('show')
-			$('#contentModal').load(url)
-		})
-
 		$(document).on('click', '#add_pasal', function() {
+			const id = $(this).data('id')
 			$('#modelTitle').modal('show')
-			// $('#contentModal').load(url)
+			$('#modelTitle .modal-body').load(siteurl + active_controller + 'add_pasal/' + id)
 		})
 
 		$(document).on('click', '#save_regulation', function(e) {
@@ -465,14 +469,68 @@
 			}
 		})
 
-		$(document).on('click', '.edit-phar', function() {
+		$(document).on('click', '.edit-pasal', function() {
 			let id = $(this).attr('id')
-			alert(id)
+			// alert(siteurl + active_controller + 'edit_pasal/' + id)
+			if (id) {
+				$('#modelTitle').modal('show')
+				$('#modelTitle .modal-body').load(siteurl + active_controller + 'edit_pasal/' + id)
+			}
+			// alert(id)
 		})
 
-		$(document).on('click', '.delete-phar', function() {
+		$(document).on('click', '.delete-pasal', function() {
 			let id = $(this).attr('id')
-			alert(id)
+			const btn = $(this)
+			if (id) {
+				Swal.fire({
+					title: 'Confirm!',
+					text: 'Are you sure you want to delete this data?',
+					icon: 'question',
+					showCancelButton: true,
+				}).then((value) => {
+					if (value.isConfirmed) {
+						$.ajax({
+							url: siteurl + active_controller + 'delete_pasal',
+							data: {
+								id
+							},
+							type: 'POST',
+							dataType: 'JSON',
+							success: function(result) {
+								if (result.status == 1) {
+									btn.parents('tr').remove();
+									Swal.fire({
+										title: 'Success!',
+										icon: 'success',
+										text: result.msg,
+										timer: 3000
+									}).then(() => {
+										location.reload();
+									})
+								} else {
+									Swal.fire({
+										title: 'Warning!',
+										icon: 'warning',
+										text: result.msg,
+										timer: 2000
+									})
+								}
+							},
+							error: function(result) {
+								Swal.fire({
+									title: 'Error!',
+									icon: 'error',
+									text: 'Server timeout, becuase error!',
+									timer: 3000
+								})
+							}
+						})
+					}
+				})
+			} else {
+				$(this).parents('tr').remove();
+			}
 		})
 
 		/* Desc */
@@ -487,10 +545,75 @@
 					<td>
 						<textarea class="form-control" name="dtl[desc][` + row + `]"></textarea>
 					</td>
+					<td width="20">
+						<button type="button" data-id="" class="btn btn-xs btn-icon btn-danger btn-del"><i class="fa fa-times"></i></button>
+					</td>
 				</tr>
 			`;
 
 			$('.pharagraps tbody').append(html)
+		})
+
+		$(document).on('click', '.edit-desc', function() {
+			let id = $(this).data('id')
+			if (id) {
+				$('#modelEditDesc').modal('show')
+				$('#modelEditDesc .modal-body').load(siteurl + active_controller + 'load_form_edit/' + id)
+			}
+		})
+
+		$(document).on('click', '.del-desc', function() {
+			const id = $(this).data('id')
+			const btn = $(this)
+			if (id) {
+				Swal.fire({
+					title: 'Confirm!',
+					text: 'Are you sure you want to delete this data?',
+					icon: 'question',
+					showCancelButton: true,
+				}).then((value) => {
+					if (value.isConfirmed) {
+						$.ajax({
+							url: siteurl + active_controller + 'del_desc',
+							data: {
+								id
+							},
+							type: 'POST',
+							dataType: 'JSON',
+							success: function(result) {
+								if (result.status == 1) {
+									btn.parents('tr').remove();
+									Swal.fire({
+										title: 'Success!',
+										icon: 'success',
+										text: result.msg,
+										timer: 3000
+									}).then(() => {
+										location.reload();
+									})
+								} else {
+									Swal.fire({
+										title: 'Warning!',
+										icon: 'warning',
+										text: result.msg,
+										timer: 2000
+									})
+								}
+							},
+							error: function(result) {
+								Swal.fire({
+									title: 'Error!',
+									icon: 'error',
+									text: 'Server timeout, becuase error!',
+									timer: 3000
+								})
+							}
+						})
+					}
+				})
+			} else {
+				$(this).parents('tr').remove();
+			}
 		})
 
 		$(document).on('click', '#save_phar', function() {
@@ -551,6 +674,70 @@
 					}
 				})
 			}
+		})
+
+		$(document).on('click', '#update_desc', function() {
+			let btn = $(this)
+			let formdata = new FormData($('#form-desc')[0])
+			if (formdata) {
+				$.ajax({
+					url: siteurl + active_controller + 'update_desc',
+					data: formdata,
+					type: 'POST',
+					dataType: 'JSON',
+					processData: false,
+					contentType: false,
+					cache: false,
+					beforeSend: function() {
+						btn.attr('disabled', true)
+						btn.html('<i class="spinner spinner-sm mr-5"></i> Loading...')
+					},
+					complete: function() {
+						btn.attr('disabled', false)
+						btn.html('<i class="fa fa-save"></i>Save')
+					},
+					success: function(result) {
+						if (result.status == 1) {
+							Swal.fire({
+								title: 'Success!',
+								icon: 'success',
+								text: result.msg,
+								timer: 3000
+							}).then(() => {
+								$('#modelPhar').modal('hide')
+								location.reload();
+							})
+						} else if (result.status == 2) {
+							Swal.fire({
+								title: 'Warning!',
+								icon: 'warning',
+								text: result.msg,
+								timer: 3000
+							})
+						} else {
+							Swal.fire({
+								title: 'Warning!',
+								icon: 'warning',
+								text: result.msg,
+								timer: 2000
+							})
+						}
+					},
+
+					error: function(result) {
+						Swal.fire({
+							title: 'Error!',
+							icon: 'error',
+							text: 'Server timeout, becuase error!',
+							timer: 4000
+						})
+					}
+				})
+			}
+		})
+
+		$(document).on('click', '.btn-del', function() {
+			$(this).parents('tr').remove();
 		})
 
 		/* end desc */

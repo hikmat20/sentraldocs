@@ -79,6 +79,20 @@ class Regulations_model extends BF_Model
     return "PAS" . str_pad($count, 4, "0", STR_PAD_LEFT);
   }
 
+  private function _getIdPasalDesc($pasal_id)
+  {
+    $sql      = "SELECT MAX(SUBSTR(id,9)+0) as maxId FROM regulation_paragraphs WHERE pasal_id = '$pasal_id'";
+    $result   = $this->db->query($sql)->row();
+    $maxId    = $result->maxId;
+    $count    = 1;
+
+    if ($maxId > 0) {
+      $count = $maxId + 1;
+    }
+
+    return $count;
+  }
+
   public function saveData($data = null)
   {
     $subjects   = (isset($data['subjects']) ? $data['subjects'] : '');
@@ -161,19 +175,56 @@ class Regulations_model extends BF_Model
 
   public function savePasal($data = null)
   {
-    if (!isset($data['id'])) {
+    if (!$data['id']) {
       $id = $this->_getIdPasal();
       $data['id']         = $id;
-      $data['name']       = $data['pasal'];
       $data['created_by'] = $this->auth->user_id();
       $data['created_at'] = date('Y-m-d H:i:s');
       unset($data['pasal']);
       $this->db->insert('regulation_pasal', $data);
     } else {
-      $data['name']       = $data['pasal'];
       $data['modified_by'] = $this->auth->user_id();
       $data['modified_at'] = date('Y-m-d H:i:s');
       $this->db->update('regulation_pasal', $data, ['id' => $data['id']]);
     }
+  }
+
+  public function deletePasal($id)
+  {
+    $this->db->delete('regulation_paragraphs', ['pasal_id' => $id]);
+    $this->db->delete('regulation_pasal', ['id' => $id]);
+  }
+
+  /*  */
+
+  public function savePasalDesc($data = null)
+  {
+    $id = $this->_getIdPasalDesc($data['pasal_id']);
+    $n = $id;
+
+    foreach ($data['dtl']['desc'] as $k => $desc) {
+      $n++;
+      $ArrData[$k]['id']              =  $data['pasal_id'] . '-' . $n;
+      $ArrData[$k]['regulation_id']   =  $data['regulation_id'];
+      $ArrData[$k]['pasal_id']        =  $data['pasal_id'];
+      $ArrData[$k]['description']     =  $desc;
+      $ArrData[$k]['created_by']      = $this->auth->user_id();
+      $ArrData[$k]['created_at']      = date('Y-m-d H:i:s');
+    }
+
+    if ($ArrData) {
+      $this->db->insert_batch('regulation_paragraphs', $ArrData);
+    }
+  }
+
+  public function updatePasalDesc($data = null)
+  {
+    $id = $data['id'];
+    $data = [
+      'description' => $data['desc'],
+      'modified_by'  => $this->auth->user_id(),
+      'modified_at'  => date('Y-m-d H:i:s'),
+    ];
+    $this->db->update('regulation_paragraphs', $data, ['id' => $id]);
   }
 }
