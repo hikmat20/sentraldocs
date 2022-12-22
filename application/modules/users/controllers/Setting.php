@@ -150,9 +150,16 @@ class Setting extends Admin_Controller
     public function edit($id = 0)
     {
 
-        $data       = $this->db->get_where('users', ['id_user' => $this->auth->user_id()])->row();
-        $levels     = $this->db->get_where('groups', ['active' => 'Y', 'id_group !=' => '1'])->result();
-        $user_group = $this->db->get_where('user_groups', ['user_id' => $this->auth->user_id()])->row();
+        $data           = $this->db->get_where('view_users', ['id_user' => $id])->row();
+        $levels         = $this->db->get_where('groups', ['active' => 'Y', 'id_group !=' => '1'])->result();
+        $user_group     = $this->db->get_where('user_groups', ['user_id' => $id])->row();
+        $companies      = $this->db->get_where('companies')->result();
+        // $levels         = $this->db->get_where('groups', ['active' => 'Y', 'company_id' => null, 'id_group !=' => '1'])->result();
+        $levelsComp     = $this->db->get_where('groups', ['active' => 'Y', 'company_id' => $this->company])->result();
+
+        $this->template->set('levels', array_merge($levels, $levelsComp));
+        $this->template->set('companies', $companies);
+
 
         $this->template->set('levels', $levels);
         $this->template->set('data', $data);

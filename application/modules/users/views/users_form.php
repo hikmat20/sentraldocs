@@ -81,7 +81,7 @@
 											<select name="company_id" id="company_id" class="form-control required form-control-solid select2">
 												<option value=""></option>
 												<?php foreach ($companies as $com) : ?>
-													<option value="<?= $com->id_perusahaan; ?>"> <span class="fw-bold"><?= strtoupper($com->inisial); ?></span> - <?= $com->nm_perusahaan; ?></option>
+													<option value="<?= $com->id_perusahaan; ?>" <?= ($com->id_perusahaan == $data->company_id) ? 'selected' : ''; ?>> <span class="fw-bold"><?= strtoupper($com->inisial); ?></span> - <?= $com->nm_perusahaan; ?></option>
 												<?php endforeach; ?>
 											</select>
 										</div>
