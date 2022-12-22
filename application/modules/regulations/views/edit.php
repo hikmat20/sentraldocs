@@ -1,203 +1,313 @@
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
 	<div class="d-flex flex-column-fluid">
 		<div class="container">
-			<form id="form-chapter">
+			<form id="form-regulation">
+				<input type="hidden" name="id" value="<?= $data->id; ?>">
 				<div class="card card-stretch shadow card-custom">
-					<div class="card-header d-flex justify-content-between align-items-center">
-						<h2><i class="fa fa-plus mr-2"></i><?= $title; ?></h2>
+					<div class="card-header justify-content-between d-flex align-items-center">
+						<h2 class="m-0"><i class="fa fa-plus mr-2"></i><?= $title; ?></h2>
 						<a href="<?= base_url($this->uri->segment(1)); ?>" class="btn btn-danger"><i class="fa fa-reply"></i>Back</a>
 					</div>
 
 					<div class="card-body">
 						<div class="row">
 							<div class="col-md-6">
-								<input type="hidden" name="id" id="id" value="<?= $Data->id; ?>">
 								<div class="mb-3 row flex-nowrap">
-									<label for="Name" class="col-2 col-form-label font-weight-bold">Name</label>
-									<div class="col-10">
-										<input type="text" name="name" class="form-control bg-light-warning form-control-solid" id="Name" placeholder="Name of Requirement" value="<?= $Data->name; ?>" />
-									</div>
-								</div>
-								<div class="mb-3 row flex-nowrap">
-									<label for="" class="col-2 col-form-label font-weight-bold">Year</label>
-									<div class="col-4">
-										<input type="text" name="year" id="year" class="form-control" placeholder="2022" value="<?= $Data->year; ?>">
-									</div>
-								</div>
-								<div class="mb-3 row flex-nowrap">
-									<label for="" class="col-2 col-form-label font-weight-bold">Number</label>
-									<div class="col-4">
-										<input type="text" name="number" id="number" class="form-control" placeholder="09123" value="<?= $Data->number; ?>">
-									</div>
-								</div>
-								<div class="mb-3 row flex-nowrap">
-									<label for="" class="col-2 col-form-label font-weight-bold">Status</label>
-									<div class="col-4">
-										<select name="status" id="status" class="form-control select2">
-											<option value="1" <?= ($Data->status == '1') ? 'selected' : ''; ?>>Publish</option>
-											<option value="DFT" <?= ($Data->status == 'DFT') ? 'selected' : ''; ?>>Draft</option>
+									<label for="" class="col-4 col-form-label font-weight-bold">Regulation Category</label>
+									<div class="col-8">
+										<select name="regulation_category" id="regulation_category" onchange="getName()" class="form-control select2">
+											<option value=""></option>
+											<?php foreach ($category as $cat) : ?>
+												<option value="<?= $cat->id; ?>" <?= ($cat->id == $data->regulation_category) ? 'selected' : ''; ?>><?= $cat->name; ?></option>
+											<?php endforeach; ?>
 										</select>
 									</div>
 								</div>
-								<div class="mb-3 row flex-nowrap">
-									<label for="" class="col-2 col-form-label font-weight-bold"></label>
-									<div class="col-4">
-										<button type="submit" class="btn btn-primary w- save"><i class="fa fa-save"></i>Save</button>
 
+								<div class="mb-3 row flex-nowrap">
+									<label for="nomenclature" class="col-4 col-form-label font-weight-bold">Nomenclature</label>
+									<div class="col-8">
+										<input type="text" name="nomenclature" value="<?= $data->nomenclature; ?>" onchange="getName()" class="form-control" id="nomenclature" placeholder="Nomenclature" />
+									</div>
+								</div>
+
+								<div class="mb-3 row flex-nowrap">
+									<label for="" class="col-4 col-form-label font-weight-bold">Number</label>
+									<div class="col-4">
+										<input type="text" name="number" value="<?= $data->number; ?>" id="number" autocomplete="off" maxlength="3" onchange="getName()" class="form-control numeric" placeholder="---">
+									</div>
+								</div>
+
+								<div class="mb-3 row flex-nowrap">
+									<label for="Name" class="col-4 col-form-label font-weight-bold">Subject</label>
+									<div class="col-8">
+										<?php
+										$inArray = isset($ArrRegSjb[$data->id]) ? $ArrRegSjb[$data->id] : [];
+										?>
+										<select name="subjects[]" multiple id="subject" data-allow-clear="true" class="form-control select2">
+											<option value=""></option>
+											<?php if ($subjects) : ?>
+												<?php foreach ($subjects as $sub) : ?>
+													<option value="<?= $sub->id; ?>" <?= (($inArray) && in_array($sub->id, $inArray)) ? 'selected' : ''; ?>><?= $sub->name; ?></option>
+												<?php endforeach; ?>
+											<?php endif; ?>
+										</select>
+									</div>
+								</div>
+
+								<div class="mb-3 row flex-nowrap">
+									<label for="scope" class="col-4 col-form-label font-weight-bold">Scope</label>
+									<div class="col-8">
+										<?php
+										$inArray = isset($ArrRegScp[$data->id]) ? $ArrRegScp[$data->id] : '';
+										?>
+										<select name="scopes[]" multiple id="scope" data-allow-clear="true" class="form-control select2">
+											<option value=""></option>
+											<?php if ($scopes) : ?>
+												<?php foreach ($scopes as $scp) : ?>
+													<option value="<?= $scp->id; ?>" <?= (($inArray) && in_array($scp->id, $inArray)) ? 'selected' : ''; ?>><?= $scp->name; ?></option>
+												<?php endforeach; ?>
+											<?php endif; ?>
+										</select>
 									</div>
 								</div>
 
 							</div>
-						</div>
 
+							<div class="col-md-6">
+								<div class="mb-3 row flex-nowrap">
+									<label for="" class="col-4 col-form-label font-weight-bold">Year</label>
+									<div class="col-4">
+										<input type="text" name="year" value="<?= $data->year; ?>" autocomplete="off" id="year" onchange="getName()" maxlength="4" class="form-control numeric" placeholder="2022">
+										<span class="invalid-feedback" id="invalid-feedbacek-year"></span>
+									</div>
+								</div>
+
+								<div class="mb-3 row flex-nowrap">
+									<label for="" class="col-4 col-form-label font-weight-bold">About</label>
+									<div class="col-8">
+										<textarea name="about" id="about" class="form-control" onchange="getName()" placeholder="Lorem ipsum dolor sit amet!"><?= $data->about; ?></textarea>
+									</div>
+								</div>
+
+								<div class="mb-3 row flex-nowrap">
+									<label for="source" class="col-4 col-form-label font-weight-bold">Source</label>
+									<div class="col-8">
+										<textarea name="source" id="source" class="form-control" placeholder="Lorem ipsum dolor sit amet!"><?= $data->source; ?></textarea>
+									</div>
+								</div>
+
+								<div class="mb-3 row flex-nowrap">
+									<label for="" class="col-4 col-form-label font-weight-bold">Status</label>
+									<div class="col-8">
+										<select name="status" id="status" class="form-control select2">
+											<option value="PUB" <?= ($data->status == 'PUB') ? 'selected' : ''; ?>>Publish</option>
+											<option value="DFT" <?= ($data->status == 'DFT') ? 'selected' : ''; ?>>Draft</option>
+										</select>
+									</div>
+								</div>
+
+							</div>
+
+							<!--  -->
+							<div class="col-md-12">
+								<hr>
+								<div class="mb-3 row flex-nowrap">
+									<label for="Name" class="col-2 col-form-label font-weight-bold">Regulation Name</label>
+									<div class="col-10">
+										<textarea name="name" class="form-control font-weight-bolder h4 form-control-solid" id="regulation_name" placeholder="Regulation Name" readonly rows="3"><?= $data->name; ?></textarea>
+									</div>
+								</div>
+								<hr>
+								<div class="mb-3 row flex-nowrap">
+									<label for="revision_desc" class="col-2 col-form-label font-weight-bold">Revision Description</label>
+									<div class="col-10">
+										<textarea name="revision_desc" id="revision_desc" class="form-control" placeholder="Description..." rows="4"><?= $data->revision_desc; ?></textarea>
+									</div>
+								</div>
+								<hr>
+								<div class="mb-3 row flex-nowrap">
+									<label for="" class="col-2 col-form-label font-weight-bold"></label>
+									<div class="col-4">
+										<button type="button" class="btn btn-primary w-100px" id="save_regulation"><i class="fa fa-save"></i>Save</button>
+									</div>
+								</div>
+							</div>
+
+						</div>
 						<hr>
 						<div class="d-flex justify-content-between align-items-center mb-3">
 							<h4 class="">List Pasal</h4>
-							<button type="button" class="btn btn-primary btn-sm" id="add_pasal"><i class="fa fa-plus mr-2"></i>Add Pasal</button>
+							<button type="button" class="btn btn-primary btn-sm" id="add_pasal"><i class="fa fa-plus mr-2"></i>Add New Pasal</button>
 						</div>
-						<table class="table table-sm table-condensed table-bordered">
-							<thead class="text-center ">
-								<tr class="table-light">
-									<th width="40">No</th>
-									<th width="150">Pasal</th>
-									<th width="450">Desc. Indonesian</th>
-									<th width="450">Desc. English</th>
-									<th width="150">Action</th>
-								</tr>
-							</thead>
-							<tbody>
 
-								<?php if (!$Data_list) : ?>
-									<tr>
-										<td colspan="5" class="text-center text-muted">~ No data avilable ~</td>
-									</tr>
-									<?php else :
-									$n = 0;
-									foreach ($Data_list as $dtl) : $n++; ?>
-										<tr>
-											<td class="text-center"><?= $n; ?></td>
-											<td class="">
-												<?= $dtl->chapter; ?>
-											</td>
-											<td class="">
-												<?= ($dtl->desc_indo) ? limit_text(strip_tags($dtl->desc_indo), 200) . ' <a href="#read" class="link view" data-id="' . $dtl->id . '">[read]</a>' : ''; ?>
-											</td>
-											<td class="">
+						<div class="card">
+							<div class="card-body text-center">
+								<div class="row">
+									<div class="col-3 border-right-secondary border border-bottom-0 border-left-0 border-top-0">
+										<ul class="nav flex-column nav-pills nav-light-secondary">
+											<?php if ($pasal) : ?>
+												<?php foreach ($pasal as $k => $psl) : ?>
+													<li class="nav-item text-left">
+														<a class="nav-link h4 text-dark d-inline d-flex justify-content-between align-items-center <?= ($k == 0) ? 'active' : ''; ?>" id="pasal-<?= $psl->id; ?>" data-toggle="pill" data-target="#psl-desc-<?= $psl->id; ?>" type="button" role="tab" aria-selected="true">
+															<span><?= ucfirst($psl->name); ?></span>
+															<span class="">
+																<button id='<?= $psl->id; ?>' class='btn px-0 btn-xs text-hover-warning btn-icon edit-phar id-<?= $psl->id; ?>' title='Edit'><i class='fa fa-pen'></i></button>
+																<button id='<?= $psl->id; ?>' class='btn px-0 btn-xs text-hover-danger btn-icon delete-phar id-<?= $psl->id; ?>' title='Delete'><i class='fa fa-trash'></i></button>
+															</span>
+														</a>
+														<!-- <a href='javascript:void(0)' class="pasal-title d-inline text-hover-primary" role="button" data-toggle="popover" data-trigger="click" data-html="true" data-content="
+															<a href='javascript:void(0)' id='<?= $psl->id; ?>' class='btn btn-xs text-hover-success btn-icon add-phar id-<?= $psl->id; ?>' title='Add'><i class='fa fa-plus'></i></a>
+															
+															"><i class="fa fa-cog"></i></a> -->
+													</li>
+												<?php endforeach; ?>
+											<?php endif; ?>
+										</ul>
+									</div>
+									<div class="col-9">
+										<div class="tab-content" id="myTabContent">
+											<?php if ($pasal) : ?>
+												<?php foreach ($pasal as $k => $psl) : ?>
+													<div class="tab-pane fade show <?= ($k == 0) ? 'active' : ''; ?>" id="psl-desc-<?= $psl->id; ?>" role="tabpanel">
+														<table class="table table-borderless mb-5">
+															<!-- <thead class="text-center">
+																<tr class="table-light">
+																	<th width="50" class="text-center py-2">Ayat</th>
+																	<th class="py-2">Deskipsi</th>
+																	<th class="py-2" width="50">Opsi</th>
+																</tr>
+															</thead> -->
+															<tbody>
+																<?php if ($ArrPhar) : $n = 0; ?>
+																	<?php foreach ($ArrPhar[$psl->id] as $phar) : $n++; ?>
+																		<tr>
+																			<!-- <td width="30" class="text-center"><?= $n; ?></td> -->
+																			<td class="font-size-lg text-left">
+																				<p><?= $phar->description; ?></p>
+																			</td>
+																			<td width="50" class="text-center">
+																				<button type="button" data-id="<?= $phar->id; ?>" class="btn btn-xs btn-warning btn-icon"><i class="fa fa-edit"></i></button>
+																			</td>
+																		</tr>
+																	<?php endforeach; ?>
+																<?php else : ?>
+																	<tr>
+																		<td colspan="2" class="text-center text-muted">~ No data avilable ~</td>
+																	</tr>
+																<?php endif; ?>
+															</tbody>
+														</table>
+													</div>
+												<?php endforeach; ?>
+											<?php endif; ?>
+										</div>
+									</div>
+								</div>
 
-												<?= ($dtl->desc_eng) ? limit_text(strip_tags($dtl->desc_eng), 200) . ' <a href="#read" class="link view" data-id="' . $dtl->id . '">[read]</a>' : ''; ?>
-											</td>
-											<td class="text-center" style="vertical-align: middle;">
-												<button type="button" class="btn btn-sm btn-info rounded-circle btn-icon view" data-id="<?= $dtl->id; ?>"><i class="fa fa-file-alt"></i></button>
-												<button type="button" class="btn btn-sm btn-warning rounded-circle btn-icon edit" data-id="<?= $dtl->id; ?>"><i class="fa fa-edit"></i></button>
-												<button type="button" class="btn btn-sm btn-danger rounded-circle btn-icon delete" data-id="<?= $dtl->id; ?>"><i class="fa fa-trash"></i></button>
-											</td>
+								<h2 class="text-center mb-3 text-muted">Pasal ...</h2>
+								<table class="table table-sm table-condensed table-borderless mb-5">
+									<!-- <thead class="text-center">
+										<tr class="table-light">
+											<th width="50" class="text-center">Ayat</th>
+											<th>Deskipsi</th>
+											<th width="120">Opsi</th>
 										</tr>
-								<?php endforeach;
-								endif; ?>
-							</tbody>
-						</table>
+									</thead> -->
+									<tbody>
+										<!-- <tr>
+											<td width="50" class="text-center">1</td>
+											<td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore quasi vel fuga pariatur ab voluptas, laboriosam vero error maiores nostrum.</td>
+											<td width="120" class="text-center">
+												<button type="button" class="btn btn-xs btn-warning btn-icon"><i class="fa fa-edit"></i></button>
+											</td>
+										</tr> -->
+										<tr>
+											<td colspan="3" class="text-center text-muted">~ No data avilable ~</td>
+										</tr>
+									</tbody>
+								</table>
+								<!-- <button type="button" class="btn btn-success btn-sm" id="add_ayat"><i class="fa fa-plus mr-2"></i>Add Pasal</button> -->
+							</div>
+						</div>
 					</div>
+
 				</div>
-				<!-- <button class="btn btn-primary" type="button" data-target="#modelId" data-toggle="modal">Modal</button> -->
+
 				<!-- Modal -->
 				<div class="modal fade" id="modelId" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-					<div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
+					<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
 						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">Modal title</h5>
-								<button type="button" class="close" onclick="tinymce.remove()" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<div class="container-fluid" id="modal_content">
-
-								</div>
-							</div>
+							<div id="contentModal"></div>
 							<div class="modal-footer justify-content-between align-items-center">
-								<button type="submit" class="btn btn-primary w-100px" id="save_chapter"><i class="fa fa-save"></i>Save</button>
-								<button type="button" class="btn btn-danger" onclick="tinymce.remove()" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
+								<button type="submit" class="btn btn-primary w-100px" id="save_"><i class="fa fa-save"></i>Save</button>
+								<button type="button" class="btn btn-danger" onclick=";setTimeout(()=>{$('#contentModal').html('');tinymce.remove()},500)" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
 							</div>
 						</div>
 					</div>
 				</div>
+
 			</form>
 		</div>
 	</div>
 </div>
-
-<div class="modal fade" id="modalView" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable" role="document">
+<style>
+	.popover {
+		z-index: 1000 !important;
+	}
+</style>
+<div class="modal fade" id="modelTitle" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Modal title</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
 			<div class="modal-body">
-				<div class="container-fluid" id="modal_content_view">
-
-				</div>
+				<form id="form-title">
+					<div class="mb-5">
+						<label class="col-form-label font-weight-bold">Pasal</label>
+						<input type="hidden" name="regulation_id" class="form-control" value="<?= $data->id; ?>" />
+						<input type="text" name="pasal" id="pasal" placeholder="Pasal 1" class="form-control" />
+					</div>
+				</form>
 			</div>
-			<div class="modal-footer justify-content-end align-items-center">
-				<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
+			<div class="modal-footer justify-content-between align-items-center">
+				<button type="button" class="btn btn-primary px-4" style="transition: width ease 1s" id="save_pasal"><i class="fa fa-save"></i>Save</button>
+				<button type="button" class="btn btn-danger" id="reset" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
 			</div>
 		</div>
 	</div>
 </div>
 
+<div class="modal fade" id="modelPhar" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true" style="z-index:1041">
+	<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
+				<p class="text-center">No Data</p>
+			</div>
+			<div class="modal-footer justify-content-between align-items-center">
+				<button type="button" class="btn btn-primary px-4" style="transition: width ease 1s" id="save_phar"><i class="fa fa-save"></i>Save</button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>
 <script>
-	$(document).on('click', '#add_pasal', function() {
-		let html = `
-			<div class="mb-5">
-				<label for="chapter" class="col-form-label font-weight-bold">Pasal</label>
-				<input type="text" name="list[chapter]" class="form-control" id="chapter" placeholder="Chapter of Requirement" />
-			</div>
-			<div class="mb-5">
-				<label for="chapter" class="font-weight-bold">Description in Indonesian</label>
-				<textarea name="list[desc_indo]" class="form-control textarea" id="desc_indo" rows="10" placeholder="Description"></textarea>
-			</div>
-			<div class="mb-5">
-				<label for="chapter" class="font-weight-bold">Description in English</label>
-				<textarea name="list[desc_eng]" class="form-control textarea" id="desc_eng" rows="10" placeholder="Description"></textarea>
-			</div>`;
-		$('#modal_content').html(html)
-		$('.modal-title').html('Add Detail')
-		$('#modelId').modal('show')
-
-		function handlePromise(promiseList) {
-			return promiseList.map(promise =>
-				promise.then((res) => ({
-					status: 'ok',
-					res
-				}), (err) => ({
-					status: 'not ok',
-					err
-				}))
-			)
-		}
-		Promise.allSettled = function(promiseList) {
-			return Promise.all(handlePromise(promiseList))
-		}
-
-		tinymce.init({
-			selector: 'textarea.textarea',
-			height: 500,
-			resize: true,
-			plugins: 'preview importcss searchreplace autolink autosave save ' +
-				'directionality visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
-			toolbar: 'undo redo | blocks | ' +
-				'bold italic backcolor forecolor | alignleft aligncenter ' +
-				'alignright alignjustify | template codesample bullist numlist outdent indent | link image ' +
-				'removeformat | help',
-			content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
-			// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-		});
-
-	})
-
 	$(document).ready(function() {
+		$(document).on('paste keypress', '.numeric', function(e) {
+			const element = $(this)
+			element.removeClass('is-invalid')
+			element.css(
+				'text-decoration', 'none'
+			)
+			// Only ASCII character in that range allowed
+			let key = (e.which) ? e.which : e.keyCode
+			if (key > 31 && (key < 48 || key > 57)) {
+				element.css(
+					'text-decoration', 'line-through'
+				)
+				element.addClass('is-invalid')
+				element.next('span.invalid-feedback').text('Karakter yang diinput harus Angka!')
+				// return false;
+			}
+		})
 
 		$('.select2').select2({
 			placeholder: 'Choose an Option',
@@ -205,130 +315,22 @@
 			allowClear: true,
 		})
 
-		$(document).on('click', '.edit', function() {
-			let id = $(this).data('id')
-			$('.modal-title').html('Edit Detail')
-			$.ajax({
-				url: siteurl + active_controller + 'edit_detail/' + id,
-				type: 'GET',
-				dataType: 'JSON',
-				success: function(result) {
-					let html = `
-						<div class="mb-5">
-							<label for="chapter" class="col-form-label font-weight-bold">Pasal</label>
-							<input type="hidden" name="list[id]" class="form-control" id="id" value="` + result.id + `" placeholder="Chapter of Requirement" />
-							<input type="text" name="list[chapter]" class="form-control" id="chapter" value="` + result.chapter + `" placeholder="Chapter of Requirement" />
-						</div>
-						<div class="mb-5">
-							<label for="chapter" class="font-weight-bold">Description in Indonesian</label>
-							<textarea name="list[desc_indo]" class="form-control textarea" id="desc_indo" rows="10" placeholder="Description">` + result.desc_indo + `</textarea>
-						</div>
-						<div class="mb-5">
-							<label for="chapter" class="font-weight-bold">Description in English</label>
-							<textarea name="list[desc_eng]" class="form-control textarea" id="desc_eng" rows="10" placeholder="Description">` + result.desc_eng + `</textarea>
-						</div>
-						`;
-					$('#modal_content').html(html)
-					$('#modelId').modal('show')
-
-					function handlePromise(promiseList) {
-						return promiseList.map(promise =>
-							promise.then((res) => ({
-								status: 'ok',
-								res
-							}), (err) => ({
-								status: 'not ok',
-								err
-							}))
-						)
-					}
-					Promise.allSettled = function(promiseList) {
-						return Promise.all(handlePromise(promiseList))
-					}
-
-					tinymce.init({
-						selector: 'textarea.textarea',
-						height: 500,
-						resize: true,
-						plugins: 'preview importcss  searchreplace autolink autosave save ' +
-							'directionality visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
-						toolbar: 'undo redo | blocks | ' +
-							'bold italic backcolor forecolor | alignleft aligncenter ' +
-							'alignright alignjustify | template codesample bullist numlist outdent indent | link image ' +
-							'removeformat | help',
-						content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
-						// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-					});
-
-				},
-				error: function(result) {
-					Swal.fire({
-						title: 'Error!!',
-						text: 'Server timeout, becuase error. Please try again.',
-						icon: 'error',
-						timer: 3000
-					})
-				}
-			})
+		$(document).on('click', '#add_ayat', function() {
+			const url = siteurl + active_controller + 'loadForm'
+			$('#modelId').modal('show')
+			$('#contentModal').load(url)
 		})
 
-		$(document).on('click', '.view', function() {
-			let id = $(this).data('id')
-			$('.modal-title').html('View Detail')
-			$.ajax({
-				url: siteurl + active_controller + 'view_detail/' + id,
-				type: 'GET',
-				dataType: 'JSON',
-				success: function(result) {
-					let html = `
-						<div class="form-group">
-							<label class="font-weight-bold"><strong>Pasal</strong></label>
-							<div class="">
-							` + result.chapter + `
-							</div>
-						</div>
-
-						<!-- Nav tabs -->
-						<ul class="nav nav-fill nav-pills" id="myTab" role="tablist">
-							<li class="nav-item" role="presentation">
-								<a class="nav-link nav-pill active" id="indo-tab" data-toggle="tab" data-target="#indo" type="button" role="tab" aria-controls="indo" aria-selected="true">Indonesian</a>
-							</li>
-							<li class="nav-item" role="presentation">
-								<a class="nav-link nav-pill" id="eng-tab" data-toggle="tab" data-target="#eng" type="button" role="tab" aria-controls="eng" aria-selected="false">English</a>
-							</li>
-						</ul>
-
-						<!-- Tab panes -->
-						<div class="tab-content mt-4 border rounded-lg p-5">
-							<div class="tab-pane active pt-4 pb-4" id="indo" role="tabpanel" aria-labelledby="indo-tab">
-							` + result.desc_indo + `
-							</div>
-							<div class="tab-pane pt-4 pb-4" id="eng" role="tabpanel" aria-labelledby="eng-tab">
-							` + result.desc_eng + `
-							</div>
-						</div>
-					`;
-					$('#modal_content_view').html(html)
-					$('#modalView').modal('show')
-				},
-				error: function(result) {
-					Swal.fire({
-						title: 'Error!!',
-						text: 'Server timeout, becuase error. Please try again.',
-						icon: 'error',
-						timer: 3000
-					})
-				}
-			})
+		$(document).on('click', '#add_pasal', function() {
+			$('#modelTitle').modal('show')
+			// $('#contentModal').load(url)
 		})
 
-		$(document).on('submit', '#form-chapter', function(e) {
-			e.preventDefault();
-			let form = $(this)[0]
-			let formdata = new FormData(form)
-			let btn = $('#save_chapter')
+		$(document).on('click', '#save_regulation', function(e) {
+			let formdata = new FormData($('#form-regulation')[0])
+			let btn = $(this)
 			$.ajax({
-				url: siteurl + active_controller + '/save',
+				url: siteurl + active_controller + 'save',
 				data: formdata,
 				type: 'POST',
 				dataType: 'JSON',
@@ -352,7 +354,7 @@
 							timer: 2000
 						})
 						$('#modelId').modal('hide')
-						location.reload();
+						location.href = siteurl + active_controller + 'edit/' + result.id
 					} else {
 						Swal.fire({
 							title: 'Warning!',
@@ -362,6 +364,7 @@
 						})
 					}
 				},
+
 				error: function(result) {
 					Swal.fire({
 						title: 'Error!',
@@ -373,41 +376,208 @@
 			})
 		})
 
-		$(document).on('click', '.delete', function() {
-			let id = $(this).data('id')
-			Swal.fire({
-				title: 'Are you sure to delete this data?',
-				icon: 'question',
-				showCancelButton: true,
-				confirmButtonColor: '#DD6B55',
-				confirmButtonText: 'Yes, Delete <i class="fa fa-trash text-white"></i>',
-			}).then((value) => {
-				if (value.isConfirmed) {
-					$.ajax({
-						url: siteurl + active_controller + 'delete_pasal/' + id,
-						type: 'GET',
-						dataType: 'JSON',
-						success: function(result) {
-							if (result.status == '1') {
-								Swal.fire({
-									title: 'Success!!',
-									text: result.msg,
-									icon: 'success',
-									timer: 1500
-								}).then(() => {
-									location.reload()
-								})
+		$(document).on('click', '#save_pasal', function() {
+			$('#pasal').removeClass('is-invalid')
+			let formdata = new FormData($('#form-title')[0])
+			let btn = $(this)
+			$.ajax({
+				url: siteurl + active_controller + 'save_pasal',
+				data: formdata,
+				type: 'POST',
+				dataType: 'JSON',
+				processData: false,
+				contentType: false,
+				cache: false,
+				beforeSend: function() {
 
-							} else {
-								Swal.fire('Warning', "Can't delete data. Please try again!", 'warning', 2000)
-							}
-						},
-						error: function() {
-							Swal.fire('Error!', 'Server timeout. Please try again!', 'error', 3000)
-						}
+					btn.attr('disabled', true)
+					btn.html('<i class="spinner spinner-sm mr-5"></i>Loading...')
+				},
+				complete: function() {
+					btn.attr('disabled', false)
+					btn.html('<i class="fa fa-save"></i>Save')
+				},
+				success: function(result) {
+					if (result.status == 1) {
+						Swal.fire({
+							title: 'Success!',
+							icon: 'success',
+							text: result.msg,
+							timer: 2000
+						}).then(() => {
+							$('#modelTitle').modal('hide')
+							location.reload();
+						})
+						// location.href = siteurl + active_controller + '/edit/' + result.id
+					} else if (result.status == 2) {
+						Swal.fire({
+							title: 'Warning!',
+							icon: 'warning',
+							text: result.msg,
+							timer: 3000
+						})
+						$('#pasal').addClass('is-invalid')
+					} else {
+						Swal.fire({
+							title: 'Warning!',
+							icon: 'warning',
+							text: result.msg,
+							timer: 2000
+						})
+					}
+				},
+
+				error: function(result) {
+					Swal.fire({
+						title: 'Error!',
+						icon: 'error',
+						text: 'Server timeout, becuase error!',
+						timer: 4000
 					})
 				}
 			})
 		})
+
+		$(document).on('click', '#reset', function() {
+			$('#form-title').find("input[type=text], textarea").val("");
+
+		})
+
+		$(document).on('change', '#year', function() {
+			const inputYear = $(this)
+			const currYear = new Date().getFullYear();
+			if (jQuery.type(parseInt(inputYear.val())) != "number" || parseInt(inputYear.val()) > parseInt(currYear)) {
+				inputYear.addClass('is-invalid')
+				inputYear.css(
+					'text-decoration', 'line-through'
+				)
+				$('#invalid-feedbacek-year').text('Tahun tidak valid')
+			}
+		})
+
+		/* PHAR */
+
+		$(document).on('click', '.add-phar', function() {
+			let id = $(this).attr('id')
+			if (id) {
+				$('#modelPhar').modal('show')
+				$('#modelPhar .modal-body').load(siteurl + active_controller + 'load_form/' + id)
+			}
+		})
+
+		$(document).on('click', '.edit-phar', function() {
+			let id = $(this).attr('id')
+			alert(id)
+		})
+
+		$(document).on('click', '.delete-phar', function() {
+			let id = $(this).attr('id')
+			alert(id)
+		})
+
+		/* Desc */
+
+		$(document).on('click', '#add-desc', function() {
+			let row = $('.pharagraps tbody tr').length + 1
+			html = `
+				<tr>
+					<td>
+						<span>+</span>
+					</td>
+					<td>
+						<textarea class="form-control" name="dtl[desc][` + row + `]"></textarea>
+					</td>
+				</tr>
+			`;
+
+			$('.pharagraps tbody').append(html)
+		})
+
+		$(document).on('click', '#save_phar', function() {
+			let btn = $(this)
+			let formdata = new FormData($('#form-desc')[0])
+			if (formdata) {
+				$.ajax({
+					url: siteurl + active_controller + 'save_desc',
+					data: formdata,
+					type: 'POST',
+					dataType: 'JSON',
+					processData: false,
+					contentType: false,
+					cache: false,
+					beforeSend: function() {
+						btn.attr('disabled', true)
+						btn.html('<i class="spinner spinner-sm mr-5"></i> Loading...')
+					},
+					complete: function() {
+						btn.attr('disabled', false)
+						btn.html('<i class="fa fa-save"></i>Save')
+					},
+					success: function(result) {
+						if (result.status == 1) {
+							Swal.fire({
+								title: 'Success!',
+								icon: 'success',
+								text: result.msg,
+								timer: 3000
+							}).then(() => {
+								$('#modelPhar').modal('hide')
+								location.reload();
+							})
+						} else if (result.status == 2) {
+							Swal.fire({
+								title: 'Warning!',
+								icon: 'warning',
+								text: result.msg,
+								timer: 3000
+							})
+						} else {
+							Swal.fire({
+								title: 'Warning!',
+								icon: 'warning',
+								text: result.msg,
+								timer: 2000
+							})
+						}
+					},
+
+					error: function(result) {
+						Swal.fire({
+							title: 'Error!',
+							icon: 'error',
+							text: 'Server timeout, becuase error!',
+							timer: 4000
+						})
+					}
+				})
+			}
+		})
+
+		/* end desc */
 	})
+
+
+	function getName() {
+		const regCat = $('#regulation_category option:selected').text()
+		const nomenclature = $('#nomenclature').val() || ''
+		const number = $('#number').val() || ''
+		const year = $('#year').val() || ''
+		const about = $('#about').val() || ''
+
+		if (regCat && nomenclature && number && year && about) {
+			var no = y = a = '';
+			if (number) {
+				no = "Nomor " + number;
+			}
+			if (year) {
+				y = "Tahun " + year;
+			}
+			if (about) {
+				a = "Tentang " + about;
+			}
+
+			$('#regulation_name').val(regCat + " " + nomenclature + " " + no + " " + y + " " + a)
+		}
+
+	}
 </script>

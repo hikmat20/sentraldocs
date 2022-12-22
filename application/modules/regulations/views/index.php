@@ -17,7 +17,7 @@
 							<button class="nav-link active btn-sm" id="Published-tab" data-toggle="tab" data-target="#Published" type="button" role="tab" aria-controls="Published" aria-selected="true">Published <span class="badge badge-circle badge-white text-primary ml-2"><?= count($data); ?></span></button>
 						</li>
 						<li class="nav-item" role="presentation">
-							<button class="nav-link btn-sm" id="Draft-tab" data-toggle="tab" data-target="#Draft" type="button" role="tab" aria-controls="Draft" aria-selected="false">Draft <span class="badge badge-circle badge-white text-primary ml-2"><?= count($dataDraft); ?></span></button>
+							<button class="nav-link btn-sm" id="Draft-tab" data-toggle="tab" data-target="#Draft" type="button" role="tab" aria-controls="Draft" aria-selected="false">Draft <span class="badge badge-circle badge-white text-primary ml-2"><?= count($drafts); ?></span></button>
 						</li>
 					</ul>
 
@@ -27,10 +27,10 @@
 							<table id="example1" class="table table-bordered table-sm table-hover datatable">
 								<thead class="text-center table-light">
 									<tr class="text-center">
-										<th width="80">No.</th>
-										<th class="text-left">Nama</th>
-										<th>Tahun</th>
-										<th>Nomor</th>
+										<th width="5%">No.</th>
+										<th class="text-left">Regulation Name</th>
+										<th width="15%">Subject</th>
+										<th>Category</th>
 										<th width="150">Action</th>
 									</tr>
 								</thead>
@@ -38,12 +38,24 @@
 									<?php if (isset($data) && $data) :
 										$n = 0;
 										foreach ($data as $dt) : $n++; ?>
-											<tr class="text-center">
-												<td><?= $n; ?></td>
-												<td class="text-left"><?= $dt->name; ?></td>
-												<td><?= $dt->year; ?></td>
-												<td><?= $dt->number; ?></td>
-												<td>
+											<tr>
+												<td class="p-1"><?= $n; ?></td>
+												<td class="p-1"><?= $dt->name; ?></td>
+												<td class="p-1">
+													<?php if (isset($ArrRegSjb[$dt->id])) : ?>
+														<?php foreach ($ArrRegSjb[$dt->id] as $sbj) : ?>
+															<span class="label label-danger label-inline mb-1"><?= $sbj->subject_name; ?></span>
+														<?php endforeach; ?>
+													<?php endif; ?>
+												</td>
+												<td class="p-1">
+													<?php if (isset($ArrRegScp[$dt->id])) : ?>
+														<?php foreach ($ArrRegScp[$dt->id] as $scp) : ?>
+															<span class="label label-success label-inline mb-1"><?= $scp->scope_name; ?></span>
+														<?php endforeach; ?>
+													<?php endif; ?>
+												</td>
+												<td class="text-center p-1">
 													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
 													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-edit"></i></a>
 													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-trash"></i></button>
@@ -66,9 +78,9 @@
 									</tr>
 								</thead>
 								<tbody>
-									<?php if (isset($dataDraft) && $dataDraft) :
+									<?php if (isset($drafts) && $drafts) :
 										$n = 0;
-										foreach ($dataDraft as $draft) : $n++; ?>
+										foreach ($drafts as $draft) : $n++; ?>
 											<tr class="text-center">
 												<td><?= $n; ?></td>
 												<td class="text-left"><?= $draft->name; ?></td>

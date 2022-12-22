@@ -110,6 +110,7 @@ class Documents_list extends Admin_Controller
 			$groups 		= $this->db->get_where('group_procedure', ['status' => 'ACT'])->result();
 			$procedures 	= $this->db->get_where('view_procedures', ['company_id' => $this->company, 'status' => 'PUB', 'deleted_by' => null])->result_array();
 
+			$ArrPro = [];
 			foreach ($procedures as $pro) {
 				$ArrPro[$pro['group_procedure']][] = $pro;
 			}

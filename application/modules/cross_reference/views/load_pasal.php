@@ -22,9 +22,9 @@
 								<input type="hidden" name="detail[<?= $n; ?>][chapter]" value="<?= $val->id; ?>">
 							</td>
 							<td>
-								<?= limit_text(strip_tags($val->desc_indo), 100) . ' <a href="#read" class="link view_pasal" data-id="' . $val->id . '">[read]</a>'; ?></td>
+								<?= limit_text(strip_tags($val->desc_indo), 100) . ' <a href="#read" class="link view_pasal" data-id="' . $val->chapter_id . '">[read]</a>'; ?></td>
 							<td>
-								<?= limit_text(strip_tags($val->desc_eng), 100) . ' <a href="#read" class="link view_pasal" data-id="' . $val->id . '">[read]</a>'; ?></td>
+								<?= limit_text(strip_tags($val->desc_eng), 100) . ' <a href="#read" class="link view_pasal" data-id="' . $val->chapter_id . '">[read]</a>'; ?></td>
 							<td>
 								<select name="detail[<?= $n; ?>][procedure][]" multiple class="form-control select2-modal" required id="procedure_<?= $n; ?>">
 									<option value=""></option>
