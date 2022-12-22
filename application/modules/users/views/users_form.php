@@ -66,7 +66,7 @@
 										<div class="col-9">
 											<div class="checkbox-inline">
 												<label class="checkbox">
-													<input type="checkbox" class="required" name="status" value="ACT" <?= (isset($data) && $data->status == 'ACT') ? 'checked' : ''; ?>>
+													<input type="checkbox" name="status" value="ACT" <?= (isset($data) && $data->status == 'ACT') ? 'checked' : ''; ?>>
 													<span></span>Active
 												</label>
 											</div>

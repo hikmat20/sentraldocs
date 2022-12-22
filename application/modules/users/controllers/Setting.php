@@ -160,7 +160,6 @@ class Setting extends Admin_Controller
         $this->template->set('levels', array_merge($levels, $levelsComp));
         $this->template->set('companies', $companies);
 
-
         $this->template->set('levels', $levels);
         $this->template->set('data', $data);
         $this->template->set('user_group', $user_group);
@@ -345,7 +344,9 @@ class Setting extends Admin_Controller
             'cost' => $cost,
             'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM)
         ];
-        $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT, $options);
+        if ($data['password']) {
+            $data['password'] = password_hash($data['password'], PASSWORD_BCRYPT, $options);
+        }
 
         // if ($_FILES['profile_avatar']['name']) {
         //     $config['upload_path']          = './assets/img/';
@@ -370,13 +371,14 @@ class Setting extends Admin_Controller
         //     }
         // }
 
-        $group_id = $data['group_id'];
+        // $group_id = $data['group_id'];
 
         $this->db->trans_begin();
         unset($data['profile_avatar_remove']);
         if (isset($data['id_user']) && $data['id_user']) {
             $data['modified_at'] = date('Y-m-d H:i:s');
             $data['modified_by'] = $this->auth->user_id();
+            $data['status'] = (isset($data['status'])) ? $data['status'] : 'NAC';
 
             unset($data['re-password']);
             unset($data['group_id']);
@@ -403,10 +405,11 @@ class Setting extends Admin_Controller
             }
             $data['created_at'] = date('Y-m-d H:i:s');
             $data['created_by'] = $this->auth->user_id();
+            $data['status']     = ($data['status']) ?: 'NAC';
             unset($data['re-password']);
             unset($data['group_id']);
             $this->db->insert('users', $data);
-            $this->assign_company($data['username'], $group_id, $company_id);
+            // $this->assign_company($data['username'], $group_id, $company_id);
         }
 
         $error = $this->db->error()['message'];

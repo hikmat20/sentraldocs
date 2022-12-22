@@ -18,8 +18,8 @@
 						<th><?= lang('users_alamat') ?></th>
 						<th><?= lang('users_kota') ?></th>
 						<th><?= lang('users_hp') ?></th>
-						<th><?= lang('users_st_aktif') ?></th>
-						<th width="50"></th>
+						<th width="80"><?= lang('users_st_aktif') ?></th>
+						<th width="30"></th>
 					</tr>
 				</thead>
 
