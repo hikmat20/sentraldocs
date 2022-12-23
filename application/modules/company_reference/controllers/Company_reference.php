@@ -58,19 +58,19 @@ class Company_reference extends Admin_Controller
 
 	public function edit($id = '')
 	{
-		$Data 		= $this->db->get_where('view_references', ['id' => $id, 'status' => 'OPN'])->row();
-		$datStd 	= $this->db->get_where('view_ref_standards', ['reference_id' => $id])->result();
-		$companies 	= $this->db->get_where('companies')->result();
-		// $dataReg 	= $this->db->get_where('view_audit_regulations', ['audit_id' => $id])->result();
+		$Data 			= $this->db->get_where('view_references', ['id' => $id, 'status' => 'OPN'])->row();
+		$datStd 		= $this->db->get_where('view_ref_standards', ['reference_id' => $id])->result();
+		$companies 		= $this->db->get_where('companies')->result();
+		$dataReg 		= $this->db->get_where('view_ref_regulations', ['reference_id' => $id])->result();
 		$standards		= $this->db->get_where('requirements', ['status' => '1'])->result();
-		$regulations	= $this->db->get_where('regulations', ['status' => '1'])->result();
+		$regulations	= $this->db->get_where('regulations', ['status' => 'PUB'])->result();
 
 		if ($Data) {
 			$this->template->set([
 				'title' 		=> 'Edit Company Reference',
 				'Data' 			=> $Data,
 				'datStd' 		=> $datStd,
-				// 'dataReg' 	=> $dataReg,
+				'dataReg' 		=> $dataReg,
 				'Companies' 	=> $companies,
 				'standards' 	=> $standards,
 				'regulations' 	=> $regulations,
@@ -85,14 +85,13 @@ class Company_reference extends Admin_Controller
 		}
 	}
 
-
 	public function save()
 	{
 		$Data 		= $this->input->post();
 
 		if ($Data) {
 			$this->db->trans_begin();
-			$saved = $this->ReferenceModel->saveData($Data);
+			$saved 	= $this->ReferenceModel->saveData($Data);
 			if ($this->db->trans_status() === FALSE) {
 				$this->db->trans_rollback();
 				$Return		= array(
@@ -149,11 +148,18 @@ class Company_reference extends Admin_Controller
 		echo json_encode($Return);
 	}
 
-	public function delete_pasal($id)
+	public function delete_reg()
 	{
-		$this->db->trans_begin();
+		$id = $this->input->post('id');
 		if (($id)) {
-			$this->db->delete('requirement_details', ['id' => $id]);
+			$this->db->trans_begin();
+			$this->db->delete('ref_regulations', ['id' => $id]);
+		} else {
+			$this->db->trans_rollback();
+			$Return		= array(
+				'status'		=> 0,
+				'msg'			=> 'Data not valid. Please try again.',
+			);
 		}
 
 		if ($this->db->trans_status() === FALSE) {

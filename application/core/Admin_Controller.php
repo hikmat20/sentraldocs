@@ -69,7 +69,7 @@ class Admin_Controller extends Base_Controller
             $this->template->set_layout('ajax');
         }
 
-        $this->form_validation->set_error_delimiters('<p>', '</p>');
+        $this->form_validation->set_error_delimiters('', '');
     }
 }
 /* End of file Admin_Controller.php */

@@ -96,8 +96,8 @@
 									<thead class="text-center ">
 										<tr class="table-light">
 											<th class="py-2" width="50">No</th>
-											<th class="py-2" width="350">Regulations Name</th>
-											<th class="py-2">Descriptions</th>
+											<th class="py-2">Regulations Name</th>
+											<th class="py-2" width="350">Descriptions</th>
 											<th class="py-2" width="80">Action</th>
 										</tr>
 									</thead>
@@ -107,9 +107,14 @@
 											foreach ($dataReg as $reg) : $n++; ?>
 												<tr>
 													<td class="text-center"><?= $n; ?></td>
-													<td class=""><?= $reg->name; ?></td>
+													<td class="">
+														<span class="dataIdReg d-none"><?= $reg->regulation_id; ?></span>
+														<?= $reg->name; ?>
+													</td>
 													<td class="text-center"><?= $reg->descriptions; ?></td>
-													<td class="text-center"></td>
+													<td class="text-center">
+														<button type="button" class="btn btn-danger btn-icon btn-xs del-row-reg" data-id="<?= $reg->id; ?>"><i class="fa fa-trash" aria-hidden="true"></i></button>
+													</td>
 												</tr>
 											<?php endforeach; ?>
 										<?php else : ?>
@@ -229,11 +234,11 @@
 				allowClear: true,
 				width: '100%'
 			})
-			selectStd()
+			selectStd('.selectStd', '.dataIdStd')
 		})
 
 		$(document).on('change', '.selectStd', function() {
-			selectStd()
+			selectStd('.selectStd', '.dataIdStd')
 		})
 
 		$(document).on('click', '.del-row-std', function() {
@@ -287,7 +292,7 @@
 					btn.parents('tr').remove()
 				}, 500);
 			}
-			selectStd()
+			selectStd('.selectStd', '.dataIdStd')
 		})
 
 		$(document).on('click', '#add_regulation', function() {
@@ -299,10 +304,13 @@
 					<small class="fa fa-plus text-sm"></small>
 				</td>
 				<td>
-					<select class="form-control select2" name="regulations[` + num + `][regulation_id]">
+					<select class="form-control select2 selectReg" name="regulations[` + num + `][regulation_id]">
 						<option value=""></option>
-						<option value="1">test</option>
-						<option value="2">test2</option>
+						<?php if ($regulations) : ?>
+							<?php foreach ($regulations as $reg) : ?>
+								<option value="<?= $reg->id; ?>"><?= $reg->name; ?></option>
+							<?php endforeach; ?>
+						<?php endif; ?>
 					</select>
 				</td>
 				<td>
@@ -324,17 +332,73 @@
 				allowClear: true,
 				width: '100%'
 			})
+			selectStd('.selectReg', '.dataIdReg')
+		})
+
+		$(document).on('change', '.selectReg', function() {
+			selectStd('.selectReg', '.dataIdReg')
 		})
 
 		$(document).on('click', '.del-row-reg', function() {
-			$(this).parents('tr').remove()
+			const id = $(this).data('id')
+			const btn = $(this)
+
+			if (id != undefined && (id !== null || id !== '')) {
+				Swal.fire({
+					title: 'Confirmation!',
+					text: 'Are you sure want to be delete this data?',
+					icon: 'question',
+					showCancelButton: true,
+				}).then((value) => {
+					if (value.isConfirmed) {
+						$.ajax({
+							url: siteurl + active_controller + 'delete_reg',
+							type: 'POST',
+							data: {
+								id
+							},
+							dataType: 'JSON',
+							beforeSend: function() {
+								btn.html('<span class="spinner-border spinner-border-sm"></span>').prop('disabled', true)
+							},
+							complete: function() {
+								btn.html('<span class="fa fa-trash"></span>').prop('disabled', false)
+							},
+							success: function(result) {
+								if (result.status == 1) {
+									Swal.fire('Success!', result.msg, 'success', 1500)
+									btn.parents('tr').addClass('table-danger')
+									btn.parents('tr').hide('slow')
+									setTimeout(() => {
+										btn.parents('tr').remove()
+									}, 500);
+								} else {
+									Swal.fire('Failed!', result.msg, 'warning', 1500)
+								}
+							},
+							error: function() {
+								Swal.fire('Error!', 'Server timeout. Error!', 'error', 1500)
+							}
+						})
+					}
+				})
+
+			} else {
+				btn.parents('tr').addClass('table-warning')
+				btn.parents('tr').hide('fast')
+				setTimeout(function() {
+					btn.parents('tr').remove()
+				}, 500);
+			}
+
+			selectStd('.selectReg', '.dataIdReg')
 		})
 
 	})
 
-	function selectStd() {
+	function selectStd(s, d) {
 		const selectedValue = [];
-		$('.selectStd')
+		$(s)
 			.find(':selected')
 			.filter(function(idx, el) {
 				return $(el).attr('value');
@@ -342,11 +406,11 @@
 			.each(function(idx, el) {
 				selectedValue.push($(el).attr('value'));
 			});
-		$('.dataIdStd').each(function(idx, el) {
+		$(d).each(function(idx, el) {
 			selectedValue.push($(el).text());
 		});
 
-		$('.selectStd')
+		$(s)
 			.find('option')
 			.each(function(idx, option) {
 				if (selectedValue.indexOf($(option).attr('value')) > -1) {

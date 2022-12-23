@@ -1,7 +1,7 @@
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
 	<div class="d-flex flex-column-fluid">
 		<div class="container">
-			<form id="form-regulation">
+			<form id="form-standard">
 				<div class="card card-stretch shadow card-custom">
 					<div class="card-header justify-content-between d-flex align-items-center">
 						<h2 class="m-0"><i class="fa fa-plus mr-2"></i><?= $title; ?></h2>
@@ -12,9 +12,9 @@
 						<div class="row">
 							<div class="col-md-6">
 								<div class="mb-3 row flex-nowrap">
-									<label for="" class="col-4 col-form-label font-weight-bold">Regulation Category</label>
+									<label for="" class="col-4 col-form-label font-weight-bold">Standard Category</label>
 									<div class="col-8">
-										<select name="regulation_category" id="regulation_category" onchange="getName()" class="form-control select2">
+										<select name="standard_category" id="standard_category" onchange="getName()" class="form-control select2">
 											<option value=""></option>
 											<?php foreach ($category as $cat) : ?>
 												<option value="<?= $cat->id; ?>"><?= $cat->name; ?></option>
@@ -24,38 +24,9 @@
 								</div>
 
 								<div class="mb-3 row flex-nowrap">
-									<label for="nomenclature" class="col-4 col-form-label font-weight-bold">Nomenclature</label>
-									<div class="col-8">
-										<input type="text" name="nomenclature" onchange="getName()" class="form-control" id="nomenclature" placeholder="Nomenclature" />
-									</div>
-								</div>
-
-								<div class="mb-3 row flex-nowrap">
-									<label fos="col-8">
-										<inpur="" class="col-4 col-form-label font-weight-bold">Number
-									</label>
-									<div clast type="text" name="number" id="number" autocomplete="off" onchange="getName()" class="form-control numeric" placeholder="---">
-									</div>
-								</div>
-
-								<div class="mb-3 row flex-nowrap">
-									<label for="Name" class="col-4 col-form-label font-weight-bold">Subject</label>
-									<div class="col-8">
-										<select name="subjects[]" multiple id="subject" data-allow-clear="true" class="form-control select2">
-											<option value=""></option>
-											<?php if ($subjects) : ?>
-												<?php foreach ($subjects as $sub) : ?>
-													<option value="<?= $sub->id; ?>"><?= $sub->name; ?></option>
-												<?php endforeach; ?>
-											<?php endif; ?>
-										</select>
-									</div>
-								</div>
-
-								<div class="mb-3 row flex-nowrap">
 									<label for="scope" class="col-4 col-form-label font-weight-bold">Scope</label>
 									<div class="col-8">
-										<select name="scopes[]" multiple id="scope" data-allow-clear="true" class="form-control select2">
+										<select name="scopes" id="scope" data-allow-clear="true" class="form-control select2">
 											<option value=""></option>
 											<?php if ($scopes) : ?>
 												<?php foreach ($scopes as $scp) : ?>
@@ -63,6 +34,20 @@
 												<?php endforeach; ?>
 											<?php endif; ?>
 										</select>
+									</div>
+								</div>
+
+								<div class="mb-3 row flex-nowrap">
+									<label class="col-4 col-form-label font-weight-bold">Number</label>
+									<div class="col-8">
+										<input type="text" name="number" id="number" autocomplete="off" onchange="getName()" class="form-control" placeholder="-------">
+										</input>
+									</div>
+								</div>
+								<div class="mb-3 row flex-nowrap">
+									<label for="Name" class="col-4 col-form-label font-weight-bold">Subject</label>
+									<div class="col-8">
+										<textarea name="subject" id="subject" placeholder="Subject" class="form-control"></textarea>
 									</div>
 								</div>
 
@@ -78,16 +63,21 @@
 								</div>
 
 								<div class="mb-3 row flex-nowrap">
-									<label for="" class="col-4 col-form-label font-weight-bold">About</label>
+									<label for="source" class="col-4 col-form-label font-weight-bold">Source</label>
 									<div class="col-8">
-										<textarea name="about" id="about" class="form-control" onchange="getName()" placeholder="Lorem ipsum dolor sit amet!"></textarea>
+										<textarea name="source" id="source" class="form-control" placeholder="Lorem ipsum dolor sit amet!"></textarea>
 									</div>
 								</div>
 
 								<div class="mb-3 row flex-nowrap">
-									<label for="source" class="col-4 col-form-label font-weight-bold">Source</label>
+									<label for="" class="col-4 col-form-label font-weight-bold">Frequence Check</label>
 									<div class="col-8">
-										<textarea name="source" id="source" class="form-control" placeholder="Lorem ipsum dolor sit amet!"></textarea>
+
+										<div class="input-group">
+											<input type="number" name="frequence_check" id="frequence_check" class="form-control numeric">
+											<div class="input-group-text">Tahun</div>
+										</div>
+
 									</div>
 								</div>
 
@@ -107,9 +97,9 @@
 							<div class="col-md-12">
 								<hr>
 								<div class="mb-3 row flex-nowrap">
-									<label for="Name" class="col-2 col-form-label font-weight-bold">Regulation Name</label>
+									<label for="Name" class="col-2 col-form-label font-weight-bold">Standard Name</label>
 									<div class="col-10">
-										<textarea name="name" class="form-control font-weight-bolder h4 form-control-solid" id="regulation_name" placeholder="Regulation Name" readonly rows="3"></textarea>
+										<textarea name="name" class="form-control font-weight-bolder h4 form-control-solid" id="standard_name" placeholder="Standard Name" readonly rows="3"></textarea>
 									</div>
 								</div>
 								<hr>
@@ -121,46 +111,29 @@
 								</div>
 								<hr>
 								<div class="mb-3 row flex-nowrap">
-									<label for="" class="col-2 col-form-label font-weight-bold"></label>
-									<div class="col-4">
-										<button type="submit" class="btn btn-primary w-100px save"><i class="fa fa-save"></i>Save</button>
+									<label for="revision_desc" class="col-2 col-form-label font-weight-bold">Upload Document</label>
+									<div class="col-10">
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text">Upload</span>
+											</div>
+											<div class="custom-file">
+												<input type="file" name="document" id="document" placeholder="Document" class="custom-file-input" aria-describedby="fileHelpId">
+												<label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-
-						</div>
-						<hr>
-
-						<div class="d-flex justify-content-between align-items-center mb-3">
-							<h4 class="">List Pasal</h4>
-							<!-- <button type="button" class="btn btn-primary btn-sm" id="add_pasal"><i class="fa fa-plus mr-2"></i>Add New Pasal</button> -->
-						</div>
-
-						<div class="card">
-							<div class="card-body">
-								<h2 class="text-center mb-3 text-muted">Pasal ...</h2>
-								<table class="table table-sm table-condensed table-borderless mb-5">
-									<!-- <thead class="text-center">
-										<tr class="table-light">
-											<th width="50" class="text-center">Ayat</th>
-											<th>Deskipsi</th>
-											<th width="120">Opsi</th>
-										</tr>
-									</thead> -->
-									<tbody>
-										<!-- <tr>
-											<td width="50" class="text-center">1</td>
-											<td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore quasi vel fuga pariatur ab voluptas, laboriosam vero error maiores nostrum.</td>
-											<td width="120" class="text-center">
-												<button type="button" class="btn btn-xs btn-warning btn-icon"><i class="fa fa-edit"></i></button>
-											</td>
-										</tr> -->
-										<tr>
-											<td colspan="3" class="text-center text-muted">~ No data avilable ~</td>
-										</tr>
-									</tbody>
-								</table>
-								<!-- <button type="button" class="btn btn-success btn-sm" id="add_ayat"><i class="fa fa-plus mr-2"></i>Add Pasal</button> -->
+								<hr>
+								<div class="mb-3 row flex-nowrap">
+									<label for="" class="col-2 col-form-label font-weight-bold"></label>
+									<div class="col-10">
+										<div class="d-flex justify-content-between align-items-center">
+											<button type="submit" class="btn btn-primary w-100px save"><i class="fa fa-save"></i>Save</button>
+											<a href="<?= base_url($this->uri->segment(1)); ?>" class="btn btn-danger"><i class="fa fa-reply"></i>Back</a>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -231,19 +204,7 @@
 			allowClear: true,
 		})
 
-
-
-		$(document).on('click', '#add_ayat', function() {
-			const url = siteurl + active_controller + 'loadForm'
-			$('#modelId').modal('show')
-			$('#contentModal').load(url)
-		})
-		$(document).on('click', '#add_pasal', function() {
-			$('#modelTitle').modal('show')
-			// $('#contentModal').load(url)
-		})
-
-		$(document).on('submit', '#form-regulation', function(e) {
+		$(document).on('submit', '#form-standard', function(e) {
 			e.preventDefault();
 			let formdata = new FormData($(this)[0])
 			let btn = $('.save')
@@ -272,7 +233,7 @@
 							timer: 2000
 						})
 						$('#modelId').modal('hide')
-						location.href = siteurl + active_controller + 'edit/' + result.id
+						location.href = siteurl + active_controller
 					} else {
 						Swal.fire({
 							title: 'Warning!',
@@ -294,55 +255,6 @@
 			})
 		})
 
-		$(document).on('click', '#save_pasal', function() {
-			let formdata = new FormData($('#form-title')[0])
-			let btn = $(this)
-			$.ajax({
-				url: siteurl + active_controller + 'save_pasal',
-				data: formdata,
-				type: 'POST',
-				dataType: 'JSON',
-				processData: false,
-				contentType: false,
-				cache: false,
-				beforeSend: function() {
-					btn.attr('disabled', true)
-					btn.html('<i class="spinner spinner-border-sm"></i>Loading...')
-				},
-				complete: function() {
-					btn.attr('disabled', false)
-					btn.html('<i class="fa fa-save"></i>Save')
-				},
-				success: function(result) {
-					if (result.status == 1) {
-						Swal.fire({
-							title: 'Success!',
-							icon: 'success',
-							text: result.msg,
-							timer: 2000
-						})
-						$('#modelId').modal('hide')
-						// location.href = siteurl + active_controller + '/edit/' + result.id
-					} else {
-						Swal.fire({
-							title: 'Warning!',
-							icon: 'warning',
-							text: result.msg,
-							timer: 2000
-						})
-					}
-				},
-
-				error: function(result) {
-					Swal.fire({
-						title: 'Error!',
-						icon: 'error',
-						text: 'Server timeout, becuase error!',
-						timer: 4000
-					})
-				}
-			})
-		})
 
 		$(document).on('click', '#reset', function() {
 			$('#form-title').find("input[type=text], textarea").val("");
@@ -365,25 +277,24 @@
 	})
 
 	function getName() {
-		const regCat = $('#regulation_category option:selected').text()
-		const nomenclature = $('#nomenclature').val() || ''
+		const Cat = $('#standard_category option:selected').text()
 		const number = $('#number').val() || ''
 		const year = $('#year').val() || ''
-		const about = $('#about').val() || ''
+		const subject = $('#subject').val() || ''
 
-		if (regCat && nomenclature && number && year && about) {
+		if (Cat && number && year && subject) {
 			var no = y = a = '';
 			if (number) {
-				no = "Nomor " + number;
+				no = " " + number;
 			}
 			if (year) {
-				y = "Tahun " + year;
+				y = ", " + year;
 			}
-			if (about) {
-				a = "Tentang " + about;
+			if (subject) {
+				s = ", " + subject;
 			}
 
-			$('#regulation_name').val(regCat + " " + nomenclature + " " + no + " " + y + " " + a)
+			$('#standard_name').val(Cat + no + y + s)
 		}
 
 	}

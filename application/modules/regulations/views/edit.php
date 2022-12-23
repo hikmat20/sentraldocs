@@ -33,8 +33,8 @@
 
 								<div class="mb-3 row flex-nowrap">
 									<label for="" class="col-4 col-form-label font-weight-bold">Number</label>
-									<div class="col-4">
-										<input type="text" name="number" value="<?= $data->number; ?>" id="number" autocomplete="off" maxlength="3" onchange="getName()" class="form-control numeric" placeholder="---">
+									<div class="col-8">
+										<input type="text" name="number" value="<?= $data->number; ?>" id="number" autocomplete="off" onchange="getName()" class="form-control numeric" placeholder="---------">
 									</div>
 								</div>
 
