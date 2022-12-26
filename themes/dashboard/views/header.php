@@ -122,6 +122,11 @@
       border-radius: 0;
       margin-bottom: 0;
     }
+
+    .aside {
+      left: -300px;
+      width: 300px;
+    }
   </style>
 
 </head>
