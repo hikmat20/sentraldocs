@@ -111,7 +111,7 @@
 								</div>
 								<hr>
 								<div class="mb-3 row flex-nowrap">
-									<label for="revision_desc" class="col-2 col-form-label font-weight-bold">Upload Document</label>
+									<label for="document" class="col-2 col-form-label font-weight-bold">Upload Document</label>
 									<div class="col-10">
 										<div class="input-group mb-3">
 											<div class="input-group-prepend">
@@ -119,7 +119,7 @@
 											</div>
 											<div class="custom-file">
 												<input type="file" name="document" id="document" placeholder="Document" class="custom-file-input" aria-describedby="fileHelpId">
-												<label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+												<label class="custom-file-label">Choose file</label>
 											</div>
 										</div>
 									</div>

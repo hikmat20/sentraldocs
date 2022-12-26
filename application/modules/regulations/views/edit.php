@@ -127,6 +127,35 @@
 								</div>
 								<hr>
 								<div class="mb-3 row flex-nowrap">
+									<label for="" class="col-2 col-form-label font-weight-bold">Upload Document</label>
+									<div class="col-10">
+										<div class="input-group mb-3">
+											<div class="input-group-prepend">
+												<span class="input-group-text">Upload</span>
+											</div>
+											<div class="custom-file">
+												<input type="file" name="document" id="document" placeholder="Document" class="custom-file-input" aria-describedby="fileHelpId">
+												<label class="custom-file-label">Choose file</label>
+											</div>
+											<input type="hidden" name="old_file" id="old_file" value="<?= $data->document; ?>">
+										</div>
+									</div>
+								</div>
+								<hr>
+								<?php if ($data->document) : ?>
+									<div class="mb-3 row flex-nowrap">
+										<label for="" class="col-2 col-form-label font-weight-bold"></label>
+										<div class="col-10">
+											<a target="_blank" href="<?= base_url('/regulation/' . $data->document); ?>">
+												<div class="d-flex align-items-center">
+													<i class="fa fa-file-alt text-success fa-3x mr-3"></i><?= $data->name; ?>
+												</div>
+											</a>
+										</div>
+									</div>
+									<hr>
+								<?php endif; ?>
+								<div class="mb-3 row flex-nowrap">
 									<label for="" class="col-2 col-form-label font-weight-bold"></label>
 									<div class="col-4">
 										<button type="button" class="btn btn-primary w-100px" id="save_regulation"><i class="fa fa-save"></i>Save</button>

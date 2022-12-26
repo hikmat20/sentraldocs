@@ -238,27 +238,75 @@ class Regulations extends Admin_Controller
 	public function save()
 	{
 		$Data 		= $this->input->post();
-		$this->db->trans_begin();
 		if ($Data) {
+			$this->db->trans_begin();
+			$old_file 	= isset($Data['old_file']) ? $Data['old_file'] : '';
+			unset($Data['old_file']);
 			$result = $this->RegModel->saveData($Data);
-		}
+			if ($_FILES['document']['name']) {
+				$upload = $this->save_upload($result);
+				if ($upload) {
+					$Return			= array(
+						'status'		=> 0,
+						'msg'			=> $upload,
+					);
+					echo json_encode($Return);
+					return false;
+				}
 
-		if ($this->db->trans_status() === FALSE) {
-			$this->db->trans_rollback();
+				if ($old_file) {
+					if (file_exists('./regulation/' . $old_file)) {
+						unlink('./regulation/' . $old_file);
+					}
+				}
+			}
+			if ($this->db->trans_status() === FALSE) {
+				$this->db->trans_rollback();
+				$Return		= array(
+					'status'		=> 0,
+					'msg'			=> 'Data Regulation failed to save. Please try again.',
+				);
+			} else {
+				$this->db->trans_commit();
+				$Return		= array(
+					'status'		=> 1,
+					'msg'			=> 'Data Regulation successfully saved..',
+					'id'			=> $result,
+				);
+			}
+		} else {
 			$Return		= array(
 				'status'		=> 0,
-				'msg'			=> 'Data Regulation failed to save. Please try again.',
-			);
-		} else {
-			$this->db->trans_commit();
-			$Return		= array(
-				'status'		=> 1,
-				'msg'			=> 'Data Regulation successfully saved..',
-				'id'			=> $result,
+				'msg'			=> 'Data tidak valid..',
 			);
 		}
 
 		echo json_encode($Return);
+	}
+
+	public function save_upload($id)
+	{
+		if (!is_dir('./regulation/')) {
+			mkdir('./regulation/', 0755, TRUE);
+			chmod("./regulation/", 'www-data');
+		}
+
+		$config['upload_path'] 		= "./regulation/"; //path folder
+		$config['allowed_types'] 	= 'pdf'; //type yang dapat diakses bisa anda sesuaikan
+		$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
+
+		$this->upload->initialize($config);
+		if ($this->upload->do_upload('document')) :
+			$file 					= $this->upload->data();
+			$data['document']		= $file['file_name'];
+			$data['modified_by']	= $this->auth->user_id();
+			$data['modified_at']	= date('Y-m-d H:i:s');
+			$this->db->update('regulations', $data, ['id' => $id]);
+			return '';
+		else :
+			$error_msg = $this->upload->display_errors();
+			return $error_msg;
+		endif;
 	}
 
 	public function delete_regulation()
