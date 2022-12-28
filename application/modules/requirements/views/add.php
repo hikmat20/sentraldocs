@@ -52,7 +52,7 @@
 							<h4 class="">List Pasal</h4>
 							<button type="button" class="btn btn-primary btn-sm" id="add_pasal"><i class="fa fa-plus mr-2"></i>Add Pasal</button>
 						</div>
-						<table class="table table-sm table-condensed table-bordered">
+						<table class="table datatable table-sm table-condensed table-bordered">
 							<thead class="text-center ">
 								<tr class="table-light">
 									<th width="80">No</th>
@@ -63,9 +63,6 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td colspan="5" class="text-center text-muted">~ No data avilable ~</td>
-								</tr>
 							</tbody>
 						</table>
 					</div>
@@ -114,6 +111,7 @@
 
 <script>
 	$(document).ready(function() {
+		$('.datatable').DataTable()
 		$('.select2').select2({
 			placeholder: 'Choose an Option',
 			width: '100%',

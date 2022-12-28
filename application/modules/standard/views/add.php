@@ -47,7 +47,7 @@
 								<div class="mb-3 row flex-nowrap">
 									<label for="Name" class="col-4 col-form-label font-weight-bold">Subject</label>
 									<div class="col-8">
-										<textarea name="subject" id="subject" placeholder="Subject" class="form-control"></textarea>
+										<textarea name="subject" id="subject" placeholder="Subject" onchange="getName()" class="form-control"></textarea>
 									</div>
 								</div>
 

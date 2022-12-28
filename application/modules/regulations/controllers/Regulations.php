@@ -77,7 +77,7 @@ class Regulations extends Admin_Controller
 		}
 
 		$pasal 					= $this->db->order_by('order', 'ASC')->get_where('regulation_pasal', ['regulation_id' => $id])->result();
-		$regulation_paragraphs 	= $this->db->get_where('regulation_paragraphs', ['regulation_id' => $id])->result();
+		$regulation_paragraphs 	= $this->db->order_by('order', 'ASC')->get_where('regulation_paragraphs', ['regulation_id' => $id])->result();
 
 		$ArrPhar = [];
 		foreach ($regulation_paragraphs as $regPh) {

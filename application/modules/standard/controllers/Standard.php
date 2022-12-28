@@ -73,19 +73,9 @@ class Standard extends Admin_Controller
 
 	public function view($id = '')
 	{
-		$Data 	= $this->db->get_where('regulations', ['id' => $id])->row();
-		$Pasal 	= $this->db->get_where('regulation_pasal', ['regulation_id' => $id])->result();
-		$Desc 	= $this->db->get_where('regulation_paragraphs', ['regulation_id' => $id])->result();
-
-		$ArrDesc = [];
-		foreach ($Desc as $dsc) {
-			$ArrDesc[$dsc->pasal_id] = $dsc;
-		}
-
+		$Data 	= $this->db->get_where('view_standards', ['id' => $id])->row();
 		$this->template->set([
-			'Data' 		=> $Data,
-			'Pasal' 	=> $Pasal,
-			'ArrDesc' 	=> $ArrDesc
+			'Data' 		=> $Data
 		]);
 
 		$this->template->render('view');
@@ -145,6 +135,36 @@ class Standard extends Admin_Controller
 		if (($id)) {
 			$this->db->trans_begin();
 			$this->db->delete('standards', ['id' => $id]);
+		}
+
+		if ($this->db->trans_status() === FALSE) {
+			$this->db->trans_rollback();
+			$Return		= array(
+				'status'		=> 0,
+				'msg'			=> 'Failed to delete data.. Please try again.',
+			);
+		} else {
+			$this->db->trans_commit();
+			$Return		= array(
+				'status'		=> 1,
+				'msg'			=> 'Successfully deleted data..',
+			);
+		}
+
+		echo json_encode($Return);
+	}
+
+	public function delete_file()
+	{
+		$id = $this->input->post('id');
+
+		if (($id)) {
+			$this->db->trans_begin();
+			$data = $this->db->get_where('standards', ['id' => $id])->row();
+			$this->db->update('standards', ['document' => null], ['id' => $id]);
+			if (file_exists('./standards/' . $data->document)) {
+				unlink('./standards/' . $data->document);
+			}
 		}
 
 		if ($this->db->trans_status() === FALSE) {

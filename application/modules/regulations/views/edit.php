@@ -199,18 +199,18 @@
 													<div class="tab-pane fade show px-5 <?= ($k == 0) ? 'active' : ''; ?>" id="psl-desc-<?= $psl->id; ?>" role="tabpanel">
 														<button type="button" id='<?= $psl->id; ?>' class='btn btn-light-success btn-sm add-phar id-<?= $psl->id; ?> mb-5' title='Add Description'><i class='fa fa-plus-circle'></i> Add Description</button>
 														<table class="table table-borderless mb-5">
-															<!-- <thead class="text-center">
+															<thead class="text-center">
 																<tr class="table-light">
 																	<th width="50" class="text-center py-2">Ayat</th>
-																	<th class="py-2">Deskipsi</th>
+																	<th class="py-2">Deskiption</th>
 																	<th class="py-2" width="50">Opsi</th>
 																</tr>
-															</thead> -->
+															</thead>
 															<tbody>
 																<?php if (isset($ArrPhar[$psl->id])) : $n = 0; ?>
 																	<?php foreach ($ArrPhar[$psl->id] as $phar) : $n++; ?>
 																		<tr>
-																			<td width="30" class="text-center"><?= $n; ?></td>
+																			<td width="100" class="text-center"><?= $phar->name; ?></td>
 																			<td class="font-size-lg text-left">
 																				<?= $phar->description; ?>
 																			</td>
@@ -572,7 +572,13 @@
 						<span>+</span>
 					</td>
 					<td>
-						<textarea class="form-control" name="dtl[desc][` + row + `]"></textarea>
+						<input type="text" class="form-control" name="dtl[` + row + `][name]" aria-describedby="helpId" placeholder="Ayat">
+					</td>
+					<td>
+						<input type="number" class="form-control" name="dtl[` + row + `][order]" aria-describedby="helpId" placeholder="Number">
+					</td>
+					<td>
+						<textarea class="form-control" name="dtl[` + row + `][desc]" placeholder="Description"></textarea>
 					</td>
 					<td width="20">
 						<button type="button" data-id="" class="btn btn-xs btn-icon btn-danger btn-del"><i class="fa fa-times"></i></button>

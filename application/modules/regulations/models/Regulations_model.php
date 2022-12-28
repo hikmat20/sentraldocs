@@ -201,17 +201,17 @@ class Regulations_model extends BF_Model
   {
     $id = $this->_getIdPasalDesc($data['pasal_id']);
     $n = $id;
-
-    foreach ($data['dtl']['desc'] as $k => $desc) {
+    foreach ($data['dtl'] as $k => $desc) {
       $n++;
       $ArrData[$k]['id']              =  $data['pasal_id'] . '-' . $n;
       $ArrData[$k]['regulation_id']   =  $data['regulation_id'];
       $ArrData[$k]['pasal_id']        =  $data['pasal_id'];
-      $ArrData[$k]['description']     =  $desc;
+      $ArrData[$k]['name']            =  $desc['name'];
+      $ArrData[$k]['order']           =  $desc['order'];
+      $ArrData[$k]['description']     =  $desc['desc'];
       $ArrData[$k]['created_by']      = $this->auth->user_id();
       $ArrData[$k]['created_at']      = date('Y-m-d H:i:s');
     }
-
     if ($ArrData) {
       $this->db->insert_batch('regulation_paragraphs', $ArrData);
     }
@@ -222,6 +222,8 @@ class Regulations_model extends BF_Model
     $id = $data['id'];
     $data = [
       'description' => $data['desc'],
+      'name' => $data['name'],
+      'order' => $data['order'],
       'modified_by'  => $this->auth->user_id(),
       'modified_at'  => date('Y-m-d H:i:s'),
     ];

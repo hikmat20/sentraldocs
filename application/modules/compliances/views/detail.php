@@ -4,30 +4,47 @@
       <div class="card card-stretch shadow card-custom">
         <div class="card-body">
           <div class="mb-3 row flex-nowrap">
-            <label for="Name" class="col-2 col-form-label font-weight-bold">Company Name</label>
+            <label for="Name" class="col-2 col-form-label h4 font-weight-bolder">Company Name</label>
             <div class="col-9">
-              : <label class="col-form-label font-weight-bold"><?= $data->nm_perusahaan; ?></label>
+              : <label class="col-form-label h4 font-weight-bolder"><?= $data->nm_perusahaan; ?></label>
             </div>
           </div>
 
-          <div id="accordianId" role="tablist" aria-multiselectable="true">
-            <div class="card">
-              <div class="card-header" role="tab" id="section1HeaderId">
-                <h5 class="mb-0">
-                  <a data-toggle="collapse" data-parent="#accordianId" href="#section1ContentId" aria-expanded="true" aria-controls="section1ContentId">
-                    Section 1
-                  </a>
-                </h5>
-              </div>
-              <div id="section1ContentId" class="collapse in" role="tabpanel" aria-labelledby="section1HeaderId">
-                <div class="card-body">
-                  Section 1 content
-                </div>
-              </div>
+          <div class="mb-3 row flex-nowrap">
+            <label for="Name" class="col-2 col-form-label font-weight-bolder">Select Regulation</label>
+            <div class="col-9">
+              <select name="regulation_id" id="regulation" class="form-control select2" data-placeholder="Choose an options" data-allow-clear="true">
+                <option value=""></option>
+                <?php if ($regulations) : ?>
+                  <?php foreach ($regulations as $reg) : ?>
+                    <option value="<?= $reg->regulation_id; ?>"><?= $reg->name; ?></option>
+                  <?php endforeach; ?>
+                <?php endif; ?>
+              </select>
             </div>
+          </div>
+          <hr>
+          <div class="mb-3">
+            <div id="list-description"></div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+  $(document).ready(function() {
+    $('.select2').select2({
+      width: "100%"
+    })
+
+    $(document).on('change', '#regulation', function() {
+      const id = $(this).val() || ''
+      $('#list-description').html('')
+      if (id) {
+        $('#list-description').load(siteurl + active_controller + 'loadDesc/' + id)
+      }
+    })
+  })
+</script>
