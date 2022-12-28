@@ -44,8 +44,7 @@ class Compliances extends Admin_Controller
     {
         if ($id) {
             $data = $this->db->get_where('view_references', ['id' => $id])->row();
-            $regulations = $this->db->get_where('ref_regulations', ['reference_id' => $id])->result();
-
+            $regulations = $this->db->get_where('view_ref_regulations')->result();
 
             $this->template->set([
                 'data'          => $data,
@@ -53,6 +52,26 @@ class Compliances extends Admin_Controller
             ]);
             $this->template->render('detail');
         } else {
+        }
+    }
+
+    public function loadDesc($id = null)
+    {
+        if ($id) {
+            $pasal      = $this->db->get_where('regulation_pasal', ['regulation_id' => $id])->row();
+            $data       = $this->db->get_where('view_regulation_paragraphs', ['regulation_id' => $id])->result();
+
+            $ArrPasal   = [];
+            foreach ($data as $dt) {
+                $ArrPasal[$dt->pasal_id][] = $dt;
+            }
+
+            $this->template->set([
+                'data'          => $data,
+                'pasal'         => $pasal,
+                'ArrPasal'      => $ArrPasal,
+            ]);
+            $this->template->render('list-desc');
         }
     }
 

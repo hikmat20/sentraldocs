@@ -9,6 +9,8 @@
           <thead>
             <tr class="table-secondary">
               <th class="text-center" width="20"></th>
+              <th class="text-center" width="200">Ayat</th>
+              <th class="text-center" width="100">Order</th>
               <th class="text-center" colspan="2">Description</th>
             </tr>
           </thead>

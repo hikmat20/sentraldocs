@@ -242,11 +242,12 @@
                       <span class="menu-text text-white h5 my-0"><i class="fa fa-home mr-3 text-white"></i> Dashboard</span>
                     </a>
                   </li>
-                  <li class="menu-item <?= (check_class('monitoring', TRUE)) ? 'menu-item-active' : ''; ?>" aria-haspopup="true">
+                  <li class="menu-item <?= (check_class('monitoring', TRUE)) ? 'menu-item-active' : ''; ?> " aria-haspopup="true">
                     <a href="<?= base_url('/monitoring'); ?>" class="menu-link" style="border-radius: 14px 1px 14px 1px  ;">
                       <span class="menu-text text-white h5 my-0"><i class="fa fa-tasks mr-3 text-white"></i> Monitoring</span>
                     </a>
                   </li>
+
                 </ul>
                 <!--end::Header Nav-->
               </div>
@@ -256,6 +257,34 @@
             <!--begin::Topbar-->
             <div class="topbar">
               <!--begin::Quick Actions-->
+              <div class="dropdown">
+                <!--begin::Toggle-->
+                <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px">
+                  <div class="btn btn-icon btn-hover-transparent-white btn-dropdown btn-lg mr-1">
+                    <span class="svg-icon svg-icon-xl">
+                      <!--begin::Svg Icon | path:/keen/theme/demo6/dist/assets/media/svg/icons/Communication/Chat6.svg-->
+                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                          <rect x="0" y="0" width="24" height="24" />
+                          <path opacity="0.3" fill-rule="evenodd" clip-rule="evenodd" d="M14.4862 18L12.7975 21.0566C12.5304 21.54 11.922 21.7153 11.4386 21.4483C11.2977 21.3704 11.1777 21.2597 11.0887 21.1255L9.01653 18H5C3.34315 18 2 16.6569 2 15V6C2 4.34315 3.34315 3 5 3H19C20.6569 3 22 4.34315 22 6V15C22 16.6569 20.6569 18 19 18H14.4862Z" fill="black" />
+                          <path fill-rule="evenodd" clip-rule="evenodd" d="M6 7H15C15.5523 7 16 7.44772 16 8C16 8.55228 15.5523 9 15 9H6C5.44772 9 5 8.55228 5 8C5 7.44772 5.44772 7 6 7ZM6 11H11C11.5523 11 12 11.4477 12 12C12 12.5523 11.5523 13 11 13H6C5.44772 13 5 12.5523 5 12C5 11.4477 5.44772 11 6 11Z" fill="black" />
+                        </g>
+                      </svg>
+                      <!--end::Svg Icon-->
+                    </span>
+                  </div>
+                </div>
+                <div class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-lg">
+                  <!-- <div class="d-flex flex-column flex-center py-10 rounded-to border-bottom">
+                    <h4 class="text-dark font-weight-bold">Quick Actions</h4>
+                    <span class="btn btn-primary btn-sm font-weight-bold font-size-sm mt-2">23 new tasks</span>
+                  </div>
+                  <div class="row row-paddingless">
+
+                  </div> -->
+
+                </div>
+              </div>
               <div class="topbar-item mr-3">
                 <span class="bg-white rounded py-2 h6 my-0 pl-3 pr-10" style="margin-right:-30px"><?= $userData->full_name; ?></span>
                 <div class="btn btn-icon w-auto d-flex align-items-center btn-lg px-2" onclick="$('#kt_quick_user_toggle').click()">

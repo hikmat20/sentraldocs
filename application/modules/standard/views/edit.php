@@ -48,10 +48,9 @@
 								<div class="mb-3 row flex-nowrap">
 									<label for="Name" class="col-4 col-form-label font-weight-bold">Subject</label>
 									<div class="col-8">
-										<textarea name="subject" id="subject" placeholder="Subject" class="form-control"><?= $data->subject; ?></textarea>
+										<textarea name="subject" id="subject" placeholder="Subject" class="form-control" onchange="getName()"><?= $data->subject; ?></textarea>
 									</div>
 								</div>
-
 							</div>
 
 							<div class="col-md-6">
@@ -129,11 +128,16 @@
 								<div class="mb-3 row flex-nowrap">
 									<label for="" class="col-2 col-form-label font-weight-bold"></label>
 									<div class="col-10">
-										<a target="_blank" href="<?= base_url('/standards/' . $data->document); ?>">
-											<div class="d-flex align-items-center">
-												<i class="fa fa-file-alt text-success fa-3x mr-3"></i><?= $data->name; ?>
+										<?php if ($data->document) : ?>
+											<div class="d-flex justify-content-between align-items-center">
+												<a target="_blank" href="<?= base_url('/standards/' . $data->document); ?>">
+													<div class="d-flex align-items-center">
+														<i class="fa fa-file-alt text-success fa-3x mr-3"></i><?= $data->name; ?>
+													</div>
+												</a>
+												<button type="button" data-id="<?= $data->id; ?>" class="btn delete-file btn-xs btn-icon btn-danger" title="Delete File"><i class="fa fa-times"></i></button>
 											</div>
-										</a>
+										<?php endif; ?>
 									</div>
 								</div>
 								<hr>
@@ -345,6 +349,55 @@
 				)
 				$('#invalid-feedbacek-year').text('Tahun tidak valid')
 			}
+		})
+
+		$(document).on('click', '.delete-file', function() {
+			let id = $(this).data('id')
+			let btn = $(this)
+			Swal.fire({
+				title: 'Confirm!',
+				text: 'Are you sure you want to delete this file?',
+				icon: 'question',
+				showCancelButton: true
+			}).then((value) => {
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'delete_file',
+						data: {
+							id
+						},
+						type: 'POST',
+						dataType: 'JSON',
+						success: function(result) {
+							if (result.status == 1) {
+								Swal.fire({
+									title: 'Success!',
+									icon: 'success',
+									text: result.msg,
+									timer: 2000
+								})
+								location.reload();
+							} else {
+								Swal.fire({
+									title: 'Warning!',
+									icon: 'warning',
+									text: result.msg,
+									timer: 2000
+								})
+							}
+						},
+						error: function(result) {
+							Swal.fire({
+								title: 'Error!',
+								icon: 'error',
+								text: 'Server timeout, becuase error!',
+								timer: 4000
+							})
+						}
+					})
+				}
+			})
+
 		})
 
 	})
