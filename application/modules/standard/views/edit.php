@@ -404,11 +404,11 @@
 
 	function getName() {
 		const Cat = $('#standard_category option:selected').text()
-		const number = $('#number').val() || ''
+		// const number = $('#number').val() || ''
 		const year = $('#year').val() || ''
 		const subject = $('#subject').val() || ''
 
-		if (Cat && number && year && subject) {
+		if (Cat && year && subject) {
 			var no = y = a = '';
 			if (number) {
 				no = " " + number;
