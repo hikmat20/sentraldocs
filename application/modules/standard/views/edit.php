@@ -410,9 +410,9 @@
 
 		if (Cat && year && subject) {
 			var no = y = a = '';
-			if (number) {
-				no = " " + number;
-			}
+			// if (number) {
+			// 	no = " " + number;
+			// }
 			if (year) {
 				y = ", " + year;
 			}
