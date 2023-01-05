@@ -30,6 +30,7 @@
 										<th width="5%" class="text-center">No.</th>
 										<th width="15%">Scopes</th>
 										<th class="text-left">Standard Name</th>
+										<th class="text-left">Year</th>
 										<th width="150">Action</th>
 									</tr>
 								</thead>
@@ -41,6 +42,7 @@
 												<td class="p-1 text-center"><?= $n; ?></td>
 												<td class="p-1"><?= $ArrScopes[$dt->scope_id]; ?></td>
 												<td class="p-1"><?= $dt->name; ?></td>
+												<td class="p-1"><?= $dt->year; ?></td>
 												<td class="text-center p-1">
 													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
 													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-edit"></i></a>
@@ -59,6 +61,7 @@
 										<th width="80">No.</th>
 										<th width="15%">Scopes</th>
 										<th class="text-left">Standard Name</th>
+										<th class="text-left">Year</th>
 										<th width="150">Action</th>
 									</tr>
 								</thead>
@@ -70,6 +73,7 @@
 												<td><?= $n; ?></td>
 												<td class="p-1"><?= $ArrScopes[$draft->scope_id]; ?></td>
 												<td class="p-1"><?= $draft->name; ?></td>
+												<td class="p-1"><?= $draft->year; ?></td>
 												<td>
 													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $draft->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $draft->id; ?>" title="View Data"><i class="fa fa-edit"></i></a>
 													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $draft->id; ?>" title="View Data"><i class="fa fa-trash"></i></button>
