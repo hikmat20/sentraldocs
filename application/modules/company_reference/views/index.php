@@ -44,15 +44,20 @@
 												<td><?= $n; ?></td>
 												<td class="text-left"><?= $dt->nm_perusahaan; ?></td>
 												<td>
+
+													<?php if (isset($ArrStd[$dt->id])) : ?>
+														<?= implode(",<br>", $ArrStd[$dt->id]); ?>
+													<?php endif; ?>
+												</td>
+												<td>
 													<ul class="text-left">
-														<?php if (isset($ArrStd[$dt->id])) : ?>
-															<?php foreach ($ArrStd[$dt->id] as $std) : ?>
-																<li><?= $std; ?></li>
+														<?php if (isset($ArrReg[$dt->id])) : ?>
+															<?php foreach ($ArrReg[$dt->id] as $reg) : ?>
+																<li><?= $reg; ?></li>
 															<?php endforeach; ?>
 														<?php endif; ?>
 													</ul>
 												</td>
-												<td></td>
 												<td><?= $dt->sdate; ?></td>
 												<td><?= $dt->status; ?></td>
 												<td>

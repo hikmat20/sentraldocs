@@ -80,6 +80,7 @@ class Company_reference_model extends BF_Model
     } else {
       $Data['created_by'] = $this->auth->user_id();
       $Data['created_at'] = date('Y-m-d H:i:s');
+
       $this->db->insert('references', $Data);
       $Id = $this->db->order_by('id', 'DESC')->get_where('references')->row()->id;
     }
@@ -113,6 +114,7 @@ class Company_reference_model extends BF_Model
           $reg['reference_id'] = $Id;
           $reg['created_by'] = $this->auth->user_id();
           $reg['created_at'] = date('Y-m-d H:i:s');
+
           $this->db->insert('ref_regulations', $reg);
         }
       }

@@ -200,6 +200,10 @@
 		})
 
 
+		$(document).on('click', '.del-row-reg', function() {
+			$(this).parents('tr').remove()
+		})
+
 		$(document).on('click', '#add_standard', function() {
 			const row = $('table#tableStandard tbody tr.empty').length
 			const num = $('table#tableStandard tbody tr.addStd').length + 1
@@ -209,8 +213,8 @@
 					<small class="fa fa-plus text-sm"></small>
 				</td>
 				<td>
-					<select class="form-control select2" name="standards[` + num + `][standard_id]">
-					<option></option>
+					<select class="form-control select2 selectStd" name="standards[` + num + `][standard_id]">
+						<option value=""></option>
 						<?php foreach ($standards as $std) : ?>
 							<option value="<?= $std->id; ?>"><?= $std->name; ?></option>
 						<?php endforeach; ?>
@@ -219,7 +223,6 @@
 				<td>
 					<input name="standards[` + num + `][descriptions]" placeholder="Descriptions" type="text" class="form-control" maxLength="200">
 				</td>
-				
 				<td class="text-center" style="vertical-align:middle;">
 					<button type="button" class="btn btn-danger btn-icon btn-xs del-row-std"><i class="fa fa-trash" aria-hidden="true"></i></button>
 				</td>
@@ -236,11 +239,67 @@
 				allowClear: true,
 				width: '100%'
 			})
+			selectStd('.selectStd', '.dataIdStd')
+		})
+
+		$(document).on('change', '.selectStd', function() {
+			selectStd('.selectStd', '.dataIdStd')
 		})
 
 		$(document).on('click', '.del-row-std', function() {
-			$(this).parents('tr').remove()
+			const id = $(this).data('id')
+			const btn = $(this)
+
+			if (id != undefined && (id !== null || id !== '')) {
+				Swal.fire({
+					title: 'Confirmation!',
+					text: 'Are you sure want to be delete this data?',
+					icon: 'question',
+					showCancelButton: true,
+				}).then((value) => {
+					if (value.isConfirmed) {
+						$.ajax({
+							url: siteurl + active_controller + 'delete',
+							type: 'POST',
+							data: {
+								id
+							},
+							dataType: 'JSON',
+							beforeSend: function() {
+								btn.html('<span class="spinner-border spinner-border-sm"></span>').prop('disabled', true)
+							},
+							complete: function() {
+								btn.html('<span class="fa fa-trash"></span>').prop('disabled', false)
+							},
+							success: function(result) {
+								if (result.status == 1) {
+									Swal.fire('Success!', result.msg, 'success', 1500)
+									btn.parents('tr').addClass('table-danger')
+									btn.parents('tr').hide('slow')
+									setTimeout(() => {
+										btn.parents('tr').remove()
+									}, 500);
+								} else {
+									Swal.fire('Failed!', result.msg, 'warning', 1500)
+								}
+							},
+							error: function() {
+								Swal.fire('Error!', 'Server timeout. Error!', 'error', 1500)
+							}
+						})
+					}
+				})
+
+			} else {
+				btn.parents('tr').addClass('table-warning')
+				btn.parents('tr').hide('fast')
+				setTimeout(function() {
+					btn.parents('tr').remove()
+				}, 500);
+			}
+			selectStd('.selectStd', '.dataIdStd')
 		})
+
 
 		$(document).on('click', '#add_regulation', function() {
 			const row = $('table#tableRegulations tbody tr.empty').length
@@ -251,10 +310,13 @@
 					<small class="fa fa-plus text-sm"></small>
 				</td>
 				<td>
-					<select class="form-control select2" name="regulations[` + num + `][regulation_id]">
+					<select class="form-control select2 selectReg" name="regulations[` + num + `][regulation_id]">
 						<option value=""></option>
-						<option value="1">test</option>
-						<option value="2">test2</option>
+						<?php if ($regulations) : ?>
+							<?php foreach ($regulations as $reg) : ?>
+								<option value="<?= $reg->id; ?>"><?= $reg->name; ?></option>
+							<?php endforeach; ?>
+						<?php endif; ?>
 					</select>
 				</td>
 				<td>
@@ -276,11 +338,96 @@
 				allowClear: true,
 				width: '100%'
 			})
+			selectStd('.selectReg', '.dataIdReg')
+		})
+
+		$(document).on('change', '.selectReg', function() {
+			selectStd('.selectReg', '.dataIdReg')
 		})
 
 		$(document).on('click', '.del-row-reg', function() {
-			$(this).parents('tr').remove()
+			const id = $(this).data('id')
+			const btn = $(this)
+
+			if (id != undefined && (id !== null || id !== '')) {
+				Swal.fire({
+					title: 'Confirmation!',
+					text: 'Are you sure want to be delete this data?',
+					icon: 'question',
+					showCancelButton: true,
+				}).then((value) => {
+					if (value.isConfirmed) {
+						$.ajax({
+							url: siteurl + active_controller + 'delete_reg',
+							type: 'POST',
+							data: {
+								id
+							},
+							dataType: 'JSON',
+							beforeSend: function() {
+								btn.html('<span class="spinner-border spinner-border-sm"></span>').prop('disabled', true)
+							},
+							complete: function() {
+								btn.html('<span class="fa fa-trash"></span>').prop('disabled', false)
+							},
+							success: function(result) {
+								if (result.status == 1) {
+									Swal.fire('Success!', result.msg, 'success', 1500)
+									btn.parents('tr').addClass('table-danger')
+									btn.parents('tr').hide('slow')
+									setTimeout(() => {
+										btn.parents('tr').remove()
+									}, 500);
+								} else {
+									Swal.fire('Failed!', result.msg, 'warning', 1500)
+								}
+							},
+							error: function() {
+								Swal.fire('Error!', 'Server timeout. Error!', 'error', 1500)
+							}
+						})
+					}
+				})
+
+			} else {
+				btn.parents('tr').addClass('table-warning')
+				btn.parents('tr').hide('fast')
+				setTimeout(function() {
+					btn.parents('tr').remove()
+				}, 500);
+			}
+
+			selectStd('.selectReg', '.dataIdReg')
 		})
 
 	})
+
+	function selectStd(s, d) {
+		const selectedValue = [];
+		$(s)
+			.find(':selected')
+			.filter(function(idx, el) {
+				return $(el).attr('value');
+			})
+			.each(function(idx, el) {
+				selectedValue.push($(el).attr('value'));
+			});
+		$(d).each(function(idx, el) {
+			selectedValue.push($(el).text());
+		});
+
+		$(s)
+			.find('option')
+			.each(function(idx, option) {
+				if (selectedValue.indexOf($(option).attr('value')) > -1) {
+					if ($(option).is(':checked')) {
+						return;
+					} else {
+						$(this).attr('disabled', true);
+					}
+				} else {
+					$(this).attr('disabled', false);
+				}
+			});
+	}
 </script>

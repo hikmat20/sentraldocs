@@ -27,16 +27,23 @@ class Company_reference extends Admin_Controller
 		$data		= $this->db->get_where('view_references', ['status' => 'OPN'])->result();
 		$done		= $this->db->get_where('view_references', ['status' => 'DONE'])->result();
 		$lsStd 		= $this->db->get_where('view_ref_standards')->result();
+		$lsReg 		= $this->db->get_where('view_ref_regulations')->result();
 
 		$ArrStd = [];
 		foreach ($lsStd as $std) {
 			$ArrStd[$std->reference_id][] = $std->name;
 		}
 
+		$ArrReg = [];
+		foreach ($lsReg as $reg) {
+			$ArrReg[$reg->reference_id][] = $reg->name;
+		}
+
 		$this->template->set([
 			'data' 		=> $data,
 			'done' 		=> $done,
 			'ArrStd' 	=> $ArrStd,
+			'ArrReg' 	=> $ArrReg,
 		]);
 
 		$this->template->render('index');
@@ -46,7 +53,7 @@ class Company_reference extends Admin_Controller
 	{
 		$Companies 		= $this->db->get_where('companies')->result();
 		$standards		= $this->db->get_where('requirements', ['status' => '1'])->result();
-		$regulations	= $this->db->get_where('regulations', ['status' => '1'])->result();
+		$regulations	= $this->db->get_where('regulations', ['status' => 'PUB'])->result();
 
 		$this->template->set([
 			'title' 		=> 'Add Company Reference',

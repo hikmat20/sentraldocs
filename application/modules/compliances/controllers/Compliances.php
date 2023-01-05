@@ -34,21 +34,29 @@ class Compliances extends Admin_Controller
 
     public function index()
     {
-        $data = $this->db->get_where('view_references')->result();
-        $this->template->set('data', $data);
-        $this->template->render('index');
+        $reference = $this->db->get_where('view_references', ['company_id' => $this->company])->row();
+        if ($reference) {
+            $data = $this->db->get_where('view_compliances', ['reference_id' => $reference->id, 'company_id' => $reference->company_id])->result();
+        }
+
+        $this->template->set([
+            'reference' => $reference,
+            'data' => $data
+        ]);
+        $this->template->render('list');
     }
 
     public function lists($id = null)
     {
         $data = [];
         if ($id) {
-            $company = $this->db->get_where('view_references', ['company_id' => $this->company])->row();
-            $data = $this->db->get_where('view_compliances', ['reference_id' => $id, 'company_id' => $this->company])->result();
+            $reference = $this->db->get_where('view_references', ['id' => $id])->row();
+            $data = $this->db->get_where('view_compliances', ['reference_id' => $id, 'company_id' => $reference->company_id])->result();
         }
 
         $this->template->set([
-            'company' => $company, 'data' => $data
+            'reference' => $reference,
+            'data' => $data
         ]);
         $this->template->render('list');
     }
@@ -93,9 +101,9 @@ class Compliances extends Admin_Controller
         }
     }
 
-    public function add()
+    public function add($comp_id = null)
     {
-        $regulations    = $this->db->get_where('view_ref_regulations', ['status' => 'OPN', 'company_id' => $this->company])->result();
+        $regulations    = $this->db->get_where('view_ref_regulations', ['status' => 'OPN', 'company_id' => $comp_id])->result();
         $compDtl        = $this->db->get_where('view_compliances', ['company_id' => $this->company])->result();
 
         $ArrCompl = [];
