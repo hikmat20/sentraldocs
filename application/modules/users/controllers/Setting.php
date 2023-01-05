@@ -149,8 +149,7 @@ class Setting extends Admin_Controller
 
     public function edit($id = 0)
     {
-
-        $data           = $this->db->get_where('view_users', ['id_user' => $id])->row();
+        $data           = $this->db->get_where('view_users', ['id_user' => $id, 'status' => 'ACT'])->row();
         $levels         = $this->db->get_where('groups', ['active' => 'Y', 'id_group !=' => '1'])->result();
         $user_group     = $this->db->get_where('user_groups', ['user_id' => $id])->row();
         $companies      = $this->db->get_where('companies')->result();
