@@ -294,15 +294,23 @@ class Standard extends Admin_Controller
 		$excel->getActiveSheet()->getStyle('A1')->getFont()->setSize(24); // Set font size 15 untuk kolom A1
 		$excel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT); // Set text center untuk kolom A1
 
-		// // Buat header tabel nya pada baris ke 3
-		$excel->setActiveSheetIndex(0)->setCellValue('A3', "NO")->getStyle('A3')->applyFromArray($style_col);
-		$excel->setActiveSheetIndex(0)->setCellValue('B3', "SCOPES")->getStyle('B3')->applyFromArray($style_col);
-		$excel->setActiveSheetIndex(0)->setCellValue('C3', "STANDARDS NAME")->getStyle('C3')->applyFromArray($style_col);
-		$excel->setActiveSheetIndex(0)->setCellValue('D3', "YEAR")->getStyle('D3')->applyFromArray($style_col);
+		$excel->setActiveSheetIndex(0)->setCellValue('A3', 'PUBLISHED')->mergeCells('A3:D3')->getStyle('A3')->getFont()->setBold(TRUE)->setSize(14); // Set text center untuk kolom A1; 
+		$excel->getActiveSheet()->getStyle('A3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT); // Set text center untuk kolom A1
+		// 		$excel->getActiveSheet()->mergeCells('A3:D3'); // Set Merge Cell pada kolom A3 sampai E1
+		// $excel->getActiveSheet()->getStyle('A3')->getFont()->setBold(TRUE); // Set bold kolom A3
+		// $excel->getActiveSheet()->getStyle('A3')->getFont()->setSize(14); // Set font size 15 untuk kolom A3
+
+
+		/* PUBLISHED */
+		// Buat header tabel nya
+		$excel->setActiveSheetIndex(0)->setCellValue('A5', "NO")->getStyle('A5')->applyFromArray($style_col);
+		$excel->setActiveSheetIndex(0)->setCellValue('B5', "SCOPES")->getStyle('B5')->applyFromArray($style_col);
+		$excel->setActiveSheetIndex(0)->setCellValue('C5', "STANDARDS NAME")->getStyle('C5')->applyFromArray($style_col);
+		$excel->setActiveSheetIndex(0)->setCellValue('D5', "YEAR")->getStyle('D5')->applyFromArray($style_col);
 
 		// menampilkan semua data
 		$no = 0;
-		$numRow = 4; // Set baris pertama
+		$numRow = 5; // Set baris pertama
 		foreach ($data as $key => $dt) {
 			$no++;
 			$numRow++;
@@ -310,6 +318,30 @@ class Standard extends Admin_Controller
 			$excel->setActiveSheetIndex(0)->setCellValue("B$numRow", $ArrScopes[$dt->scope_id])->getStyle("A$numRow")->applyFromArray($style_row);
 			$excel->setActiveSheetIndex(0)->setCellValue("C$numRow",  $dt->name)->getStyle("A$numRow")->applyFromArray($style_row);
 			$excel->setActiveSheetIndex(0)->setCellValue("D$numRow", $dt->year)->getStyle("A$numRow")->applyFromArray($style_row);
+		}
+
+		/* DRAFT */
+		$numRow = $numRow + 3; // Set baris pertama
+		$excel->setActiveSheetIndex(0)->setCellValue("A$numRow", 'DRAFT')->mergeCells("A$numRow:D$numRow")->getStyle("A$numRow")->getFont()->setBold(TRUE)->setSize(14);
+		$excel->setActiveSheetIndex(0)->getStyle('A3')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT); // Set text center untuk kolom A1; 
+
+		$numRow = $numRow + 2; // Set baris pertama
+		// Buat header tabel nya
+		$excel->setActiveSheetIndex(0)->setCellValue("A$numRow", "NO")->getStyle("A$numRow")->applyFromArray($style_col);
+		$excel->setActiveSheetIndex(0)->setCellValue("B$numRow", "SCOPES")->getStyle("B$numRow")->applyFromArray($style_col);
+		$excel->setActiveSheetIndex(0)->setCellValue("C$numRow", "STANDARDS NAME")->getStyle("C$numRow")->applyFromArray($style_col);
+		$excel->setActiveSheetIndex(0)->setCellValue("D$numRow", "YEAR")->getStyle("D$numRow")->applyFromArray($style_col);
+
+		// menampilkan semua data
+		$no = 0;
+		$numRow = $numRow + 1; // Set baris pertama
+		foreach ($drafts as $key => $df) {
+			$no++;
+			$numRow++;
+			$excel->setActiveSheetIndex(0)->setCellValue("A$numRow", $no)->getStyle("A$numRow")->applyFromArray($style_row);
+			$excel->setActiveSheetIndex(0)->setCellValue("B$numRow", $ArrScopes[$df->scope_id])->getStyle("B$numRow")->applyFromArray($style_row);
+			$excel->setActiveSheetIndex(0)->setCellValue("C$numRow",  $df->name)->getStyle("C$numRow")->applyFromArray($style_row);
+			$excel->setActiveSheetIndex(0)->setCellValue("D$numRow", $df->year)->getStyle("D$numRow")->applyFromArray($style_row);
 		}
 
 		// Set width kolom
