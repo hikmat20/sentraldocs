@@ -45,9 +45,11 @@
 												<td class="text-left"><?= $dt->nm_perusahaan; ?></td>
 												<td>
 													<ul class="text-left">
-														<?php foreach ($ArrStd[$dt->id] as $std) : ?>
-															<li><?= $std; ?></li>
-														<?php endforeach; ?>
+														<?php if (isset($ArrStd[$dt->id])) : ?>
+															<?php foreach ($ArrStd[$dt->id] as $std) : ?>
+																<li><?= $std; ?></li>
+															<?php endforeach; ?>
+														<?php endif; ?>
 													</ul>
 												</td>
 												<td></td>

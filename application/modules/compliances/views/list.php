@@ -4,20 +4,28 @@
 			<div class="card card-stretch shadow card-custom">
 				<div class="card-header">
 					<h2 class="mt-5"><i class="<?= $icon; ?> mr-2"></i><?= $title; ?></h2>
-					<div class="mt-4 float-right ">
-						<!-- <button type="button" class="btn btn-primary" id="add" title="Add New Scope">
-							<i class="fa fa-plus mr-1"></i>Add New Scope
-						</button> -->
-					</div>
 				</div>
 				<div class="card-body">
+					<div class="form-group row">
+						<div class="col-2">
+							<label for="" class="h3 form-control-label font-weight-bolder">Company</label>
+						</div>
+						<div class="col-9">
+							<label for="" class="h3 form-control-label font-weight-bolder">: <?= $company->nm_perusahaan; ?></label>
+						</div>
+					</div>
+					<button type="button" class="btn btn-primary add-new"><i class="fa fa-plus"></i>Add New</button>
+					<a href="<?= base_url($this->uri->segment(1)); ?>" class="btn btn-danger"><i class="fa fa-reply"></i>Back</a>
+
+					<hr>
 					<div class="tab-content mt-3">
 						<div class="tab-pane fade active show" id="Published" role="tabpanel" aria-labelledby="Published-tab">
 							<table id="example1" class="table table-bordered table-sm table-condensed table-hover datatable">
 								<thead class="text-center table-light">
 									<tr class="text-center">
 										<th width="3%">No.</th>
-										<th class="text-left">Company Name</th>
+										<th class="text-left">Regulation</th>
+										<th class="text-left">Year</th>
 										<th width="150">Action</th>
 									</tr>
 								</thead>
@@ -27,9 +35,10 @@
 										foreach ($data as $dt) : $n++; ?>
 											<tr class="">
 												<td><?= $n; ?></td>
-												<td class="text-left"><?= $dt->nm_perusahaan; ?></td>
+												<td class="text-left"><?= $dt->name; ?></td>
+												<td class="text-left"><?= $dt->year; ?></td>
 												<td class="text-center">
-													<a href="<?= base_url($this->uri->segment(1) . "/lists/" . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning detail" data-id="<?= $dt->id; ?>" title="Edit Data"><i class="fa fa-arrow-circle-right"></i></a>
+													<a href="<?= base_url($this->uri->segment(1) . "/details/" . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning detail" data-id="<?= $dt->id; ?>" title="Edit Data"><i class="fa fa-arrow-circle-right"></i></a>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -79,7 +88,7 @@
 			// info: false
 		});
 
-		$(document).on('click', '#add', function() {
+		$(document).on('click', '.add-new', function() {
 			const url = siteurl + active_controller + 'add';
 			$('.modal-title').html('Add New Scope')
 			$('#modalView').modal('show')
@@ -96,13 +105,20 @@
 
 
 		$(document).on('click', '.save', function(e) {
-			const name = $('#name')
-			validation(name)
+			const regulation_id = $('#regulation_id').val()
 
-			let formdata = new FormData($('#form')[0])
+			$('#regulation_id').removeClass('is-invalid');
+			$('#regulation_id').next('span').find('span.select2-selection.select2-selection--single').removeClass('is-invalid')
+			if (!regulation_id) {
+				$('#regulation_id').addClass('is-invalid');
+				$('#regulation_id').next('span').find('span.select2-selection').addClass('is-invalid');
+				return false;
+			}
+
+			let formdata = new FormData($('#new-complience')[0])
 			let btn = $(this)
 			$.ajax({
-				url: siteurl + active_controller + 'save',
+				url: siteurl + active_controller + 'save_complience',
 				data: formdata,
 				type: 'POST',
 				dataType: 'JSON',

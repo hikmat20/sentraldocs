@@ -27,6 +27,7 @@ class Company_reference extends Admin_Controller
 		$data		= $this->db->get_where('view_references', ['status' => 'OPN'])->result();
 		$done		= $this->db->get_where('view_references', ['status' => 'DONE'])->result();
 		$lsStd 		= $this->db->get_where('view_ref_standards')->result();
+
 		$ArrStd = [];
 		foreach ($lsStd as $std) {
 			$ArrStd[$std->reference_id][] = $std->name;
