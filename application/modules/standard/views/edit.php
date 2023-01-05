@@ -261,7 +261,7 @@
 							timer: 2000
 						})
 						$('#modelId').modal('hide')
-						location.reload()
+						location.href = siteurl + active_controller
 					} else {
 						Swal.fire({
 							title: 'Warning!',

@@ -85,7 +85,7 @@
     <hr>
     <div class="mb-3 row flex-nowrap">
       <label for="document" class="col-2 font-weight-bold">Document</label>
-      <div class="col-10"> :
+      <div class="col-10">
         <?php if ($Data->document) : ?>
           <div class="d-flex justify-content-between align-items-center">
             <a target="_blank" href="<?= base_url('/standards/' . $Data->document); ?>">

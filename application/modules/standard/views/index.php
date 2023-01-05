@@ -12,14 +12,21 @@
 				</div>
 				<div class="card-body">
 					<!-- Nav tabs -->
-					<ul class="nav nav-tabs nav-pills pb-3" id="myTab" role="tablist">
-						<li class="nav-item" role="presentation">
-							<button class="nav-link active btn-sm" id="Published-tab" data-toggle="tab" data-target="#Published" type="button" role="tab" aria-controls="Published" aria-selected="true">Published <span class="badge badge-circle badge-white text-primary ml-2"><?= count($data); ?></span></button>
-						</li>
-						<li class="nav-item" role="presentation">
-							<button class="nav-link btn-sm" id="Draft-tab" data-toggle="tab" data-target="#Draft" type="button" role="tab" aria-controls="Draft" aria-selected="false">Draft <span class="badge badge-circle badge-white text-primary ml-2"><?= count($drafts); ?></span></button>
-						</li>
-					</ul>
+					<div class="d-flex justify-content-between border border-top-0 border-right-0 border-left-0">
+						<ul class="nav nav-tabs nav-pills pb-3 border-0" id="myTab" role="tablist">
+							<li class="nav-item" role="presentation">
+								<button class="nav-link active btn-sm" id="Published-tab" data-toggle="tab" data-target="#Published" type="button" role="tab" aria-controls="Published" aria-selected="true">Published <span class="badge badge-circle badge-white text-primary ml-2"><?= count($data); ?></span></button>
+							</li>
+							<li class="nav-item" role="presentation">
+								<button class="nav-link btn-sm" id="Draft-tab" data-toggle="tab" data-target="#Draft" type="button" role="tab" aria-controls="Draft" aria-selected="false">Draft <span class="badge badge-circle badge-white text-primary ml-2"><?= count($drafts); ?></span></button>
+							</li>
+						</ul>
+						<ul class="nav nav-tabs nav-pills pb-3 border-0">
+							<li class="nav-item" role="presentation">
+								<a href="<?= base_url($this->uri->segment(1) . '/export_excel/'); ?>" class="btn btn-sm btn-default" type="button" role="tab" aria-controls="Published" aria-selected="true">Export <i class="fa fa-file-export"></i></a>
+							</li>
+						</ul>
+					</div>
 
 					<!-- Tab panes -->
 					<div class="tab-content mt-3">

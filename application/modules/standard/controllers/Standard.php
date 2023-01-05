@@ -209,4 +209,129 @@ class Standard extends Admin_Controller
 			return $error_msg;
 		endif;
 	}
+
+	// public function export_excel()
+	// {
+	// 	$data			= $this->db->get_where('view_standards', ['status' => 'PUB'])->result();
+	// 	$drafts			= $this->db->get_where('view_standards', ['status' => 'DFT'])->result();
+	// 	$scopes 		= $this->db->get_where('tool_scopes')->result();
+	// 	$ArrScopes = [];
+	// 	foreach ($scopes as $sc) {
+	// 		$ArrScopes[$sc->id] = $sc->name;
+	// 	}
+
+	// 	$this->template->set([
+	// 		'data' 			=> $data,
+	// 		'drafts' 		=> $drafts,
+	// 		'ArrScopes' 	=> $ArrScopes,
+	// 	]);
+	// }
+
+	public function export_excel()
+	{
+		// Panggil class PHPExcel nya
+		require(APPPATH . 'libraries/PHPExcel.php');
+		require(APPPATH . 'libraries/PHPExcel/Writer/Excel2007.php');
+
+		$excel    = new PHPExcel();
+		$htmlText = new PHPExcel_Helper_HTML;
+
+		// Settingan awal fil excel
+		$excel->getProperties()->setCreator('Sentral Sistem')
+			->setLastModifiedBy('Sentral Sistem')
+			->setTitle("Standards")
+			->setSubject("Project Controller")
+			->setDescription("Data Standard Reference")
+			->setKeywords("Standard Reference");
+
+		// Buat sebuah variabel untuk menampung pengaturan style dari header tabel
+		$style_col = array(
+			'font' => array('bold' => true), // Set font nya jadi bold
+			'alignment' => array(
+				'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER, // Set text jadi ditengah secara horizontal (center)
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER // Set text jadi di tengah secara vertical (middle)
+			),
+			// 'borders' => array(
+			//   'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border top dengan garis tipis
+			//   'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  // Set border right dengan garis tipis
+			//   'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border bottom dengan garis tipis
+			//   'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN) // Set border left dengan garis tipis
+			// )
+		);
+
+		// Buat sebuah variabel untuk menampung pengaturan style dari isi tabel
+		$style_row = array(
+			'alignment' => array(
+				'vertical' => PHPExcel_Style_Alignment::VERTICAL_TOP, // Set text jadi di tengah secara vertical (middle)
+				'wrap' => true
+			),
+			// 'borders' => array(
+			//   'top' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border top dengan garis tipis
+			//   'right' => array('style'  => PHPExcel_Style_Border::BORDER_THIN),  // Set border right dengan garis tipis
+			//   'bottom' => array('style'  => PHPExcel_Style_Border::BORDER_THIN), // Set border bottom dengan garis tipis
+			//   'left' => array('style'  => PHPExcel_Style_Border::BORDER_THIN) // Set border left dengan garis tipis
+			// )
+		);
+
+		$data			= $this->db->get_where('view_standards', ['status' => 'PUB'])->result();
+		$drafts			= $this->db->get_where('view_standards', ['status' => 'DFT'])->result();
+		$scopes 		= $this->db->get_where('tool_scopes')->result();
+
+		$ArrScopes = [];
+		foreach ($scopes as $sc) {
+			$ArrScopes[$sc->id] = $sc->name;
+		}
+
+		$this->template->set([
+			'data' 			=> $data,
+			'drafts' 		=> $drafts,
+			'ArrScopes' 	=> $ArrScopes,
+		]);
+
+		$excel->setActiveSheetIndex(0)->setCellValue('A1', 'STANDARDS REFERENCE'); // Set kolom A1 dengan tulisan "DATA SISWA"
+		$excel->getActiveSheet()->mergeCells('A1:D1'); // Set Merge Cell pada kolom A1 sampai E1
+		$excel->getActiveSheet()->getStyle('A1')->getFont()->setBold(TRUE); // Set bold kolom A1
+		$excel->getActiveSheet()->getStyle('A1')->getFont()->setSize(24); // Set font size 15 untuk kolom A1
+		$excel->getActiveSheet()->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_LEFT); // Set text center untuk kolom A1
+
+		// // Buat header tabel nya pada baris ke 3
+		$excel->setActiveSheetIndex(0)->setCellValue('A3', "NO")->getStyle('A3')->applyFromArray($style_col);
+		$excel->setActiveSheetIndex(0)->setCellValue('B3', "SCOPES")->getStyle('B3')->applyFromArray($style_col);
+		$excel->setActiveSheetIndex(0)->setCellValue('C3', "STANDARDS NAME")->getStyle('C3')->applyFromArray($style_col);
+		$excel->setActiveSheetIndex(0)->setCellValue('D3', "YEAR")->getStyle('D3')->applyFromArray($style_col);
+
+		// menampilkan semua data
+		$no = 0;
+		$numRow = 4; // Set baris pertama
+		foreach ($data as $key => $dt) {
+			$no++;
+			$numRow++;
+			$excel->setActiveSheetIndex(0)->setCellValue("A$numRow", $no)->getStyle("A$numRow")->applyFromArray($style_row);
+			$excel->setActiveSheetIndex(0)->setCellValue("B$numRow", $ArrScopes[$dt->scope_id])->getStyle("A$numRow")->applyFromArray($style_row);
+			$excel->setActiveSheetIndex(0)->setCellValue("C$numRow",  $dt->name)->getStyle("A$numRow")->applyFromArray($style_row);
+			$excel->setActiveSheetIndex(0)->setCellValue("D$numRow", $dt->year)->getStyle("A$numRow")->applyFromArray($style_row);
+		}
+
+		// Set width kolom
+		$excel->getActiveSheet()->getColumnDimension('A')->setWidth(5); // Set width kolom A
+		$excel->getActiveSheet()->getColumnDimension('B')->setWidth(15); // Set width kolom B
+		$excel->getActiveSheet()->getColumnDimension('C')->setWidth(45); // Set width kolom C
+		$excel->getActiveSheet()->getColumnDimension('D')->setWidth(20); // Set width kolom D
+
+		// Set height semua kolom menjadi auto (mengikuti height isi dari kolommnya, jadi otomatis)
+		$excel->getActiveSheet()->getDefaultRowDimension()->setRowHeight(-1);
+		// Set orientasi kertas jadi LANDSCAPE
+		$excel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+		// Set judul file excel nya
+		$excel->getActiveSheet(0)->setTitle("Sheet1");
+		$excel->setActiveSheetIndex(0);
+
+		// // Proses file excel
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment; filename="Standards Reference".xlsx"'); // Set nama file excel nya
+		header('Cache-Control: max-age=0');
+		$writer = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
+		ob_end_clean();
+		$writer->save('php://output');
+	}
 }
