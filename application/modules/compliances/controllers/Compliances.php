@@ -34,14 +34,14 @@ class Compliances extends Admin_Controller
 
     public function index()
     {
-        $reference = $this->db->get_where('view_references', ['company_id' => $this->company])->row();
+        $reference = $this->db->get_where('view_references', ['company_id' => $this->company, 'status' => 'OPN'])->row();
         if ($reference) {
-            $data = $this->db->get_where('view_compliances', ['reference_id' => $reference->id, 'company_id' => $reference->company_id])->result();
+            $regulations = $this->db->get_where('view_ref_regulations', ['reference_id' => $reference->id])->result();
         }
 
         $this->template->set([
-            'reference' => $reference,
-            'data' => $data
+            'regulations' => $regulations,
+            'reference' => $reference
         ]);
         $this->template->render('list');
     }
@@ -63,42 +63,46 @@ class Compliances extends Admin_Controller
 
     public function details($id = null)
     {
+        $data = [];
+        $complianceDtl = [];
+        $ArrOpports = [];
+        $ArrCompl = [];
+        $ArrPasal = [];
+
         if ($id) {
-            $compliance         = $this->db->get_where('view_compliances', ['id' => $id])->row();
-            $data               = $this->db->get_where('view_regulation_paragraphs', ['regulation_id' => $compliance->regulation_id])->result();
-            $users              = $this->db->get_where('view_users', ['company_id' => $this->company, 'status' => 'ACT'])->result();
+            $compliance          = $this->db->get_where('view_compliances', ['id' => $id])->row();
 
-            /* data phoaragraph */
-            $complianceDtl = $this->db->get_where('compliance_details', ['regulation_id' => $compliance->regulation_id])->result();
+            if ($compliance) {
+                $data            = $this->db->get_where('view_regulation_paragraphs', ['regulation_id' => $compliance->regulation_id])->result();
+                /* data phoaragraph */
+                $complianceDtl       = $this->db->get_where('compliance_details', ['regulation_id' => $compliance->regulation_id])->result();
+                foreach ($complianceDtl as $dtl) {
+                    $ArrCompl[$dtl->prgh_id] = $dtl;
+                }
 
-            $ArrCompl = [];
-            foreach ($complianceDtl as $dtl) {
-                $ArrCompl[$dtl->prgh_id] = $dtl;
+                foreach ($data as $dt) {
+                    $ArrPasal[$dt->pasal_id][] = $dt;
+                }
+
+                $compOpports = $this->db->get_where('compliance_opports', ['regulation_id' => $compliance->regulation_id])->result();
+                foreach ($compOpports as $opp) {
+                    $ArrOpports[$opp->prgh_id][] = $opp;
+                }
             }
 
-            $ArrPasal   = [];
-            foreach ($data as $dt) {
-                $ArrPasal[$dt->pasal_id][] = $dt;
-            }
-
-            $compOpports = $this->db->get_where('compliance_opports', ['regulation_id' => $compliance->regulation_id])->result();
-            $ArrOpports = [];
-
-            foreach ($compOpports as $opp) {
-                $ArrOpports[$opp->prgh_id][] = $opp;
-            }
-
-            $this->template->set([
-                'data'          => $data,
-                'ArrPasal'      => $ArrPasal,
-                'users'         => $users,
-                'compliance'    => $compliance,
-                'ArrCompl'      => $ArrCompl,
-                'ArrOpports'    => $ArrOpports,
-            ]);
-
-            $this->template->render('list-desc');
+            $users               = $this->db->get_where('view_users', ['company_id' => $this->company, 'status' => 'ACT'])->result();
         }
+
+        $this->template->set([
+            'data'          => $data,
+            'ArrPasal'      => $ArrPasal,
+            'users'         => $users,
+            'compliance'    => $compliance,
+            'ArrCompl'      => $ArrCompl,
+            'ArrOpports'    => $ArrOpports,
+        ]);
+
+        $this->template->render('list-desc');
     }
 
     public function add($comp_id = null)
@@ -207,6 +211,7 @@ class Compliances extends Admin_Controller
         if (isset($data['detail'])) {
             foreach ($data['detail'] as $key => $dtl) {
                 $detailComp[$key] = [
+                    'id'                => isset($dtl['id']) ? $dtl['id'] : '',
                     'complience_id'     => $data['compliance_id'],
                     'reference_id'      => $data['reference_id'],
                     'company_id'        => $this->company,
@@ -220,9 +225,11 @@ class Compliances extends Admin_Controller
             }
         }
 
+
+
         if (isset($data['opport'])) {
             foreach ($data['opport'] as $key => $dtlOpp) {
-                foreach ($dtlOpp as $k => $dtl) {
+                foreach ($dtlOpp as $dtl) {
                     $detailOpport[] = [
                         'id'                => isset($dtl['id']) ? $dtl['id'] : '',
                         'compliance_id'     => $data['compliance_id'],
@@ -243,8 +250,20 @@ class Compliances extends Admin_Controller
         if ($data) {
             $this->db->trans_begin();
             if (isset($detailComp) && $detailComp) {
-                $this->db->insert_batch('compliance_details', $detailComp);
+                foreach ($detailComp as $dtlComp) {
+                    if ($dtlComp['id']) {
+                        $dtlComp['modified_at']        = date('Y-m-d H:i:s');
+                        $dtlComp['modified_by']        = $this->auth->user_id();
+                        $this->db->update('compliance_details', $dtlComp, ['id' => $dtlComp['id']]);
+                    } else {
+                        $dtlComp['created_at']        = date('Y-m-d H:i:s');
+                        $dtlComp['created_by']        = $this->auth->user_id();
+                        $this->db->insert('compliance_details', $dtlComp);
+                    }
+                }
+                // $this->db->insert_batch('compliance_details', $detailComp);
             }
+
             if (isset($detailOpport) && $detailOpport) {
                 foreach ($detailOpport as $k => $op) {
                     if ($op['id']) {

@@ -14,7 +14,7 @@
 							<label for="" class="h3 form-control-label font-weight-bolder">: <?= ($reference->nm_perusahaan); ?></label>
 						</div>
 					</div>
-					<button type="button" class="btn btn-primary add-new" data-comp_id="<?= $reference->company_id; ?>"><i class="fa fa-plus"></i>Add New</button>
+					<!-- <button type="button" class="btn btn-primary add-new" data-comp_id="<?= $reference->company_id; ?>"><i class="fa fa-plus"></i>Add New</button> -->
 					<!-- <a href="<?= base_url($this->uri->segment(1)); ?>" class="btn btn-danger"><i class="fa fa-reply"></i>Back</a> -->
 
 					<hr>
@@ -30,9 +30,9 @@
 									</tr>
 								</thead>
 								<tbody>
-									<?php if (isset($data) && $data) :
+									<?php if (isset($regulations) && $regulations) :
 										$n = 0;
-										foreach ($data as $dt) : $n++; ?>
+										foreach ($regulations as $dt) : $n++; ?>
 											<tr class="">
 												<td><?= $n; ?></td>
 												<td class="text-left"><?= $dt->name; ?></td>

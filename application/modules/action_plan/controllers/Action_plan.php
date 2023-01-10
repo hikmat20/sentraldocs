@@ -97,18 +97,40 @@ class Action_plan extends Admin_Controller
 
     public function update($id = null)
     {
-        $data       = $this->db->get_where('view_comp_opports', ['id' => $id])->row();
-        $compliance = $this->db->get_where('view_compliances', ['id' => $data->compliance_id])->row();
+        $opport         = $this->db->get_where('compliance_opports', ['id' => $id])->row();
+        $detailComp     = $this->db->get_where('compliance_details', ['prgh_id' => $opport->prgh_id])->row();
+        $regulation     = $this->db->get_where('regulations', ['id' => $opport->regulation_id])->row();
+        $prgh           = $this->db->get_where('regulation_paragraphs', ['id' => $opport->prgh_id])->row();
+        $pasal          = $this->db->get_where('regulation_pasal', ['id' => $detailComp->pasal_id])->row();
+        $company        = $this->db->get_where('companies', ['id_perusahaan' => $opport->company_id])->row();
+        $users          = $this->db->get_where('view_users', ['company_id' => $this->company, 'status' => 'ACT'])->result();
+
         $cat = [
             'OPP' => 'Opportunity',
             'RSK' => 'Risk',
         ];
 
+        $status = [
+            'NCM' => 'Non Compliance',
+            'CMP' => 'Compliance',
+            'NAP' => 'Not Applicable',
+        ];
+
+        $ArrUsers = [];
+        foreach ($users as $usr) {
+            $ArrUsers[$usr->id_user] = $usr->full_name;
+        }
 
         $this->template->set([
-            'data' => $data,
-            'cat' => $cat,
-            'compliance' => $compliance
+            'opport'        => $opport,
+            'company'       => $company,
+            'detailComp'    => $detailComp,
+            'regulation'    => $regulation,
+            'ArrUsers'      => $ArrUsers,
+            'status'        => $status,
+            'prgh'          => $prgh,
+            'pasal'         => $pasal,
+            'cat'           => $cat,
         ]);
         $this->template->render('update');
     }

@@ -1,34 +1,57 @@
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
 	<div class="d-flex flex-column-fluid">
 		<div class="container">
+
 			<form id="form">
-				<input type="hidden" name="compliance_id" value="<?= $compliance->id; ?>">
-				<input type="hidden" name="regulation_id" value="<?= $compliance->regulation_id; ?>">
-				<input type="hidden" name="reference_id" value="<?= $compliance->reference_id; ?>">
 				<div class="card card-stretch shadow card-custom">
 					<div class="card-header">
 						<h2 class="mt-5"><i class="<?= $icon; ?> mr-2"></i><?= $title; ?></h2>
 					</div>
 					<div class="card-body">
-						<h5 for="" class="font-weight-bolder mb-5"><?= $compliance->name; ?></h5>
-						<hr>
-						<button type="button" class="btn btn-primary mb-5" id="save_detail"><i class="fa fa-save"></i>Save</button>
-						<a href="<?= base_url($this->uri->segment(1) . '/lists/' . $compliance->reference_id); ?>" class="btn btn-danger mb-5"><i class="fa fa-reply"></i>Back</a>
+						<?php if (isset($data) && $data) : ?>
+							<input type="hidden" name="compliance_id" value="<?= $compliance->id; ?>">
+							<input type="hidden" name="regulation_id" value="<?= $compliance->regulation_id; ?>">
+							<input type="hidden" name="reference_id" value="<?= $compliance->reference_id; ?>">
+							<div class="row">
+								<div class="col-2">
+									<div class="d-flex justify-content-between">
+										<span class="font-weight-bolder h5">Company</span>
+										<span>:</span>
+									</div>
+								</div>
+								<div class="col-10">
+									<h5 for="" class="font-weight-bolder mb-5"><?= $compliance->nm_perusahaan; ?></h5>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-2">
+									<div class="d-flex justify-content-between">
+										<span class="font-weight-bolder h5">Regulation</span>
+										<span>:</span>
+									</div>
+								</div>
+								<div class="col-10">
+									<h5 for="" class="font-weight-bolder mb-5"><?= $compliance->name; ?></h5>
+								</div>
+							</div>
+							<hr>
+							<button type="button" class="btn btn-primary mb-5" id="save_detail"><i class="fa fa-save"></i>Save</button>
+							<a href="<?= base_url($this->uri->segment(1)); ?>" class="btn btn-danger mb-5"><i class="fa fa-reply"></i>Back</a>
 
-						<table class="table datatable table-bordered table-sm">
-							<thead>
-								<tr class="text-center">
-									<th style="vertical-align: middle;" width="50">No</th>
-									<th style="vertical-align: middle;" width="100">Pasal</th>
-									<th style="vertical-align: middle;" width="100">Ayat</th>
-									<th style="vertical-align: middle;">Description</th>
-									<th style="vertical-align: middle;" width="300">Complience Description</th>
-									<th style="vertical-align: middle;" width="150">Status</th>
-									<th style="vertical-align: middle;" width="10">Opport/ Risks</th>
-								</tr>
-							</thead>
-							<tbody>
-								<?php if (isset($data) && $data) :
+							<table class="table datatable table-bordered table-sm">
+								<thead>
+									<tr class="text-center">
+										<th style="vertical-align: middle;" width="50">No</th>
+										<th style="vertical-align: middle;" width="100">Pasal</th>
+										<th style="vertical-align: middle;" width="100">Ayat</th>
+										<th style="vertical-align: middle;">Description</th>
+										<th style="vertical-align: middle;" width="300">Complience Description</th>
+										<th style="vertical-align: middle;" width="150">Status</th>
+										<th style="vertical-align: middle;" width="10">Opport/ Risks</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php
 									$n = 0;
 									foreach ($ArrPasal as $k => $dt) : ?>
 										<?php foreach ($dt as $j => $l) : $n++; ?>
@@ -141,14 +164,20 @@
 													</div>
 												</td>
 											</tr>
-								<?php endforeach;
-									endforeach;
-								endif; ?>
-							</tbody>
-						</table>
+									<?php endforeach;
+									endforeach; ?>
+								</tbody>
+							</table>
+						<?php else : ?>
+							<div class="text-center">
+								<h3 class="text-center text-muted">Data not valid</h3>
+								<a href="<?= base_url($this->uri->segment(1)); ?>" class="btn btn-danger"><i class="fa fa-reply"></i> Back</a>
+							</div>
+						<?php endif; ?>
 					</div>
 				</div>
 			</form>
+
 		</div>
 	</div>
 </div>
