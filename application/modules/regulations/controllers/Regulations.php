@@ -168,11 +168,11 @@ class Regulations extends Admin_Controller
 	{
 		$Data 	= $this->db->get_where('regulations', ['id' => $id])->row();
 		$Pasal 	= $this->db->get_where('regulation_pasal', ['regulation_id' => $id])->result();
-		$Desc 	= $this->db->get_where('regulation_paragraphs', ['regulation_id' => $id])->result();
+		$Desc 	= $this->db->order_by('order', 'ASC')->get_where('regulation_paragraphs', ['regulation_id' => $id])->result();
 
 		$ArrDesc = [];
 		foreach ($Desc as $dsc) {
-			$ArrDesc[$dsc->pasal_id] = $dsc;
+			$ArrDesc[$dsc->pasal_id][] = $dsc;
 		}
 
 		$this->template->set([
@@ -180,6 +180,10 @@ class Regulations extends Admin_Controller
 			'Pasal' 	=> $Pasal,
 			'ArrDesc' 	=> $ArrDesc
 		]);
+		// echo '<pre>';
+		// print_r($ArrDesc);
+		// echo '<pre>';
+		// exit;
 
 		$this->template->render('view');
 	}

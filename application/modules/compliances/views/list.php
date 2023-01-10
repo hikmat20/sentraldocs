@@ -15,7 +15,7 @@
 						</div>
 					</div>
 					<button type="button" class="btn btn-primary add-new" data-comp_id="<?= $reference->company_id; ?>"><i class="fa fa-plus"></i>Add New</button>
-					<a href="<?= base_url($this->uri->segment(1)); ?>" class="btn btn-danger"><i class="fa fa-reply"></i>Back</a>
+					<!-- <a href="<?= base_url($this->uri->segment(1)); ?>" class="btn btn-danger"><i class="fa fa-reply"></i>Back</a> -->
 
 					<hr>
 					<div class="tab-content mt-3">

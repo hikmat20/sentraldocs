@@ -202,7 +202,7 @@
 															<thead class="text-center">
 																<tr class="table-light">
 																	<th width="50" class="text-center py-2">Ayat</th>
-																	<th class="py-2">Deskiption</th>
+																	<th class="py-2">Description</th>
 																	<th class="py-2" width="50">Opsi</th>
 																</tr>
 															</thead>
