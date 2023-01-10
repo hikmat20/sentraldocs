@@ -11,8 +11,8 @@
               <?php if (isset($ArrDesc[$psl->id])) : $n = 0;
                 foreach ($ArrDesc[$psl->id] as $dsc) : $n++; ?>
                   <tr>
-                    <td class="h4" width="100"><?= $dsc->name; ?></td>
-                    <td class="h4"><?= $dsc->description; ?></td>
+                    <td class="" width="100"><?= $dsc->name; ?></td>
+                    <td class=""><?= $dsc->description; ?></td>
                   </tr>
               <?php endforeach;
               endif; ?>

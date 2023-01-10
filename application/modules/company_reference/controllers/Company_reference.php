@@ -124,13 +124,17 @@ class Company_reference extends Admin_Controller
 		echo json_encode($Return);
 	}
 
-	public function delete()
+	public function delete($id = null)
 	{
-		$id = $this->input->post('id');
-
 		if (($id)) {
 			$this->db->trans_begin();
-			$this->db->delete('ref_standards', ['id' => $id]);
+			$this->db->delete('references', ['id' => $id]);
+			$this->db->delete('ref_standards', ['reference_id' => $id]);
+			$this->db->delete('cross_reference_details', ['reference_id' => $id]);
+
+			$this->db->delete('ref_regulations', ['reference_id' => $id]);
+			$this->db->delete('compliance_details', ['reference_id' => $id]);
+			$this->db->delete('compliance_opports', ['reference_id' => $id]);
 		} else {
 			$this->db->trans_rollback();
 			$Return		= array(

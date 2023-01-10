@@ -14,12 +14,13 @@
 								<div class="mb-3 row flex-nowrap">
 									<label for="" class="col-3 col-form-label font-weight-bold">Select Copmany</label>
 									<div class="col-6">
-										<select name="company_id" id="company_id" class="form-control select2">
+										<label class="font-weight-bolder col-form-label"><?= $this->session->company->nm_perusahaan; ?></label>
+										<!-- <select name="company_id" id="company_id" class="form-control select2">
 											<option value=""></option>
 											<?php foreach ($Companies as $comp) : ?>
 												<option value="<?= $comp->id_perusahaan; ?>"><?= $comp->nm_perusahaan; ?></option>
 											<?php endforeach; ?>
-										</select>
+										</select> -->
 									</div>
 								</div>
 								<div class="mb-3 row flex-nowrap">
@@ -126,14 +127,14 @@
 			const company_id = $('#company_id').val()
 			const sdate = $('#sdate').val()
 
-			if (!company_id) {
-				$('#company_id').next('span').find('span.select2-selection').addClass('is-invalid')
-				$('body,html').animate({
-					scrollTop: $("#company_id").offset().top - 220
-				}, 1000);
+			// if (!company_id) {
+			// 	$('#company_id').next('span').find('span.select2-selection').addClass('is-invalid')
+			// 	$('body,html').animate({
+			// 		scrollTop: $("#company_id").offset().top - 220
+			// 	}, 1000);
 
-				return false;
-			}
+			// 	return false;
+			// }
 			if (!sdate) {
 				$('#sdate').addClass('is-invalid')
 				$('body,html').animate({

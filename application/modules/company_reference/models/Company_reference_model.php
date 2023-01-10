@@ -74,10 +74,12 @@ class Company_reference_model extends BF_Model
 
     if (isset($Data['id'])) {
       $Id                 = $Data['id'];
+
       $Data['modified_by'] = $this->auth->user_id();
       $Data['modified_at'] = date('Y-m-d H:i:s');
       $this->db->update('references', $Data, ['id' => $Data['id']]);
     } else {
+      $Data['company_id'] = $this->session->company->id_perusahaan;
       $Data['created_by'] = $this->auth->user_id();
       $Data['created_at'] = date('Y-m-d H:i:s');
 
