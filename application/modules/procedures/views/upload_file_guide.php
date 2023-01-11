@@ -39,7 +39,7 @@
 						<select name="forms[reviewer_id]" id="reviewer_id" class="form-control select2">;
 							<option value=""></option>
 							<?php foreach ($jabatan as $jbt) : ?>
-								<option value="<?= $jbt->id; ?>" <?= (isset($data) && $data->reviewer_id == $jbt->id) ? 'selected' : ''; ?>><?= $jbt->nm_jabatan; ?></option>
+								<option value="<?= $jbt->id; ?>" <?= (isset($data) && $data->reviewer_id == $jbt->id) ? 'selected' : ''; ?>><?= $jbt->name; ?></option>
 							<?php endforeach; ?>
 						</select>
 						<span class="form-text text-danger invalid-feedback"><span class="text-danger">*</span> Review By harus di isi</span>
@@ -52,7 +52,7 @@
 						<select name="forms[approval_id]" id="approval_id" class="form-control select2">;
 							<option value=""></option>
 							<?php foreach ($jabatan as $jbt) : ?>
-								<option value="<?= $jbt->id; ?>" <?= (isset($data) && $data->approval_id == $jbt->id) ? 'selected' : ''; ?>><?= $jbt->nm_jabatan; ?></option>
+								<option value="<?= $jbt->id; ?>" <?= (isset($data) && $data->approval_id == $jbt->id) ? 'selected' : ''; ?>><?= $jbt->name; ?></option>
 							<?php endforeach; ?>
 						</select>
 						<span class="form-text text-danger invalid-feedback">Approval By harus di isi</span>
@@ -65,7 +65,7 @@
 						<select name="forms[distribute_id][]" multiple id="distribute_id" data-placeholder="Choose an options" class="form-control select2">;
 							<option value=""></option>
 							<?php foreach ($jabatan as $jbt) : ?>
-								<option value="<?= $jbt->id; ?>" <?= isset($data) ? ((in_array($jbt->id, explode(',', $data->distribute_id))) ? 'selected' : '') : ''; ?>><?= $jbt->nm_jabatan; ?></option>
+								<option value="<?= $jbt->id; ?>" <?= isset($data) ? ((in_array($jbt->id, explode(',', $data->distribute_id))) ? 'selected' : '') : ''; ?>><?= $jbt->name; ?></option>
 							<?php endforeach; ?>
 						</select>
 						<span class="form-text text-danger invalid-feedback">Distribusi By harus di isi</span>
