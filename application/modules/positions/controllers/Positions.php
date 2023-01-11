@@ -23,7 +23,7 @@ class Positions extends Admin_Controller
 
     public function index()
     {
-        $data = $this->db->get_where('view_positions')->result();
+        $data = $this->db->get_where('view_positions', ['company_id' => $this->company])->result();
         $this->template->set('data', $data);
         $this->template->render('index');
     }
@@ -46,6 +46,7 @@ class Positions extends Admin_Controller
             } else {
                 $data['created_at'] = date('Y-m-d H:i:s');
                 $data['created_by'] = $this->auth->user_id();
+                $data['company_id'] = $this->company;
                 $this->db->insert('positions', $data);
             }
             if ($this->db->trans_status() === FALSE) {
