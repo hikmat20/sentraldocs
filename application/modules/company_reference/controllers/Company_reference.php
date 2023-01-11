@@ -16,8 +16,8 @@ class Company_reference extends Admin_Controller
 		$this->load->library(array('upload', 'Image_lib'));
 		$this->load->model('company_reference/Company_reference_model', 'ReferenceModel');
 
-		$this->template->set('title', 'List of Company Audit');
-		$this->template->set('icon', 'fa fa-cog');
+		$this->template->set('title', 'Company Reference');
+		$this->template->set('icon', 'fa fa-building');
 
 		date_default_timezone_set("Asia/Bangkok");
 	}

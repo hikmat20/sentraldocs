@@ -137,8 +137,8 @@ class Monitoring_model extends BF_Model
                     'status'         => $data['status'],
                     'modified_by'     => $this->auth->user_id(),
                     'modified_at'     => date('Y-m-d H:i:s'),
-                    'approved_by'     => $this->auth->user_id(),
-                    'approved_at'     => date('Y-m-d H:i:s'),
+                    'revision_req_by'     => $this->auth->user_id(),
+                    'revision_req_at'     => date('Y-m-d H:i:s'),
                 ],
                 ['id' => $data['id']]
             );
