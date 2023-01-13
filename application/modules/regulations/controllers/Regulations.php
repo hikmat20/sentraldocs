@@ -247,7 +247,7 @@ class Regulations extends Admin_Controller
 			$old_file 	= isset($Data['old_file']) ? $Data['old_file'] : '';
 			unset($Data['old_file']);
 			$result = $this->RegModel->saveData($Data);
-			if ($_FILES['document']['name']) {
+			if (isset($_FILES['document']) && $_FILES['document']['name']) {
 				$upload = $this->save_upload($result);
 				if ($upload) {
 					$Return			= array(
