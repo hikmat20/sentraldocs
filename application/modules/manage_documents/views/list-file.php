@@ -24,7 +24,8 @@
 									<?php endif; ?>
 									<a class="dropdown-item" onclick="rename('<?= $list->id; ?>')" href="#"><i class="fa fa-edit text-info mr-2"></i>Rename</a>
 									<a class="dropdown-item" href="#"><i class="fa fa-arrows-alt text-primary mr-2"></i>Move</a>
-									<a class="dropdown-item <?= ($list->status != 'OPN') ? 'disabled' : ''; ?>" onclick="delete_folder('<?= $list->id; ?>','<?= $list->parent_id; ?>')" href="#"><i class="fa fa-trash text-danger mr-2"></i>Delete</a>
+									<a class="dropdown-item <?= ($list->flag_type == 'FOLDER') ? 'd-none' : ''; ?>" onclick="delete_file('<?= $list->id; ?>','<?= $list->parent_id; ?>')" href="#"><i class="fa fa-trash text-danger mr-2"></i>Delete</a>
+									<a class="dropdown-item <?= ($list->flag_type == 'FILE') ? 'd-none' : ''; ?>" onclick="delete_folder('<?= $list->id; ?>','<?= $list->parent_id; ?>')" href="#"><i class="fa fa-trash text-danger mr-2"></i>Delete</a>
 								</div>
 							</div>
 							<?= ($list->flag_type == 'FOLDER') ? "<i class='fa fa-folder text-warning mr-2 fa-2x py-0' style='vertical-align:middle;'></i>" : "<i class='text-success fa-2x fa fa-file mr-2 py-0' style='vertical-align:middle;'></i>"; ?> <span class="my-auto"><?= $list->name; ?></span>
