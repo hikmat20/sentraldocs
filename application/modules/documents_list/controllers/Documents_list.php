@@ -30,6 +30,7 @@ class Documents_list extends Admin_Controller
 	{
 		$thisData 		= $this->db->get_where('directory', ['id' => $id])->row();
 		$Data 			= $this->db->get_where('directory', ['parent_id' => $id, 'flag_type' => 'FOLDER', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
+		$DataFile 			= $this->db->get_where('directory', ['parent_id' => $id, 'flag_type' => 'FILE', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
 		$listDataFolder = $this->db->get_where('directory', ['flag_type' => 'FOLDER', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
 		$listDataFile 	= $this->db->get_where('directory', ['flag_type' => 'FILE', 'status' => 'PUB', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
 		$listDataLink 	= $this->db->get_where('directory', ['flag_type' => 'LINK', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
@@ -55,9 +56,11 @@ class Documents_list extends Admin_Controller
 		$this->template->set('Breadcumb', $buildBreadcumb);
 		$this->template->set('thisData', $thisData);
 		$this->template->set('Data', $Data);
+		$this->template->set('DataFile', $DataFile);
 		$this->template->set('ArrDataFolder', $ArrDataFolder);
 		$this->template->set('ArrDataFile', $ArrDataFile);
 		$this->template->set('ArrDataLink', $ArrDataLink);
+
 		$this->template->render('index');
 	}
 
@@ -172,6 +175,7 @@ class Documents_list extends Admin_Controller
 
 		$this->template->render('procedures/view-record');
 	}
+
 	public function view_form($id)
 	{
 		$form 			= $this->db->get_where('dir_forms', ['id' => $id])->row();
@@ -249,5 +253,78 @@ class Documents_list extends Admin_Controller
 		]);
 
 		$this->template->render('procedures/records');
+	}
+
+
+
+
+	/* MANUAL DAN PERATURAN PERUSAHAAN */
+
+
+	public function manualpp($id = null)
+	{
+		if (isset($id)) {
+			$procedure 		= $this->db->get_where('view_procedures', ['id' => $id])->result();
+			$forms 			= $this->db->order_by('name', 'ASC')->get_where('dir_forms', ['procedure_id' => $id, 'active' => 'Y'])->result();
+			$guides 		= $this->db->order_by('name', 'ASC')->get_where('dir_guides', ['procedure_id' => $id, 'active' => 'Y'])->result();
+			$records 		= $this->db->order_by('name', 'ASC')->get_where('dir_records', ['procedure_id' => $id, 'status' => 'PUB', 'flag_type' => 'FOLDER', 'company_id' => $this->company, 'parent_id' => null])->result();
+			$countRecords 	= $this->db->get_where('dir_records', ['procedure_id' => $id, 'status' => 'PUB', 'flag_type' => 'FILE', 'company_id' => $this->company])->num_rows();
+
+			$this->template->set([
+				'procedure' 		=> $procedure,
+				'forms' 			=> $forms,
+				'guides' 			=> $guides,
+				'records' 			=> $records,
+				'MainData' 			=> $this->MainData,
+				'countRecords' 	 	=> $countRecords
+			]);
+			$this->template->render('procedures/list-docs');
+		} else {
+			$groups 		= $this->db->get_where('group_procedure', ['status' => 'ACT'])->result();
+			$procedures 	= $this->db->get_where('view_procedures', ['company_id' => $this->company, 'status' => 'PUB', 'deleted_by' => null])->result_array();
+
+			$ArrPro = [];
+			foreach ($procedures as $pro) {
+				$ArrPro[$pro['group_procedure']][] = $pro;
+			}
+
+			$this->template->set([
+				'groups' 		=> $groups,
+				'ArrPro' 		=> $ArrPro,
+				'MainData' 		=> $this->MainData
+			]);
+			$this->template->render('procedures/index');
+		}
+	}
+
+	public function vsiew_procedure($id)
+	{
+		$docs 			= $this->db->get_where('view_procedures', ['id' => $id])->row();
+		$detail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id, 'status' => '1'])->result();
+		$forms 		= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'active' => 'Y'])->result();
+		$users 				= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
+		$jabatan 			= $this->db->get('positions')->result();
+		$ArrUsr 			= $ArrJab = $ArrForms = [];
+
+		foreach ($users as $usr) {
+			$ArrUsr[$usr->id_user] = $usr;
+		}
+
+		foreach ($jabatan as $jab) {
+			$ArrJab[$jab->id] = $jab;
+		}
+		foreach ($forms as $form) {
+			$ArrForms[$form->id] = $form;
+		}
+		$this->template->set([
+			'docs' 			=> $docs,
+			'detail' 		=> $detail,
+			'MainData' 		=> $this->MainData,
+			'ArrUsr' 		=> $ArrUsr,
+			'ArrJab' 		=> $ArrJab,
+			'ArrForms' 		=> $ArrForms,
+		]);
+
+		$this->template->render('procedures/view-docs');
 	}
 }

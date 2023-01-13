@@ -25,6 +25,7 @@
 			</div>
 			<div class="row">
 				<div class="col-md-9">
+
 					<?php if (isset($ArrDataLink[$thisData->id])) : ?>
 						<div class="row mb-10">
 							<?php
@@ -35,33 +36,46 @@
 							<?php endforeach; ?>
 						</div>
 					<?php endif; ?>
-
 					<ul class="nav nav-warning nav-pills nav-bolder" id="myTab2" role="tablist">
 						<?php $n = 0;
 						$thisCompany = '';
-						foreach ($Data as $dt) : $n++;
-							$main = ($dt->parent_id == '0') ? true : false;
-							if ($main == false) {
-								$thisCompany = ($dt->company_id && $dt->company_id != $company) ? 'd-none' : '';
-							}
-						?>
+						if ($Data) :
+							foreach ($Data as $dt) : $n++;
+								$main = ($dt->parent_id == '0') ? true : false;
+								if ($main == false) {
+									$thisCompany = ($dt->company_id && $dt->company_id != $company) ? 'd-none' : '';
+								} ?>
+								<li class="nav-item mx-0">
+									<a class="rounded-bottom-0 nav-link  <?= ($n == '1') ? 'active' : ''; ?>" id="tab_<?= $dt->id; ?>" data-toggle="tab" href="#data_<?= $dt->id; ?>">
+										<span class="nav-icon ">
+											<i class="fa fa-file-alt"></i>
+										</span>
+										<span class="text-white h5 my-0"><?= $dt->name; ?>
+											<small class="">
+												<div class="badge bg-white rounded-circle text-warning"><?= (isset($ArrDataFolder[$dt->id]) ? count($ArrDataFolder[$dt->id]) : 0) + (isset($ArrDataFile[$dt->id]) ? count($ArrDataFile[$dt->id]) : 0) + (isset($ArrDataFile[$thisData->id]) ? count($ArrDataFile[$thisData->id]) : 0); ?></div>
+											</small>
+										</span>
+									</a>
+								</li>
+							<?php endforeach; ?>
+						<?php else : ?>
 							<li class="nav-item mx-0">
-								<a class="rounded-bottom-0 nav-link  <?= ($n == '1') ? 'active' : ''; ?>" id="tab_<?= $dt->id; ?>" data-toggle="tab" href="#data_<?= $dt->id; ?>">
+								<a class="rounded-bottom-0 nav-link active" id="tab_<?= $thisData->id; ?>" data-toggle="tab" href="#data_<?= $thisData->id; ?>">
 									<span class="nav-icon ">
 										<i class="fa fa-file-alt"></i>
 									</span>
-									<span class="text-white h5 my-0"><?= $dt->name; ?>
+									<span class="text-white h5 my-0"><?= $thisData->name; ?>
 										<small class="">
-											<div class="badge bg-white rounded-circle text-warning"><?= (isset($ArrDataFolder[$dt->id]) ? count($ArrDataFolder[$dt->id]) : 0) + (isset($ArrDataFile[$dt->id]) ? count($ArrDataFile[$dt->id]) : 0); ?></div>
+											<div class="badge bg-white rounded-circle text-warning"><?= isset($ArrDataFile[$thisData->id]) ? count($ArrDataFile[$thisData->id]) : "0" ?></div>
 										</small>
 									</span>
 								</a>
 							</li>
-						<?php endforeach; ?>
+						<?php endif; ?>
 					</ul>
 					<div class="card rounded-top-0 border-0" style="background-color: zrgba(255,255,255,0.85);">
 						<div class="card-body py-3 ">
-							<?php if (!$Data) : ?>
+							<?php if (!$Data && !$DataFile) : ?>
 								<div class="justify-content-center flex-column d-flex py-10">
 									<img src="/assets/images/directory/not-found.png" alt="" class="img-cover justify-content-center m-auto" width="200px">
 									<h3 class="text-center text-dark-50">File not found</h3>
@@ -70,19 +84,89 @@
 							<div class="tab-content " id="myTabContent2">
 								<?php $n = 0;
 								$cek_company = '';
-								foreach ($Data as $dtl) :  $n++;
-									$main = ($dtl->parent_id == '0') ? true : false;
+								if ($Data) :
+									foreach ($Data as $dtl) :  $n++;
+										$main = ($dtl->parent_id == '0') ? true : false;
 
-									if ($main == false) {
-										$cek_company = ($dtl->company_id && $dtl->company_id != $company) ? 'd-none' : '';
-									}
-								?>
-									<div class="tab-pane fade <?= ($n == '1') ? 'active show' : ''; ?>" id="data_<?= $dtl->id; ?>" role="tabpanel" aria-labelledby="tab_<?= $dtl->id; ?>">
+										if ($main == false) :
+											$cek_company = ($dtl->company_id && $dtl->company_id != $company) ? 'd-none' : '';
+										endif; ?>
+
+										<div class="tab-pane fade <?= ($n == '1') ? 'active show' : ''; ?>" id="data_<?= $dtl->id; ?>" role="tabpanel" aria-labelledby="tab_<?= $dtl->id; ?>">
+											<table class="table table-hover">
+												<tbody>
+													<?php
+													if (isset($ArrDataFolder[$dtl->id])) :
+														foreach ($ArrDataFolder[$dtl->id] as $list) : ?>
+															<tr class="cursor-pointer <?= $cek_company; ?>" data-id="<?= $list->id; ?>" ondblclick="window.open(siteurl+active_controller+'<?= $list->id; ?>','_self')">
+																<th class="h6 text-right" width="50px"><i class="fa fa-folder fa-2x text-warning"></i></th>
+																<th class="h4 font-weight-bolder pt-5 text-dark"><?= $list->name; ?></th>
+															</tr>
+													<?php endforeach;
+													endif; ?>
+												</tbody>
+											</table>
+
+											<?php if (isset($ArrDataFile[$dtl->id])) : ?>
+												<table class="table table-condensed table-hover">
+													<thead>
+														<tr class="<?= $cek_company; ?>">
+															<th class="h5 border-2 border-bottom-secondary" width="15px">No.</th>
+															<th class="h5 border-2 border-bottom-secondary text-center">File Name</th>
+															<th class="h5 border-2 border-bottom-secondary text-center" width="50px">View</th>
+														</tr>
+													</thead>
+													<tbody>
+														<?php $no = 0;
+														foreach ($ArrDataFile[$dtl->id] as $list) : $no++; ?>
+															<tr class="cursor-pointer" ondblclick="show('<?= $list->id; ?>')">
+																<td class="h6 text-dark"><?= $no; ?></td>
+																<td class="h6 text-dark"><?= $list->name; ?></td>
+																<td class="h6 text-center"><i class="fa fa-eye text-dark"></i></td>
+															</tr>
+														<?php endforeach; ?>
+													</tbody>
+												</table>
+											<?php endif; ?>
+
+											<?php if (!isset($ArrDataFolder[$dtl->id]) && !isset($ArrDataFile[$dtl->id])) : ?>
+												<?php if (isset($ArrDataFile[$thisData->id])) :; ?>
+													<table class="table table-condensed table-hover">
+														<thead>
+															<tr class="<?= $cek_company; ?>">
+																<th class="h5 border-2 border-bottom-secondary" width="15px">No.</th>
+																<th class="h5 border-2 border-bottom-secondary text-center">File Name</th>
+																<th class="h5 border-2 border-bottom-secondary text-center" width="50px">View</th>
+															</tr>
+														</thead>
+														<tbody>
+															<?php $no = 0;
+															foreach ($ArrDataFile[$thisData->id] as $list) : $no++; ?>
+																<tr class="cursor-pointer" ondblclick="show('<?= $list->id; ?>')">
+																	<td class="h6 text-dark"><?= $no; ?></td>
+																	<td class="h6 text-dark"><?= $list->name; ?></td>
+																	<td class="h6 text-center"><i class="fa fa-eye text-dark"></i></td>
+																</tr>
+															<?php endforeach; ?>
+														</tbody>
+													</table>
+												<?php else : ?>
+													<table class="table">
+														<tr>
+															<td colspan="2" class="text-center h4"><i>No data available</i></td>
+														</tr>
+													</table>
+												<?php endif; ?>
+											<?php endif; ?>
+										</div>
+									<?php endforeach; ?>
+								<?php else : ?>
+									<div class="tab-pane fade active show" id="data_<?= $thisData->id; ?>" role="tabpanel" aria-labelledby="tab_<?= $thisData->id; ?>">
 										<table class="table table-hover">
 											<tbody>
 												<?php
-												if (isset($ArrDataFolder[$dtl->id])) :
-													foreach ($ArrDataFolder[$dtl->id] as $list) : ?>
+												if (isset($ArrDataFolder[$thisData->id])) :
+													foreach ($ArrDataFolder[$thisData->id] as $list) : ?>
 														<tr class="cursor-pointer <?= $cek_company; ?>" data-id="<?= $list->id; ?>" ondblclick="window.open(siteurl+active_controller+'<?= $list->id; ?>','_self')">
 															<th class="h6 text-right" width="50px"><i class="fa fa-folder fa-2x text-warning"></i></th>
 															<th class="h4 font-weight-bolder pt-5 text-dark"><?= $list->name; ?></th>
@@ -92,7 +176,7 @@
 											</tbody>
 										</table>
 
-										<?php if (isset($ArrDataFile[$dtl->id])) :; ?>
+										<?php if (isset($ArrDataFile[$thisData->id])) :; ?>
 											<table class="table table-condensed table-hover">
 												<thead>
 													<tr class="<?= $cek_company; ?>">
@@ -103,7 +187,7 @@
 												</thead>
 												<tbody>
 													<?php $no = 0;
-													foreach ($ArrDataFile[$dtl->id] as $list) : $no++; ?>
+													foreach ($ArrDataFile[$thisData->id] as $list) : $no++; ?>
 														<tr class="cursor-pointer" ondblclick="show('<?= $list->id; ?>')">
 															<td class="h6 text-dark"><?= $no; ?></td>
 															<td class="h6 text-dark"><?= $list->name; ?></td>
@@ -114,7 +198,7 @@
 											</table>
 										<?php endif; ?>
 
-										<?php if (!isset($ArrDataFolder[$dtl->id]) && !isset($ArrDataFile[$dtl->id])) : ?>
+										<?php if (!isset($ArrDataFolder[$thisData->id]) && !isset($ArrDataFile[$thisData->id])) : ?>
 											<table class="table">
 												<tr>
 													<td colspan="2" class="text-center h4"><i>No data available</i></td>
@@ -122,7 +206,7 @@
 											</table>
 										<?php endif; ?>
 									</div>
-								<?php endforeach; ?>
+								<?php endif; ?>
 							</div>
 						</div>
 					</div>

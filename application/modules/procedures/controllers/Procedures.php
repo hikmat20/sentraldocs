@@ -1354,11 +1354,12 @@ class Procedures extends Admin_Controller
 
 		$Data = [
 			'procedure' => $procedure,
-			'detail' => $flowDetail,
-			'ArrUsr' => $ArrUsr,
-			'ArrJab' => $ArrJab,
-			'ArrForms' => $ArrForms,
+			'detail' 	=> $flowDetail,
+			'ArrUsr' 	=> $ArrUsr,
+			'ArrJab' 	=> $ArrJab,
+			'ArrForms' 	=> $ArrForms,
 		];
+
 		$data = $this->load->view('printout', $Data, TRUE);
 		$mpdf->WriteHTML($data);
 		$mpdf->Output();
