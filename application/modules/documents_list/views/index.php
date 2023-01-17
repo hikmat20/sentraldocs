@@ -1,3 +1,8 @@
+<style>
+	.dataTables_scroll {
+		margin: 0px !important;
+	}
+</style>
 <div class="content d-flex flex-column flex-column-fluid p-0">
 	<div class="d-flex flex-column-fluid justify-content-between align-items-top">
 		<div class="container">
@@ -93,22 +98,28 @@
 										endif; ?>
 
 										<div class="tab-pane fade <?= ($n == '1') ? 'active show' : ''; ?>" id="data_<?= $dtl->id; ?>" role="tabpanel" aria-labelledby="tab_<?= $dtl->id; ?>">
-											<table class="table table-hover">
-												<tbody>
-													<?php
-													if (isset($ArrDataFolder[$dtl->id])) :
+											<?php if (isset($ArrDataFolder[$dtl->id])) : ?>
+												<table class="table datatable table-hover">
+													<thead>
+														<tr>
+															<th></th>
+															<th></th>
+														</tr>
+													</thead>
+													<tbody>
+														<?php
 														foreach ($ArrDataFolder[$dtl->id] as $list) : ?>
 															<tr class="cursor-pointer <?= $cek_company; ?>" data-id="<?= $list->id; ?>" ondblclick="window.open(siteurl+active_controller+'<?= $list->id; ?>','_self')">
-																<th class="h6 text-right" width="50px"><i class="fa fa-folder fa-2x text-warning"></i></th>
-																<th class="h4 font-weight-bolder pt-5 text-dark"><?= $list->name; ?></th>
+																<td class="h6 text-right" width="50px"><i class="fa fa-folder fa-2x text-warning"></i></th>
+																<td class="h4 font-weight-bolder pt-5 text-dark"><?= $list->name; ?></th>
 															</tr>
-													<?php endforeach;
-													endif; ?>
-												</tbody>
-											</table>
+														<?php endforeach; ?>
+													</tbody>
+												</table>
+											<?php endif; ?>
 
 											<?php if (isset($ArrDataFile[$dtl->id])) : ?>
-												<table class="table table-condensed table-hover">
+												<table class="table datatable table-condensed table-hover">
 													<thead>
 														<tr class="<?= $cek_company; ?>">
 															<th class="h5 border-2 border-bottom-secondary" width="15px">No.</th>
@@ -131,7 +142,7 @@
 
 											<?php if (!isset($ArrDataFolder[$dtl->id]) && !isset($ArrDataFile[$dtl->id])) : ?>
 												<?php if (isset($ArrDataFile[$thisData->id])) :; ?>
-													<table class="table table-condensed table-hover">
+													<table class="table datatable table-condensed table-hover">
 														<thead>
 															<tr class="<?= $cek_company; ?>">
 																<th class="h5 border-2 border-bottom-secondary" width="15px">No.</th>
@@ -254,4 +265,21 @@
 			$('#modelId').modal('show')
 			$('#data-file').load(siteurl + active_controller + 'show/' + id)
 		}
+
+		$(document).ready(function() {
+			$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+				$.fn.dataTable.tables({
+					visible: true,
+					api: true
+				}).columns.adjust();
+			});
+
+			$('.datatable').DataTable({
+				orderCellsTop: false,
+				fixedHeader: true,
+				scrollX: true,
+				ordering: false,
+				info: false
+			});
+		})
 	</script>
