@@ -45,7 +45,7 @@
 										<th style="vertical-align: middle;" width="100">Pasal</th>
 										<th style="vertical-align: middle;" width="100">Ayat</th>
 										<th style="vertical-align: middle;">Description</th>
-										<th style="vertical-align: middle;" width="300">Complience Description</th>
+										<th style="vertical-align: middle;" width="300">Compliance Description</th>
 										<th style="vertical-align: middle;" width="150">Status</th>
 										<th style="vertical-align: middle;" width="10">Opport/ Risks</th>
 									</tr>
@@ -80,8 +80,8 @@
 												<td>
 													<select name="detail[<?= $n; ?>][status]" class="form-control select2" data-placeholder="Choose an options" data-allow-clear="true">
 														<option value=""></option>
-														<option value="CMP" <?= (isset($ArrCompl[$l->id]) && $ArrCompl[$l->id]->status == 'CMP') ? 'selected' : ''; ?>>Complience</option>
-														<option value="NCM" <?= (isset($ArrCompl[$l->id]) && $ArrCompl[$l->id]->status == 'NCM') ? 'selected' : ''; ?>>Not Complience</option>
+														<option value="CMP" <?= (isset($ArrCompl[$l->id]) && $ArrCompl[$l->id]->status == 'CMP') ? 'selected' : ''; ?>>Compliance</option>
+														<option value="NCM" <?= (isset($ArrCompl[$l->id]) && $ArrCompl[$l->id]->status == 'NCM') ? 'selected' : ''; ?>>Not Compliance</option>
 														<option value="NAP" <?= (isset($ArrCompl[$l->id]) && $ArrCompl[$l->id]->status == 'NAP') ? 'selected' : ''; ?>>Not Aplicable</option>
 													</select>
 												</td>

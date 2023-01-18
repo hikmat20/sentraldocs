@@ -68,6 +68,9 @@ $route['list/view_records/(:any)'] = 'documents_list/view_record/$1';
 $route['list/(:any)'] = 'documents_list/find/$1';
 $route['list'] = 'dashboard';
 
+$route['list/manualpp'] = 'documents_list/manualpp';
+$route['list/manualpp/(:any)'] = 'documents_list/manualpp/$1';
+
 /* Manage Documents */
 $route['docs/procedures'] = 'manage_documents/procedures/$1';
 $route['docs/(:any)/(:any)/(:any)'] = 'manage_documents/$1/$2/$3';

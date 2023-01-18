@@ -578,7 +578,7 @@
 						<input type="number" class="form-control" name="dtl[` + row + `][order]" aria-describedby="helpId" placeholder="Number">
 					</td>
 					<td>
-						<textarea class="form-control" name="dtl[` + row + `][desc]" placeholder="Description"></textarea>
+						<textarea class="form-control tinymce" name="dtl[` + row + `][desc]" placeholder="Description"></textarea>
 					</td>
 					<td width="20">
 						<button type="button" data-id="" class="btn btn-xs btn-icon btn-danger btn-del"><i class="fa fa-times"></i></button>
@@ -587,6 +587,7 @@
 			`;
 
 			$('.pharagraps tbody').append(html)
+			load_tm()
 		})
 
 		$(document).on('click', '.edit-desc', function() {
@@ -776,8 +777,48 @@
 		})
 
 		/* end desc */
+
+
+
+
+
 	})
 
+	function load_tm() {
+		tinymce.init({
+			selector: 'textarea.tinymce',
+			height: 100,
+			resize: true,
+			plugins: 'autoresize autosave emoticons preview importcss searchreplace autolink autosave save ' +
+				'directionality  visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
+			toolbar: 'restoredraft preview searchreplace | undo redo | blocks ' +
+				'bold italic backcolor forecolor | alignleft aligncenter ' +
+				'alignright alignjustify | template codesample bullist numlist outdent indent | link image ' +
+				'table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol' +
+				'removeformat emoticons | help',
+			content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+			autoresize_bottom_margin: 50,
+			link_default_protocol: 'https'
+			// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+		});
+
+	}
+
+	function handlePromise(promiseList) {
+		return promiseList.map(promise =>
+			promise.then((res) => ({
+				status: 'ok',
+				res
+			}), (err) => ({
+				status: 'not ok',
+				err
+			}))
+		)
+	}
+
+	Promise.allSettled = function(promiseList) {
+		return Promise.all(handlePromise(promiseList))
+	}
 
 	function getName() {
 		const regCat = $('#regulation_category option:selected').text()

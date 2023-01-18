@@ -12,15 +12,17 @@
 						<div class="row">
 							<div class="col-md-10">
 								<div class="mb-3 row flex-nowrap">
-									<label for="" class="col-3 col-form-label font-weight-bold">Copmany</label>
+									<label for="" class="col-3 col-form-label font-weight-bold">Company</label>
 									<div class="col-6">
 										<input type="hidden" name="id" value="<?= $Data->id; ?>">
-										<select name="company_id" id="status" class="form-control select2">
+										<input type="hidden" name="company_id" value="<?= $Data->company_id; ?>">
+										<label for="" class="col-form-label font-weight-bolder"><?= $Data->nm_perusahaan; ?></label>
+										<!-- <select name="company_id" id="status" class="form-control select2">
 											<option value=""></option>
 											<?php foreach ($Companies as $comp) : ?>
 												<option value="<?= $comp->id_perusahaan; ?>" <?= ($comp->id_perusahaan == $Data->company_id) ? 'selected' : ''; ?>><?= $comp->nm_perusahaan; ?></option>
 											<?php endforeach; ?>
-										</select>
+										</select> -->
 									</div>
 								</div>
 								<div class="mb-3 row flex-nowrap">
