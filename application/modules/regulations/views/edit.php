@@ -587,7 +587,7 @@
 			`;
 
 			$('.pharagraps tbody').append(html)
-			load_tm()
+			// load_tm()
 		})
 
 		$(document).on('click', '.edit-desc', function() {
@@ -777,10 +777,6 @@
 		})
 
 		/* end desc */
-
-
-
-
 
 	})
 
