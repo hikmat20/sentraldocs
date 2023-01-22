@@ -84,70 +84,60 @@
     .p-5 {
       padding: 5px;
     }
+
+    .bg-red {
+      background-color: red;
+    }
   </style>
 
 </head>
 
 <body>
   <div class="text-center">
-    <h4>TITLE</h4>
-    <hr>
+    <h2><strong>IDENTIFIKASI DAN EVALUASI KEWAJIBAN PENAATAN</strong></h2>
   </div>
 
   <!-- HEADER -->
   <table class="table-data-no-border">
     <tr>
-      <th width="50" class="text-left">
-        No. Dok
-      </th>
-      <td>
-        :
-      </td>
-      <th width="100" class="text-left">
-        Tanggal Update
-      </th>
-      <td>
-        :
-      </td>
-      <th width="50" class="text-left">
-        Revisi
-      </th>
-      <td>
-        :
-      </td>
-      <th width="100" class="text-left">
-        Tanggal Efektif
-      </th>
-      <td>
-        :
-      </td>
+      <th width="100" class="text-left">Company</th>
+      <td>: <?= $reference->nm_perusahaan; ?></td>
+      <th width="100" class="text-left">State</th>
+      <td>: <?= $reference->status; ?></td>
+      <th width="100" class="text-left">Created On</th>
+      <td width="100">: <?= $reference->sdate; ?></td>
     </tr>
     <tr>
-      <th width="50" class="text-left">
-        Disetujui
-      </th>
-      <td>
-        :
-      </td>
-      <th width="100" class="text-left">
-        Dibuat
-      </th>
-      <td>
-        :
-      </td>
-      <th width="50" class="text-left">
-
-      </th>
-      <td>
-
-      </td>
-      <th width="100" class="text-left">
-
-      </th>
-      <td>
-
-      </td>
+      <th class="text-left">Last Review</th>
+      <td>: <?= $reference->last_review; ?></td>
+      <th class="text-left">Count Review</th>
+      <td>: <?= $reference->counter_review; ?></td>
+      <th class="text-left">Review By</th>
+      <td>: <?= $ArrUsers[$reference->review_by]; ?></td>
     </tr>
+  </table>
+  <br>
+  <table class="table-data-no-border">
+    <tbody>
+      <tr>
+        <th width="100" class="text-left">Compliance</th>
+        <td class="text-left">: <?= $summary->total_compliance; ?></td>
+      </tr>
+      <tr>
+        <th class="text-left">Not Compliance</th>
+        <td class="text-left">: <?= $summary->total_not_compliance; ?></td>
+      </tr>
+      <tr>
+        <th class="text-left">Not Applicable</th>
+        <td class="text-left">: <?= $summary->total_not_applicable; ?></td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th class="text-left">% Compliance</th>
+        <th class="text-left">: <?= round(($summary->total_compliance / ($summary->total_compliance + $summary->total_not_compliance)) * 100); ?>%</th>
+      </tr>
+    </tfoot>
   </table>
   <!-- <hr> -->
   <br>
@@ -172,23 +162,16 @@
         <?php foreach ($ArrReg as $key => $rg) : ?>
           <?php $n = 0;
           $allReg = count($rg);
-          foreach ($rg as $j => $dt) : $n++;
-            if ($dt->status == 'CMP') :
-              $compl++;
-            endif;
-            if ($dt->status == 'NCM') :
-              $not_compl++;
-            endif;
-            if ($dt->status == 'NAP') :
-              $not_apl++;
-            endif;
-          ?>
+          foreach ($rg as $j => $dt) : $n++; ?>
             <tr>
-              <td><?= $n; ?></td>
               <?php if ($j == '0') : ?>
-                <th width="200" rowspan="<?= count($rg); ?>" class="" style="vertical-align:middle;">
-                  <span class=""><?= $dt->category_name; ?></span>
-                </th>
+                <td class="text-center" rowspan="<?= count($rg); ?>"><?= $n; ?></td>
+              <?php endif; ?>
+              <?php if ($j == '0') : ?>
+                <td width="200" rowspan="<?= count($rg); ?>">
+                  <p><strong><?= $dt->category_name; ?></strong></p>
+                  <p><?= $dt->about; ?></p>
+                </td>
               <?php endif; ?>
               <td width="300">
                 <strong><?= $dt->pasal_name; ?></strong>
@@ -196,7 +179,7 @@
                 (<?= $dt->ayat; ?>) <?= $dt->description_ayat; ?>
               </td>
               <td><?= $dt->compliance_desc; ?></td>
-              <td class="text-center"><?= $status[$dt->status]; ?></td>
+              <td class="text-center <?= ($dt->status == 'NCM') ? 'bg-red' : ''; ?>"><?= $status[$dt->status]; ?></td>
               <td style=" padding:0px;margin:0px;" width="100">
                 <?php if (isset($ArrOpports[$dt->prgh_id])) :
                   foreach ($ArrOpports[$dt->prgh_id] as $opr) :
@@ -244,45 +227,6 @@
     </tbody>
   </table>
 
-  <br>
-  <br>
-  <?php
-  $total = $compl + $not_compl + $not_apl; ?>
-
-  <table class="table-data" width="20%">
-    <thead>
-      <tr>
-        <th colspan="2">STATUS PEMENUHAN</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Memenuhi</td>
-        <td class="text-center"><?= $compl; ?></td>
-      </tr>
-      <tr>
-        <td>Belum Memenuhi</td>
-        <td class="text-center"><?= $not_compl; ?></td>
-      </tr>
-      <tr>
-        <td>Tidak Teraplikasi</td>
-        <td class="text-center"><?= $not_apl; ?></td>
-      </tr>
-    <tfoot>
-      <tr>
-        <th>Total Regulasi</th>
-        <th class="text-center"><?= $allReg; ?></th>
-      </tr>
-      <?php
-
-      $percent = ($total / $allReg) * 100; ?>
-      <tr>
-        <th>% Pemenuhan</th>
-        <th><?= $percent; ?>%</th>
-      </tr>
-    </tfoot>
-    </tbody>
-  </table>
 </body>
 
 </html>

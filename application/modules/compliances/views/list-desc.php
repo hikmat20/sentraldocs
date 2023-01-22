@@ -78,12 +78,13 @@
 													<textarea name="detail[<?= $n; ?>][complience_desc]" class="form-control" placeholder="Description"><?= (isset($ArrCompl[$l->id]) ? $ArrCompl[$l->id]->compliance_desc : ''); ?></textarea>
 												</td>
 												<td>
-													<select name="detail[<?= $n; ?>][status]" class="form-control select2" data-placeholder="Choose an options" data-allow-clear="true">
+													<select name="detail[<?= $n; ?>][status]" class="form-control required select2" data-placeholder="Choose an options" data-allow-clear="true">
 														<option value=""></option>
 														<option value="CMP" <?= (isset($ArrCompl[$l->id]) && $ArrCompl[$l->id]->status == 'CMP') ? 'selected' : ''; ?>>Compliance</option>
 														<option value="NCM" <?= (isset($ArrCompl[$l->id]) && $ArrCompl[$l->id]->status == 'NCM') ? 'selected' : ''; ?>>Not Compliance</option>
 														<option value="NAP" <?= (isset($ArrCompl[$l->id]) && $ArrCompl[$l->id]->status == 'NAP') ? 'selected' : ''; ?>>Not Aplicable</option>
 													</select>
+													<span class="invalid-feedback">Status can't be empty</span>
 												</td>
 												<td class="text-center" style="vertical-align: middle;">
 													<button type="button" class="btn btn-xs btn-icon btn-light-primary risk_opp" data-id="<?= $l->id; ?>" data-toggle="modal" data-target="#modalData<?= $l->id; ?>"><i class="fa fa-list-alt"></i></button>
@@ -236,6 +237,26 @@
 
 	/* SAVE */
 	$(document).on('click', '#save_detail', function() {
+		const valid = $('.required').length
+		let n = 0;
+		$('.required').each(function() {
+			// console.log($(this).select2('val'));
+			if ($(this).select2('val') == '') {
+				$(this).addClass('is-invalid')
+				n++
+			} else {
+				$(this).removeClass('is-invalid')
+			}
+		})
+
+		if (n > 0) {
+			console.log(n);
+			return false
+		}
+		// $('.required').removeClass('is-invalid')
+
+
+
 		Swal.fire({
 			title: 'Confirm!',
 			text: 'Are you sure you want to save this data?',
@@ -277,4 +298,9 @@
 			}
 		})
 	})
+
+
+	function validation(form) {
+
+	}
 </script>

@@ -9,7 +9,7 @@
 
 					<div class="row mb-3">
 						<div class="col-md-6">
-							<h2 class="mb-4"><i class="fa fa-desktop"></i> Current Compliance Overview</h2>
+							<h2 class="mb-4"><i class="fa fa-desktop"></i> Current Project</h2>
 							<table class="table table-striped table-bordered table-sm">
 								<tr>
 									<th width="150">Company</th>
@@ -21,35 +21,53 @@
 								</tr>
 								<tr>
 									<th>Created On</th>
-									<td><?= $reference->created_at; ?></td>
+									<td><?= $reference->sdate; ?></td>
 								</tr>
 								<tr>
 									<th>Last Review</th>
-									<td></td>
+									<td><?= $reference->last_review; ?></td>
 								</tr>
 								<tr>
 									<th>Count Review</th>
-									<td></td>
+									<td><?= $reference->counter_review; ?></td>
 								</tr>
 								<tr>
 									<th>Review By</th>
-									<td></td>
+									<td><?= $ArrUsers[$reference->review_by]; ?></td>
 								</tr>
 							</table>
 						</div>
-						<div class="col-md-6">
+						<div class="col-md-4">
+							<h2 class="mb-4"><i class="fa fa-stream"></i> Current Summary Compliance</h2>
+							<table class="table table-bordered table-sm">
+								<tbody>
+									<tr>
+										<th>Compliance</th>
+										<td class="text-center"><?= $summary->total_compliance; ?></td>
+									</tr>
+									<tr>
+										<th>Not Compliance</th>
+										<td class="text-center"><?= $summary->total_not_compliance; ?></td>
+									</tr>
+									<tr>
+										<th>Not Applicable</th>
+										<td class="text-center"><?= $summary->total_not_applicable; ?></td>
+									</tr>
+								</tbody>
+								<tfoot>
+									<tr>
+										<th>% Compliance</th>
+										<th class="text-center"><?= round(($summary->total_compliance / ($summary->total_compliance + $summary->total_not_compliance)) * 100); ?>%</th>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+						<div class="col-md-2">
 							<h2 class="mb-4"><i class="fa fa-tools"></i> Options</h2>
-							<div class="row">
-								<div class="col-md-4">
-									<div class="btn-block">
-										<button type="button" class="btn btn-success btn-block" data-id="<?= $reference->id; ?>" id="compilation"><i class="fa fa-bolt"></i> Compilation</button>
-										<button type="button" class="btn btn-info btn-block" data-id="<?= $reference->id; ?>" id="view-compilation"><i class="fa fa-eye"></i> View Compilation</button>
-										<a target="_blank" href="<?= base_url($this->uri->segment(1) . '/export_pdf/' . $reference->id); ?>" class="btn btn-light btn-block to-pdf" data-comp_id="<?= $reference->company_id; ?>"><i class="fa fa-file-pdf"></i>Export PDF</a>
-									</div>
-								</div>
-								<div class="col-md-8">
-									<div class="border rounded-lg h-100"></div>
-								</div>
+							<div class="btn-block">
+								<button type="button" class="btn btn-success btn-block" data-id="<?= $reference->id; ?>" id="compilation"><i class="fa fa-bolt"></i> Compilation</button>
+								<button type="button" class="btn btn-info btn-block" data-id="<?= $reference->id; ?>" id="view-compilation"><i class="fa fa-eye"></i> View Compilation</button>
+								<a target="_blank" href="<?= base_url($this->uri->segment(1) . '/export_pdf/' . $reference->id); ?>" class="btn btn-light btn-block to-pdf" data-comp_id="<?= $reference->company_id; ?>"><i class="fa fa-file-pdf"></i>Export PDF</a>
 							</div>
 						</div>
 					</div>
@@ -82,7 +100,7 @@
 											<td class="text-center"><?= $dt->total_not_compliance; ?></td>
 											<td class="text-center"><?= $dt->total_not_applicable; ?></td>
 											<td class="text-center">
-												<button type="button" class="btn btn-primary btn-sm btn-icon rounded-circle"><i class="fa fa-eye"></i></button>
+												<button type="button" class="btn btn-primary btn-sm btn-icon rounded-circle view-comp-reg" data-id="<?= $dt->id; ?>"><i class="fa fa-eye"></i></button>
 												<a href="<?= base_url($this->uri->segment(1) . "/details/" . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning detail" data-id="<?= $dt->id; ?>" title="Edit Data"><i class="fas fa-tasks"></i></a>
 											</td>
 										</tr>
@@ -92,32 +110,48 @@
 						</table>
 					</div>
 
-					<div class="my-5">
-						<h2 class="mb-5"><i class="fa fa-list"></i> Complete Review</h2>
-						<table class="table table-bordered table-striped table-sm">
-							<thead class="table-light">
-								<tr class="text-center">
-									<th width="50">No</th>
-									<th>Review Date</th>
-									<th>Compliance</th>
-									<th>Not Compliance</th>
-									<th>Not Aplicable</th>
-									<th>%</th>
-									<th>View</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td></td>
-								</tr>
-							</tbody>
-						</table>
+					<div class="row py-4">
+						<div class="col-md-6">
+							<div class="card shadow-sm border-0">
+								<div class="card-body p-3">
+									<div class="">
+										<h2 class="mb-5"><i class="fa fa-list"></i> Complete Review</h2>
+										<table class="table table-bordered datatable table-striped">
+											<thead class="table-light">
+												<tr style="vertical-align: middle;" class="text-center">
+													<th style="vertical-align: middle;" width="50">No</th>
+													<th style="vertical-align: middle;">Review Date</th>
+													<th style="vertical-align: middle;">Compliance</th>
+													<th style="vertical-align: middle;">Not Compliance</th>
+													<th style="vertical-align: middle;">Not Aplicable</th>
+													<th style="vertical-align: middle;">%</th>
+													<th style="vertical-align: middle;">Docs.</th>
+												</tr>
+											</thead>
+											<tbody>
+												<?php if (isset($reviews)) : $n = 0; ?>
+													<?php foreach ($reviews as $review) : $n++; ?>
+														<tr>
+															<td class="text-center"><?= $n; ?></td>
+															<td class="text-center"><?= $review->last_review; ?></td>
+															<td class="text-center"><?= $review->total_compliance; ?></td>
+															<td class="text-center"><?= $review->total_not_compliance; ?></td>
+															<td class="text-center"><?= $review->total_not_applicable; ?></td>
+															<td class="text-center"><?= round(($review->total_compliance / ($review->total_compliance + $review->total_not_compliance)) * 100); ?>%</td>
+															<td class="text-center">
+																<a target="_blank" href="<?= base_url("directory/COMPILATIONS/" . $review->document); ?>" title="Download Compilation Review">
+																	<div class="fa fa-file-pdf font-size-h3 text-danger"></div>
+																</a>
+															</td>
+														</tr>
+													<?php endforeach; ?>
+												<?php endif; ?>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -127,7 +161,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="modalView" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="staticBackdropLabel"></h5>
@@ -142,7 +176,6 @@
 		</div>
 	</div>
 </div>
-
 <script>
 	$(document).ready(function() {
 
@@ -173,6 +206,14 @@
 			$('#modalView .modal-dialog').addClass('modal-xl')
 			$('#modalView').modal('show')
 			$('#modalView .modal-body').load(siteurl + active_controller + 'compilation/' + id)
+		})
+
+		$(document).on('click', '.view-comp-reg', function(e) {
+			const id = $(this).data('id')
+			$('#modalView .modal-dialog').addClass('modal-xl')
+			$('#modalView .modal-dialog').css('max-width', '90%')
+			$('#modalView').modal('show')
+			$('#modalView .modal-body').load(siteurl + active_controller + 'view_compliance_regulation/' + id)
 		})
 
 		$(document).on('click', '#process_compilation', function(e) {
@@ -216,6 +257,28 @@
 				}
 			})
 		})
+
+		$(document).on('change', '#sort_status', function() {
+			const id = $(this).data('id')
+			const status = $('#sort_status').val() || ''
+			// alert(id + " " + status)
+
+			if (id) {
+				$('#show-data').load(siteurl + active_controller + 'show_compilation/' + id + "/" + status)
+			} else {
+				Swal.fire('Error!!', 'Server timeout', 'error', 3000)
+			}
+		})
+
+		$(document).on('click', '#export_pdf', function() {
+			const id = $(this).data('id')
+			const status = $('#sort_status').val() || ''
+			if (id) {
+				window.open(siteurl + active_controller + 'export_pdf/' + id + "/" + status, "_blank")
+			}
+		})
+
+
 	})
 
 	function validation(field) {

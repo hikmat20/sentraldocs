@@ -17,15 +17,15 @@
       </tr>
       <tr>
         <th>Last Review</th>
-        <td></td>
+        <td><?= $reference->last_review; ?></td>
       </tr>
       <tr>
         <th>Count Review</th>
-        <td></td>
+        <td><?= $reference->counter_review; ?></td>
       </tr>
       <tr>
         <th>Review By</th>
-        <td></td>
+        <td><?= $ArrUsers[$reference->review_by]; ?></td>
       </tr>
     </table>
   </div>
@@ -35,25 +35,21 @@
       <tbody>
         <tr>
           <th>Compliance</th>
-          <td class="text-center"></td>
+          <td class="text-center"><?= $summary->total_compliance; ?></td>
         </tr>
         <tr>
           <th>Not Compliance</th>
-          <td class="text-center"></td>
+          <td class="text-center"><?= $summary->total_not_compliance; ?></td>
         </tr>
         <tr>
           <th>Not Applicable</th>
-          <td class="text-center"></td>
+          <td class="text-center"><?= $summary->total_not_applicable; ?></td>
         </tr>
       </tbody>
       <tfoot>
         <tr>
-          <th>Total</th>
-          <th class="text-center"></th>
-        </tr>
-        <tr>
           <th>% Compliance</th>
-          <th></th>
+          <th class="text-center"><?= round(($summary->total_compliance / ($summary->total_compliance + $summary->total_not_compliance)) * 100); ?>%</th>
         </tr>
       </tfoot>
     </table>
@@ -67,73 +63,75 @@
       <div class="row">
         <label for="" class="col-1 form-control-label">Sort by :</label>
         <div class="w-25">
-          <select name="sort_status" id="sort_status" class="select2 form-control">
+          <select name="sort_status" id="sort_status" data-id="<?= $reference->id; ?>" class="select2 form-control" data-width="100%">
             <option value="">Show All</option>
             <option value="CMP">Compliance</option>
             <option value="NCM">Not Compliance</option>
             <option value="NAP">Not Applicable</option>
           </select>
         </div>
-        <button type="button" id="show" class="btn btn-sm btn-primary mx-2">Show</button>
-        <button type="button" id="export_pdf" class="btn btn-sm btn-light"><i class="fa fa-file-pdf"></i> Export PDF</button>
+        <!-- <button type="button" id="show" data-id="<?= $reference->id; ?>" class="btn btn-sm btn-primary mx-2">Show</button> -->
+        <button type="button" id="export_pdf" data-id="<?= $reference->id; ?>" class="btn btn-sm btn-light"><i class="fa fa-file-pdf"></i> Export PDF</button>
       </div>
     </div>
 
-    <table class="table table-sm table-bordered" style="font-size:12px">
-      <thead>
-        <tr class="">
-          <th class="text-center" width="30">No.</th>
-          <th class="text-center" width="150">REGULATION</th>
-          <th class="text-center" width="350">PASAL</th>
-          <th class="text-center" width="">COMPLIANCE DESC.</th>
-          <th class="text-center" width="100">STATUS</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php
-        $compl = $not_compl = $not_apl = $total = $percent = $allReg = 0;
-        if ($ArrReg) : ?>
-          <?php foreach ($ArrReg as $key => $rg) : ?>
-            <?php $n = 0;
-            $allReg = count($rg);
-            foreach ($rg as $j => $dt) : $n++;
-              if ($dt->status == 'CMP') :
-                $compl++;
-              endif;
-              if ($dt->status == 'NCM') :
-                $not_compl++;
-              endif;
-              if ($dt->status == 'NAP') :
-                $not_apl++;
-              endif;
-            ?>
-              <tr>
-                <?php if ($j == '0') : ?>
-                  <th rowspan="<?= count($rg); ?>" class="text-center" style="vertical-align:middle;">
-                    <?= $n; ?>
-                  </th>
-                <?php endif; ?>
-                <?php if ($j == '0') : ?>
-                  <td rowspan="<?= count($rg); ?>" class="" style="vertical-align:middle;">
-                    <strong>
-                      <p><?= $dt->category_name; ?></p>
-                    </strong>
-                    <p><?= $dt->about; ?></p>
+    <div id="show-data">
+      <table class="table table-sm table-bordered" style="font-size:12px">
+        <thead>
+          <tr class="">
+            <th class="text-center" width="30">No.</th>
+            <th class="text-center" width="150">REGULATION</th>
+            <th class="text-center" width="350">PASAL</th>
+            <th class="text-center" width="">COMPLIANCE DESC.</th>
+            <th class="text-center" width="100">STATUS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+          $compl = $not_compl = $not_apl = $total = $percent = $allReg = 0;
+          if ($ArrReg) : ?>
+            <?php foreach ($ArrReg as $key => $rg) : ?>
+              <?php $n = 0;
+              $allReg = count($rg);
+              foreach ($rg as $j => $dt) : $n++;
+                if ($dt->status == 'CMP') :
+                  $compl++;
+                endif;
+                if ($dt->status == 'NCM') :
+                  $not_compl++;
+                endif;
+                if ($dt->status == 'NAP') :
+                  $not_apl++;
+                endif;
+              ?>
+                <tr>
+                  <?php if ($j == '0') : ?>
+                    <th rowspan="<?= count($rg); ?>" class="text-center" style="vertical-align:middle;">
+                      <?= $n; ?>
+                    </th>
+                  <?php endif; ?>
+                  <?php if ($j == '0') : ?>
+                    <td rowspan="<?= count($rg); ?>" class="" style="vertical-align:middle;">
+                      <strong>
+                        <p><?= $dt->category_name; ?></p>
+                      </strong>
+                      <p><?= $dt->about; ?></p>
+                    </td>
+                  <?php endif; ?>
+                  <td>
+                    <strong><?= $dt->pasal_name; ?></strong>
+                    <br>
+                    (<?= $dt->ayat; ?>) <?= $dt->description_ayat; ?>
                   </td>
-                <?php endif; ?>
-                <td>
-                  <strong><?= $dt->pasal_name; ?></strong>
-                  <br>
-                  (<?= $dt->ayat; ?>) <?= $dt->description_ayat; ?>
-                </td>
-                <td><?= $dt->compliance_desc; ?></td>
-                <td class="text-center"><?= ($dt->status) ? $status[$dt->status] : ''; ?></td>
-              </tr>
+                  <td><?= $dt->compliance_desc; ?></td>
+                  <td class="text-center"><?= ($dt->status) ? $status[$dt->status] : ''; ?></td>
+                </tr>
+              <?php endforeach; ?>
             <?php endforeach; ?>
-          <?php endforeach; ?>
-        <?php endif; ?>
-      </tbody>
-    </table>
+          <?php endif; ?>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
