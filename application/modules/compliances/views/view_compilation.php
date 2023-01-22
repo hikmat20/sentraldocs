@@ -35,21 +35,21 @@
       <tbody>
         <tr>
           <th>Compliance</th>
-          <td class="text-center"><?= $summary->total_compliance; ?></td>
+          <td class="text-center"><?= ($summary) ? $summary->total_compliance : ''; ?></td>
         </tr>
         <tr>
           <th>Not Compliance</th>
-          <td class="text-center"><?= $summary->total_not_compliance; ?></td>
+          <td class="text-center"><?= ($summary) ? $summary->total_not_compliance : ''; ?></td>
         </tr>
         <tr>
           <th>Not Applicable</th>
-          <td class="text-center"><?= $summary->total_not_applicable; ?></td>
+          <td class="text-center"><?= ($summary) ? $summary->total_not_applicable : ''; ?></td>
         </tr>
       </tbody>
       <tfoot>
         <tr>
           <th>% Compliance</th>
-          <th class="text-center"><?= round(($summary->total_compliance / ($summary->total_compliance + $summary->total_not_compliance)) * 100); ?>%</th>
+          <th class="text-center"><?= ($summary) ? round(($summary->total_compliance / ($summary->total_compliance + $summary->total_not_compliance)) * 100) : ''; ?>%</th>
         </tr>
       </tfoot>
     </table>
