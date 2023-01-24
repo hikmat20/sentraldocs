@@ -595,7 +595,7 @@ class Compliances extends Admin_Controller
             $regulations    = $this->db->get_where('view_compliance_details', ['reference_id' => $reference->id])->result();
             $opports        = $this->db->get_where('view_comp_opports', ['reference_id' => $reference->id])->result();
             $users          = $this->db->get_where('view_users', ['company_id' => $this->company, 'status' => 'ACT'])->result();
-            $summary     = $this->db->order_by('last_review', 'DESC')->get_where('compilation_reviews', ['reference_id' => $reference->id])->row();
+            $summary        = $this->db->order_by('last_review', 'DESC')->get_where('compilation_reviews', ['reference_id' => $reference->id])->row();
 
             $cat            = [
                 'OPP' => 'Peluang',
@@ -626,6 +626,12 @@ class Compliances extends Admin_Controller
                 }
             }
 
+            $summary = [
+                'TC' => $TC,
+                'TNC' => $TNC,
+                'TNA' => $TNA,
+            ];
+
             foreach ($opports as $opr) {
                 $ArrOpports[$opr->prgh_id][] = $opr;
             }
@@ -644,13 +650,9 @@ class Compliances extends Admin_Controller
                 'summary'       => $summary,
                 'status'        => $status,
             ];
-
             $page           = $this->load->view('export-pdf', $Data, TRUE);
-            $mpdf->WriteHTML($page);
-
+            // $mpdf->Output();
             $this->db->trans_begin();
-
-            // update summary
 
             // update review
             $Review = [
@@ -680,11 +682,13 @@ class Compliances extends Admin_Controller
                 );
             } else {
                 $this->db->trans_commit();
+                $mpdf->WriteHTML($page);
                 if (!is_dir("./directory/COMPILATIONS")) {
                     mkdir("./directory/COMPILATIONS", 0755, TRUE);
                     chmod("./directory/COMPILATIONS", 0755);  // octal; correct value of mode
                     chown("./directory/COMPILATIONS", 'www-data');
                 }
+
                 $mpdf->Output("./directory/COMPILATIONS/" . $rand_text . ".pdf", 'F');
                 $return        = array(
                     'status'   => 1,
@@ -745,7 +749,26 @@ class Compliances extends Admin_Controller
             $regulations    = $this->db->get_where('view_compliance_details', $where)->result();
             $opports        = $this->db->get_where('view_comp_opports', ['reference_id' => $reference->id])->result();
             $users          = $this->db->get_where('view_users', ['company_id' => $this->company, 'status' => 'ACT'])->result();
-            $summary        = $this->db->order_by('last_review', 'DESC')->get_where('compilation_reviews', ['reference_id' => $reference->id])->row();
+            // $summary        = $this->db->order_by('last_review', 'DESC')->get_where('compilation_reviews', ['reference_id' => $reference->id])->row();
+            $TC             = $TNC = $TNA = 0;
+            foreach ($regulations as $reg) {
+                $ArrReg[$reg->regulation_category][] = $reg;
+                if ($reg->status == 'CMP') {
+                    $TC++;
+                }
+                if ($reg->status == 'NCM') {
+                    $TNC++;
+                }
+                if ($reg->status == 'NAP') {
+                    $TNA++;
+                }
+            }
+
+            $summary = [
+                'TC' => $TC,
+                'TNC' => $TNC,
+                'TNA' => $TNA,
+            ];
 
             $cat            = [
                 'OPP' => 'Peluang',

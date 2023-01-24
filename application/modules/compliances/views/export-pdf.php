@@ -121,15 +121,15 @@
     <tbody>
       <tr>
         <th width="100" class="text-left">Compliance</th>
-        <td class="text-left">: <?= $summary->total_compliance; ?></td>
+        <td class="text-left">: <?= $summary['TC']; ?></td>
       </tr>
       <tr>
         <th class="text-left">Not Compliance</th>
-        <td class="text-left">: <?= $summary->total_not_compliance; ?></td>
+        <td class="text-left">: <?= $summary['TNC']; ?></td>
       </tr>
       <tr>
         <th class="text-left">Not Applicable</th>
-        <td class="text-left">: <?= $summary->total_not_applicable; ?></td>
+        <td class="text-left">: <?= $summary['TNA']; ?></td>
       </tr>
     </tbody>
     <tfoot>
@@ -137,7 +137,7 @@
         <th class="text-left">% Compliance</th>
         <th class="text-left">:
           <?=
-          ($total_compliance != 0 || $total_compliance != '') ? round(($total_compliance / ($total_compliance + $total_not_compliance)) * 100) : 0; ?>%</th>
+          ($summary['TC'] != 0 || $summary['TC'] != '') ? round(($summary['TC'] / ($summary['TC'] + $summary['TNC'])) * 100) : 0; ?>%</th>
       </tr>
     </tfoot>
   </table>

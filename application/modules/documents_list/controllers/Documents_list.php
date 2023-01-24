@@ -258,73 +258,34 @@ class Documents_list extends Admin_Controller
 
 
 
-	/* MANUAL DAN PERATURAN PERUSAHAAN */
+	/* PEMENUHAN */
 
 
-	public function manualpp($id = null)
+	public function compliances()
 	{
-		if (isset($id)) {
-			$procedure 		= $this->db->get_where('view_procedures', ['id' => $id])->result();
-			$forms 			= $this->db->order_by('name', 'ASC')->get_where('dir_forms', ['procedure_id' => $id, 'active' => 'Y'])->result();
-			$guides 		= $this->db->order_by('name', 'ASC')->get_where('dir_guides', ['procedure_id' => $id, 'active' => 'Y'])->result();
-			$records 		= $this->db->order_by('name', 'ASC')->get_where('dir_records', ['procedure_id' => $id, 'status' => 'PUB', 'flag_type' => 'FOLDER', 'company_id' => $this->company, 'parent_id' => null])->result();
-			$countRecords 	= $this->db->get_where('dir_records', ['procedure_id' => $id, 'status' => 'PUB', 'flag_type' => 'FILE', 'company_id' => $this->company])->num_rows();
-
-			$this->template->set([
-				'procedure' 		=> $procedure,
-				'forms' 			=> $forms,
-				'guides' 			=> $guides,
-				'records' 			=> $records,
-				'MainData' 			=> $this->MainData,
-				'countRecords' 	 	=> $countRecords
-			]);
-			$this->template->render('procedures/list-docs');
-		} else {
-			$groups 		= $this->db->get_where('group_procedure', ['status' => 'ACT'])->result();
-			$procedures 	= $this->db->get_where('view_procedures', ['company_id' => $this->company, 'status' => 'PUB', 'deleted_by' => null])->result_array();
-
-			$ArrPro = [];
-			foreach ($procedures as $pro) {
-				$ArrPro[$pro['group_procedure']][] = $pro;
-			}
-
-			$this->template->set([
-				'groups' 		=> $groups,
-				'ArrPro' 		=> $ArrPro,
-				'MainData' 		=> $this->MainData
-			]);
-			$this->template->render('procedures/index');
+		$reference = $this->db->get_where('view_references')->result();
+		$ArrUsers = [];
+		$users       = $this->db->get_where('view_users', ['company_id' => $this->company, 'status' => 'ACT'])->result();
+		foreach ($users as $usr) {
+			$ArrUsers[$usr->id_user] = $usr->full_name;
 		}
+
+		$this->template->set([
+			// 'regulations'   => $regulations,
+			'reference'     => $reference,
+			'ArrUsers'       => $ArrUsers,
+			// 'reviews'       => $reviews,
+			// 'summary'       => $summary,
+		]);
+		$this->template->render('compliances/index');
 	}
 
-	public function vsiew_procedure($id)
+	public function view_compliance($id = null)
 	{
-		$docs 			= $this->db->get_where('view_procedures', ['id' => $id])->row();
-		$detail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id, 'status' => '1'])->result();
-		$forms 		= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'active' => 'Y'])->result();
-		$users 				= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
-		$jabatan 			= $this->db->get('positions')->result();
-		$ArrUsr 			= $ArrJab = $ArrForms = [];
-
-		foreach ($users as $usr) {
-			$ArrUsr[$usr->id_user] = $usr;
-		}
-
-		foreach ($jabatan as $jab) {
-			$ArrJab[$jab->id] = $jab;
-		}
-		foreach ($forms as $form) {
-			$ArrForms[$form->id] = $form;
-		}
+		$review = $this->db->order_by('last_review', 'DESC')->get_where('compilation_reviews', ['reference_id' => $id])->row();
 		$this->template->set([
-			'docs' 			=> $docs,
-			'detail' 		=> $detail,
-			'MainData' 		=> $this->MainData,
-			'ArrUsr' 		=> $ArrUsr,
-			'ArrJab' 		=> $ArrJab,
-			'ArrForms' 		=> $ArrForms,
+			'review' 	=> $review,
 		]);
-
-		$this->template->render('procedures/view-docs');
+		$this->template->render('compliances/view');
 	}
 }

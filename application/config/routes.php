@@ -57,19 +57,22 @@ $route['login'] = 'users/users/login';
 $route['logout'] = 'users/users/logout';
 $route['/directory'] = '404';
 
-/* List Documents */
+/* PROCEDURES */
 $route['list/procedures'] = 'documents_list/procedures';
 $route['list/procedures/(:any)'] = 'documents_list/procedures/$1';
 $route['list/getRecords/(:any)/(:any)/(:any)'] = 'documents_list/getRecords/$1/$2/$3';
 $route['list/getRecords/(:any)/(:any)'] = 'documents_list/getRecords/$1/$2';
 $route['list/getRecords/(:any)'] = 'documents_list/getRecords/$1';
-$route['list/(:any)/(:any)'] = 'documents_list/$1/$2';
 $route['list/view_records/(:any)'] = 'documents_list/view_record/$1';
+
+/* COMPLIANCES */
+$route['list/compliances'] = 'documents_list/compliances';
+$route['list/compliances/(:any)'] = 'documents_list/compliances/$1';
+
+/* List Documents */
+$route['list/(:any)/(:any)'] = 'documents_list/$1/$2';
 $route['list/(:any)'] = 'documents_list/find/$1';
 $route['list'] = 'dashboard';
-
-$route['list/manualpp'] = 'documents_list/manualpp';
-$route['list/manualpp/(:any)'] = 'documents_list/manualpp/$1';
 
 /* Manage Documents */
 $route['docs/procedures'] = 'manage_documents/procedures/$1';
