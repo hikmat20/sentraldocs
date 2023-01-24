@@ -5,9 +5,10 @@
 				<div class="card-header">
 					<h2 class="mt-5"><i class="<?= $icon; ?> mr-2"></i><?= $title; ?></h2>
 					<div class="mt-4 float-right ">
-						<a href="<?= base_url($this->uri->segment(1) . '/add'); ?>" class="btn btn-primary" title="Add Company Audit">
+						<!-- <a href="<?= base_url($this->uri->segment(1) . '/add'); ?>" class="btn btn-primary" title="Add Company Audit">
 							<i class="fa fa-plus mr-1"></i>Add Company Audit
-						</a>
+						</a> -->
+						<button class="btn btn-primary" id="add" title="Add Company Reference"><i class="fa fa-plus"></i> Add Company Reference</button>
 					</div>
 				</div>
 				<div class="card-body">
@@ -111,7 +112,7 @@
 </div>
 <!-- Modal -->
 <div class="modal fade" id="modalView" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="staticBackdropLabel">View Standard</h5>
@@ -142,6 +143,11 @@
 			ordering: false,
 			// info: false
 		});
+
+		$(document).on('click', '#add', function() {
+			$('#modalView').modal('show')
+			$('#modalView .modal-body').load(base_url + active_controller + 'add')
+		})
 
 		$(document).on('click', '.view', function() {
 			let id = $(this).data('id')
@@ -187,6 +193,7 @@
 					$.ajax({
 						url: base_url + active_controller + 'delete/' + id,
 						type: 'GET',
+						dataType: 'JSON',
 						success: function(res) {
 							if (res.status == 1) {
 								Swal.fire({
@@ -218,6 +225,87 @@
 				}
 			})
 
+		})
+
+		$(document).on('click', '#save', function(e) {
+			$('#company_id').next('span').find('span.select2-selection').removeClass('is-invalid')
+			$('#sdate').removeClass('is-invalid')
+
+			const company_id = $('#company_id').val()
+			const sdate = $('#sdate').val()
+
+			if (!company_id) {
+				$('#company_id').next('span').find('span.select2-selection').addClass('is-invalid')
+				$('body,html').animate({
+					scrollTop: $("#company_id").offset().top - 220
+				}, 1000);
+
+				return false;
+			}
+
+			if (!sdate) {
+				$('#sdate').addClass('is-invalid')
+				$('body,html').animate({
+					scrollTop: $("#sdate").offset().top - 210
+				}, 1000);
+				return false;
+			}
+
+			let formdata = new FormData($('#form-reference')[0])
+			let btn = $(this)
+			Swal.fire({
+				title: 'Confirmation!',
+				text: 'Are you sure you want to save this data?',
+				icon: 'question',
+				showCancelButton: true,
+			}).then((value) => {
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'save',
+						data: formdata,
+						type: 'POST',
+						dataType: 'JSON',
+						processData: false,
+						contentType: false,
+						cache: false,
+						beforeSend: function() {
+							btn.attr('disabled', true).html('<i class="spinner spinner-border-sm"></i>Loading...')
+						},
+						complete: function() {
+							btn.attr('disabled', false).html('<i class="fa fa-save"></i>Save')
+						},
+						success: function(result) {
+							if (result.status == 1) {
+								Swal.fire({
+									title: 'Success!',
+									icon: 'success',
+									text: result.msg,
+									timer: 2000
+								})
+								$('#modelId').modal('hide')
+								location.href = siteurl + active_controller + 'edit/' + result.id
+								console.log(result);
+							} else {
+								Swal.fire({
+									title: 'Warning!',
+									icon: 'warning',
+									text: result.msg,
+									timer: 2000
+								})
+							}
+						},
+						error: function(result) {
+							Swal.fire({
+								title: 'Error!',
+								icon: 'error',
+								text: 'Server timeout, becuase error!',
+								timer: 4000
+							})
+						}
+					})
+
+				}
+			})
 		})
 
 	})

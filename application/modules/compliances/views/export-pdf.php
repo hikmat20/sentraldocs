@@ -135,7 +135,9 @@
     <tfoot>
       <tr>
         <th class="text-left">% Compliance</th>
-        <th class="text-left">: <?= round(($summary->total_compliance / ($summary->total_compliance + $summary->total_not_compliance)) * 100); ?>%</th>
+        <th class="text-left">:
+          <?=
+          ($total_compliance != 0 || $total_compliance != '') ? round(($total_compliance / ($total_compliance + $total_not_compliance)) * 100) : 0; ?>%</th>
       </tr>
     </tfoot>
   </table>

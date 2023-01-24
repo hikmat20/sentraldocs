@@ -61,6 +61,7 @@ class Company_reference extends Admin_Controller
 			'standards' 	=> $standards,
 			'regulations' 	=> $regulations
 		]);
+
 		$this->template->render('add');
 	}
 
@@ -100,18 +101,27 @@ class Company_reference extends Admin_Controller
 		if ($Data) {
 			$this->db->trans_begin();
 			$saved 	= $this->ReferenceModel->saveData($Data);
-			if ($this->db->trans_status() === FALSE) {
+
+			if (isset($saved['id'])) {
+				if ($this->db->trans_status() === FALSE) {
+					$this->db->trans_rollback();
+					$Return		= array(
+						'status'		=> 0,
+						'msg'			=> 'Data Chapter failed to save. Please try again.',
+					);
+				} else {
+					$this->db->trans_commit();
+					$Return		= array(
+						'status'		=> 1,
+						'msg'			=> 'Data Chapter successfully saved..',
+						'id'			=> $saved['id']
+					);
+				}
+			} else {
 				$this->db->trans_rollback();
 				$Return		= array(
 					'status'		=> 0,
-					'msg'			=> 'Data Chapter failed to save. Please try again.',
-				);
-			} else {
-				$this->db->trans_commit();
-				$Return		= array(
-					'status'		=> 1,
-					'msg'			=> 'Data Chapter successfully saved..',
-					'id'			=> $saved['id']
+					'msg'			=> 'Company name has already been created',
 				);
 			}
 		} else {
