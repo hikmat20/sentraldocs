@@ -94,6 +94,37 @@ class Company_reference extends Admin_Controller
 		}
 	}
 
+	public function view($id = null)
+	{
+		if ($id) {
+			$Data 			= $this->db->get_where('view_references', ['id' => $id, 'status' => 'OPN'])->row();
+			$datStd 		= $this->db->get_where('view_ref_standards', ['reference_id' => $id])->result();
+			$companies 		= $this->db->get_where('companies')->result();
+			$dataReg 		= $this->db->get_where('view_ref_regulations', ['reference_id' => $id])->result();
+			$standards		= $this->db->get_where('requirements', ['status' => '1'])->result();
+			$regulations	= $this->db->get_where('regulations', ['status' => 'PUB'])->result();
+
+			if ($Data) {
+				$this->template->set([
+					'title' 		=> 'View Company Reference',
+					'Data' 			=> $Data,
+					'datStd' 		=> $datStd,
+					'dataReg' 		=> $dataReg,
+					'Companies' 	=> $companies,
+					'standards' 	=> $standards,
+					'regulations' 	=> $regulations,
+				]);
+				$this->template->render('view');
+			} else {
+				$data = [
+					'heading' => 'Error!',
+					'message' => 'Data not found..'
+				];
+				$this->template->render('../views/errors/html/error_404_custome', $data);
+			}
+		}
+	}
+
 	public function save()
 	{
 		$Data 		= $this->input->post();

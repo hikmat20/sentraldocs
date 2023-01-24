@@ -41,8 +41,8 @@ class Groups extends Admin_Controller
         if (isset($data)) {
             $data['nm_group'] = $data['name'];
             unset($data['name']);
-            if (isset($data['id'])) {
-                $this->db->update('groups', $data, ['id_group' => $data['id']]);
+            if (isset($data['id_group'])) {
+                $this->db->update('groups', $data, ['id_group' => $data['id_group']]);
             } else {
                 $data['company_id'] = (isset($this->company) && $this->company) ? $this->company : null;
                 $this->db->insert('groups', $data);

@@ -115,7 +115,7 @@
 	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="staticBackdropLabel">View Standard</h5>
+				<h5 class="modal-title" id="staticBackdropLabel"></h5>
 				<span class="close" data-dismiss="modal" aria-label="Close"></span>
 			</div>
 			<div class="modal-body">
@@ -146,38 +146,15 @@
 
 		$(document).on('click', '#add', function() {
 			$('#modalView').modal('show')
+			$('#modalView .modal-title').text('Add Company Reference')
 			$('#modalView .modal-body').load(base_url + active_controller + 'add')
 		})
 
 		$(document).on('click', '.view', function() {
 			let id = $(this).data('id')
-			if (id) {
-				$.ajax({
-					url: base_url + active_controller + 'view/' + id,
-					type: 'GET',
-					success: function(res) {
-						if (res) {
-							$('.modal-body').html(res)
-							$('#modalView').modal('show')
-						} else {
-							Swal.fire({
-								title: 'Warinng!',
-								icon: 'warning',
-								text: 'Data not valid, please try again.',
-								timer: 3000
-							})
-						}
-					},
-					error: function(res) {
-						Swal.fire({
-							title: 'Error!',
-							icon: 'error',
-							text: 'Server timeout, error..',
-							timer: 3000
-						})
-					}
-				})
-			}
+			$('#modalView').modal('show')
+			$('#modalView .modal-title').text('View Company Reference')
+			$('#modalView .modal-body').load(base_url + active_controller + 'view/' + id)
 		})
 
 		$(document).on('click', '.delete', function() {

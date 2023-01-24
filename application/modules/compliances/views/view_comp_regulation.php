@@ -47,7 +47,7 @@
 								<?= $ArrCompl[$l->id]->compliance_desc  ?>
 							</td>
 							<td>
-								<?= $status[$ArrCompl[$l->id]->status]; ?>
+								<?= isset($ArrCompl[$l->id]) ? $status[$ArrCompl[$l->id]->status] : ''; ?>
 							</td>
 							<td width="40%" class="text-center">
 								<table class="table table-sm table-bordered">
