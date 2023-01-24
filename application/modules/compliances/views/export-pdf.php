@@ -109,11 +109,11 @@
     </tr>
     <tr>
       <th class="text-left">Last Review</th>
-      <td>: <?= $reference->last_review; ?></td>
+      <td>: <?= date('Y-m-d H:i:s'); ?></td>
       <th class="text-left">Count Review</th>
-      <td>: <?= $reference->counter_review; ?></td>
+      <td>: <?= ($reference->counter_review) ? $reference->counter_review + 1 : 1; ?></td>
       <th class="text-left">Review By</th>
-      <td>: <?= $ArrUsers[$reference->review_by]; ?></td>
+      <td>: <?= $ArrUsers[$this->auth->user_id()]; ?></td>
     </tr>
   </table>
   <br>
