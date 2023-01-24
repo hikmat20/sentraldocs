@@ -23,7 +23,7 @@
         <div class="tab-pane fade show active" id="file" role="tabpanel" aria-labelledby="file-tab">
             <div style="width:92%;height:400px;background-color: red;position: absolute;opacity: 0;"></div>
             <?php if (isset($review->document)) : ?>
-                <iframe src="/directory/COMPILATIONS/<?= $review->document; ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
+                <iframe src="<?= base_url(); ?>directory/COMPILATIONS/<?= $review->document; ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
             <?php endif; ?>
             <hr>
         </div>
