@@ -49,7 +49,7 @@
                   <br>
                   (<?= $dt->ayat; ?>) <?= $dt->description_ayat; ?>
                 </td>
-                <td><?= $dt->compliance_desc; ?></td>
+                <td><?= ($dt->compliance_desc) ?: ''; ?></td>
                 <td class="text-center"><?= ($dt->status) ? $status[$dt->status] : ''; ?></td>
               </tr>
             <?php endforeach; ?>
