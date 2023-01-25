@@ -161,7 +161,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="modalView" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 90%;">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="staticBackdropLabel"></h5>
@@ -196,7 +196,7 @@
 
 		$(document).on('click', '#view-compilation', function(e) {
 			const id = $(this).data('id')
-			$('#modalView .modal-dialog').addClass('modal-xl')
+			$('#modalView .modal-dialog')
 			$('#modalView').modal('show')
 			$('#modalView .modal-body').load(siteurl + active_controller + 'view_compliance/' + id)
 		})

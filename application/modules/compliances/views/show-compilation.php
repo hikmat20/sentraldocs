@@ -10,21 +10,22 @@
   </thead>
   <tbody>
     <?php if ($ArrReg) : ?>
-      <?php foreach ($ArrReg as $key => $rg) : ?>
-        <?php $n = 0;
-        foreach ($rg as $j => $dt) : $n++; ?>
+      <?php $n = 0;
+      foreach ($ArrReg as $key => $rg) : $n++;  ?>
+        <?php
+        foreach ($rg as $j => $dt) : ?>
           <tr>
             <?php if ($j == '0') : ?>
-              <th rowspan="<?= count($rg); ?>" class="text-center" style="vertical-align:middle;">
+              <th rowspan="<?= count($rg); ?>" class="text-center">
                 <?= $n; ?>
               </th>
             <?php endif; ?>
             <?php if ($j == '0') : ?>
-              <td rowspan="<?= count($rg); ?>" class="" style="vertical-align:middle;">
+              <td rowspan="<?= count($rg); ?>" class="">
                 <strong>
                   <p><?= $dt->category_name; ?></p>
                 </strong>
-                <p><?= $dt->about; ?></p>
+                <p><?= $dt->regulation_name; ?></p>
               </td>
             <?php endif; ?>
             <td>

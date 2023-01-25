@@ -358,7 +358,7 @@ class Compliances extends Admin_Controller
             $ArrUsers       = [];
 
             foreach ($regulations as $reg) {
-                $ArrReg[$reg->regulation_category][] = $reg;
+                $ArrReg[$reg->regulation_id][] = $reg;
             }
 
             foreach ($opports as $opr) {
@@ -478,7 +478,7 @@ class Compliances extends Admin_Controller
             $ArrUsers       = [];
 
             foreach ($regulations as $reg) {
-                $ArrReg[$reg->regulation_category][] = $reg;
+                $ArrReg[$reg->regulation_id][] = $reg;
             }
 
             foreach ($opports as $opr) {
@@ -533,7 +533,7 @@ class Compliances extends Admin_Controller
             $ArrUsers       = [];
 
             foreach ($regulations as $reg) {
-                $ArrReg[$reg->regulation_category][] = $reg;
+                $ArrReg[$reg->regulation_id][] = $reg;
             }
 
             foreach ($opports as $opr) {
@@ -786,7 +786,7 @@ class Compliances extends Admin_Controller
             $ArrUsers       = [];
 
             foreach ($regulations as $reg) {
-                $ArrReg[$reg->regulation_category][] = $reg;
+                $ArrReg[$reg->regulation_id][] = $reg;
             }
 
             foreach ($opports as $opr) {

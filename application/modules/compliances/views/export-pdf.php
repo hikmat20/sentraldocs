@@ -161,10 +161,11 @@
       <?php
       $compl = $not_compl = $not_apl = $total = $percent = $allReg = 0;
       if ($ArrReg) : ?>
-        <?php foreach ($ArrReg as $key => $rg) : ?>
-          <?php $n = 0;
+        <?php $n = 0;
+        foreach ($ArrReg as $key => $rg) : $n++; ?>
+          <?php
           $allReg = count($rg);
-          foreach ($rg as $j => $dt) : $n++; ?>
+          foreach ($rg as $j => $dt) : ?>
             <tr>
               <?php if ($j == '0') : ?>
                 <td class="text-center" rowspan="<?= count($rg); ?>"><?= $n; ?></td>
@@ -172,7 +173,7 @@
               <?php if ($j == '0') : ?>
                 <td width="200" rowspan="<?= count($rg); ?>">
                   <p><strong><?= $dt->category_name; ?></strong></p>
-                  <p><?= $dt->about; ?></p>
+                  <p><?= $dt->regulation_name; ?></p>
                 </td>
               <?php endif; ?>
               <td width="300">

@@ -80,9 +80,9 @@
         <thead>
           <tr class="">
             <th class="text-center" width="30">No.</th>
-            <th class="text-center" width="150">REGULATION</th>
+            <th class="text-center" width="200">REGULATION</th>
             <th class="text-center" width="350">PASAL</th>
-            <th class="text-center" width="">COMPLIANCE DESC.</th>
+            <th class="text-center" width="350">COMPLIANCE DESC.</th>
             <th class="text-center" width="100">STATUS</th>
           </tr>
         </thead>
@@ -90,10 +90,11 @@
           <?php
           $compl = $not_compl = $not_apl = $total = $percent = $allReg = 0;
           if ($ArrReg) : ?>
-            <?php foreach ($ArrReg as $key => $rg) : ?>
-              <?php $n = 0;
+            <?php $n = 0;
+            foreach ($ArrReg as $key => $rg) : $n++; ?>
+              <?php
               $allReg = count($rg);
-              foreach ($rg as $j => $dt) : $n++;
+              foreach ($rg as $j => $dt) :
                 if ($dt->status == 'CMP') :
                   $compl++;
                 endif;
@@ -106,16 +107,16 @@
               ?>
                 <tr>
                   <?php if ($j == '0') : ?>
-                    <th rowspan="<?= count($rg); ?>" class="text-center" style="vertical-align:middle;">
+                    <th rowspan="<?= count($rg); ?>" class="text-center">
                       <?= $n; ?>
                     </th>
                   <?php endif; ?>
                   <?php if ($j == '0') : ?>
-                    <td rowspan="<?= count($rg); ?>" class="" style="vertical-align:middle;">
+                    <td rowspan="<?= count($rg); ?>" class="">
                       <strong>
                         <p><?= $dt->category_name; ?></p>
                       </strong>
-                      <p><?= $dt->about; ?></p>
+                      <p><?= $dt->regulation_name; ?></p>
                     </td>
                   <?php endif; ?>
                   <td>
