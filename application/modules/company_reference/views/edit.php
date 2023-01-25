@@ -140,7 +140,17 @@
 		</div>
 	</div>
 </div>
+<style>
+	.select2-selection--single {
+		height: 100% !important;
+	}
 
+	.select2-selection__rendered {
+		word-wrap: break-word !important;
+		text-overflow: inherit !important;
+		white-space: normal !important;
+	}
+</style>
 <script>
 	$(document).ready(function() {
 		$('.select2').select2({
@@ -332,7 +342,7 @@
 			$('.select2').select2({
 				placeholder: 'Choose an option',
 				allowClear: true,
-				width: '100%'
+				width: '550px'
 			})
 			selectStd('.selectReg', '.dataIdReg')
 		})
