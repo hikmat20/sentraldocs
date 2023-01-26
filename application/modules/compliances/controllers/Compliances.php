@@ -614,7 +614,7 @@ class Compliances extends Admin_Controller
             $TC             = $TNC = $TNA = 0;
 
             foreach ($regulations as $reg) {
-                $ArrReg[$reg->regulation_category][] = $reg;
+                $ArrReg[$reg->regulation_id][] = $reg;
                 if ($reg->status == 'CMP') {
                     $TC++;
                 }
