@@ -14,7 +14,7 @@
     }
 
     table.table-data {
-      width: 100%;
+      /* width: 100%; */
       font-size: 10px;
     }
 
@@ -96,7 +96,6 @@
   <div class="text-center">
     <h2><strong>IDENTIFIKASI DAN EVALUASI KEWAJIBAN PENAATAN</strong></h2>
   </div>
-
   <!-- HEADER -->
   <table class="table-data-no-border">
     <tr>
@@ -116,7 +115,8 @@
       <td>: <?= $ArrUsers[$this->auth->user_id()]; ?></td>
     </tr>
   </table>
-  <br>
+  <hr>
+
   <table class="table-data-no-border">
     <tbody>
       <tr>
@@ -141,7 +141,6 @@
       </tr>
     </tfoot>
   </table>
-  <!-- <hr> -->
   <br>
   <table class="table-data" style="font-size: 10px;">
     <thead>
@@ -167,15 +166,17 @@
           $allReg = count($rg);
           foreach ($rg as $j => $dt) : ?>
             <tr>
-              <?php if ($j == '0') : ?>
-                <td class="text-center" rowspan="<?= count($rg); ?>"><?= $n; ?></td>
-              <?php endif; ?>
-              <?php if ($j == '0') : ?>
-                <td width="200" rowspan="<?= count($rg); ?>">
+              <td class="text-center">
+                <?php if ($j == '0') : ?>
+                  <strong><?= $n; ?></strong>
+                <?php endif; ?>
+              </td>
+              <td width="200">
+                <?php if ($j == '0') : ?>
                   <p><strong><?= $dt->category_name; ?></strong></p>
                   <p><?= $dt->regulation_name; ?></p>
-                </td>
-              <?php endif; ?>
+                <?php endif; ?>
+              </td>
               <td width="300">
                 <strong><?= $dt->pasal_name; ?></strong>
                 <br>
@@ -184,42 +185,38 @@
               <td><?= $dt->compliance_desc; ?></td>
               <td class="text-center <?= ($dt->status == 'NCM') ? 'bg-red' : ''; ?>"><?= $status[$dt->status]; ?></td>
               <td style=" padding:0px;margin:0px;" width="100">
-                <?php if (isset($ArrOpports[$dt->prgh_id])) :
-                  foreach ($ArrOpports[$dt->prgh_id] as $opr) :
+                <?php $no = 0;
+                if (isset($ArrOpports[$dt->prgh_id])) :
+                  foreach ($ArrOpports[$dt->prgh_id] as $opr) : $no++;
                 ?>
-                    <ol>
-                      <li><?= $cat[$opr->category]; ?></li>
-                    </ol>
+                    <p><?= $no . ". " . $cat[$opr->category]; ?></p>
                   <?php endforeach; ?>
                 <?php endif; ?>
               </td>
               <td style="padding:0px;margin:0px;" width="100">
-                <?php if (isset($ArrOpports[$dt->prgh_id])) :
-                  foreach ($ArrOpports[$dt->prgh_id] as $opr) :
+                <?php $no = 0;
+                if (isset($ArrOpports[$dt->prgh_id])) :
+                  foreach ($ArrOpports[$dt->prgh_id] as $opr) :  $no++;
                 ?>
-                    <ol>
-                      <li><?= $opr->description_opports; ?></li>
-                    </ol>
+                    <p><?= $no . ". " . $opr->description_opports; ?></p>
                   <?php endforeach; ?>
                 <?php endif; ?>
               </td>
               <td style="padding:0px;margin:0px;" width="100">
-                <?php if (isset($ArrOpports[$dt->prgh_id])) :
-                  foreach ($ArrOpports[$dt->prgh_id] as $opr) :
+                <?php $no = 0;
+                if (isset($ArrOpports[$dt->prgh_id])) :
+                  foreach ($ArrOpports[$dt->prgh_id] as $opr) : $no++;
                 ?>
-                    <ol>
-                      <li><?= $ArrUsers[$opr->pic]; ?></li>
-                    </ol>
+                    <p><?= $no . ". " . $ArrUsers[$opr->pic]; ?></p>
                   <?php endforeach; ?>
                 <?php endif; ?>
               </td>
               <td style="padding:0px;margin:0px;" width="100">
-                <?php if (isset($ArrOpports[$dt->prgh_id])) :
-                  foreach ($ArrOpports[$dt->prgh_id] as $opr) :
+                <?php $no = 0;
+                if (isset($ArrOpports[$dt->prgh_id])) :
+                  foreach ($ArrOpports[$dt->prgh_id] as $opr) :  $no++;
                 ?>
-                    <ol>
-                      <li><?= $opr->due_date; ?></li>
-                    </ol>
+                    <p><?= $no . ". " . $opr->due_date; ?></p>
                   <?php endforeach; ?>
                 <?php endif; ?>
               </td>
@@ -229,7 +226,6 @@
       <?php endif; ?>
     </tbody>
   </table>
-
 </body>
 
 </html>
