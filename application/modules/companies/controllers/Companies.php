@@ -41,11 +41,11 @@ class Companies extends Admin_Controller
         $this->db->trans_begin();
         if ($data) {
             if (isset($data['id_perusahaan']) && $data['id_perusahaan']) {
-                $data['modified_on'] = date('Y-m-d H:i:s');
+                $data['modified_at'] = date('Y-m-d H:i:s');
                 $data['modified_by'] = $this->auth->user_id();
                 $this->db->update('companies', $data, ['id_perusahaan' => $data['id_perusahaan']]);
             } else {
-                $data['created_on'] = date('Y-m-d H:i:s');
+                $data['created_at'] = date('Y-m-d H:i:s');
                 $data['created_by'] = $this->auth->user_id();
                 $this->db->insert('companies', $data);
             }
