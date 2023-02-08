@@ -92,7 +92,7 @@ class Requirements extends Admin_Controller
 	{
 		$Data 		= $this->input->post();
 		$Data_list 	= (isset($Data['list'])) ? $Data['list'] : '';
-
+		unset($Data['DataTables_Table_0_length']);
 		$this->db->trans_begin();
 		if ($Data) {
 			$Data['company_id'] = $this->company;
