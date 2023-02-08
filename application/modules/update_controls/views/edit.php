@@ -24,9 +24,13 @@
   </div>
   <div class="mb-3 row flex-nowrap">
     <label for="" class="col-3 col-form-label font-weight-bold">Year</label>
-    <div class="col-9">
-      <input type="text" name="year" value="<?= $update->year; ?>" class="form-control form-control-solid w-25" readonly id="year" placeholder="Year" />
+    <div class="col-3">
+      <input type="text" name="year" value="<?= $update->year; ?>" class="form-control form-control-solid" readonly id="year" placeholder="Year" />
       <span class="invalid-feedback">Year can't be empty</span>
+    </div>
+    <label for="" class="col-2 col-form-label font-weight-bold">Latest Version</label>
+    <div class="col-3">
+      <input type="text" name="latest_version" value="<?= $update->latest_version; ?>" class="form-control" id="latest_version" placeholder="Latest Version" />
     </div>
   </div>
   <div class="mb-3 row flex-nowrap">

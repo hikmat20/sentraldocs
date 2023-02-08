@@ -132,7 +132,7 @@
 		$(document).on('click', '.edit', function() {
 			const id = $(this).data('id')
 			const url = siteurl + active_controller + 'edit_std/' + id;
-			$('.modal-title').html('Edit Update Constrol')
+			$('.modal-title').html('Edit Update Controls')
 			$('#modalView').modal('show')
 			$('.modal-body').load(url)
 		})
