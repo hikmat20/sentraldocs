@@ -69,6 +69,14 @@ $route['list/view_records/(:any)'] = 'documents_list/view_record/$1';
 $route['list/compliances'] = 'documents_list/compliances';
 $route['list/compliances/(:any)'] = 'documents_list/compliances/$1';
 
+/* MATERI TRAINING */
+$route['list/materi'] = 'documents_list/materi';
+$route['list/materi/(:any)'] = 'documents_list/materi/$1';
+
+/* MATERI TRAINING */
+$route['list/guides'] = 'documents_list/guides';
+$route['list/guides/(:any)'] = 'documents_list/guides/$1';
+
 /* List Documents */
 $route['list/(:any)/(:any)'] = 'documents_list/$1/$2';
 $route['list/(:any)'] = 'documents_list/find/$1';

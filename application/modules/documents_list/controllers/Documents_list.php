@@ -260,7 +260,6 @@ class Documents_list extends Admin_Controller
 
 	/* PEMENUHAN */
 
-
 	public function compliances()
 	{
 		$reference = $this->db->get_where('view_references')->result();
@@ -287,5 +286,125 @@ class Documents_list extends Admin_Controller
 			'review' 	=> $review,
 		]);
 		$this->template->render('compliances/view');
+	}
+
+
+
+	/* MATERI TRAINING */
+
+	public function materi()
+	{
+		if ($this->input->get('f') && $this->input->get('sub')) {
+			$f 				= $this->input->get('f');
+			$sub 			= $this->input->get('sub');
+			$materi 		= $this->db->get_where('materi_details', ['id' => $f])->result();
+
+			$dtlData 	= $this->db->get_where('materi_detail_data', ['materi_detail_id' => $sub])->result();
+
+			$category 		= [
+				'MAT' => 'Materi Training',
+				'PRE' => 'Pre Test & Post Test',
+				'STU' => 'Studi Kasus, Quiz & Workshop',
+				'SIL' => 'Silabus',
+				'VID' => 'Video',
+				'REF' => 'Reference',
+			];
+			$ArrDtlData = [];
+			foreach ($dtlData as $dtl) {
+				$ArrDtlData[$dtl->category][] = $dtl;
+			}
+
+
+			$this->template->set([
+				'materi' 		=> $materi,
+				'category' 		=> $category,
+				'ArrDtlData' 	=> $ArrDtlData,
+			]);
+
+			$this->template->render('materi/list');
+			return false;
+		};
+
+
+		$materi 		= $this->db->get_where('materi', ['status' => '1', 'company_id' => $this->company])->result();
+		$detail 		= $this->db->get_where('materi_details', ['status' => '1', 'company_id' => $this->company])->result();
+		$ArrDetail 		= [];
+
+		foreach ($detail as $dtl) {
+			$ArrDetail[$dtl->materi_id][] = $dtl;
+		}
+
+		$this->template->set([
+			'materi' 		=> $materi,
+			'ArrDetail' 	=> $ArrDetail,
+		]);
+
+		$this->template->render('materi/index');
+	}
+
+	public function show_materi($id = null)
+	{
+		$file 			= $this->db->get_where('materi_detail_data', ['id' => $id])->row();
+		$array 			= explode('.', $file->document);
+		$extension 		= end($array);
+
+		$this->template->set([
+			'file' 		=> $file,
+			'ext' 		=> $extension
+		]);
+		$this->template->render('materi/show');
+	}
+
+
+	/* MASTER IK */
+
+	public function guides()
+	{
+		if ($this->input->get('f') && $this->input->get('sub')) {
+			$f 				= $this->input->get('f');
+			$sub 			= $this->input->get('sub');
+			$materi 		= $this->db->get_where('guide_details', ['id' => $f])->result();
+
+			$dtlData 	= $this->db->get_where('guide_detail_data', ['guide_detail_id' => $sub])->result();
+
+			$category 		= [
+				'MAT' => 'Materi Training',
+				'PRE' => 'Pre Test & Post Test',
+				'STU' => 'Studi Kasus, Quiz & Workshop',
+				'SIL' => 'Silabus',
+				'VID' => 'Video',
+				'REF' => 'Reference',
+			];
+			$ArrDtlData = [];
+			foreach ($dtlData as $dtl) {
+				$ArrDtlData[$dtl->category][] = $dtl;
+			}
+
+
+			$this->template->set([
+				'materi' 		=> $materi,
+				'category' 		=> $category,
+				'ArrDtlData' 	=> $ArrDtlData,
+			]);
+
+			$this->template->render('guides/list');
+			return false;
+		};
+
+
+		$guides 		= $this->db->get_where('guides', ['status' => '1', 'company_id' => $this->company])->result();
+		$details 		= $this->db->get_where('guide_details', ['status' => '1', 'company_id' => $this->company])->result();
+		$ArrDetail 		= [];
+
+		foreach ($details as $dtl) {
+			$ArrDetail[$dtl->guide_id][] = $dtl;
+		}
+
+		$this->template->set([
+			'guides' 		=> $guides,
+			'ArrDetail' 	=> $ArrDetail,
+		]);
+
+		$this->template->render('guides/index');
 	}
 }

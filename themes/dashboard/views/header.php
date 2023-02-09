@@ -18,6 +18,9 @@
   <link href="<?= base_url(); ?>themes/dashboard/assets/css/style.bundle1036.css?v=2.1.1" rel="stylesheet" type="text/css" />
   <link href="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/jstree/jstree.bundle.css?v=2.1.1" rel="stylesheet" type="text/css" />
   <link href="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/datatables/datatables.bundle1036.css" rel="stylesheet" type="text/css" />
+  <script src="<?= base_url('themes/dashboard/assets/plugins/custom/pdf/pdf.js'); ?>"></script>
+  <script src="<?= base_url('themes/dashboard/assets/plugins/custom/pdf/pdf.worker.js'); ?>"></script>
+
   <script type="text/javascript">
     var baseurl = "<?= base_url(); ?>";
     var siteurl = "<?php echo site_url(); ?>";
@@ -95,6 +98,7 @@
     }
 
     .middle {
+      top: 0;
       transition: .5s ease;
       opacity: 0;
       position: absolute;
