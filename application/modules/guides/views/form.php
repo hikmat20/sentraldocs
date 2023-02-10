@@ -1,4 +1,4 @@
-<form id="form-upload">
+<form id="form-upload" enctype="multipart/form-data">
 	<input type="hidden" name="guide_detail_id" value="<?= $guide_detail_id; ?>">
 	<div class="row">
 		<div class="col-md-6">
@@ -93,30 +93,19 @@
 			</div>
 			<div class="row mb-3">
 				<label class="col-4 col-form-label"> Upload Video</label>
-				<div class="col-8">
-					<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
-						<div class="dropzone-desc">
-							<i class="fa fa-upload"></i>
-							<p>Choose an image file or drag it here.</p>
-						</div>
-						<input type="file" id="video-file" name="video" accept="application/mp4" class="dropzone dropzone-1" />
-						<canvas id="pdf-preview" width="150"></canvas>
-						<div class="for-delete"></div>
+				<div class="col-8 px-0">
+					<button type="button" id="upload-video" class="btn btn-sm mb-3 btn-info d-block">Upload Video</button>
+					<input type="file" id="video-file" name="video" accept="video/mp4" class="d-none" />
+					<video id="video-preview" width="290" height="180" class="d-none">
+						Your browser does not support the video tag.
+					</video>
+					<div class="for-delete text-center">
+						<button type="button" id="remove-video" class="btn btn-xs btn-icon btn-light-danger rounded-circle d-none"><i class="fa fa-times"></i></button>
 					</div>
+
 				</div>
 			</div>
 		</div>
-	</div>
-	<div class="d-flex justify-content-between">
-
-		<span class="invalid-feedback">File or Document can't be empty</span>
-		<!-- <div class="form flex-grow-1">
-			<input type="hidden" name="guide_detail_id" class="form-control mb-3" placeholder="Document Name" value="<?= $guide_detail_id; ?>" aria-describedby="helpId">
-			<input type="hidden" name="category" class="form-control mb-3" placeholder="Document Name" value="` + cat + `" aria-describedby="helpId">
-			<input type="text" name="name-file" id="name-file" class="form-control mb-3" placeholder="Document Name" aria-describedby="helpId">
-			<span class="invalid-feedback">Name document can't be empty</span>
-			<button id="cancel-pdf" type="button" class="btn btn-danger d-none rounded-circle btn-icon btn-sm"><i class="fa fa-trash"></i></button>
-		</div> -->
 	</div>
 </form>
 

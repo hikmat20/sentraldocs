@@ -360,30 +360,20 @@ class Documents_list extends Admin_Controller
 
 	public function guides()
 	{
-		if ($this->input->get('f') && $this->input->get('sub')) {
+		if ($this->input->get('f')) {
 			$f 				= $this->input->get('f');
-			$sub 			= $this->input->get('sub');
-			$materi 		= $this->db->get_where('guide_details', ['id' => $f])->result();
+			// $sub 			= $this->input->get('sub');
+			$guide_details 		= $this->db->get_where('guide_details', ['id' => $f])->result();
 
-			$dtlData 	= $this->db->get_where('guide_detail_data', ['guide_detail_id' => $sub])->result();
+			$dtlData 	= $this->db->get_where('view_guides_detail_data', ['guide_detail_id' => $f])->result();
 
-			$category 		= [
-				'MAT' => 'Materi Training',
-				'PRE' => 'Pre Test & Post Test',
-				'STU' => 'Studi Kasus, Quiz & Workshop',
-				'SIL' => 'Silabus',
-				'VID' => 'Video',
-				'REF' => 'Reference',
-			];
 			$ArrDtlData = [];
 			foreach ($dtlData as $dtl) {
-				$ArrDtlData[$dtl->category][] = $dtl;
+				$ArrDtlData[$dtl->guide_detail_id][] = $dtl;
 			}
 
-
 			$this->template->set([
-				'materi' 		=> $materi,
-				'category' 		=> $category,
+				'guide_details' => $guide_details,
 				'ArrDtlData' 	=> $ArrDtlData,
 			]);
 
@@ -399,12 +389,38 @@ class Documents_list extends Admin_Controller
 		foreach ($details as $dtl) {
 			$ArrDetail[$dtl->guide_id][] = $dtl;
 		}
-
 		$this->template->set([
 			'guides' 		=> $guides,
 			'ArrDetail' 	=> $ArrDetail,
 		]);
 
 		$this->template->render('guides/index');
+	}
+
+	public function view_guides($id = null)
+	{
+		$data 			= $this->db->get_where('view_guides_detail_data', ['id' => $id])->row();
+		$file 			= './directory/MASTER_GUIDES/' . $data->company_id . '/' . $data->document;
+
+		$this->template->set([
+			'data' 		=> $data,
+			'file'		=> $file
+		]);
+
+		$this->template->render('guides/view_guides');
+	}
+
+	public function show_file_guides($id = null)
+	{
+		$file 			= $this->db->get_where('guide_detail_data', ['id' => $id])->row();
+		$array 			= explode('.', $file->document);
+		$extension 		= end($array);
+
+		$this->template->set([
+			'file' 		=> $file,
+			'ext' 		=> $extension
+		]);
+
+		$this->template->render('guides/show');
 	}
 }

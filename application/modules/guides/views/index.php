@@ -967,6 +967,33 @@
 	});
 
 
+	/* UPLOAD VIDEO */
+	$(document).on('click', '#upload-video', function() {
+		$('#video-file').click();
+	})
+
+	$(document).on('change', '#video-file', function() {
+		let file = $(this)[0].files[0];
+		let blobURL = URL.createObjectURL(file);
+		console.log(blobURL);
+		$("#video-preview").attr('src', blobURL).removeClass('d-none');
+		$('#remove-video').removeClass('d-none')
+	})
+
+	$(document).on('click', '#remove-video', function() {
+		$('#remove-video').addClass('d-none')
+		$("#video-preview").attr('src', '').addClass('d-none');
+		$("#video-file").val('');
+	})
+
+	function remove_image(e) {
+		$(".remove-video").val('x');
+		// reset to no selection
+		$("#video-file").val('');
+	}
+
+
+
 	$(function() {
 		$("#myImg1").hover(
 			function() {

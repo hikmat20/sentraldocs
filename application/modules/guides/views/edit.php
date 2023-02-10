@@ -97,37 +97,39 @@
 			<div class="row mb-3">
 				<label class="col-4 col-form-label"> Upload Video</label>
 				<div class="col-8">
-					<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
-						<div class="dropzone-desc">
-							<i class="fa fa-upload"></i>
-							<p>Choose an image file or drag it here.</p>
+					<div class="col-8 px-0">
+						<button type="button" id="upload-video" class="btn btn-sm mb-3 btn-info d-inline">Upload Video</button>
+						<button type="button" id="remove-video" class="btn btn-sm btn-icon mb-3 btn-light-danger"><i class="fa fa-times"></i></button>
+						<input type="file" id="video-file" name="video" accept="video/mp4" class="d-none" />
+						<video id="video-preview" width="290" controls controlsList="nodownload" oncontextmenu="return false" height="180">
+							Your browser does not support the video tag.
+							<source src="<?= base_url('directory/MASTER_GUIDES/VIDEO/' . $data->company_id . '/') . $data->video; ?>" type="video/mp4">
+						</video>
+						<div class="for-delete text-center">
+							<input class="remove-video" name="remove-video" type="hidden">
+							<input type="hidden" name="old_video" id="<?= $data->video; ?>">
 						</div>
-						<input type="file" id="video-file" name="video" accept="application/mp4" class="dropzone dropzone-1" />
-						<div class="for-delete">
-							<div class="middle d-flex justify-content-center align-items-center">
-								<button type="button" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle"><i class="fa fa-edit"></i></button>
-								<button type="button" onclick="remove_image(this)" class="btn btn-sm mr-1 btn-icon btn-danger remove-image rounded-circle"><i class="fa fa-trash"></i></button>
-							</div>
-						</div>
-						<canvas id="pdf-preview" width="150"></canvas>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="d-flex justify-content-between">
 
-		<span class="invalid-feedback">File or Document can't be empty</span>
-		<!-- <div class="form flex-grow-1">
-			<input type="hidden" name="guide_detail_id" class="form-control mb-3" placeholder="Document Name" value="<?= $guide_detail_id; ?>" aria-describedby="helpId">
-			<input type="hidden" name="category" class="form-control mb-3" placeholder="Document Name" value="` + cat + `" aria-describedby="helpId">
-			<input type="text" name="name-file" id="name-file" class="form-control mb-3" placeholder="Document Name" aria-describedby="helpId">
-			<span class="invalid-feedback">Name document can't be empty</span>
-			<button id="cancel-pdf" type="button" class="btn btn-danger d-none rounded-circle btn-icon btn-sm"><i class="fa fa-trash"></i></button>
-		</div> -->
-	</div>
 </form>
+<style>
+	video::-internal-media-controls-download-button {
+		display: none;
+	}
 
+	video::-webkit-media-controls-enclosure {
+		overflow: hidden;
+	}
+
+	video::-webkit-media-controls-panel {
+		width: calc(100% + 30px);
+		/* Adjust as needed */
+	}
+</style>
 <script>
 	$('.select2').select2({
 		width: '100%',

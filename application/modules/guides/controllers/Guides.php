@@ -354,6 +354,39 @@ class Guides extends Admin_Controller
 					};
 				}
 
+				if ($_FILES['video']['name']) {
+					if (!is_dir('./directory/MASTER_GUIDES/VIDEO/' . $DIR_COMP)) {
+						mkdir('./directory/MASTER_GUIDES/VIDEO/' . $DIR_COMP, 0755, TRUE);
+						chmod("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP, 0755);  // octal; correct value of mode
+						chown("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP, 'www-data');
+					}
+					// $new_name 					= $this->fixForUri($data['description']);
+					$config['upload_path'] 		= "./directory/MASTER_GUIDES/VIDEO/$DIR_COMP"; //path folder
+					$config['allowed_types'] 	= 'mp4'; //type yang dapat diakses bisa anda sesuaikan
+					$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
+					// $config['file_name'] 		= $new_name;
+
+					$this->upload->initialize($config);
+					if ($this->upload->do_upload('video')) {
+						$file = $this->upload->data();
+						$data['video']		= $file['file_name'];
+
+						if ($old_file != null) {
+							if (file_exists("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP . $old_file)) {
+								unlink("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP . $old_file);
+							}
+						}
+					} else {
+						$error_msg = $this->upload->display_errors();
+						$Return = [
+							'status' => 0,
+							'msg'	 => $error_msg
+						];
+						echo json_encode($Return);
+						return false;
+					};
+				}
+
 				$this->db->trans_begin();
 				$check = $this->db->get_where('guide_detail_data', ['id' => $id])->num_rows();
 
@@ -365,12 +398,18 @@ class Guides extends Admin_Controller
 					$data['modified_by']	= $this->auth->user_id();
 					$data['modified_at']	= date('Y-m-d H:i:s');
 					if (isset($data['remove-document']) && $data['remove-document'] == 'x' && !$_FILES['documents']['name']) {
-						if (file_exists("./directory/MATERI/" . $DIR_COMP . $old_file)) {
-							unlink("./directory/MATERI/" . $DIR_COMP . $old_file);
+						if (file_exists("./directory/MASTER_GUIDES/" . $DIR_COMP . $old_file)) {
+							unlink("./directory/MASTER_GUIDES/" . $DIR_COMP . $old_file);
 						}
 						$data['document']			= null;
 					}
-					unset($data['remove-document']);
+					if (isset($data['remove-video']) && $data['remove-video'] == 'x' && !$_FILES['video']['name']) {
+						if (file_exists("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP . $old_file)) {
+							unlink("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP . $old_file);
+						}
+						$data['video']			= null;
+					}
+					unset($data['remove-video']);
 					$this->db->update('guide_detail_data', $data, ['id' => $id]);
 				}
 

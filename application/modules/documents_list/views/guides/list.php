@@ -16,29 +16,29 @@
                     </li>
 
                     <li class="breadcrumb-item text-muted">
-                        <a href="<?= base_url('list/materi'); ?>" class="text-muted">MATERI TRAINING</a>
+                        <a href="<?= base_url('list/guides'); ?>" class="text-muted">MASTER IK</a>
                     </li>
                     <li class="breadcrumb-item text-muted">
-                        <a href="" class="text-muted"><?= $materi[0]->name; ?></a>
+                        <a href="" class="text-muted"><?= $guide_details[0]->name; ?></a>
                     </li>
                 </ul>
             </div>
-            <h1 class="text-white fa-3x">MATERI TRAINING</h1>
+            <h1 class="text-white fa-3x mb-12">MASTER IK</h1>
 
-            <h4 class="text-white fa-2x mb-5"><?= $materi[0]->name; ?></h4>
+            <!-- <h4 class="text-white fa-2x mb-5"><?= $guide_details[0]->name; ?></h4> -->
             <ul class="nav nav-warning nav-pills nav-bolder" id="myTab2" role="tablist">
                 <?php $n = 0;
                 $thisCompany = '';
-                if ($materi) :
-                    foreach ($category as $k => $dt) : $n++; ?>
+                if ($guide_details) :
+                    foreach ($guide_details as $k => $dtl) : $n++; ?>
                         <li class="nav-item mx-0">
-                            <a class="rounded-bottom-0 nav-link <?= ($n == '1') ? 'active show' : ''; ?>" id="tab_<?= $k; ?>" data-toggle="tab" href="#data_<?= $k; ?>">
+                            <a class="rounded-bottom-0 nav-link <?= ($n == '1') ? 'active show' : ''; ?>" id="tab_<?= $dtl->id; ?>" data-toggle="tab" href="#data_<?= $dtl->id; ?>">
                                 <span class="nav-icon ">
                                     <i class="fa fa-file-alt"></i>
                                 </span>
-                                <span class="text-white h5 my-0"><?= $dt; ?>
+                                <span class="text-white h5 my-0"><?= $dtl->name; ?>
                                     <small class="">
-                                        <div class="badge bg-white rounded-circle text-warning"><?= (isset($ArrDtlData[$k]) ? count($ArrDtlData[$k]) : 0); ?></div>
+                                        <div class="badge bg-white rounded-circle text-warning"><?= (isset($ArrDtlData[$dtl->id]) ? count($ArrDtlData[$dtl->id]) : 0); ?></div>
                                     </small>
                                 </span>
                             </a>
@@ -48,32 +48,49 @@
             </ul>
             <div class="card rounded-top-0 border-0" style="background-color: zrgba(255,255,255,0.85);">
                 <div class="card-body py-3 ">
-                    <?php if (!$materi) : ?>
+                    <?php if (!$guide_details) : ?>
                         <div class="justify-content-center flex-column d-flex py-10">
                             <img src="/assets/images/directory/not-found.png" alt="" class="img-cover justify-content-center m-auto" width="200px">
                             <h3 class="text-center text-dark-50">File not found</h3>
                         </div>
                     <?php endif; ?>
                     <div class="tab-content " id="myTabContent2">
+                        <a href="<?= base_url($this->uri->segment(1) . '/guides/'); ?>"><i class="fa fa-arrow-left"></i></a>
                         <?php $n = 0;
-                        if ($category) :
-                            foreach ($category as $k => $cat) :  $n++; ?>
-                                <div class="tab-pane fade <?= ($n == '1') ? 'active show' : ''; ?>" id="data_<?= $k; ?>" role="tabpanel" aria-labelledby="tab_<?= $k; ?>">
+                        if ($guide_details) :
+                            foreach ($guide_details as $k => $dtl) :  $n++; ?>
+                                <div class="tab-pane fade <?= ($n == '1') ? 'active show' : ''; ?>" id="data_<?= $dtl->id; ?>" role="tabpanel" aria-labelledby="tab_<?= $dtl->id; ?>">
                                     <table class="table datatable table-hover table-sm">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Name</th>
+                                                <th>Jenis Alat</th>
+                                                <th>Kelompok</th>
+                                                <th>Rentang Ukur</th>
+                                                <th>Metode</th>
+                                                <th>Terbit</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php if (isset($ArrDtlData[$k])) foreach ($ArrDtlData[$k] as $list) : ?>
+                                            <?php if (isset($ArrDtlData[$dtl->id])) foreach ($ArrDtlData[$dtl->id] as $list) : ?>
                                                 <tr class="cursor-pointer" data-id="<?= $list->id; ?>">
                                                     <td class="text-center h6 p-1" width="50px">
                                                         <i class="fa fa-file-alt fa-2x text-success"></i>
                                                     </td>
-                                                    <td class="font-weight-bold p-1 h4 text-dark">
-                                                        <span onclick="show(<?= $list->id; ?>)"><?= $list->name; ?></span>
+                                                    <td class="font-weight-bold p-1 h6">
+                                                        <a href="#" onclick="show(<?= $list->id; ?>)"><?= $list->guide_detail_data_name; ?></a>
+                                                    </td>
+                                                    <td class="text-dark">
+                                                        <?= $list->group_name; ?>
+                                                    </td>
+                                                    <td class="text-dark">
+                                                        <?= $list->range_measure; ?>
+                                                    </td>
+                                                    <td class="text-dark">
+                                                        <?= ($list->methode) ? (($list->methode == 'INS') ? 'Insitu' : 'Inlab') : ''; ?>
+                                                    </td>
+                                                    <td class="text-dark">
+                                                        <?= $list->publish_date; ?>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -112,7 +129,7 @@
 <script>
     function show(id) {
         $('#modelId').modal('show')
-        $('#data-file').load(siteurl + active_controller + 'show_materi/' + id)
+        $('#data-file').load(siteurl + active_controller + 'view_guides/' + id)
     }
 
     $(document).ready(function() {
@@ -127,7 +144,7 @@
             orderCellsTop: false,
             fixedHeader: true,
             scrollX: true,
-            ordering: false,
+            // ordering: false,
             info: false
         });
     })

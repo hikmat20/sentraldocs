@@ -68,7 +68,7 @@
                                             <?php if (isset($ArrDetail[$dtl->id])) foreach ($ArrDetail[$dtl->id] as $list) : ?>
                                                 <tr class="cursor-pointer" data-id="<?= $list->id; ?>">
                                                     <td class="text-center h6 p-1" width="50px"><i class="fa fa-folder fa-2x text-warning"></i></th>
-                                                    <td class="font-weight-bolder p-1 h4 text-dark"><a href="<?= base_url($this->uri->segement(1) . '/?f=' . $dtl->id); ?>"></a><?= $list->name; ?></th>
+                                                    <td class="font-weight-bolder p-1 h4 text-dark"><a href="<?= base_url($this->uri->segment(1) . '/' . $this->uri->segment(2) . '/?f=' . $list->id); ?>"><?= $list->name; ?></a></th>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>
@@ -104,11 +104,6 @@
 </div>
 
 <script>
-    function show(id) {
-        $('#modelId').modal('show')
-        $('#data-file').load(siteurl + active_controller + 'show/' + id)
-    }
-
     $(document).ready(function() {
         $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
             $.fn.dataTable.tables({
@@ -121,7 +116,7 @@
             orderCellsTop: false,
             fixedHeader: true,
             scrollX: true,
-            ordering: false,
+            // ordering: false,
             info: false
         });
     })
