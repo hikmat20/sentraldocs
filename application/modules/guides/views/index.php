@@ -148,8 +148,8 @@
 								<h3 class="fw-bold p-2"><i class="fa fa-list mr-2"></i><?= ($breadcumb) ? implode(" / ", $breadcumb) : ''; ?></h3>
 								<div class="tools p-2 w-50">
 									<div class="input-group">
-										<span class="input-group-text bg-transparent border-right-0 rounded-right-0" id="input1"><i class="fa fa-search"></i></span>
-										<input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="input1" />
+										<span class="input-group-text bg-transparent border-right-0 rounded-right-0"><i class="fa fa-search"></i></span>
+										<input type="text" id="search" class="form-control" placeholder="Search" aria-label="search" aria-describedby="input1" />
 									</div>
 								</div>
 							</div>
@@ -201,14 +201,21 @@
 										<table class="table py-0 table-sm table-hover datatable">
 											<thead>
 												<tr>
-													<th class="py-2">Name</th>
+													<th class="py-2">Nama</th>
+													<th class="py-2">Kelompok</th>
+													<th class="py-2">Metode</th>
+													<th class="py-2">Tgl. Terbit</th>
 													<th class="py-2 text-center" width="100">Action</th>
 												</tr>
 											</thead>
 											<tbody>
 												<?php if (isset($details_data)) : foreach ($details_data as $dtDtl) : ?>
+
 														<tr>
 															<td class="cursor-pointer"><i class="fa fa-file-alt mr-2 text-primary"></i><?= $dtDtl->guide_detail_data_name; ?></td>
+															<td class="cursor-pointer"><?= $dtDtl->group_name; ?></td>
+															<td class="cursor-pointer"><?php if ($dtDtl->methode) foreach (json_decode($dtDtl->methode) as $mth) echo '<span class="badge badge-success me-1">' . $methode[$mth] . '</span> '; ?></td>
+															<td class="cursor-pointer"><?= $dtDtl->publish_date; ?></td>
 															<td class="text-center">
 																<button type="button" class="btn btn-xs btn-icon btn-info view-file" data-guide_detail_id="<?= $sub; ?>" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-eye"></i></button>
 																<button type="button" class="btn btn-xs btn-icon btn-warning edit-file" data-guide_detail_id="<?= $sub; ?>" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-edit"></i></button>
@@ -266,7 +273,11 @@
 		</div>
 	</div>
 </div>
-
+<style>
+	div#DataTables_Table_0_filter {
+		display: none;
+	}
+</style>
 <script>
 	$(document).ready(function() {
 		$('a[data-toggle="pill"]').on('shown.bs.tab', function(e) {
@@ -284,8 +295,22 @@
 			}).columns.adjust();
 		});
 
-		$('.datatable').DataTable({
-			searching: false,
+		oTable = $('.datatable').DataTable({
+			dom: 'Pfrtip',
+			searchPanes: {
+				cascadePanes: true
+			},
+			language: {
+				searchPanes: {
+					i18n: {
+						emptyMessage: "<i></b>No results returned</b></i>"
+					}
+				},
+				infoEmpty: "No results returned",
+				zeroRecords: "No results returned",
+				emptyTable: "No results returned",
+			},
+			// searching: false,
 			lengthChange: false,
 			paging: false,
 			info: false,
@@ -295,7 +320,9 @@
 			scrollCollapse: true
 		})
 
-
+		$(document).on('input paste', '#search', function() {
+			oTable.search($(this).val()).draw();
+		})
 	})
 
 	/* DIRECTORY */
@@ -590,12 +617,12 @@
 	$(document).on('click', '.save-files', function() {
 		const name = $('#name').val()
 		const group_id = $('#group_id').val()
-		const range_measure = $('#range_measure').val()
+		const methode = $('#methode').val()
+		const reference = $('#reference').val()
+		const range_measure = $('input[name="range_measure[]"]');
 		const publish_date = $('#publish_date').val()
 		const revision_date = $('#revision_date').val()
 		const revision_number = $('#revision_number').val()
-		const methode = $('#methode').val()
-		const reference = $('#reference').val()
 		const document = $('#pdf-file').val()
 		const btn = $(this)
 
@@ -604,15 +631,25 @@
 			$('select#group_id').next().find('span.selection .select2-selection.select2-selection--single').addClass('is-invalid')
 			return false;
 		}
+
 		$('#name').removeClass('is-invalid')
+
 		if (!name) {
 			$('#name').addClass('is-invalid')
 			return false;
 		}
 
-		$('#range_maesure').removeClass('is-invalid')
-		if (!range_measure) {
-			$('#range_measure').addClass('is-invalid')
+		// $('#range_maesure').removeClass('is-invalid')
+		let c = 0;
+		range_measure.each(function() {
+			$(this).removeClass('is-invalid')
+			if ($(this).val().length == 0) {
+				$(this).addClass('is-invalid')
+				c++
+			}
+		})
+
+		if (c > 0) {
 			return false;
 		}
 
@@ -621,24 +658,16 @@
 			$('#publish_date').addClass('is-invalid')
 			return false;
 		}
-		$('#revision_date').removeClass('is-invalid')
-		if (!revision_date) {
-			$('#revision_date').addClass('is-invalid')
-			return false;
-		}
-		$('#revision_number').removeClass('is-invalid')
-		if (!revision_number) {
-			$('#revision_number').addClass('is-invalid')
-			return false;
-		}
-		$('select#methode').next().find('span.selection .select2-selection.select2-selection--single').removeClass('is-invalid')
+
+		$('select#methode').next().find('span.selection .select2-selection.select2-selection--multiple').removeClass('is-invalid')
 		if (!methode) {
-			$('select#methode').next().find('span.selection .select2-selection.select2-selection--single').addClass('is-invalid')
+			$('select#methode').next().find('span.selection .select2-selection.select2-selection--multiple').addClass('is-invalid')
 			return false;
 		}
-		$('select#reference').next().find('span.selection .select2-selection.select2-selection--single').removeClass('is-invalid')
+
+		$('select#reference').next().find('span.selection .select2-selection.select2-selection--multiple').removeClass('is-invalid')
 		if (!reference) {
-			$('select#reference').next().find('span.selection .select2-selection.select2-selection--single').addClass('is-invalid')
+			$('select#reference').next().find('span.selection .select2-selection.select2-selection--multiple').addClass('is-invalid')
 			return false;
 		}
 
@@ -647,6 +676,7 @@
 			Swal.fire('Warning!', "File or Document can't be empty. Please upload document first.", 'warning', 3000)
 			return false;
 		}
+
 		// $('#name-file').removeClass('is-invalid')
 
 
@@ -684,7 +714,7 @@
 	$(document).on('click', '.update-files', function() {
 		const name = $('#name').val()
 		const group_id = $('#group_id').val()
-		const range_measure = $('#range_measure').val()
+		const range_measure = $('input[name="range_measure[]"]')
 		const publish_date = $('#publish_date').val()
 		const revision_date = $('#revision_date').val()
 		const revision_number = $('#revision_number').val()
@@ -704,27 +734,38 @@
 			return false;
 		}
 
-		$('#range_measure').removeClass('is-invalid')
-		if (!range_measure) {
-			$('#range_measure').addClass('is-invalid')
+		// $('#range_measure').removeClass('is-invalid')
+		// if (!range_measure) {
+		// 	$('#range_measure').addClass('is-invalid')
+		// 	return false;
+		// }
+
+
+		let c = 0;
+		range_measure.each(function() {
+			$(this).removeClass('is-invalid')
+			if ($(this).val().length == 0) {
+				$(this).addClass('is-invalid')
+				c++
+			}
+		})
+
+		if (c > 0) {
 			return false;
 		}
 
-		$('#publish_date').removeClass('is-invalid')
-		if (!publish_date) {
-			$('#publish_date').addClass('is-invalid')
-			return false;
-		}
-		$('#revision_date').removeClass('is-invalid')
-		if (!revision_date) {
-			$('#revision_date').addClass('is-invalid')
-			return false;
-		}
-		$('#revision_number').removeClass('is-invalid')
-		if (!revision_number) {
-			$('#revision_number').addClass('is-invalid')
-			return false;
-		}
+
+		// $('#revision_date').removeClass('is-invalid')
+		// if (!revision_date) {
+		// 	$('#revision_date').addClass('is-invalid')
+		// 	return false;
+		// }
+		// $('#revision_number').removeClass('is-invalid')
+		// if (!revision_number) {
+		// 	$('#revision_number').addClass('is-invalid')
+		// 	return false;
+		// }
+
 		$('select#methode').next().find('span.selection .select2-selection.select2-selection--single').removeClass('is-invalid')
 		if (!methode) {
 			$('select#methode').next().find('span.selection .select2-selection.select2-selection--single').addClass('is-invalid')
@@ -736,8 +777,13 @@
 			return false;
 		}
 
-		const remove_document = $('#remove-document').val()
+		$('#publish_date').removeClass('is-invalid')
+		if (!publish_date) {
+			$('#publish_date').addClass('is-invalid')
+			return false;
+		}
 
+		const remove_document = $('#remove-document').val()
 		if (!document && (remove_document == 'x')) {
 			$('#pdf-file').addClass('is-invalid')
 			Swal.fire('Warning!', "File or Document can't be empty. Please upload document first.", 'warning', 3000)
@@ -877,7 +923,6 @@
 		});
 	}
 
-
 	$(document).on('click', '.change-image', function() {
 		$('#pdf-file').click()
 	})
@@ -974,6 +1019,22 @@
 
 	$(document).on('change', '#video-file', function() {
 		let file = $(this)[0].files[0];
+
+		// allowed MIME types
+		var mime_types = ['video/mp4'];
+
+		// Validate whether PDF
+		if (mime_types.indexOf(file.type) == -1) {
+			Swal.fire('Warning', 'Error : Incorrect file type', 'warning', 3000)
+			return;
+		}
+
+		// validate file size
+		if (file.size > 50 * 1024 * 1024) {
+			Swal.fire('Warning', 'Error : Exceeded size 50MB', 'warning', 3000)
+			return;
+		}
+
 		let blobURL = URL.createObjectURL(file);
 		console.log(blobURL);
 		$("#video-preview").attr('src', blobURL).removeClass('d-none');
@@ -992,6 +1053,22 @@
 		$("#video-file").val('');
 	}
 
+	/* MUlTI */
+
+	$(document).on('click', '#add-range', function() {
+		const element = `
+		<div class="input-group mb-2">
+			<input type="text" name="range_measure[]" id="range_measure" placeholder="0mm - 0mm" class="form-control">
+			<span class="input-group-append">
+				<button type="button" class="btn btn-sm btn-light-danger remove-range-list"><i class="fa fa-times fa-sm"></i></button>
+			</span>
+		</div>`;
+		$('.list-range').append(element);
+	})
+
+	$(document).on('click', '.remove-range-list', function() {
+		$(this).parents('div.input-group').remove();
+	})
 
 
 	$(function() {

@@ -3,13 +3,13 @@
 	<div class="row">
 		<div class="col-md-6">
 			<div class="row mb-3">
-				<label class="col-4 col-form-label">Nomor</label>
+				<label class="col-4 col-form-label">Nomor <span>*</span></label>
 				<div class="col-8">
 					<input type="text" name="number" id="number" readonly placeholder="Automate" class="form-control form-control-solid">
 				</div>
 			</div>
 			<div class="row mb-3">
-				<label class="col-4 col-form-label">Kelompok</label>
+				<label class="col-4 col-form-label">Kelompok <span class="text-danger">*</span></label>
 				<div class="col-8">
 					<select name="group_id" id="group_id" class="form-control select2">
 						<option value=""></option>
@@ -20,19 +20,45 @@
 				</div>
 			</div>
 			<div class="row mb-3">
-				<label class="col-4 col-form-label">Jenis Alat</label>
+				<label class="col-4 col-form-label">Jenis Alat <span class="text-danger">*</span></label>
 				<div class="col-8">
 					<input type="text" name="name" id="name" placeholder="Jenis Alat" class="form-control">
 				</div>
 			</div>
 			<div class="row mb-3">
-				<label class="col-4 col-form-label">Rentang Ungkur</label>
+				<label class="col-4 col-form-label">Metode <span class="text-danger">*</span></label>
 				<div class="col-8">
-					<input type="text" name="range_measure" id="range_measure" placeholder="0mm - 0mm" class="form-control">
+					<select name="methode[]" id="methode" data-allow-clear="true" multiple="multiple" class="form-select select2">
+						<option value="INS">Insitu</option>
+						<option value="LAB">Inlab</option>
+					</select>
 				</div>
 			</div>
 			<div class="row mb-3">
-				<label class="col-4 col-form-label">Tanggal Terbit</label>
+				<label class="col-4 col-form-label">Reference <span class="text-danger">*</span></label>
+				<div class="col-8">
+					<select name="reference[]" id="reference" data-allow-clear="true" multiple="multiple" class="form-select select2">
+						<option value=""></option>
+						<?php if ($references) foreach ($references as $ref) : ?>
+							<option value="<?= $ref->id; ?>"><?= $ref->name; ?></option>
+						<?php endforeach; ?>
+					</select>
+				</div>
+			</div>
+			<div class="row mb-3">
+				<label class="col-4 col-form-label">Rentang Ungkur <span class="text-danger">*</span></label>
+				<div class="col-8">
+					<div class="list-range mb-2">
+						<input type="text" name="range_measure[]" id="range_measure" placeholder="0mm - 0mm" class="form-control mb-2">
+					</div>
+					<button type="button" id="add-range" class="btn btn-success btn-sm"><i class="fa fa-plus fa-sm"></i> Add Range</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-6">
+
+			<div class="row mb-3">
+				<label class="col-4 col-form-label">Tanggal Terbit <span class="text-danger">*</span></label>
 				<div class="col-8">
 					<input type="date" name="publish_date" id="publish_date" placeholder="nate" class="form-control">
 				</div>
@@ -49,31 +75,8 @@
 					<input type="text" name="revision_number" id="revision_number" placeholder="Nomor" class="form-control">
 				</div>
 			</div>
-		</div>
-		<div class="col-6">
 			<div class="row mb-3">
-				<label class="col-4 col-form-label">Metode</label>
-				<div class="col-8">
-					<select name="methode" id="methode" class="form-control select2">
-						<option value=""></option>
-						<option value="INS">Insitu</option>
-						<option value="LAB">Inlab</option>
-					</select>
-				</div>
-			</div>
-			<div class="row mb-3">
-				<label class="col-4 col-form-label">Reference</label>
-				<div class="col-8">
-					<select name="reference" id="reference" class="form-control select2">
-						<option value=""></option>
-						<?php if ($references) foreach ($references as $ref) : ?>
-							<option value="<?= $ref->id; ?>"><?= $ref->name; ?></option>
-						<?php endforeach; ?>
-					</select>
-				</div>
-			</div>
-			<div class="row mb-3">
-				<label class="col-4 col-form-label"> Upload Document</label>
+				<label class="col-4 col-form-label">Upload Document <span class="text-danger">*</span></label>
 				<div class="col-8">
 					<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
 						<div class="dropzone-desc">
@@ -94,7 +97,7 @@
 			<div class="row mb-3">
 				<label class="col-4 col-form-label"> Upload Video</label>
 				<div class="col-8 px-0">
-					<button type="button" id="upload-video" class="btn btn-sm mb-3 btn-info d-block">Upload Video</button>
+					<button type="button" id="upload-video" class="btn btn-sm mb-3 btn-danger d-block"><i class="fa fa-video"></i>Upload Video</button>
 					<input type="file" id="video-file" name="video" accept="video/mp4" class="d-none" />
 					<video id="video-preview" width="290" height="180" class="d-none">
 						Your browser does not support the video tag.
@@ -112,6 +115,8 @@
 <script>
 	$('.select2').select2({
 		width: '100%',
-		placeholder: 'Choose an options'
+		placeholder: 'Choose an options',
+		allowClear: true,
+		closeOnSelect: false
 	})
 </script>
