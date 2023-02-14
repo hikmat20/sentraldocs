@@ -25,7 +25,7 @@ class Guides extends Admin_Controller
 		$ArrDetail 				= '';
 		$selected 				= $details = $breadcumb = $sub = $methode = '';
 		$details_data 			= 0;
-		$dirs 	  				= $this->db->get_where('guides', ['status' => '1'])->result();
+		$dirs 	  				= $this->db->get_where('guides', ['status' => '1', 'company_id' => $this->company])->result();
 
 		if (isset($_GET['d']) && ($_GET['d'])) {
 			$selected 			= $_GET['d'];
