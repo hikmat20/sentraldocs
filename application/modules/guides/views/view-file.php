@@ -25,7 +25,7 @@
 				<tr>
 					<td>Referensi</td>
 					<td>:</td>
-					<td><?php if ($data->reference) foreach (json_decode($data->reference) as $ref) echo "<span class='badge badge-light'>$ArrStd[$ref]</span> "; ?></td>
+					<td><?php if ($data->reference) foreach (json_decode($data->reference) as $ref) echo "<span class='badge badge-light'>" . (isset($ArrStd[$ref])) ? $ArrStd[$ref] : '' . "</span> "; ?></td>
 				</tr>
 				<tr>
 					<td>Rentang Ukur</td>

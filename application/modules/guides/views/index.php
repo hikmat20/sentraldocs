@@ -154,81 +154,79 @@
 								</div>
 							</div>
 						</div>
-						<div id="data-file">
-							<div class="card-body border border-1 border-left py-2 px-1 h-550px">
-								<?php if (!isset($details) || !$details) : ?>
+						<div class="card-body border border-1 border-left overflow-auto py-2 px-1 h-550px">
+							<?php if (!isset($details) || !$details) : ?>
+								<div class="px-3">
+									<button type="button" class="btn mb-2 btn-sm btn-light-success add-sub-directory" data-id="<?= $selected; ?>" title="New Sub Directory"><i class="fa fa-plus"></i> New Sub Directory</button>
+								</div>
+								<div class="d-flex justify-content-center align-items-center py-10">
+									<img src="<?= base_url('assets\images\dashboard\folder-file.gif'); ?>" alt="" width="300px" class="img-responsive text-center opacity-30">
+								</div>
+							<?php else : ?>
+								<?php if ($details && $details_data == 0) : ?>
 									<div class="px-3">
 										<button type="button" class="btn mb-2 btn-sm btn-light-success add-sub-directory" data-id="<?= $selected; ?>" title="New Sub Directory"><i class="fa fa-plus"></i> New Sub Directory</button>
 									</div>
-									<div class="d-flex justify-content-center align-items-center py-10">
-										<img src="<?= base_url('assets\images\dashboard\folder-file.gif'); ?>" alt="" width="300px" class="img-responsive text-center opacity-30">
-									</div>
-								<?php else : ?>
-									<?php if ($details && $details_data == 0) : ?>
-										<div class="px-3">
-											<button type="button" class="btn mb-2 btn-sm btn-light-success add-sub-directory" data-id="<?= $selected; ?>" title="New Sub Directory"><i class="fa fa-plus"></i> New Sub Directory</button>
-										</div>
-										<table class="table table-hover datatable" style="margin:0px 0px !important;">
-											<thead>
-												<tr class="table-light">
-													<th class="py-2">Name</th>
-													<th width="150">Last update</th>
-													<th class="py-2 text-center" width="100">Opsi</th>
+									<table class="table table-hover datatable" style="margin:0px 0px !important;">
+										<thead>
+											<tr class="table-light">
+												<th class="py-2">Name</th>
+												<th width="150">Last update</th>
+												<th class="py-2 text-center" width="100">Opsi</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php if (isset($details)) foreach ($details as $dtl) : ?>
+												<tr>
+													<!-- <td><?= $dtl->id; ?></td> -->
+													<td class="py-3"><a href="?d=<?= $dtl->guide_id . "&sub=" . $dtl->id ?>" class="text-dark h4 text-hover-primary"><i class="fa fa-folder text-success mr-2"></i><?= $dtl->guide_detail_name; ?></a></td>
+													<td class="py-3"><?= ($dtl->modified_at) ?: $dtl->created_at; ?></td>
+													<td class="py-3 text-center">
+														<button type="button" class="btn btn-icon btn-xs btn-info info-sub-folder" data-id="<?= $dtl->id; ?>"><i class="fas fa-question-circle"></i></button>
+														<button type="button" class="btn btn-icon btn-xs btn-warning edit-sub-folder" data-id="<?= $dtl->id; ?>"><i class="fa fa-pencil-alt"></i></button>
+														<button type="button" class="btn btn-icon btn-xs btn-danger delete-sub-folder" data-id="<?= $dtl->id; ?>"><i class="fa fa-trash-alt"></i></button>
+													</td>
 												</tr>
-											</thead>
-											<tbody>
-												<?php if (isset($details)) foreach ($details as $dtl) : ?>
+											<?php endforeach; ?>
+										</tbody>
+									</table>
+								<?php else : ?>
+									<div class="d-flex justify-content-between align-items-center">
+										<div class="tools pr-3">
+											<button type="button" class="btn btn-outline-primary btn-sm upload-file" data-guide_detail_id="<?= $sub; ?>" data-cat="MAT" title="Upload New File"><i class="fa fa-upload"></i> Upload File</button>
+										</div>
+									</div>
+									<hr class="my-1">
+									<table class="table py-0 table-sm table-hover datatable">
+										<thead>
+											<tr>
+												<th class="py-2">Nama</th>
+												<th class="py-2">Kelompok</th>
+												<th class="py-2">Metode</th>
+												<th class="py-2">Tgl. Terbit</th>
+												<th class="py-2 text-center" width="100">Action</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php if (isset($details_data)) : foreach ($details_data as $dtDtl) : ?>
+
 													<tr>
-														<!-- <td><?= $dtl->id; ?></td> -->
-														<td class="py-3"><a href="?d=<?= $dtl->guide_id . "&sub=" . $dtl->id ?>" class="text-dark h4 text-hover-primary"><i class="fa fa-folder text-success mr-2"></i><?= $dtl->guide_detail_name; ?></a></td>
-														<td class="py-3"><?= ($dtl->modified_at) ?: $dtl->created_at; ?></td>
-														<td class="py-3 text-center">
-															<button type="button" class="btn btn-icon btn-xs btn-info info-sub-folder" data-id="<?= $dtl->id; ?>"><i class="fas fa-question-circle"></i></button>
-															<button type="button" class="btn btn-icon btn-xs btn-warning edit-sub-folder" data-id="<?= $dtl->id; ?>"><i class="fa fa-pencil-alt"></i></button>
-															<button type="button" class="btn btn-icon btn-xs btn-danger delete-sub-folder" data-id="<?= $dtl->id; ?>"><i class="fa fa-trash-alt"></i></button>
+														<td class="cursor-pointer"><i class="fa fa-file-alt mr-2 text-primary"></i><?= $dtDtl->guide_detail_data_name; ?></td>
+														<td class="cursor-pointer"><?= $dtDtl->group_name; ?></td>
+														<td class="cursor-pointer"><?php if ($dtDtl->methode) foreach (json_decode($dtDtl->methode) as $mth) echo '<span class="badge badge-success me-1">' . $methode[$mth] . '</span> '; ?></td>
+														<td class="cursor-pointer"><?= $dtDtl->publish_date; ?></td>
+														<td class="text-center">
+															<button type="button" class="btn btn-xs btn-icon btn-info view-file" data-guide_detail_id="<?= $sub; ?>" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-eye"></i></button>
+															<button type="button" class="btn btn-xs btn-icon btn-warning edit-file" data-guide_detail_id="<?= $sub; ?>" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-edit"></i></button>
+															<button type="button" class="btn btn-xs btn-icon btn-danger delete-file" data-guide_detail_id="<?= $sub; ?>" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-trash-alt"></i></button>
 														</td>
 													</tr>
-												<?php endforeach; ?>
-											</tbody>
-										</table>
-									<?php else : ?>
-										<div class="d-flex justify-content-between align-items-center">
-											<div class="tools pr-3">
-												<button type="button" class="btn btn-outline-primary btn-sm upload-file" data-guide_detail_id="<?= $sub; ?>" data-cat="MAT" title="Upload New File"><i class="fa fa-upload"></i> Upload File</button>
-											</div>
-										</div>
-										<hr class="my-1">
-										<table class="table py-0 table-sm table-hover datatable">
-											<thead>
-												<tr>
-													<th class="py-2">Nama</th>
-													<th class="py-2">Kelompok</th>
-													<th class="py-2">Metode</th>
-													<th class="py-2">Tgl. Terbit</th>
-													<th class="py-2 text-center" width="100">Action</th>
-												</tr>
-											</thead>
-											<tbody>
-												<?php if (isset($details_data)) : foreach ($details_data as $dtDtl) : ?>
-
-														<tr>
-															<td class="cursor-pointer"><i class="fa fa-file-alt mr-2 text-primary"></i><?= $dtDtl->guide_detail_data_name; ?></td>
-															<td class="cursor-pointer"><?= $dtDtl->group_name; ?></td>
-															<td class="cursor-pointer"><?php if ($dtDtl->methode) foreach (json_decode($dtDtl->methode) as $mth) echo '<span class="badge badge-success me-1">' . $methode[$mth] . '</span> '; ?></td>
-															<td class="cursor-pointer"><?= $dtDtl->publish_date; ?></td>
-															<td class="text-center">
-																<button type="button" class="btn btn-xs btn-icon btn-info view-file" data-guide_detail_id="<?= $sub; ?>" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-eye"></i></button>
-																<button type="button" class="btn btn-xs btn-icon btn-warning edit-file" data-guide_detail_id="<?= $sub; ?>" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-edit"></i></button>
-																<button type="button" class="btn btn-xs btn-icon btn-danger delete-file" data-guide_detail_id="<?= $sub; ?>" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-trash-alt"></i></button>
-															</td>
-														</tr>
-												<?php endforeach;
-												endif; ?>
-											</tbody>
-										</table>
-									<?php endif; ?>
+											<?php endforeach;
+											endif; ?>
+										</tbody>
+									</table>
 								<?php endif; ?>
-							</div>
+							<?php endif; ?>
 						</div>
 					</div>
 				</div>
@@ -286,11 +284,11 @@
 				api: true,
 				searching: false,
 				lengthChange: false,
-				paging: false,
+				paging: true,
 				info: false,
 				stateSave: true,
 				fixedHeader: true,
-				pageLength: 50,
+				pageLength: 10,
 				scrollCollapse: true
 			}).columns.adjust();
 		});
@@ -310,14 +308,12 @@
 				zeroRecords: "No results returned",
 				emptyTable: "No results returned",
 			},
-			// searching: false,
-			lengthChange: false,
-			paging: false,
+			lengthChange: true,
+			paging: true,
 			info: false,
-			stateSave: true,
-			fixedHeader: true,
-			pageLength: 50,
-			scrollCollapse: true
+			stateSave: false,
+			pageLength: 20,
+			// scrollCollapse: true
 		})
 
 		$(document).on('input paste', '#search', function() {
