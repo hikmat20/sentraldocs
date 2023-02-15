@@ -363,9 +363,9 @@ class Documents_list extends Admin_Controller
 		if ($this->input->get('f')) {
 			$f 				= $this->input->get('f');
 			// $sub 			= $this->input->get('sub');
-			$guide_details 		= $this->db->get_where('guide_details', ['id' => $f])->result();
-
-			$dtlData 	= $this->db->get_where('view_guides_detail_data', ['guide_detail_id' => $f])->result();
+			$guide_details 		= $this->db->get_where('guide_details', ['id' => $f, 'company_id' => $this->company])->result();
+			$methode 		= ['INS' => 'Insitu', 'LAB' => 'Inlab'];
+			$dtlData 	= $this->db->get_where('view_guides_detail_data', ['guide_detail_id' => $f, 'company_id' => $this->company])->result();
 
 			$ArrDtlData = [];
 			foreach ($dtlData as $dtl) {
@@ -375,6 +375,7 @@ class Documents_list extends Admin_Controller
 			$this->template->set([
 				'guide_details' => $guide_details,
 				'ArrDtlData' 	=> $ArrDtlData,
+				'methode' 	=> $methode,
 			]);
 
 			$this->template->render('guides/list');
@@ -401,13 +402,27 @@ class Documents_list extends Admin_Controller
 	{
 		$data 			= $this->db->get_where('view_guides_detail_data', ['id' => $id])->row();
 		$file 			= './directory/MASTER_GUIDES/' . $data->company_id . '/' . $data->document;
+		$methode 		= ['INS' => 'Insitu', 'LAB' => 'Inlab'];
 
 		$this->template->set([
 			'data' 		=> $data,
-			'file'		=> $file
+			'file'		=> $file,
+			'methode'		=> $methode
 		]);
 
 		$this->template->render('guides/view_guides');
+	}
+
+	public function view_video($id = null)
+	{
+		$data 			= $this->db->get_where('view_guides_detail_data', ['id' => $id])->row();
+		$video 			= 'directory/MASTER_GUIDES/video/' . $data->company_id . '/' . $data->video;
+
+		$this->template->set([
+			'video'		=> $video,
+		]);
+
+		$this->template->render('guides/view_video');
 	}
 
 	public function show_file_guides($id = null)

@@ -52,13 +52,16 @@ class Tool_scopes extends Admin_Controller
             if (isset($data['id']) && $data['id']) {
                 $data['modified_at'] = date('Y-m-d H:i:s');
                 $data['modified_by'] = $this->auth->user_id();
+                $data['code']        = strtoupper($data['code']);
                 $this->db->update('tool_scopes', $data, ['id' => $data['id']]);
             } else {
                 $data['id'] = $this->_getId();
                 $data['created_at'] = date('Y-m-d H:i:s');
                 $data['created_by'] = $this->auth->user_id();
+                $data['code']       = strtoupper($data['code']);
                 $this->db->insert('tool_scopes', $data);
             }
+
             if ($this->db->trans_status() === FALSE) {
                 $this->db->trans_rollback();
                 $return        = array(

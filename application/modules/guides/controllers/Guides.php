@@ -23,9 +23,9 @@ class Guides extends Admin_Controller
 		}
 
 		$ArrDetail 				= '';
-		$selected 				= $details = $breadcumb = $sub = '';
+		$selected 				= $details = $breadcumb = $sub = $methode = '';
 		$details_data 			= 0;
-		$dirs 	  				= $this->db->get_where('guides', ['status' => '1'])->result();
+		$dirs 	  				= $this->db->get_where('guides', ['status' => '1', 'company_id' => $this->company])->result();
 
 		if (isset($_GET['d']) && ($_GET['d'])) {
 			$selected 			= $_GET['d'];
@@ -40,6 +40,7 @@ class Guides extends Admin_Controller
 			$details 	  		= $this->db->get_where('view_guides_details', ['id' => $sub, 'status' => '1'])->row();
 			$details_data 	  	= $this->db->get_where('view_guides_detail_data', ['guide_detail_id' => $sub, 'status' => '1'])->result();
 			$breadcumb 			= ($details) ? ["<a href='" . base_url($this->uri->segment(1) . '/?d=' . $selected) . "'>$details->guide_name</a>", $details->guide_detail_name] : '';
+			$methode 			= ['INS' => 'Insitu', 'LAB' => 'Inlab'];
 		}
 
 		$this->template->set([
@@ -49,6 +50,7 @@ class Guides extends Admin_Controller
 			'details_data'  	=> $details_data,
 			'breadcumb'  		=> $breadcumb,
 			'sub'  				=> $sub,
+			'methode'  			=> $methode,
 		]);
 
 		$this->template->render('index');
@@ -314,7 +316,9 @@ class Guides extends Admin_Controller
 				$id							= isset($data['id']) ? $data['id'] : '';
 				$data['company_id']			= $this->company;
 				$old_file 					= isset($data['old_file']) ? $data['old_file'] : null;
+				$old_video 					= isset($data['old_video']) ? $data['old_video'] : null;
 				unset($data['old_file']);
+				unset($data['old_video']);
 
 				if (!$data['number']) {
 					$data['number'] = $this->getNumber($data['group_id']);
@@ -390,6 +394,11 @@ class Guides extends Admin_Controller
 				$this->db->trans_begin();
 				$check = $this->db->get_where('guide_detail_data', ['id' => $id])->num_rows();
 
+
+				$data['range_measure']	= json_encode($data['range_measure']);
+				$data['methode']		= json_encode($data['methode']);
+				$data['reference']		= json_encode($data['reference']);
+
 				if (intval($check) == '0') {
 					$data['created_by']		= $this->auth->user_id();
 					$data['created_at']		= date('Y-m-d H:i:s');
@@ -403,12 +412,15 @@ class Guides extends Admin_Controller
 						}
 						$data['document']			= null;
 					}
+
 					if (isset($data['remove-video']) && $data['remove-video'] == 'x' && !$_FILES['video']['name']) {
 						if (file_exists("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP . $old_file)) {
 							unlink("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP . $old_file);
 						}
 						$data['video']			= null;
 					}
+
+					unset($data['remove-document']);
 					unset($data['remove-video']);
 					$this->db->update('guide_detail_data', $data, ['id' => $id]);
 				}
@@ -471,7 +483,8 @@ class Guides extends Admin_Controller
 	{
 		$data = [];
 		if ($id) {
-			$data = $this->db->get_where('guide_detail_data', ['id' => $id])->row();
+			$data = $this->db->get_where('view_guides_detail_data', ['id' => $id])->row();
+
 			$return = [
 				'status' => 1,
 				'data' => $data
@@ -488,12 +501,22 @@ class Guides extends Admin_Controller
 
 	public function view_file($id)
 	{
-		$file 			= $this->db->get_where('guide_detail_data', ['id' => $id])->row();
-		$this->template->set(
-			[
-				'file' => $file,
-			]
-		);
+		$data 			= $this->db->get_where('view_guides_detail_data', ['id' => $id])->row();
+		$file 			= './directory/MASTER_GUIDES/' . $data->company_id . '/' . $data->document;
+		$methode 		= ['INS' => 'Insitu', 'LAB' => 'Inlab'];
+		$standards 		= $this->db->get_where('standards', ['status' => 'PUB'])->result();
+		$ArrStd 		= [];
+		foreach ($standards as $std) {
+			$ArrStd[$std->id] = $std->name;
+		}
+
+		// $file 			= $this->db->get_where('guide_detail_data', ['id' => $id])->row();
+		$this->template->set([
+			'data' 		=> $data,
+			'file'		=> $file,
+			'ArrStd'	=> $ArrStd,
+			'methode'	=> $methode,
+		]);
 
 		$this->template->render('view-file');
 	}

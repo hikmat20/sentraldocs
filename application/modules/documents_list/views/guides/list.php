@@ -12,10 +12,6 @@
                 </a>
                 <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                     <li class="breadcrumb-item text-muted">
-                        <a href="<?= base_url('dashboard'); ?>" class="text-muted">Dashboard</a>
-                    </li>
-
-                    <li class="breadcrumb-item text-muted">
                         <a href="<?= base_url('list/guides'); ?>" class="text-muted">MASTER IK</a>
                     </li>
                     <li class="breadcrumb-item text-muted">
@@ -69,28 +65,33 @@
                                                 <th>Rentang Ukur</th>
                                                 <th>Metode</th>
                                                 <th>Terbit</th>
+                                                <th>Opsi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php if (isset($ArrDtlData[$dtl->id])) foreach ($ArrDtlData[$dtl->id] as $list) : ?>
-                                                <tr class="cursor-pointer" data-id="<?= $list->id; ?>">
-                                                    <td class="text-center h6 p-1" width="50px">
+                                                <tr>
+                                                    <td style="vertical-align: top;" class="text-center h6 p-1" width="50px">
                                                         <i class="fa fa-file-alt fa-2x text-success"></i>
                                                     </td>
-                                                    <td class="font-weight-bold p-1 h6">
-                                                        <a href="#" onclick="show(<?= $list->id; ?>)"><?= $list->guide_detail_data_name; ?></a>
+                                                    <td style="vertical-align: top;" class="font-weight-bold pl-0 h6">
+                                                        <a href="#"><?= $list->guide_detail_data_name; ?></a>
                                                     </td>
-                                                    <td class="text-dark">
+                                                    <td style="vertical-align: top;" class="text-dark">
                                                         <?= $list->group_name; ?>
                                                     </td>
-                                                    <td class="text-dark">
-                                                        <?= $list->range_measure; ?>
+                                                    <td style="vertical-align: top;" class="text-dark">
+                                                        <?php if ($list->range_measure) foreach (json_decode($list->range_measure) as $rm) echo "<p class='mb-2'>$rm</p>"; ?>
                                                     </td>
-                                                    <td class="text-dark">
-                                                        <?= ($list->methode) ? (($list->methode == 'INS') ? 'Insitu' : 'Inlab') : ''; ?>
+                                                    <td style="vertical-align: top;" class="text-dark">
+                                                        <?php if ($list->methode) foreach (json_decode($list->methode) as $mth) echo "<span class='badge badge-success'>$methode[$mth]</span> "; ?>
                                                     </td>
-                                                    <td class="text-dark">
+                                                    <td style="vertical-align: top;" class="text-dark">
                                                         <?= $list->publish_date; ?>
+                                                    </td>
+                                                    <td style="vertical-align: top;" class="text-center">
+                                                        <button data-id="<?= $list->id; ?>" type="button" onclick="show(<?= $list->id; ?>)" class="btn btn-sm btn-icon btn-primary view-file"><i class="fa fa-file-alt"></i></button>
+                                                        <button data-id="<?= $list->id; ?>" type="button" onclick="show_video(<?= $list->id; ?>)" class="btn btn-sm btn-icon btn-danger view-file"><i class="fa fa-video"></i></button>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -130,6 +131,11 @@
     function show(id) {
         $('#modelId').modal('show')
         $('#data-file').load(siteurl + active_controller + 'view_guides/' + id)
+    }
+
+    function show_video(id) {
+        $('#modelId').modal('show')
+        $('#data-file').load(siteurl + active_controller + 'view_video/' + id)
     }
 
     $(document).ready(function() {

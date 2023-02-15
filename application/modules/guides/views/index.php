@@ -148,80 +148,85 @@
 								<h3 class="fw-bold p-2"><i class="fa fa-list mr-2"></i><?= ($breadcumb) ? implode(" / ", $breadcumb) : ''; ?></h3>
 								<div class="tools p-2 w-50">
 									<div class="input-group">
-										<span class="input-group-text bg-transparent border-right-0 rounded-right-0" id="input1"><i class="fa fa-search"></i></span>
-										<input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="input1" />
+										<span class="input-group-text bg-transparent border-right-0 rounded-right-0"><i class="fa fa-search"></i></span>
+										<input type="text" id="search" class="form-control" placeholder="Search" aria-label="search" aria-describedby="input1" />
 									</div>
 								</div>
 							</div>
 						</div>
-						<div id="data-file">
-							<div class="card-body border border-1 border-left py-2 px-1 h-550px">
-								<?php if (!isset($details) || !$details) : ?>
+						<div class="card-body border border-1 border-left overflow-auto py-2 px-1 h-550px">
+							<?php if (!isset($details) || !$details) : ?>
+								<div class="px-3">
+									<button type="button" class="btn mb-2 btn-sm btn-light-success add-sub-directory" data-id="<?= $selected; ?>" title="New Sub Directory"><i class="fa fa-plus"></i> New Sub Directory</button>
+								</div>
+								<div class="d-flex justify-content-center align-items-center py-10">
+									<img src="<?= base_url('assets\images\dashboard\folder-file.gif'); ?>" alt="" width="300px" class="img-responsive text-center opacity-30">
+								</div>
+							<?php else : ?>
+								<?php if ($details && $details_data == 0) : ?>
 									<div class="px-3">
 										<button type="button" class="btn mb-2 btn-sm btn-light-success add-sub-directory" data-id="<?= $selected; ?>" title="New Sub Directory"><i class="fa fa-plus"></i> New Sub Directory</button>
 									</div>
-									<div class="d-flex justify-content-center align-items-center py-10">
-										<img src="<?= base_url('assets\images\dashboard\folder-file.gif'); ?>" alt="" width="300px" class="img-responsive text-center opacity-30">
-									</div>
-								<?php else : ?>
-									<?php if ($details && $details_data == 0) : ?>
-										<div class="px-3">
-											<button type="button" class="btn mb-2 btn-sm btn-light-success add-sub-directory" data-id="<?= $selected; ?>" title="New Sub Directory"><i class="fa fa-plus"></i> New Sub Directory</button>
-										</div>
-										<table class="table table-hover datatable" style="margin:0px 0px !important;">
-											<thead>
-												<tr class="table-light">
-													<th class="py-2">Name</th>
-													<th width="150">Last update</th>
-													<th class="py-2 text-center" width="100">Opsi</th>
+									<table class="table table-hover datatable" style="margin:0px 0px !important;">
+										<thead>
+											<tr class="table-light">
+												<th class="py-2">Name</th>
+												<th width="150">Last update</th>
+												<th class="py-2 text-center" width="100">Opsi</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php if (isset($details)) foreach ($details as $dtl) : ?>
+												<tr>
+													<!-- <td><?= $dtl->id; ?></td> -->
+													<td class="py-3"><a href="?d=<?= $dtl->guide_id . "&sub=" . $dtl->id ?>" class="text-dark h4 text-hover-primary"><i class="fa fa-folder text-success mr-2"></i><?= $dtl->guide_detail_name; ?></a></td>
+													<td class="py-3"><?= ($dtl->modified_at) ?: $dtl->created_at; ?></td>
+													<td class="py-3 text-center">
+														<button type="button" class="btn btn-icon btn-xs btn-info info-sub-folder" data-id="<?= $dtl->id; ?>"><i class="fas fa-question-circle"></i></button>
+														<button type="button" class="btn btn-icon btn-xs btn-warning edit-sub-folder" data-id="<?= $dtl->id; ?>"><i class="fa fa-pencil-alt"></i></button>
+														<button type="button" class="btn btn-icon btn-xs btn-danger delete-sub-folder" data-id="<?= $dtl->id; ?>"><i class="fa fa-trash-alt"></i></button>
+													</td>
 												</tr>
-											</thead>
-											<tbody>
-												<?php if (isset($details)) foreach ($details as $dtl) : ?>
+											<?php endforeach; ?>
+										</tbody>
+									</table>
+								<?php else : ?>
+									<div class="d-flex justify-content-between align-items-center">
+										<div class="tools pr-3">
+											<button type="button" class="btn btn-outline-primary btn-sm upload-file" data-guide_detail_id="<?= $sub; ?>" data-cat="MAT" title="Upload New File"><i class="fa fa-upload"></i> Upload File</button>
+										</div>
+									</div>
+									<hr class="my-1">
+									<table class="table py-0 table-sm table-hover datatable">
+										<thead>
+											<tr>
+												<th class="py-2">Nama</th>
+												<th class="py-2">Kelompok</th>
+												<th class="py-2">Metode</th>
+												<th class="py-2">Tgl. Terbit</th>
+												<th class="py-2 text-center" width="100">Action</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php if (isset($details_data)) : foreach ($details_data as $dtDtl) : ?>
+
 													<tr>
-														<!-- <td><?= $dtl->id; ?></td> -->
-														<td class="py-3"><a href="?d=<?= $dtl->guide_id . "&sub=" . $dtl->id ?>" class="text-dark h4 text-hover-primary"><i class="fa fa-folder text-success mr-2"></i><?= $dtl->guide_detail_name; ?></a></td>
-														<td class="py-3"><?= ($dtl->modified_at) ?: $dtl->created_at; ?></td>
-														<td class="py-3 text-center">
-															<button type="button" class="btn btn-icon btn-xs btn-info info-sub-folder" data-id="<?= $dtl->id; ?>"><i class="fas fa-question-circle"></i></button>
-															<button type="button" class="btn btn-icon btn-xs btn-warning edit-sub-folder" data-id="<?= $dtl->id; ?>"><i class="fa fa-pencil-alt"></i></button>
-															<button type="button" class="btn btn-icon btn-xs btn-danger delete-sub-folder" data-id="<?= $dtl->id; ?>"><i class="fa fa-trash-alt"></i></button>
+														<td class="cursor-pointer"><i class="fa fa-file-alt mr-2 text-primary"></i><?= $dtDtl->guide_detail_data_name; ?></td>
+														<td class="cursor-pointer"><?= $dtDtl->group_name; ?></td>
+														<td class="cursor-pointer"><?php if ($dtDtl->methode) foreach (json_decode($dtDtl->methode) as $mth) echo '<span class="badge badge-success me-1">' . $methode[$mth] . '</span> '; ?></td>
+														<td class="cursor-pointer"><?= $dtDtl->publish_date; ?></td>
+														<td class="text-center">
+															<button type="button" class="btn btn-xs btn-icon btn-info view-file" data-guide_detail_id="<?= $sub; ?>" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-eye"></i></button>
+															<button type="button" class="btn btn-xs btn-icon btn-warning edit-file" data-guide_detail_id="<?= $sub; ?>" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-edit"></i></button>
+															<button type="button" class="btn btn-xs btn-icon btn-danger delete-file" data-guide_detail_id="<?= $sub; ?>" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-trash-alt"></i></button>
 														</td>
 													</tr>
-												<?php endforeach; ?>
-											</tbody>
-										</table>
-									<?php else : ?>
-										<div class="d-flex justify-content-between align-items-center">
-											<div class="tools pr-3">
-												<button type="button" class="btn btn-outline-primary btn-sm upload-file" data-guide_detail_id="<?= $sub; ?>" data-cat="MAT" title="Upload New File"><i class="fa fa-upload"></i> Upload File</button>
-											</div>
-										</div>
-										<hr class="my-1">
-										<table class="table py-0 table-sm table-hover datatable">
-											<thead>
-												<tr>
-													<th class="py-2">Name</th>
-													<th class="py-2 text-center" width="100">Action</th>
-												</tr>
-											</thead>
-											<tbody>
-												<?php if (isset($details_data)) : foreach ($details_data as $dtDtl) : ?>
-														<tr>
-															<td class="cursor-pointer"><i class="fa fa-file-alt mr-2 text-primary"></i><?= $dtDtl->guide_detail_data_name; ?></td>
-															<td class="text-center">
-																<button type="button" class="btn btn-xs btn-icon btn-info view-file" data-guide_detail_id="<?= $sub; ?>" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-eye"></i></button>
-																<button type="button" class="btn btn-xs btn-icon btn-warning edit-file" data-guide_detail_id="<?= $sub; ?>" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-edit"></i></button>
-																<button type="button" class="btn btn-xs btn-icon btn-danger delete-file" data-guide_detail_id="<?= $sub; ?>" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-trash-alt"></i></button>
-															</td>
-														</tr>
-												<?php endforeach;
-												endif; ?>
-											</tbody>
-										</table>
-									<?php endif; ?>
+											<?php endforeach;
+											endif; ?>
+										</tbody>
+									</table>
 								<?php endif; ?>
-							</div>
+							<?php endif; ?>
 						</div>
 					</div>
 				</div>
@@ -266,7 +271,11 @@
 		</div>
 	</div>
 </div>
-
+<style>
+	div#DataTables_Table_0_filter {
+		display: none;
+	}
+</style>
 <script>
 	$(document).ready(function() {
 		$('a[data-toggle="pill"]').on('shown.bs.tab', function(e) {
@@ -275,27 +284,41 @@
 				api: true,
 				searching: false,
 				lengthChange: false,
-				paging: false,
+				paging: true,
 				info: false,
 				stateSave: true,
 				fixedHeader: true,
-				pageLength: 50,
+				pageLength: 10,
 				scrollCollapse: true
 			}).columns.adjust();
 		});
 
-		$('.datatable').DataTable({
-			searching: false,
-			lengthChange: false,
-			paging: false,
+		oTable = $('.datatable').DataTable({
+			dom: 'Pfrtip',
+			searchPanes: {
+				cascadePanes: true
+			},
+			language: {
+				searchPanes: {
+					i18n: {
+						emptyMessage: "<i></b>No results returned</b></i>"
+					}
+				},
+				infoEmpty: "No results returned",
+				zeroRecords: "No results returned",
+				emptyTable: "No results returned",
+			},
+			lengthChange: true,
+			paging: true,
 			info: false,
-			stateSave: true,
-			fixedHeader: true,
-			pageLength: 50,
-			scrollCollapse: true
+			stateSave: false,
+			pageLength: 20,
+			// scrollCollapse: true
 		})
 
-
+		$(document).on('input paste', '#search', function() {
+			oTable.search($(this).val()).draw();
+		})
 	})
 
 	/* DIRECTORY */
@@ -590,12 +613,12 @@
 	$(document).on('click', '.save-files', function() {
 		const name = $('#name').val()
 		const group_id = $('#group_id').val()
-		const range_measure = $('#range_measure').val()
+		const methode = $('#methode').val()
+		const reference = $('#reference').val()
+		const range_measure = $('input[name="range_measure[]"]');
 		const publish_date = $('#publish_date').val()
 		const revision_date = $('#revision_date').val()
 		const revision_number = $('#revision_number').val()
-		const methode = $('#methode').val()
-		const reference = $('#reference').val()
 		const document = $('#pdf-file').val()
 		const btn = $(this)
 
@@ -604,15 +627,25 @@
 			$('select#group_id').next().find('span.selection .select2-selection.select2-selection--single').addClass('is-invalid')
 			return false;
 		}
+
 		$('#name').removeClass('is-invalid')
+
 		if (!name) {
 			$('#name').addClass('is-invalid')
 			return false;
 		}
 
-		$('#range_maesure').removeClass('is-invalid')
-		if (!range_measure) {
-			$('#range_measure').addClass('is-invalid')
+		// $('#range_maesure').removeClass('is-invalid')
+		let c = 0;
+		range_measure.each(function() {
+			$(this).removeClass('is-invalid')
+			if ($(this).val().length == 0) {
+				$(this).addClass('is-invalid')
+				c++
+			}
+		})
+
+		if (c > 0) {
 			return false;
 		}
 
@@ -621,24 +654,16 @@
 			$('#publish_date').addClass('is-invalid')
 			return false;
 		}
-		$('#revision_date').removeClass('is-invalid')
-		if (!revision_date) {
-			$('#revision_date').addClass('is-invalid')
-			return false;
-		}
-		$('#revision_number').removeClass('is-invalid')
-		if (!revision_number) {
-			$('#revision_number').addClass('is-invalid')
-			return false;
-		}
-		$('select#methode').next().find('span.selection .select2-selection.select2-selection--single').removeClass('is-invalid')
+
+		$('select#methode').next().find('span.selection .select2-selection.select2-selection--multiple').removeClass('is-invalid')
 		if (!methode) {
-			$('select#methode').next().find('span.selection .select2-selection.select2-selection--single').addClass('is-invalid')
+			$('select#methode').next().find('span.selection .select2-selection.select2-selection--multiple').addClass('is-invalid')
 			return false;
 		}
-		$('select#reference').next().find('span.selection .select2-selection.select2-selection--single').removeClass('is-invalid')
+
+		$('select#reference').next().find('span.selection .select2-selection.select2-selection--multiple').removeClass('is-invalid')
 		if (!reference) {
-			$('select#reference').next().find('span.selection .select2-selection.select2-selection--single').addClass('is-invalid')
+			$('select#reference').next().find('span.selection .select2-selection.select2-selection--multiple').addClass('is-invalid')
 			return false;
 		}
 
@@ -647,6 +672,7 @@
 			Swal.fire('Warning!', "File or Document can't be empty. Please upload document first.", 'warning', 3000)
 			return false;
 		}
+
 		// $('#name-file').removeClass('is-invalid')
 
 
@@ -684,7 +710,7 @@
 	$(document).on('click', '.update-files', function() {
 		const name = $('#name').val()
 		const group_id = $('#group_id').val()
-		const range_measure = $('#range_measure').val()
+		const range_measure = $('input[name="range_measure[]"]')
 		const publish_date = $('#publish_date').val()
 		const revision_date = $('#revision_date').val()
 		const revision_number = $('#revision_number').val()
@@ -704,27 +730,38 @@
 			return false;
 		}
 
-		$('#range_measure').removeClass('is-invalid')
-		if (!range_measure) {
-			$('#range_measure').addClass('is-invalid')
+		// $('#range_measure').removeClass('is-invalid')
+		// if (!range_measure) {
+		// 	$('#range_measure').addClass('is-invalid')
+		// 	return false;
+		// }
+
+
+		let c = 0;
+		range_measure.each(function() {
+			$(this).removeClass('is-invalid')
+			if ($(this).val().length == 0) {
+				$(this).addClass('is-invalid')
+				c++
+			}
+		})
+
+		if (c > 0) {
 			return false;
 		}
 
-		$('#publish_date').removeClass('is-invalid')
-		if (!publish_date) {
-			$('#publish_date').addClass('is-invalid')
-			return false;
-		}
-		$('#revision_date').removeClass('is-invalid')
-		if (!revision_date) {
-			$('#revision_date').addClass('is-invalid')
-			return false;
-		}
-		$('#revision_number').removeClass('is-invalid')
-		if (!revision_number) {
-			$('#revision_number').addClass('is-invalid')
-			return false;
-		}
+
+		// $('#revision_date').removeClass('is-invalid')
+		// if (!revision_date) {
+		// 	$('#revision_date').addClass('is-invalid')
+		// 	return false;
+		// }
+		// $('#revision_number').removeClass('is-invalid')
+		// if (!revision_number) {
+		// 	$('#revision_number').addClass('is-invalid')
+		// 	return false;
+		// }
+
 		$('select#methode').next().find('span.selection .select2-selection.select2-selection--single').removeClass('is-invalid')
 		if (!methode) {
 			$('select#methode').next().find('span.selection .select2-selection.select2-selection--single').addClass('is-invalid')
@@ -736,8 +773,13 @@
 			return false;
 		}
 
-		const remove_document = $('#remove-document').val()
+		$('#publish_date').removeClass('is-invalid')
+		if (!publish_date) {
+			$('#publish_date').addClass('is-invalid')
+			return false;
+		}
 
+		const remove_document = $('#remove-document').val()
 		if (!document && (remove_document == 'x')) {
 			$('#pdf-file').addClass('is-invalid')
 			Swal.fire('Warning!', "File or Document can't be empty. Please upload document first.", 'warning', 3000)
@@ -877,7 +919,6 @@
 		});
 	}
 
-
 	$(document).on('click', '.change-image', function() {
 		$('#pdf-file').click()
 	})
@@ -974,6 +1015,22 @@
 
 	$(document).on('change', '#video-file', function() {
 		let file = $(this)[0].files[0];
+
+		// allowed MIME types
+		var mime_types = ['video/mp4'];
+
+		// Validate whether PDF
+		if (mime_types.indexOf(file.type) == -1) {
+			Swal.fire('Warning', 'Error : Incorrect file type', 'warning', 3000)
+			return;
+		}
+
+		// validate file size
+		if (file.size > 50 * 1024 * 1024) {
+			Swal.fire('Warning', 'Error : Exceeded size 50MB', 'warning', 3000)
+			return;
+		}
+
 		let blobURL = URL.createObjectURL(file);
 		console.log(blobURL);
 		$("#video-preview").attr('src', blobURL).removeClass('d-none');
@@ -992,6 +1049,22 @@
 		$("#video-file").val('');
 	}
 
+	/* MUlTI */
+
+	$(document).on('click', '#add-range', function() {
+		const element = `
+		<div class="input-group mb-2">
+			<input type="text" name="range_measure[]" id="range_measure" placeholder="0mm - 0mm" class="form-control">
+			<span class="input-group-append">
+				<button type="button" class="btn btn-sm btn-light-danger remove-range-list"><i class="fa fa-times fa-sm"></i></button>
+			</span>
+		</div>`;
+		$('.list-range').append(element);
+	})
+
+	$(document).on('click', '.remove-range-list', function() {
+		$(this).parents('div.input-group').remove();
+	})
 
 
 	$(function() {

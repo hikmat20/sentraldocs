@@ -13,21 +13,23 @@
 				<div class="card-body">
 					<div class="tab-content mt-3">
 						<div class="tab-pane fade active show" id="Published" role="tabpanel" aria-labelledby="Published-tab">
-							<table id="example1" class="table table-bordered table-sm table-condensed table-hover datatable">
+							<table id="example1" class="table table-bordered table-sm table-hover datatable">
 								<thead class="text-center table-light">
 									<tr class="text-center">
 										<th width="3%">No.</th>
 										<th class="text-left">Name</th>
+										<th class="text-left">Code</th>
 										<th width="150">Action</th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody class="table-sm">
 									<?php if (isset($data) && $data) :
 										$n = 0;
 										foreach ($data as $dt) : $n++; ?>
-											<tr class="">
+											<tr class="table-sm">
 												<td><?= $n; ?></td>
 												<td class="text-left"><?= $dt->name; ?></td>
+												<td class="text-left"><?= $dt->code; ?></td>
 												<td class="text-center">
 													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $dt->id; ?>" title="Edit Data"><i class="fa fa-edit"></i></button>
 													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button>
@@ -98,7 +100,24 @@
 
 		$(document).on('click', '.save', function(e) {
 			const name = $('#name')
-			validation(name)
+			const code = $('#code')
+
+			if (!name.val()) {
+				name.addClass('is-invalid').focus()
+				return false;
+			}
+
+			if (!code.val()) {
+				code.addClass('is-invalid')
+				code.next('span.invalid-feedback').text("Code can't be empty")
+				return false;
+			}
+
+			if (code.val().length > 10) {
+				code.addClass('is-invalid')
+				code.next('span.invalid-feedback').text('Maximum of 10 characters')
+				return false;
+			}
 
 			let formdata = new FormData($('#form')[0])
 			let btn = $(this)
@@ -147,132 +166,6 @@
 						icon: 'error',
 						text: 'Server timeout, becuase error!',
 						timer: 4000
-					})
-				}
-			})
-		})
-
-		$(document).on('click', '.choose-user', function(e) {
-			const user_id = $(this).data('id')
-			const position = $(this).data('position')
-			let btn = $(this)
-			Swal.fire({
-				title: 'Select User!',
-				icon: 'question',
-				text: 'Are you sure you want to select this user??',
-				showCancelButton: true,
-			}).then((value) => {
-				if (value.isConfirmed) {
-					$.ajax({
-						url: siteurl + active_controller + 'save_assign',
-						data: {
-							user_id,
-							position
-						},
-						type: 'POST',
-						dataType: 'JSON',
-						beforeSend: function() {
-							btn.attr('disabled', true).removeClass('btn-icon')
-							btn.html('<i class="spinner spinner-border-sm"></i> Loading..')
-						},
-						complete: function() {
-							btn.attr('disabled', false).addClass('btn-icon')
-							btn.html('<i class="fa fa-check"></i>')
-						},
-						success: function(result) {
-							if (result.status == 1) {
-								Swal.fire({
-									title: 'Success!',
-									icon: 'success',
-									text: result.msg,
-									timer: 2000
-								}).then(function() {
-									$('#modalView').modal('hide')
-									clear($('.modal-body'))
-									// $('table#example1 tbody').load(siteurl + active_controller + 'load_data')
-									location.reload();
-								})
-
-							} else {
-								Swal.fire({
-									title: 'Warning!',
-									icon: 'warning',
-									text: result.msg,
-									timer: 2000
-								})
-							}
-						},
-						error: function(result) {
-							Swal.fire({
-								title: 'Error!',
-								icon: 'error',
-								text: 'Server timeout, becuase error!',
-								timer: 4000
-							})
-						}
-					})
-				}
-			})
-		})
-
-		$(document).on('click', '.remove-user', function(e) {
-			const user_id = $(this).data('id')
-			const position = $(this).data('position')
-			let btn = $(this)
-			Swal.fire({
-				title: 'Select User!',
-				icon: 'question',
-				text: 'Are you sure you want to remove this user??',
-				showCancelButton: true,
-			}).then((value) => {
-				if (value.isConfirmed) {
-					$.ajax({
-						url: siteurl + active_controller + 'remove_assign',
-						data: {
-							user_id,
-							position
-						},
-						type: 'POST',
-						dataType: 'JSON',
-						beforeSend: function() {
-							btn.attr('disabled', true).removeClass('btn-icon')
-							btn.html('<i class="spinner spinner-border-sm"></i> Loading..')
-						},
-						complete: function() {
-							btn.attr('disabled', false).addClass('btn-icon')
-							btn.html('<i class="fa fa-check"></i>')
-						},
-						success: function(result) {
-							if (result.status == 1) {
-								Swal.fire({
-									title: 'Success!',
-									icon: 'success',
-									text: result.msg,
-									timer: 2000
-								}).then(function() {
-									$('#modalView').modal('hide')
-									clear($('.modal-body'))
-									// $('table#example1 tbody').load(siteurl + active_controller + 'load_data')
-									location.reload();
-								})
-
-							} else {
-								Swal.fire({
-									title: 'Warning!',
-									icon: 'warning',
-									text: result.msg,
-									timer: 2000
-								})
-							}
-						},
-						error: function(result) {
-							Swal.fire({
-								title: 'Error!',
-								icon: 'error',
-								text: 'Server timeout, becuase error!',
-								timer: 4000
-							})
-						}
 					})
 				}
 			})
@@ -333,8 +226,9 @@
 	})
 
 	function validation(field) {
-		if (field.val() == '' || field.val() == null) {
+		if (field.val().length == 0 || field.val() == null) {
 			field.addClass('is-invalid')
+			return false;
 		} else {
 			field.removeClass('is-invalid')
 		}
