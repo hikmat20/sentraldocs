@@ -58,7 +58,7 @@
 									<img src="<?= base_url('assets/images/dashboard/guides.png'); ?>" alt="MASTER IK" class="img-fluid" style="height: 150px;">
 								</div>
 								<h6 class="card-title text-center d-flex align-items-center m-auto" style="min-height: 60px;">
-									<a href="<?= base_url('/guides'); ?>" class="text-hover-primary" title="MASTER IK">
+									<a href="<?= base_url('/list/guides'); ?>" class="text-hover-primary" title="MASTER IK">
 										<span class="card-label m-0 text-dark text-center font-weight-bolder">MASTER IK</span>
 									</a>
 								</h6>

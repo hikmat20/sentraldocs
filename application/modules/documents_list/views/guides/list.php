@@ -12,10 +12,6 @@
                 </a>
                 <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                     <li class="breadcrumb-item text-muted">
-                        <a href="<?= base_url('dashboard'); ?>" class="text-muted">Dashboard</a>
-                    </li>
-
-                    <li class="breadcrumb-item text-muted">
                         <a href="<?= base_url('list/guides'); ?>" class="text-muted">MASTER IK</a>
                     </li>
                     <li class="breadcrumb-item text-muted">
@@ -78,7 +74,7 @@
                                                     <td style="vertical-align: top;" class="text-center h6 p-1" width="50px">
                                                         <i class="fa fa-file-alt fa-2x text-success"></i>
                                                     </td>
-                                                    <td style="vertical-align: top;" class="font-weight-bold p-1 h6">
+                                                    <td style="vertical-align: top;" class="font-weight-bold pl-0 h6">
                                                         <a href="#"><?= $list->guide_detail_data_name; ?></a>
                                                     </td>
                                                     <td style="vertical-align: top;" class="text-dark">
