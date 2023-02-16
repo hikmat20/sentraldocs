@@ -18,9 +18,9 @@ class Standard extends Admin_Controller
 
 	public function index()
 	{
-		$data			= $this->db->get_where('view_standards', ['status' => 'PUB'])->result();
-		$drafts			= $this->db->get_where('view_standards', ['status' => 'DFT'])->result();
-		$scopes 		= $this->db->get_where('tool_scopes')->result();
+		$data			= $this->db->get_where('view_standards', ['status' => 'PUB', 'company_id' => $this->company])->result();
+		$drafts			= $this->db->get_where('view_standards', ['status' => 'DFT', 'company_id' => $this->company])->result();
+		$scopes 		= $this->db->get_where('tool_scopes', ['company_id' => $this->company])->result();
 		$ArrScopes = [];
 		foreach ($scopes as $sc) {
 			$ArrScopes[$sc->id] = $sc->name;
@@ -73,9 +73,12 @@ class Standard extends Admin_Controller
 
 	public function view($id = '')
 	{
-		$Data 	= $this->db->get_where('view_standards', ['id' => $id])->row();
+		$Data 			= $this->db->get_where('view_standards', ['id' => $id])->row();
+		$exists_file 	= "./directory/STANDARDS/$this->company/$Data->document";
+
 		$this->template->set([
-			'Data' 		=> $Data
+			'Data' 			=> $Data,
+			'exists_file' 	=> $exists_file,
 		]);
 
 		$this->template->render('view');
@@ -102,8 +105,8 @@ class Standard extends Admin_Controller
 				}
 
 				if ($old_file) {
-					if (file_exists('./standards/' . $old_file)) {
-						unlink('./standards/' . $old_file);
+					if (file_exists('./directory/STANDARDS/' . $this->company . "/" . $old_file)) {
+						unlink('./directory/STANDARDS/' . $this->company . "/" . $old_file);
 					}
 				}
 			}
@@ -162,8 +165,8 @@ class Standard extends Admin_Controller
 			$this->db->trans_begin();
 			$data = $this->db->get_where('standards', ['id' => $id])->row();
 			$this->db->update('standards', ['document' => null], ['id' => $id]);
-			if (file_exists('./standards/' . $data->document)) {
-				unlink('./standards/' . $data->document);
+			if (file_exists('./directory/STANDARDS/' . $this->company . "/" . $data->document)) {
+				unlink('./directory/STANDARDS/' . $this->company . "/" . $data->document);
 			}
 		}
 
@@ -187,12 +190,12 @@ class Standard extends Admin_Controller
 
 	public function save_upload($id)
 	{
-		if (!is_dir('./standards/')) {
-			mkdir('./standards/', 0755, TRUE);
-			chmod("./standards/", 'www-data');
+		if (!is_dir('./directory/STANDARDS/' . $this->company)) {
+			mkdir('./directory/STANDARDS/' . $this->company, 0755, TRUE);
+			chmod("./directory/STANDARDS/" . $this->company, 'www-data');
 		}
 
-		$config['upload_path'] 		= "./standards/"; //path folder
+		$config['upload_path'] 		= "./directory/STANDARDS/$this->company"; //path folder
 		$config['allowed_types'] 	= 'pdf'; //type yang dapat diakses bisa anda sesuaikan
 		$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
 
@@ -209,23 +212,6 @@ class Standard extends Admin_Controller
 			return $error_msg;
 		endif;
 	}
-
-	// public function export_excel()
-	// {
-	// 	$data			= $this->db->get_where('view_standards', ['status' => 'PUB'])->result();
-	// 	$drafts			= $this->db->get_where('view_standards', ['status' => 'DFT'])->result();
-	// 	$scopes 		= $this->db->get_where('tool_scopes')->result();
-	// 	$ArrScopes = [];
-	// 	foreach ($scopes as $sc) {
-	// 		$ArrScopes[$sc->id] = $sc->name;
-	// 	}
-
-	// 	$this->template->set([
-	// 		'data' 			=> $data,
-	// 		'drafts' 		=> $drafts,
-	// 		'ArrScopes' 	=> $ArrScopes,
-	// 	]);
-	// }
 
 	public function export_excel()
 	{
@@ -273,9 +259,9 @@ class Standard extends Admin_Controller
 			// )
 		);
 
-		$data			= $this->db->get_where('view_standards', ['status' => 'PUB'])->result();
-		$drafts			= $this->db->get_where('view_standards', ['status' => 'DFT'])->result();
-		$scopes 		= $this->db->get_where('tool_scopes')->result();
+		$data			= $this->db->get_where('view_standards', ['status' => 'PUB', 'company_id' => $this->company])->result();
+		$drafts			= $this->db->get_where('view_standards', ['status' => 'DFT', 'company_id' => $this->company])->result();
+		$scopes 		= $this->db->get_where('tool_scopes', ['company_id' => $this->company])->result();
 
 		$ArrScopes = [];
 		foreach ($scopes as $sc) {
@@ -315,7 +301,7 @@ class Standard extends Admin_Controller
 			$no++;
 			$numRow++;
 			$excel->setActiveSheetIndex(0)->setCellValue("A$numRow", $no)->getStyle("A$numRow")->applyFromArray($style_row);
-			$excel->setActiveSheetIndex(0)->setCellValue("B$numRow", $ArrScopes[$dt->scope_id])->getStyle("A$numRow")->applyFromArray($style_row);
+			$excel->setActiveSheetIndex(0)->setCellValue("B$numRow", ($ArrScopes[$dt->scope_id]) ?: 'undefined')->getStyle("A$numRow")->applyFromArray($style_row);
 			$excel->setActiveSheetIndex(0)->setCellValue("C$numRow",  $dt->name)->getStyle("A$numRow")->applyFromArray($style_row);
 			$excel->setActiveSheetIndex(0)->setCellValue("D$numRow", $dt->year)->getStyle("A$numRow")->applyFromArray($style_row);
 		}

@@ -59,6 +59,8 @@ class Standards_model extends BF_Model
   /**
    * Function construct used to load some library, do some actions, etc.
    */
+
+  protected $company;
   public function __construct()
   {
     parent::__construct();

@@ -49,7 +49,7 @@
 								foreach ($groups as $grp) :  $n++; ?>
 									<div class="tab-pane fade <?= ($n == '1') ? 'active show' : ''; ?>" id="data_<?= $grp->id; ?>" role="tabpanel" aria-labelledby="tab_<?= $grp->id; ?>">
 										<?php if (isset($ArrPro[$grp->id])) : ?>
-											<table class="table table-condensed table-hover">
+											<table class="table table-condensed table-hover datatable">
 												<thead>
 													<tr class="">
 														<th class="h5 border-2 border-bottom-secondary" width="15px">No.</th>
@@ -145,10 +145,60 @@
 	.list-document:hover .btn-action {
 		display: block;
 	}
+
+	#DataTables_Table_0_filter,
+	#DataTables_Table_1_filter,
+	#DataTables_Table_2_filter {
+		display: none;
+	}
 </style>
 <script>
 	function show(id) {
 		$('#modelId').modal('show')
 		$('#data-file').load(siteurl + active_controller + 'show/' + id)
 	}
+
+	$(document).ready(function() {
+		$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+			$.fn.dataTable.tables({
+				visible: true,
+				api: true,
+				searching: false,
+				lengthChange: false,
+				paging: true,
+				info: false,
+				stateSave: true,
+				fixedHeader: true,
+				pageLength: 10,
+				scrollCollapse: true
+			}).columns.adjust();
+		});
+
+		oTable = $('.datatable').DataTable({
+			dom: 'Pfrtip',
+			searchPanes: {
+				cascadePanes: true
+			},
+			language: {
+				searchPanes: {
+					i18n: {
+						emptyMessage: "<i></b>No results returned</b></i>"
+					}
+				},
+				infoEmpty: "No results returned",
+				zeroRecords: "No results returned",
+				emptyTable: "No results returned",
+			},
+			lengthChange: true,
+			paging: true,
+			info: false,
+			stateSave: false,
+			pageLength: 20,
+			// scrollCollapse: true
+		})
+
+		$(document).on('input paste', '#search', function() {
+			oTable.search($(this).val()).draw();
+		})
+	})
 </script>

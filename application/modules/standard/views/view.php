@@ -86,11 +86,21 @@
     <div class="mb-3 row flex-nowrap">
       <label for="document" class="col-2 font-weight-bold">Document</label>
       <div class="col-10">
-        <?php if ($Data->document) : ?>
+
+        <?php if ($Data->document && file_exists($exists_file)) : ?>
           <div class="d-flex justify-content-between align-items-center">
-            <a target="_blank" href="<?= base_url('/standards/' . $Data->document); ?>">
+            <a target="_blank" href="<?= base_url($exists_file); ?>">
               <div class="d-flex align-items-center">
                 <i class="fa fa-file-alt text-success fa-3x mr-3"></i><?= $Data->name; ?>
+              </div>
+            </a>
+          </div>
+        <?php else : ?>
+          <div class="d-flex justify-content-between align-items-center">
+            <a href="#not-found">
+              <div class="d-flex align-items-center">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Blank-document-broken.svg/1024px-Blank-document-broken.svg.png" alt="file-not-found" class="img-fluid d-inline" width="50">
+                <?= $Data->name; ?>
               </div>
             </a>
           </div>
