@@ -59,6 +59,7 @@ class Regulations_model extends BF_Model
   /**
    * Function construct used to load some library, do some actions, etc.
    */
+  protected $company;
   public function __construct()
   {
     parent::__construct();
@@ -98,10 +99,6 @@ class Regulations_model extends BF_Model
     $subjects   = (isset($data['subjects']) ? $data['subjects'] : '');
     $scopes     = (isset($data['scopes']) ? $data['scopes'] : '');
     $data['company_id'] = $this->company;
-    // echo '<pre>';
-    // print_r($data);
-    // echo '<pre>';
-    // exit;
     unset($data['subjects']);
     unset($data['scopes']);
 

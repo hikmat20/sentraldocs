@@ -49,6 +49,7 @@ class Tool_scopes extends Admin_Controller
         $data       = $this->input->post();
         $this->db->trans_begin();
         if ($data) {
+            $data['company_id'] = $this->company;
             if (isset($data['id']) && $data['id']) {
                 $data['modified_at'] = date('Y-m-d H:i:s');
                 $data['modified_by'] = $this->auth->user_id();

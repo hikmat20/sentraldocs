@@ -31,14 +31,14 @@
 					<!-- Tab panes -->
 					<div class="tab-content mt-3">
 						<div class="tab-pane fade active show" id="Published" role="tabpanel" aria-labelledby="Published-tab">
-							<table id="example1" class="table table-bordered table-sm table-hover datatable">
+							<table id="example1" class="table table-bordered table-condensed table-sm table-hover datatable">
 								<thead class="text-center table-light">
 									<tr class="text-center">
-										<th width="5%" class="text-center">No.</th>
-										<th width="15%">Scopes</th>
-										<th class="text-left">Standard Name</th>
-										<th class="text-left">Year</th>
-										<th width="150">Action</th>
+										<th width="5%" class="text-center p-2">No.</th>
+										<th width="15%" class="p-2">Scopes</th>
+										<th class="text-left p-2">Standard Name</th>
+										<th class="text-left p-2">Year</th>
+										<th width="150" class="p-2">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -46,14 +46,15 @@
 										$n = 0;
 										foreach ($data as $dt) : $n++; ?>
 											<tr>
-												<td class="p-1 text-center"><?= $n; ?></td>
-												<td class="p-1"><?= $ArrScopes[$dt->scope_id]; ?></td>
-												<td class="p-1"><?= $dt->name; ?></td>
-												<td class="p-1"><?= $dt->year; ?></td>
-												<td class="text-center p-1">
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-edit"></i></a>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button>
+												<td class="p-2 text-center"><?= $n; ?></td>
+												<td class="p-2 text-center"><?= isset($ArrScopes[$dt->scope_id]) ? $ArrScopes[$dt->scope_id] : '<span class="text-muted">undefined</span>'; ?></td>
+												<td class="p-2"><?= $dt->name; ?></td>
+												<td class="p-2"><?= $dt->year; ?></td>
+												<td class="text-center p-2">
+
+													<button type="button" class="btn btn-xs btn-icon btn-info view" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View"><i class="fa fa-search"></i></button>
+													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-xs btn-icon btn-warning edit" role="tootltip" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Edit"><i class="fa fa-pencil-alt"></i></a>
+													<button type="button" class="btn btn-xs btn-icon btn-danger delete" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Delete"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -78,12 +79,12 @@
 										foreach ($drafts as $draft) : $n++; ?>
 											<tr class="text-center">
 												<td><?= $n; ?></td>
-												<td class="p-1"><?= $ArrScopes[$draft->scope_id]; ?></td>
-												<td class="p-1"><?= $draft->name; ?></td>
-												<td class="p-1"><?= $draft->year; ?></td>
-												<td>
-													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $draft->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $draft->id; ?>" title="View Data"><i class="fa fa-edit"></i></a>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $draft->id; ?>" title="View Data"><i class="fa fa-trash"></i></button>
+												<td class="p-2"><?= $ArrScopes[$draft->scope_id]; ?></td>
+												<td class="p-2"><?= $draft->name; ?></td>
+												<td class="p-2"><?= $draft->year; ?></td>
+												<td class="p-2">
+													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $draft->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-toggle="tooltip" data-id="<?= $draft->id; ?>" title="View"><i class="fa fa-pencil-alt"></i></a>
+													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $draft->id; ?>" data-toggle="tooltip" title="Delete"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;

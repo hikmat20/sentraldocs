@@ -259,8 +259,8 @@ class Regulations extends Admin_Controller
 				}
 
 				if ($old_file) {
-					if (file_exists('./regulation/' . $old_file)) {
-						unlink('./regulation/' . $old_file);
+					if (file_exists('./directory/REGULATIONS/' . $this->company . "/" . $old_file)) {
+						unlink('./directory/REGULATIONS/' . $this->company . "/" . $old_file);
 					}
 				}
 			}
@@ -290,12 +290,12 @@ class Regulations extends Admin_Controller
 
 	public function save_upload($id)
 	{
-		if (!is_dir('./regulation/')) {
-			mkdir('./regulation/', 0755, TRUE);
-			chmod("./regulation/", 'www-data');
+		if (!is_dir('./directory/REGULATIONS/' . $this->company)) {
+			mkdir('./directory/REGULATIONS/' . $this->company, 0755, TRUE);
+			chmod("./directory/REGULATIONS/" . $this->company, 'www-data');
 		}
 
-		$config['upload_path'] 		= "./regulation/"; //path folder
+		$config['upload_path'] 		= "./directory/REGULATIONS/" . $this->company; //path folder
 		$config['allowed_types'] 	= 'pdf'; //type yang dapat diakses bisa anda sesuaikan
 		$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
 

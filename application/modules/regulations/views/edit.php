@@ -146,7 +146,7 @@
 									<div class="mb-3 row flex-nowrap">
 										<label for="" class="col-2 col-form-label font-weight-bold"></label>
 										<div class="col-10">
-											<a target="_blank" href="<?= base_url('/regulation/' . $data->document); ?>">
+											<a target="_blank" href="<?= base_url('/directory/REGULATIONS/' . $data->company_id . "/" . $data->document); ?>">
 												<div class="d-flex align-items-center">
 													<i class="fa fa-file-alt text-success fa-3x mr-3"></i><?= $data->name; ?>
 												</div>

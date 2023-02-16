@@ -3,15 +3,7 @@
 		<div class="container">
 			<div class="card">
 				<div class="card-body">
-					<table class="table table-sm table-hover">
-						<tbody>
-							<?php foreach ($directories as $dir) : ?>
-								<tr>
-									<td><?= $dir; ?></td>
-								</tr>
-							<?php endforeach; ?>
-						</tbody>
-					</table>
+
 				</div>
 			</div>
 

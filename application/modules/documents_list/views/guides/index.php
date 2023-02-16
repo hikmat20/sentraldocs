@@ -101,19 +101,46 @@
 
 <script>
     $(document).ready(function() {
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+        $('a[data-toggle="pill"]').on('shown.bs.tab', function(e) {
             $.fn.dataTable.tables({
                 visible: true,
-                api: true
+                api: true,
+                searching: false,
+                lengthChange: false,
+                paging: true,
+                info: false,
+                stateSave: true,
+                fixedHeader: true,
+                pageLength: 10,
+                scrollCollapse: true
             }).columns.adjust();
         });
 
-        $('.datatable').DataTable({
-            orderCellsTop: false,
-            fixedHeader: true,
-            scrollX: true,
-            // ordering: false,
-            info: false
-        });
+        oTable = $('.datatable').DataTable({
+            dom: 'Pfrtip',
+            searchPanes: {
+                cascadePanes: true
+            },
+            language: {
+                searchPanes: {
+                    i18n: {
+                        emptyMessage: "<i></b>No results returned</b></i>"
+                    }
+                },
+                infoEmpty: "No results returned",
+                zeroRecords: "No results returned",
+                emptyTable: "No results returned",
+            },
+            lengthChange: true,
+            paging: true,
+            info: false,
+            stateSave: false,
+            pageLength: 20,
+            // scrollCollapse: true
+        })
+
+        $(document).on('input paste', '#search', function() {
+            oTable.search($(this).val()).draw();
+        })
     })
 </script>
