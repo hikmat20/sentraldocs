@@ -40,7 +40,7 @@ class Compliances extends Admin_Controller
         return "COMP" . str_pad($count, 4, "0", STR_PAD_LEFT);
     }
 
-    public function index()
+    public function index_()
     {
         $reference = $this->db->get_where('view_references', ['status' => 'OPN'])->row();
         if ($reference) {
@@ -67,7 +67,7 @@ class Compliances extends Admin_Controller
         $this->template->render('index');
     }
 
-    public function indexx()
+    public function index()
     {
         $reference = $this->db->get_where('view_references', ['company_id' => $this->company, 'status' => 'OPN'])->row();
         if ($reference) {
