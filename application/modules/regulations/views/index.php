@@ -29,9 +29,11 @@
 									<tr class="text-center">
 										<th width="5%">No.</th>
 										<th class="text-left">Regulation Name</th>
-										<th width="15%">Subject</th>
+										<th class="text-center">Year</th>
+										<th width="150">Subject</th>
 										<th>Category</th>
-										<th width="150">Action</th>
+										<th width="70">Last Update</th>
+										<th width="70">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -41,24 +43,28 @@
 											<tr>
 												<td class="p-1"><?= $n; ?></td>
 												<td class="p-1"><?= $dt->name; ?></td>
-												<td class="p-1">
+												<td class="p-1 text-center"><?= $dt->year; ?></td>
+												<td class="p-1 text-center">
 													<?php if (isset($ArrRegSjb[$dt->id])) : ?>
 														<?php foreach ($ArrRegSjb[$dt->id] as $sbj) : ?>
 															<span class="label label-danger label-inline mb-1"><?= $sbj->subject_name; ?></span>
 														<?php endforeach; ?>
 													<?php endif; ?>
 												</td>
-												<td class="p-1">
+												<td class="p-1 text-center">
 													<?php if (isset($ArrRegScp[$dt->id])) : ?>
 														<?php foreach ($ArrRegScp[$dt->id] as $scp) : ?>
 															<span class="label label-success label-inline mb-1"><?= $scp->scope_name; ?></span>
 														<?php endforeach; ?>
 													<?php endif; ?>
 												</td>
+												<td class="text-center">
+													<?= ($dt->modified_at) ?: $dt->created_at; ?>
+												</td>
 												<td class="text-center p-1">
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-edit"></i></a>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button>
+													<button type="button" class="btn btn-xs btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
+													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-xs btn-icon rounded-circle btn-warning edit" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-edit"></i></a>
+													<button type="button" class="btn btn-xs btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -134,7 +140,7 @@
 			orderCellsTop: false,
 			// fixedHeader: true,
 			// scrollX: true,
-			ordering: false,
+			// ordering: false,
 			// info: false
 		});
 

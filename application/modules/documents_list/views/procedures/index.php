@@ -1,7 +1,7 @@
 <div class="content d-flex flex-column flex-column-fluid p-0">
 	<div class="d-flex flex-column-fluid justify-content-between align-items-top">
 		<div class="container">
-			<div class="d-flex align-items-baseline flex-wrap mr-5 mb-10">
+			<div class="d-flex align-items-baseline flex-wrap mr-5">
 				<a href="<?= base_url('dashboard'); ?>">
 					<h4 class="text-dark font-weight-bold my-1 mr-2"><i class="fa fa-home"></i></h4>
 				</a>
@@ -11,6 +11,8 @@
 					</li>
 				</ul>
 			</div>
+			<a href="<?= base_url('dashboard'); ?>" class="btn btn-primary btn-sm btn-icon mb-3"><i class="fa fa-arrow-left"></i></a>
+
 			<h1 class="text-white fa-3x">PROSEDUR, FORM, IK DAN RECORD</h1>
 			<div class="row mb-10">
 				<div class="col-md-4">
@@ -54,7 +56,6 @@
 													<tr class="">
 														<th class="h5 border-2 border-bottom-secondary" width="15px">No.</th>
 														<th class="h5 border-2 border-bottom-secondary">File Name</th>
-														<th class="h5 border-2 border-bottom-secondary text-center" width="50px"></th>
 													</tr>
 												</thead>
 												<tbody>
@@ -66,13 +67,8 @@
 															<td class="h5 text-dark d-flex align-items-center my-0 py-2">
 																<i class="fa fa-folder text-warning fa-2x mr-2 pt-0"></i>
 																<strong class="mt-1">
-																	<?= $list['name']; ?>
+																	<a class="link-action" href="<?= base_url($this->uri->segment(1) . '/procedures/' . $list['id']); ?>"><?= $list['name']; ?></a>
 																</strong>
-															</td>
-															<td class="h6 text-center">
-																<div class="btn-action">
-																	<a href="<?= base_url($this->uri->segment(1) . '/procedures/' . $list['id']); ?>" class="btn btn-primary btn-icon btn-xs shadow-xs"><i class="fas fa-chevron-right"></i></a>
-																</div>
 															</td>
 														</tr>
 													<?php endforeach; ?>
@@ -138,12 +134,12 @@
 </div>
 
 <style>
-	.btn-action {
-		display: none;
+	.link-action {
+		color: #000;
 	}
 
-	.list-document:hover .btn-action {
-		display: block;
+	.list-document:hover .link-action {
+		color: #0bb783;
 	}
 
 	#DataTables_Table_0_filter,

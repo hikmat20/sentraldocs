@@ -52,13 +52,14 @@ class Standard extends Admin_Controller
 		$standards 		= $this->db->get_where('standards', ['id' => $id])->row();
 		$category 		= $this->db->get_where('standard_category')->result();
 		$scopes 		= $this->db->get_where('tool_scopes')->result();
-
+		$exists_file 	= "./directory/STANDARDS/$this->company/$standards->document";
 		if ($standards) {
 			$this->template->set([
 				'title' 		=> 'Edit Standards',
 				'data' 			=> $standards,
 				'category' 		=> $category,
 				'scopes' 		=> $scopes,
+				'exists_file' 	=> $exists_file,
 			]);
 
 			$this->template->render('edit');

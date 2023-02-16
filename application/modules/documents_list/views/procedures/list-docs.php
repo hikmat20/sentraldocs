@@ -7,7 +7,7 @@
 <div class="content d-flex flex-column flex-column-fluid p-0">
 	<div class="d-flex flex-column-fluid justify-content-between align-items-top">
 		<div class="container">
-			<div class="d-flex align-items-baseline flex-wrap mr-5 mb-10">
+			<div class="d-flex align-items-baseline flex-wrap mr-5">
 				<a href="<?= base_url('dashboard'); ?>">
 					<h4 class="text-dark font-weight-bold my-1 mr-2"><i class="fa fa-home"></i></h4>
 				</a>
@@ -16,10 +16,11 @@
 						<a href="<?= base_url('list/procedures/'); ?>" class="text-muted">PROSEDUR, FORM, IK DAN RECORD</a>
 					</li>
 					<li class="breadcrumb-item text-muted">
-						<span class="text-muted"><?= $procedure[0]->group_name; ?></span>
+						<span class="text-muted"><?= $procedure[0]->name; ?></span>
 					</li>
 				</ul>
 			</div>
+			<a href="#back" onclick="history.go(-1)" class="btn btn-primary btn-sm btn-icon mb-3"><i class="fa fa-arrow-left"></i></a>
 			<h1 class="text-white fa-3x"><?= $procedure[0]->name; ?></h1>
 			<div class="row mb-10">
 				<div class="col-md-4">
@@ -27,7 +28,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-9">
+				<div class="col-md-12">
 					<ul class="nav nav-warning nav-pills nav-bolder" id="myTab2" role="tablist">
 						<li class="nav-item mx-0">
 							<a class="rounded-bottom-0 nav-link active" id="tab_procedure" data-toggle="tab" href="#data_procedure">
@@ -239,27 +240,6 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-3">
-					<div class="card mt-15 border-0 shadow-lg" style="background-color: srgba(255,255,255,0.85);">
-						<div class="card-body pt-5 px-5">
-							<div class="d-flex flex-center mb-3">
-								<span class="align-self-stretch mr-2 my-1 "><i class="fa fa-link text-warning"></i></span>
-								<div class="d-flex flex-column flex-grow-1">
-									<a href="<?= base_url($this->uri->segment(1) . '/procedures'); ?>" class="text-dark text-hover-warning font-weight-bolder font-size-lg mb-1">PROSEDUR, FORM, IK DAN RECORD</a>
-								</div>
-							</div>
-							<?php foreach ($MainData as $main) : ?>
-								<div class="d-flex flex-center mb-3">
-									<span class="align-self-stretch mr-2 my-1 "><i class="fa fa-link text-warning"></i></span>
-									<div class="d-flex flex-column flex-grow-1">
-										<a href="<?= base_url($this->uri->segment(1) . '/' . $main->id); ?>" class="text-dark text-hover-warning font-weight-bolder font-size-lg mb-1"><?= $main->name; ?></a>
-									</div>
-								</div>
-							<?php endforeach; ?>
-
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -313,8 +293,11 @@
 
 	<img class="modal-content-img" id="img01">
 </div>
-
 <style>
+	span p {
+		margin-bottom: 0;
+	}
+
 	/* The Modal (background) */
 	.modal-img {
 		display: none;

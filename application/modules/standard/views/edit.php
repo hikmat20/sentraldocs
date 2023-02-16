@@ -128,11 +128,21 @@
 								<div class="mb-3 row flex-nowrap">
 									<label for="" class="col-2 col-form-label font-weight-bold"></label>
 									<div class="col-10">
-										<?php if ($data->document) : ?>
+										<?php if ($data->document && file_exists($exists_file)) : ?>
 											<div class="d-flex justify-content-between align-items-center">
-												<a target="_blank" href="<?= base_url('/directory/STANDARDS/' . $data->company_id . "/" . $data->document); ?>">
+												<a target="_blank" href="<?= base_url($exists_file); ?>">
 													<div class="d-flex align-items-center">
 														<i class="fa fa-file-alt text-success fa-3x mr-3"></i><?= $data->name; ?>
+													</div>
+												</a>
+												<button type="button" data-id="<?= $data->id; ?>" class="btn delete-file btn-xs btn-icon btn-danger" title="Delete File"><i class="fa fa-times"></i></button>
+											</div>
+										<?php else : ?>
+											<div class="d-flex justify-content-between align-items-center">
+												<a href="#not-found">
+													<div class="d-flex align-items-center">
+														<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Blank-document-broken.svg/1024px-Blank-document-broken.svg.png" alt="file-not-found" class="img-fluid d-inline" width="50">
+														<?= $data->name; ?>
 													</div>
 												</a>
 												<button type="button" data-id="<?= $data->id; ?>" class="btn delete-file btn-xs btn-icon btn-danger" title="Delete File"><i class="fa fa-times"></i></button>
