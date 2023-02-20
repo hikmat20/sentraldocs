@@ -19,7 +19,7 @@ class Guides extends Admin_Controller
 	public function index()
 	{
 		if (!isset($_GET['d']) || $_GET['d'] == '') {
-			redirect('guides/?d=1');
+			redirect('guides/?d=0');
 		}
 
 		$ArrDetail 				= '';
@@ -30,7 +30,7 @@ class Guides extends Admin_Controller
 		if (isset($_GET['d']) && ($_GET['d'])) {
 			$selected 			= $_GET['d'];
 			$details 	  		= $this->db->get_where('view_guides_details', ['guide_id' => $selected, 'status' => '1'])->result();
-			$guides				= $this->db->get_where('guides', ['id' => $selected])->row();
+			$guides				= $this->db->get_where('guides', ['id' => $selected, 'company_id' => $this->company, 'status' => '1'])->row();
 			$breadcumb 			= [($guides) ? $guides->name : ''];
 		}
 
