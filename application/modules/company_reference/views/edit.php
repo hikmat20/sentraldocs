@@ -12,11 +12,11 @@
 						<div class="row">
 							<div class="col-md-10">
 								<div class="mb-3 row flex-nowrap">
-									<label for="" class="col-3 col-form-label font-weight-bold">Company</label>
-									<div class="col-6">
+									<label for="" class="col-2  h6 col-form-label font-weight-bold">Company</label>
+									<div class="col-6">:
 										<input type="hidden" name="id" value="<?= $Data->id; ?>">
 										<input type="hidden" name="company_id" value="<?= $Data->company_id; ?>">
-										<label for="" class="col-form-label font-weight-bolder"><?= $Data->nm_perusahaan; ?></label>
+										<label for="" class="col-form-label font-weight-bolder h6 "><?= $Data->nm_perusahaan; ?></label>
 										<!-- <select name="company_id" id="status" class="form-control select2">
 											<option value=""></option>
 											<?php foreach ($Companies as $comp) : ?>
@@ -25,115 +25,91 @@
 										</select> -->
 									</div>
 								</div>
-								<div class="mb-3 row flex-nowrap">
-									<label for="" class="col-3 col-form-label font-weight-bold">Start Date</label>
-									<div class="col-6">
-										<input type="date" name="sdate" id="sdate" class="form-control" value="<?= $Data->sdate; ?>">
-									</div>
-								</div>
-								<div class="mb-3 row flex-nowrap">
-									<label for="" class="col-3 col-form-label font-weight-bold">Descriptions</label>
-									<div class="col-6">
-										<textarea name="descriptions" id="desc" class="form-control" rows="5" placeholder="Descriptions"><?= $Data->descriptions; ?></textarea>
-									</div>
-								</div>
 							</div>
 						</div>
 
 
 						<!-- STANDARD -->
-						<div class="card shadow-xs border-0">
-							<div class="card-body">
-								<hr>
-								<div class="d-flex justify-content-between align-items-center mb-3">
-									<h4 class="">List Standard</h4>
-								</div>
-
-								<table id="tableStandard" class="table table-sm table-condensed table-bordered">
-									<thead class="text-center ">
-										<tr class="table-light">
-											<th class="py-2" width="50">No</th>
-											<th class="py-2 text-start" width="350">Standard Name</th>
-											<th class="py-2">Descriptions</th>
-											<th class="py-2" width="80">Action</th>
-										</tr>
-									</thead>
-									<tbody>
-										<?php if (isset($datStd)) : ?>
-											<?php $n = 0;
-											foreach ($datStd as $std) : $n++; ?>
-												<tr>
-													<td class="text-center"><?= $n; ?>
-													</td>
-													<td class="">
-														<span class="dataIdStd d-none"><?= $std->standard_id; ?></span>
-														<?= $std->name; ?>
-													</td>
-													<td class=""><?= $std->descriptions; ?></td>
-													<td class="text-center">
-														<button type="button" class="btn btn-danger btn-icon btn-xs del-row-std" data-id="<?= $std->id; ?>"><i class="fa fa-trash" aria-hidden="true"></i></button>
-													</td>
-												</tr>
-											<?php endforeach; ?>
-										<?php else : ?>
-											<tr class="empty">
-												<td colspan="5" class="text-center text-muted">~ No data avilable ~</td>
-											</tr>
-										<?php endif; ?>
-									</tbody>
-								</table>
-								<button type="button" class="btn btn-success btn-sm" id="add_standard"><i class="fa fa-plus mr-2"></i>Add Standard</button>
-							</div>
+						<hr>
+						<div class="d-flex justify-content-between align-items-center mb-3">
+							<h4 class="">List Standard</h4>
 						</div>
+
+						<table id="tableStandard" class="table table-sm table-condensed table-bordered">
+							<thead class="text-center ">
+								<tr class="table-light">
+									<th class="py-2" width="50">No</th>
+									<th class="py-2 text-start">Standard Name</th>
+									<th class="py-2" width="50">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php if (isset($datStd)) : ?>
+									<?php $n = 0;
+									foreach ($datStd as $std) : $n++; ?>
+										<tr>
+											<td class="text-center"><?= $n; ?>
+											</td>
+											<td class="">
+												<span class="dataIdStd d-none"><?= $std->standard_id; ?></span>
+												<?= $std->name; ?>
+											</td>
+											<td class="text-center">
+												<button type="button" class="btn btn-danger btn-icon btn-xs del-row-std" data-id="<?= $std->id; ?>"><i class="fa fa-trash" aria-hidden="true"></i></button>
+											</td>
+										</tr>
+									<?php endforeach; ?>
+								<?php else : ?>
+									<tr class="empty">
+										<td colspan="2" class="text-center text-muted">~ No data avilable ~</td>
+									</tr>
+								<?php endif; ?>
+							</tbody>
+						</table>
+						<button type="button" class="btn btn-success btn-sm" id="add_standard"><i class="fa fa-plus mr-2"></i>Add Standard</button>
 						<br>
-
+						<br>
+						<hr>
 						<!-- REGULATIONS -->
-						<div class="card shadow-xs border-0">
-							<div class="card-body">
-								<div class="d-flex justify-content-between align-items-center mb-3">
-									<h4 class="">List Regulations</h4>
-								</div>
-
-								<table id="tableRegulations" class="table table-sm table-condensed table-bordered">
-									<thead class="text-center ">
-										<tr class="table-light">
-											<th class="py-2" width="50">No</th>
-											<th class="py-2">Regulations Name</th>
-											<th class="py-2" width="350">Descriptions</th>
-											<th class="py-2" width="80">Action</th>
-										</tr>
-									</thead>
-									<tbody>
-										<?php if (isset($dataReg)) : ?>
-											<?php $n = 0;
-											foreach ($dataReg as $reg) : $n++; ?>
-												<tr>
-													<td class="text-center"><?= $n; ?></td>
-													<td class="">
-														<span class="dataIdReg d-none"><?= $reg->regulation_id; ?></span>
-														<?= $reg->name; ?>
-													</td>
-													<td class="text-center"><?= $reg->descriptions; ?></td>
-													<td class="text-center">
-														<button type="button" class="btn btn-danger btn-icon btn-xs del-row-reg" data-id="<?= $reg->id; ?>"><i class="fa fa-trash" aria-hidden="true"></i></button>
-													</td>
-												</tr>
-											<?php endforeach; ?>
-										<?php else : ?>
-											<tr class="empty">
-												<td colspan="5" class="text-center text-muted">~ No data avilable ~</td>
-											</tr>
-										<?php endif; ?>
-									</tbody>
-								</table>
-								<button type="button" class="btn btn-success btn-sm" id="add_regulation"><i class="fa fa-plus mr-2"></i>Add Regulations</button>
-							</div>
+						<div class="d-flex justify-content-between align-items-center mb-3">
+							<h4 class="">List Regulations</h4>
 						</div>
+
+						<table id="tableRegulations" class="table table-sm table-condensed table-bordered">
+							<thead class="text-center ">
+								<tr class="table-light">
+									<th class="py-2" width="50">No</th>
+									<th class="py-2">Regulations Name</th>
+									<th class="py-2" width="50">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php if (isset($dataReg)) : ?>
+									<?php $n = 0;
+									foreach ($dataReg as $reg) : $n++; ?>
+										<tr>
+											<td class="text-center"><?= $n; ?></td>
+											<td class="">
+												<span class="dataIdReg d-none"><?= $reg->regulation_id; ?></span>
+												<?= $reg->name; ?>
+											</td>
+											<td class="text-center">
+												<button type="button" class="btn btn-danger btn-icon btn-xs del-row-reg" data-id="<?= $reg->id; ?>"><i class="fa fa-trash" aria-hidden="true"></i></button>
+											</td>
+										</tr>
+									<?php endforeach; ?>
+								<?php else : ?>
+									<tr class="empty">
+										<td colspan="2" class="text-center text-muted">~ No data avilable ~</td>
+									</tr>
+								<?php endif; ?>
+							</tbody>
+						</table>
+						<button type="button" class="btn btn-success btn-sm" id="add_regulation"><i class="fa fa-plus mr-2"></i>Add Regulations</button>
 					</div>
 					<div class="card-footer justify-content-between d-flex">
 						<button type="submit" class="btn btn-primary w-100px save"><i class="fa fa-save"></i>Save</button>
 						<a href="<?= base_url($this->uri->segment(1)); ?>" class="btn btn-danger"><i class="fa fa-reply"></i>Back</a>
-
 					</div>
 				</div>
 			</form>
@@ -210,7 +186,6 @@
 			})
 		})
 
-
 		$(document).on('click', '#add_standard', function() {
 			const row = $('table#tableStandard tbody tr.empty').length
 			const num = $('table#tableStandard tbody tr.addStd').length + 1
@@ -226,9 +201,6 @@
 							<option value="<?= $std->id; ?>"><?= $std->name; ?></option>
 						<?php endforeach; ?>
 					</select>
-				</td>
-				<td>
-					<input name="standards[` + num + `][descriptions]" placeholder="Descriptions" type="text" class="form-control" maxLength="200">
 				</td>
 				<td class="text-center" style="vertical-align:middle;">
 					<button type="button" class="btn btn-danger btn-icon btn-xs del-row-std"><i class="fa fa-trash" aria-hidden="true"></i></button>
@@ -324,9 +296,6 @@
 							<?php endforeach; ?>
 						<?php endif; ?>
 					</select>
-				</td>
-				<td>
-					<input name="regulations[` + num + `][descriptions]" placeholder="Descriptions" type="text" class="form-control" maxLength="200">
 				</td>
 				<td class="text-center" style="vertical-align:middle;">
 					<button type="button" class="btn btn-danger btn-icon btn-xs del-row-reg"><i class="fa fa-trash" aria-hidden="true"></i></button>

@@ -3,7 +3,7 @@
 		<div class="col-md-10">
 			<div class="mb-3 row flex-nowrap">
 				<label for="" class="col-3 col-form-label font-weight-bold">Select Copmany</label>
-				<div class="col-6">
+				<div class="col-9">
 					<!-- <label class="font-weight-bolder col-form-label"><?= $this->session->company->nm_perusahaan; ?></label> -->
 					<select name="company_id" id="company_id" class="form-control select2">
 						<option value=""></option>
@@ -13,19 +13,6 @@
 					</select>
 				</div>
 			</div>
-			<div class="mb-3 row flex-nowrap">
-				<label for="" class="col-3 col-form-label font-weight-bold">Start Date</label>
-				<div class="col-6">
-					<input type="date" name="sdate" id="sdate" class="form-control">
-				</div>
-			</div>
-			<div class="mb-3 row flex-nowrap">
-				<label for="" class="col-3 col-form-label font-weight-bold">Descriptions</label>
-				<div class="col-6">
-					<textarea name="descriptions" id="desc" class="form-control" rows="5" placeholder="Descriptions"></textarea>
-				</div>
-			</div>
-
 			<div class="mb-3 row flex-nowrap">
 				<label for="" class="col-3 col-form-label font-weight-bold"></label>
 				<div class="col-6">

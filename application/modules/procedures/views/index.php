@@ -5,7 +5,7 @@
 				<div class="card-header">
 					<h2 class="mt-5"><i class="<?= $icon; ?> mr-2"></i><?= $title; ?></h2>
 					<div class="mt-4 float-right ">
-						<a href="<?= base_url($this->uri->segment(1) . '/add'); ?>" class="btn btn-primary" title="Add New Procedure">
+						<a href="<?= base_url($this->uri->segment(1) . '/add'); ?>" class="btn btn-primary" data-toggle="tooltip" title="Add New Procedure">
 							<i class="fa fa-plus mr-1"></i>Add New Procedure
 						</a>
 					</div>
@@ -42,13 +42,13 @@
 
 						<!-- Draft -->
 						<div class="tab-pane fade active show" id="draft" role="tabpanel" aria-labelledby="draft-tab">
-							<table id="example2" class="table table-bordered table-sm table-hover datatable">
+							<table id="example2" class="table datatable table-bordered table-sm table-hover datatable">
 								<thead class="text-center table-light">
 									<tr class="text-center">
-										<th class="py-2" width="40">No.</th>
-										<th class="py-2 text-left">Nama</th>
-										<th class="py-2" width="100">Status</th>
-										<th class="py-2" width="100">Action</th>
+										<th class="p-2" width="40">No.</th>
+										<th class="p-2 text-left">Nama</th>
+										<th class="p-2" width="100">Status</th>
+										<th class="p-2" width="100">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -56,24 +56,24 @@
 										$n = 0;
 										foreach ($dataDraft as $draft) : $n++; ?>
 											<tr class="text-center">
-												<td class="py-2"><?= $n; ?></td>
-												<td class="py-2 text-left">
-													<h5 class="my-0"><?= $draft->name; ?></h5>
+												<td class="p-2"><?= $n; ?></td>
+												<td class="p-2 text-left">
+													<h6 class="my-0"><?= $draft->name; ?></h6>
 												</td>
-												<td class="py-2"><?= $status[$draft->status]; ?></td>
-												<td class="py-2">
-													<a href="<?= base_url($this->uri->segment(1) . '/printout/' . $draft->id); ?>" target="_blank" class="btn btn-sm btn-icon rounded-circle btn-light print" data-status="<?= $draft->status; ?>" data-id="<?= $draft->id; ?>" title="Print Data"><i class="fa fa-print"></i></a>
+												<td class="p-2"><?= $status[$draft->status]; ?></td>
+												<td class="p-2">
+													<a href="<?= base_url($this->uri->segment(1) . '/printout/' . $draft->id); ?>" target="_blank" class="btn btn-xs btn-icon btn-light print" data-status="<?= $draft->status; ?>" data-id="<?= $draft->id; ?>" data-toggle="tooltip" title="Print Data"><i class="fa fa-print"></i></a>
 													<div class="dropdown open d-inline">
-														<button class="btn btn-light-success btn-sm btn-icon rounded-circle" type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+														<button class="btn btn-success btn-xs btn-icon" type="button" id="triggerId" data-toggle="dropdown" title="Opsi" aria-haspopup="true" aria-expanded="false">
 															<i class="fa fa-cog"></i>
 														</button>
 														<div class="dropdown-menu" aria-labelledby="triggerId">
-															<button type="button" class="dropdown-item view text-info" data-status="<?= $draft->status; ?>" data-id="<?= $draft->id; ?>" title="View Data"><i class="fa fa-search mr-2 text-info"></i>View</button>
-															<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $draft->id); ?>" class="dropdown-item text-warning" data-id="<?= $draft->id; ?>" title="Edit Data"><i class="fa fa-edit mr-2 text-warning"></i>Edit</a>
+															<button type="button" class="dropdown-item view text-info" data-status="<?= $draft->status; ?>" data-id="<?= $draft->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search mr-2 text-info"></i>View</button>
+															<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $draft->id); ?>" class="dropdown-item text-warning" data-id="<?= $draft->id; ?>" data-toggle="tooltip" title="Edit Data"><i class="fa fa-edit mr-2 text-warning"></i>Edit</a>
 															<div class="dropdown-divider my-0"></div>
-															<button type="button" class="dropdown-item text-primary review" data-id="<?= $draft->id; ?>" title="Process to Review"><i class="fa fa-sync mr-2 text-primary"></i>Process to Review</button>
+															<button type="button" class="dropdown-item text-primary review" data-id="<?= $draft->id; ?>" data-toggle="tooltip" title="Process to Review"><i class="fa fa-sync mr-2 text-primary"></i>Process to Review</button>
 															<div class="dropdown-divider my-0"></div>
-															<button type="button" class="dropdown-item delete text-danger" data-id="<?= $draft->id; ?>" title="Delete Data"><i class="fa fa-trash mr-2 text-danger"></i>Delete</button>
+															<button type="button" class="dropdown-item delete text-danger" data-id="<?= $draft->id; ?>" data-toggle="tooltip" title="Delete Data"><i class="fa fa-trash mr-2 text-danger"></i>Delete</button>
 														</div>
 													</div>
 
@@ -87,13 +87,13 @@
 
 						<!-- Review -->
 						<div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
-							<table id="tblReview" class="table table-bordered table-sm table-condensed table-hover datatable">
+							<table id="tblReview" class="table datatable table-bordered table-sm table-condensed table-hover datatable">
 								<thead class="text-center table-light">
 									<tr class="text-center">
-										<th class="py-2" width="40">No.</th>
-										<th class="py-2 text-left">Nama</th>
-										<th class="py-2" width="150">Status</th>
-										<th class="py-2" width="150">Action</th>
+										<th class="p-2" width="40">No.</th>
+										<th class="p-2 text-left">Nama</th>
+										<th class="p-2" width="100">Status</th>
+										<th class="p-2" width="100">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -101,14 +101,14 @@
 										$n = 0;
 										foreach ($dataRev as $dt) : $n++; ?>
 											<tr class="text-center">
-												<td class="py-2"><?= $n; ?></td>
-												<td class="py-2 text-left">
-													<h5 class="my-0"><?= $dt->name; ?></h5>
+												<td class="p-2"><?= $n; ?></td>
+												<td class="p-2 text-left">
+													<h6 class="my-0"><?= $dt->name; ?></h6>
 												</td>
-												<td class="py-2"><?= $status[$dt->status]; ?></td>
-												<td class="py-2">
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-light-danger cancle-review" data-id="<?= $dt->id; ?>" title="Cancel Review"><i class="fa fa-undo"></i></button>
+												<td class="p-2"><?= $status[$dt->status]; ?></td>
+												<td class="p-2">
+													<button type="button" class="btn btn-xs btn-icon btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
+													<button type="button" class="btn btn-xs btn-icon btn-light-danger cancle-review" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Cancel Review"><i class="fa fa-undo"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -119,13 +119,13 @@
 
 						<!-- Correction -->
 						<div class="tab-pane fade" id="Correction" role="tabpanel" aria-labelledby="Correction-tab">
-							<table id="tblCorrection" class="table table-bordered table-sm table-condensed table-hover datatable">
+							<table id="tblCorrection" class="table datatable table-bordered table-sm table-condensed table-hover datatable">
 								<thead class="text-center table-light">
 									<tr class="text-center">
-										<th class="py-2" width="40">No.</th>
-										<th class="py-2 text-left">Nama</th>
-										<th class="py-2" width="150">Status</th>
-										<th class="py-2" width="150">Action</th>
+										<th class="p-2" width="40">No.</th>
+										<th class="p-2 text-left">Nama</th>
+										<th class="p-2" width="100">Status</th>
+										<th class="p-2" width="100">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -133,16 +133,16 @@
 										$n = 0;
 										foreach ($dataCor as $dt) : $n++; ?>
 											<tr class="text-center">
-												<td class="py-2"><?= $n; ?></td>
-												<td class="py-2 text-left">
-													<h5 class="my-0"><?= $dt->name; ?></h5>
+												<td class="p-2"><?= $n; ?></td>
+												<td class="p-2 text-left">
+													<h6 class="my-0"><?= $dt->name; ?></h6>
 												</td>
-												<td class="py-2"><?= $status[$dt->status]; ?></td>
-												<td class="py-2">
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning" data-id="<?= $dt->id; ?>" title="Edit Data"><i class="fa fa-edit"></i></a>
-													<!-- <button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button> -->
-													<button type="button" class="btn btn-icon btn-primary review rounded-circle btn-sm" data-id="<?= $dt->id; ?>" title="Process to Review"><i class="fa fa-sync"></i></button>
+												<td class="p-2"><?= $status[$dt->status]; ?></td>
+												<td class="p-2">
+													<button type="button" class="btn btn-xs btn-icon btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
+													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-xs btn-icon btn-warning" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Edit Data"><i class="fa fa-edit"></i></a>
+													<!-- <button type="button" class="btn btn-xs btn-icon btn-danger delete" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Delete Data"><i class="fa fa-trash"></i></button> -->
+													<button type="button" class="btn btn-icon btn-primary review btn-xs" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Process to Review"><i class="fa fa-sync"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -153,13 +153,13 @@
 
 						<!-- Approval -->
 						<div class="tab-pane fade" id="Approval" role="tabpanel" aria-labelledby="Approval-tab">
-							<table id="tblApproval" class="table table-bordered table-sm table-condensed table-hover datatable">
+							<table id="tblApproval" class="table datatable table-bordered table-sm table-condensed table-hover datatable">
 								<thead class="text-center table-light">
 									<tr class="text-center">
-										<th class="py-2" width="40">No.</th>
-										<th class="py-2 text-left">Nama</th>
-										<th class="py-2" width="150">Status</th>
-										<th class="py-2" width="150">Action</th>
+										<th class="p-2" width="40">No.</th>
+										<th class="p-2 text-left">Nama</th>
+										<th class="p-2" width="100">Status</th>
+										<th class="p-2" width="100">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -167,15 +167,15 @@
 										$n = 0;
 										foreach ($dataApv as $dt) : $n++; ?>
 											<tr class="text-center">
-												<td class="py-2"><?= $n; ?></td>
-												<td class="py-2 text-left">
-													<h5 class="my-0"><?= $dt->name; ?></h5>
+												<td class="p-2"><?= $n; ?></td>
+												<td class="p-2 text-left">
+													<h6 class="my-0"><?= $dt->name; ?></h6>
 												</td>
-												<td class="py-2"><?= $status[$dt->status]; ?></td>
-												<td class="py-2">
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-													<!-- <a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning" data-id="<?= $dt->id; ?>" title="Edit Data"><i class="fa fa-edit"></i></a> -->
-													<!-- <button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button> -->
+												<td class="p-2"><?= $status[$dt->status]; ?></td>
+												<td class="p-2">
+													<button type="button" class="btn btn-xs btn-icon btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
+													<!-- <a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-xs btn-icon btn-warning" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Edit Data"><i class="fa fa-edit"></i></a> -->
+													<!-- <button type="button" class="btn btn-xs btn-icon btn-danger delete" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Delete Data"><i class="fa fa-trash"></i></button> -->
 												</td>
 											</tr>
 									<?php endforeach;
@@ -186,14 +186,14 @@
 
 						<!-- Revision -->
 						<div class="tab-pane fade" id="Revision" role="tabpanel" aria-labelledby="Revision-tab">
-							<table id="tblRevision" class="table table-bordered table-sm table-condensed table-hover datatable">
+							<table id="tblRevision" class="table datatable table-bordered table-sm table-condensed table-hover datatable">
 								<thead class="text-center table-light">
 									<tr class="text-center">
-										<th class="py-2" width="40">No.</th>
-										<th class="py-2 text-left">Nama</th>
-										<th class="py-2 text-left">Reason</th>
-										<th class="py-2" width="150">Status</th>
-										<th class="py-2" width="150">Action</th>
+										<th class="p-2" width="40">No.</th>
+										<th class="p-2 text-left">Nama</th>
+										<th class="p-2 text-left">Reason</th>
+										<th class="p-2" width="100">Status</th>
+										<th class="p-2" width="100">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -201,18 +201,18 @@
 										$n = 0;
 										foreach ($dataRvi as $dt) : $n++; ?>
 											<tr class="text-center">
-												<td class="py-2"><?= $n; ?></td>
-												<td class="py-2 text-left">
-													<h5 class="my-0"><?= $dt->name; ?></h5>
+												<td class="p-2"><?= $n; ?></td>
+												<td class="p-2 text-left">
+													<h6 class="my-0"><?= $dt->name; ?></h6>
 												</td>
-												<td class="py-2 text-left">
+												<td class="p-2 text-left">
 													<?= $ArrReason[$dt->id]->note; ?>
 												</td>
-												<td class="py-2"><?= $status[$dt->status]; ?></td>
-												<td class="py-2">
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning" data-id="<?= $dt->id; ?>" title="Edit Data"><i class="fa fa-edit"></i></a>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-success review" data-id="<?= $dt->id; ?>" title="Process to Review"><i class="fa fa-sync-alt"></i></button>
+												<td class="p-2"><?= $status[$dt->status]; ?></td>
+												<td class="p-2">
+													<button type="button" class="btn btn-xs btn-icon btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
+													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-xs btn-icon btn-warning" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Edit Data"><i class="fa fa-edit"></i></a>
+													<button type="button" class="btn btn-xs btn-icon btn-success review" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Process to Review"><i class="fa fa-sync-alt"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -223,13 +223,13 @@
 
 						<!-- Published -->
 						<div class="tab-pane fade" id="published" role="tabpanel" aria-labelledby="published-tab">
-							<table id="example1" class="table table-bordered table-sm table-condensed table-hover datatable">
+							<table id="example1" class="table datatable table-bordered table-sm table-condensed table-hover datatable">
 								<thead class="text-center table-light">
 									<tr class="text-center">
-										<th class="py-2" width="40">No.</th>
-										<th class="py-2 text-left">Nama</th>
-										<th class="py-2" width="150">Status</th>
-										<th class="py-2" width="150">Action</th>
+										<th class="p-2" width="40">No.</th>
+										<th class="p-2 text-left">Nama</th>
+										<th class="p-2" width="100">Status</th>
+										<th class="p-2" width="100">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -237,14 +237,14 @@
 										$n = 0;
 										foreach ($dataPub as $dt) : $n++; ?>
 											<tr class="text-center">
-												<td class="py-2"><?= $n; ?></td>
-												<td class="py-2 text-left">
-													<h5 class="my-0"><?= $dt->name; ?></h5>
+												<td class="p-2"><?= $n; ?></td>
+												<td class="p-2 text-left">
+													<h6 class="my-0"><?= $dt->name; ?></h6>
 												</td>
-												<td class="py-2"><?= $status[$dt->status]; ?></td>
-												<td class="py-2">
-													<a href="<?= base_url($this->uri->segment(1) . '/printout/' . $dt->id); ?>" target="_blank" class="btn btn-sm btn-icon rounded-circle btn-light print" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="Print Data"><i class="fa fa-print"></i></a>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
+												<td class="p-2"><?= $status[$dt->status]; ?></td>
+												<td class="p-2">
+													<a href="<?= base_url($this->uri->segment(1) . '/printout/' . $dt->id); ?>" target="_blank" class="btn btn-xs btn-icon btn-light print" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Print Data"><i class="fa fa-print"></i></a>
+													<button type="button" class="btn btn-xs btn-icon btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -255,13 +255,13 @@
 
 						<!-- Deletion -->
 						<div class="tab-pane fade" id="deletion" role="tabpanel" aria-labelledby="deletion-tab">
-							<table id="example1" class="table table-bordered table-sm table-condensed table-hover datatable">
+							<table class="table datatable table-bordered table-sm table-condensed table-hover datatable">
 								<thead class="text-center table-light">
 									<tr class="text-center">
-										<th class="py-2" width="40">No.</th>
-										<th class="py-2 text-left">Nama</th>
-										<th class="py-2" width="150">Status</th>
-										<th class="py-2" width="150">Action</th>
+										<th class="p-2" width="40">No.</th>
+										<th class="p-2 text-left">Nama</th>
+										<th class="p-2" width="100">Status</th>
+										<th class="p-2" width="100">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -269,15 +269,15 @@
 										$n = 0;
 										foreach ($dataDel as $dt) : $n++; ?>
 											<tr class="text-center">
-												<td class="py-2"><?= $n; ?></td>
-												<td class="py-2 text-left">
-													<h5 class="my-0"><?= $dt->name; ?></h5>
+												<td class="p-2"><?= $n; ?></td>
+												<td class="p-2 text-left">
+													<h6 class="my-0"><?= $dt->name; ?></h6>
 												</td>
-												<td class="py-2"><?= $status[$dt->status]; ?></td>
-												<td class="py-2">
-													<!-- <a href="<?= base_url($this->uri->segment(1) . '/printout/' . $dt->id); ?>" target="_blank" class="btn btn-sm btn-icon rounded-circle btn-light print" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="Print Data"><i class="fa fa-print"></i></a> -->
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button>
+												<td class="p-2"><?= $status[$dt->status]; ?></td>
+												<td class="p-2">
+													<!-- <a href="<?= base_url($this->uri->segment(1) . '/printout/' . $dt->id); ?>" target="_blank" class="btn btn-xs btn-icon btn-light print" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Print Data"><i class="fa fa-print"></i></a> -->
+													<button type="button" class="btn btn-xs btn-icon btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
+													<button type="button" class="btn btn-xs btn-icon btn-danger delete" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Delete Data"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -300,7 +300,7 @@
 		<div class="modal-content">
 			<form class="form-horiontal" id="form-input">
 				<div class="modal-header">
-					<h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+					<h6 class="modal-title" id="staticBackdropLabel">Modal title</h6>
 					<span type="button" onclick="$('#name').val('')" class="btn-close" data-dismiss="modal" aria-label="Close">
 						<div class="fa fa-times"></div>
 					</span>
@@ -321,7 +321,7 @@
 		<div class="modal-content" data-scroll="true" data-height="700">
 			<form class="form-horiontal" id="form-input">
 				<div class="modal-header">
-					<h5 class="modal-title" id="modal-view">View Procedure</h5>
+					<h6 class="modal-title" id="modal-view">View Procedure</h6>
 					<span type="button" onclick="$('#name').val('')" class="btn-close" data-dismiss="modal" aria-label="Close">
 						<i class="fa fa-times"></i>
 					</span>
@@ -340,7 +340,7 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Modal title</h5>
+				<h6 class="modal-title">Modal title</h6>
 				<button type="button" class="close" onclick="$('#content_modal').html('')" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -355,7 +355,7 @@
 	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 90%;">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="modelTitleImg">Modal title</h5>
+				<h6 class="modal-title" id="modelTitleImg">Modal title</h6>
 				<span type="button" class="btn-close" aria-label="Close">
 					<i class="fa fa-times"></i>
 				</span>
@@ -368,10 +368,10 @@
 
 <div id="modalViewImg" class="modal-img">
 	<div class="d-flex w-100 position-fixed justify-content-center" style="top:20px;z-index: inherit;">
-		<button type="button" class="btn btn-sm shadow-xs border w-60px btn-icon bg-white mr-2 no-zoom" title="Normal"><i class="fa fa-sync-alt"></i></button>
-		<button type="button" class="btn btn-sm shadow-xs border w-60px btn-icon bg-white mr-2 zoom-out" title="Zoom Out"><i class="fa fa-minus"></i></button>
-		<button type="button" class="btn btn-sm shadow-xs border w-60px btn-icon bg-white mr-2 zoom-in" title="Zoom In"><i class="fa fa-plus"></i></button>
-		<button type="button" class="btn btn-sm shadow-xs border w-60px btn-icon bg-white mr-2" id="close-modal"><i class="fa fa-times"></i></button>
+		<button type="button" class="btn btn-xs shadow-xs border w-60px btn-icon bg-white mr-2 no-zoom" data-toggle="tooltip" title="Normal"><i class="fa fa-sync-alt"></i></button>
+		<button type="button" class="btn btn-xs shadow-xs border w-60px btn-icon bg-white mr-2 zoom-out" data-toggle="tooltip" title="Zoom Out"><i class="fa fa-minus"></i></button>
+		<button type="button" class="btn btn-xs shadow-xs border w-60px btn-icon bg-white mr-2 zoom-in" data-toggle="tooltip" title="Zoom In"><i class="fa fa-plus"></i></button>
+		<button type="button" class="btn btn-xs shadow-xs border w-60px btn-icon bg-white mr-2" id="close-modal"><i class="fa fa-times"></i></button>
 	</div>
 
 	<img class="modal-content-img" id="img01">
@@ -486,8 +486,8 @@
 			}).columns.adjust();
 		});
 
-		$('#example1,#example2,#tblReview,#tblCorrection,#tblApproval,#tblRevision').DataTable({
-			// orderCellsTop: false,
+		$('.datatable').DataTable({
+			orderCellsTop: false,
 			// fixedHeader: true,
 			// scrollX: true,
 			// ordering: false,
@@ -807,7 +807,7 @@
 
 			// reader.onload = function(e) {
 			// 	console.log(e)
-			// 	var htmlPreview = '<img width="150" src="' + e.target.result + '" />';
+			// 	var htmlPreview = '<img width="100" src="' + e.target.result + '" />';
 			// 	boxZone.append(htmlPreview);
 			// };
 

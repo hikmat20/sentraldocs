@@ -20,8 +20,7 @@
     <div class="tab-content mt-5">
         <div class="tab-pane position-relative fade show active" id="file" role="tabpanel" aria-labelledby="file-tab">
             <div style="width:92%;min-height:100%;background-color: red;position: absolute;opacity: 0;"></div>
-
-            <?php if ($file->link_form) : ?>
+            <?php if (isset($file->link_form) && $file->link_form) : ?>
                 <iframe src="<?= $file->link_form ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
             <?php else : ?>
                 <?php if ($file->file_name) : ?>
@@ -34,9 +33,9 @@
                             $dir = 'RECORDS';
                         }
                     ?>
-                        <iframe src="<?= base_url("directory/$dir/$file->file_name"); ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
+                        <iframe src="<?= base_url("directory/$dir/$file->company_id/$file->file_name"); ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
                     <?php else : ?>
-                        <iframe src="https://docs.google.com/gview?embedded=true&url=<?= base_url("directory/$dir/$file->file_name"); ?>&rm=minimal#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
+                        <iframe src="https://docs.google.com/gview?embedded=true&url=<?= base_url("directory/$dir/$file->company_id/$file->file_name"); ?>&rm=minimal#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
                     <?php endif; ?>
                 <?php endif; ?>
             <?php endif; ?>

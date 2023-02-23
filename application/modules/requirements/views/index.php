@@ -5,7 +5,7 @@
 				<div class="card-header">
 					<h2 class="mt-5"><i class="<?= $icon; ?> mr-2"></i><?= $title; ?></h2>
 					<div class="mt-4 float-right ">
-						<a href="<?= base_url($this->uri->segment(1) . '/add'); ?>" class="btn btn-primary" title="Back">
+						<a href="<?= base_url($this->uri->segment(1) . '/add'); ?>" class="btn btn-primary" data-toggle="tooltip" title="Add New">
 							<i class="fa fa-plus mr-1"></i>Add New
 						</a>
 					</div>
@@ -24,14 +24,14 @@
 					<!-- Tab panes -->
 					<div class="tab-content mt-3">
 						<div class="tab-pane fade active show" id="Published" role="tabpanel" aria-labelledby="Published-tab">
-							<table id="example1" class="table table-bordered table-sm table-hover datatable">
+							<table class="datatable table table-bordered table-sm table-hover datatable">
 								<thead class="text-center table-light">
 									<tr class="text-center">
-										<th width="80">No.</th>
-										<th class="text-left">Nama</th>
-										<th>Tahun</th>
-										<th>Nomor</th>
-										<th width="150">Action</th>
+										<th class="p-2" width="50">No.</th>
+										<th class="text-left p-2">Nama</th>
+										<th class="p-2" width="100">Tahun</th>
+										<th class="p-2" width="100">Nomor</th>
+										<th class="p-2" width="100">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -39,14 +39,14 @@
 										$n = 0;
 										foreach ($data as $dt) : $n++; ?>
 											<tr class="text-center">
-												<td><?= $n; ?></td>
-												<td class="text-left"><?= $dt->name; ?></td>
-												<td><?= $dt->year; ?></td>
-												<td><?= $dt->number; ?></td>
-												<td>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $dt->id; ?>" title="Edit Data"><i class="fa fa-edit"></i></a>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button>
+												<td class="p-2"><?= $n; ?></td>
+												<td class="p-2 text-left"><?= $dt->name; ?></td>
+												<td class="p-2"><?= $dt->year; ?></td>
+												<td class="p-2"><?= $dt->number; ?></td>
+												<td class="p-2">
+													<button type="button" class="btn btn-xs btn-icon btn-info view" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
+													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-xs btn-icon btn-warning edit" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Edit Data"><i class="fa fa-edit"></i></a>
+													<button type="button" class="btn btn-xs btn-icon btn-danger delete" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Delete Data"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -55,14 +55,14 @@
 							</table>
 						</div>
 						<div class="tab-pane fade" id="Draft" role="tabpanel" aria-labelledby="Draft-tab">
-							<table id="example2" class="table table-bordered table-sm table-hover datatable">
+							<table class="datatable table table-bordered table-sm table-hover datatable">
 								<thead class="text-center table-light">
 									<tr class="text-center">
-										<th width="80">No.</th>
-										<th class="text-left">Nama</th>
-										<th>Tahun</th>
-										<th>Nomor</th>
-										<th width="150">Action</th>
+										<th class="p-2" width="50">No.</th>
+										<th class="p-2 text-left">Nama</th>
+										<th class="p-2" width="100">Tahun</th>
+										<th class="p-2" width="100">Nomor</th>
+										<th class="p-2" width="100">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -70,14 +70,14 @@
 										$n = 0;
 										foreach ($dataDraft as $draft) : $n++; ?>
 											<tr class="text-center">
-												<td><?= $n; ?></td>
-												<td class="text-left"><?= $draft->name; ?></td>
-												<td><?= $draft->year; ?></td>
-												<td><?= $draft->number; ?></td>
-												<td>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $draft->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $draft->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $draft->id; ?>" title="Edit Data"><i class="fa fa-edit"></i></a>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $draft->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button>
+												<td class="p-2"><?= $n; ?></td>
+												<td class="p-2 text-left"><?= $draft->name; ?></td>
+												<td class="p-2"><?= $draft->year; ?></td>
+												<td class="p-2"><?= $draft->number; ?></td>
+												<td class="p-2">
+													<button type="button" class="btn btn-sm btn-icon btn-info view" data-id="<?= $draft->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
+													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $draft->id); ?>" class="btn btn-sm btn-icon btn-warning edit" data-id="<?= $draft->id; ?>" data-toggle="tooltip" title="Edit Data"><i class="fa fa-edit"></i></a>
+													<button type="button" class="btn btn-sm btn-icon btn-danger delete" data-id="<?= $draft->id; ?>" data-toggle="tooltip" title="Delete Data"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -118,11 +118,10 @@
 			}).columns.adjust();
 		});
 
-		$('#example1,#example2').DataTable({
+		$('.datatable').DataTable({
 			orderCellsTop: false,
 			// fixedHeader: true,
 			// scrollX: true,
-			ordering: false,
 			// info: false
 		});
 

@@ -9,7 +9,8 @@
 
 class Procedures extends Admin_Controller
 {
-
+	protected $status;
+	protected $sts;
 	public function __construct()
 	{
 		parent::__construct();
@@ -185,6 +186,17 @@ class Procedures extends Admin_Controller
 		if ($Data) {
 			if (isset($_FILES)) {
 				$images = $this->upload_images();
+
+				if ((isset($images['error']) && $images['error']) == '1') {
+					$this->db->trans_rollback();
+					$Return = [
+						'status' => 0,
+						'msg'	 => $images['error_msg'] . ' File gambar gagal diupload, silahkan coba lagi.'
+					];
+					echo json_encode($Return);
+					return false;
+				}
+
 				($images['image1']) ? $Data['image_flow_1'] = $images['image1'] : '';
 				($images['image2']) ? $Data['image_flow_2'] = $images['image2'] : '';
 				($images['image3']) ? $Data['image_flow_3'] = $images['image3'] : '';
@@ -649,7 +661,6 @@ class Procedures extends Admin_Controller
 	{
 		$this->db->trans_begin();
 		if (($id)) {
-
 			$data['modified_by'] = $this->auth->user_id();
 			$data['modified_at'] = date('Y-m-d H:i:s');
 			$data["$dataImg"] = null;
@@ -679,19 +690,35 @@ class Procedures extends Admin_Controller
 		$dataInfo = array();
 		$files = $_FILES;
 
-		$cpt = count($_FILES['img_flow']['name']);
-		for ($i = 0; $i < $cpt; $i++) {
-			$_FILES['img_flow']['name'] = $files['img_flow']['name'][$i];
-			$_FILES['img_flow']['type'] = $files['img_flow']['type'][$i];
-			$_FILES['img_flow']['tmp_name'] = $files['img_flow']['tmp_name'][$i];
-			$_FILES['img_flow']['error'] = $files['img_flow']['error'][$i];
-			$_FILES['img_flow']['size'] = $files['img_flow']['size'][$i];
-
-			$this->upload->initialize($this->set_upload_options());
-			$this->upload->do_upload('img_flow');
-			$dataInfo[] = $this->upload->data();
+		if (!is_dir('./directory/FLOW_IMG/' . $this->company . '/')) {
+			mkdir('./directory/FLOW_IMG/' . $this->company . '/', 0755, TRUE);
+			chmod('./directory/FLOW_IMG/' . $this->company . '/', 0755);  // octal; correct value of mode
+			chown('./directory/FLOW_IMG/' . $this->company . '/', 'www-data');
 		}
+		$cpt = count($_FILES['img_flow']['name']);
 
+		for ($i = 0; $i < $cpt; $i++) {
+			$_FILES['img_flow']['name'] 	= $files['img_flow']['name'][$i];
+			$_FILES['img_flow']['type'] 	= $files['img_flow']['type'][$i];
+			$_FILES['img_flow']['tmp_name'] = $files['img_flow']['tmp_name'][$i];
+			$_FILES['img_flow']['error'] 	= $files['img_flow']['error'][$i];
+			$_FILES['img_flow']['size'] 	= $files['img_flow']['size'][$i];
+
+			if ($files['img_flow']['name'][$i]) {
+				$this->upload->initialize($this->set_upload_options());
+				$this->upload->do_upload('img_flow');
+				$dataInfo[] = $this->upload->data();
+				if ($this->upload->display_errors()) {
+					return [
+						'error' => 1,
+						'error_msg' => $this->upload->display_errors(),
+					];
+					return false;
+				}
+			} else {
+				$dataInfo[$i]['file_name'] = $files['img_flow']['name'][$i];
+			}
+		}
 
 		return array(
 			'image1' => $dataInfo[0]['file_name'],
@@ -704,9 +731,9 @@ class Procedures extends Admin_Controller
 	{
 		//upload an image options
 		$config = array();
-		$config['upload_path'] = './image_flow/';
-		$config['allowed_types'] = 'gif|jpg|png';
-		$config['max_size']      = '0';
+		$config['upload_path'] 	 = './directory/FLOW_IMG/' . $this->company . '/';
+		$config['allowed_types'] = 'gif|jpg|jpeg|png';
+		$config['max_size']      = 5120; // 5mb;
 		$config['overwrite']     = TRUE;
 		$config['encrypt_name']  = TRUE;
 

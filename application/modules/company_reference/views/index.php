@@ -13,44 +13,41 @@
 				</div>
 				<div class="card-body">
 					<!-- Nav tabs -->
-					<ul class="nav nav-tabs nav-pills pb-3" id="myTab" role="tablist">
+					<!-- <ul class="nav nav-tabs nav-pills pb-3" id="myTab" role="tablist">
 						<li class="nav-item" role="presentation">
 							<button class="nav-link active btn-sm" id="Process-tab" data-toggle="tab" data-target="#Process" type="button" role="tab" aria-controls="Process" aria-selected="true">Process <span class="badge badge-circle badge-white text-primary ml-2"><?= count($data); ?></span></button>
 						</li>
 						<li class="nav-item" role="presentation">
 							<button class="nav-link btn-sm" id="Done-tab" data-toggle="tab" data-target="#Done" type="button" role="tab" aria-controls="Done" aria-selected="false">Done <span class="badge badge-circle badge-white text-primary ml-2"><?= count($done); ?></span></button>
 						</li>
-					</ul>
+					</ul> -->
 
 					<!-- Tab panes -->
-					<div class="tab-content mt-3">
+					<div class="tab-content">
 						<div class="tab-pane fade active show" id="Process" role="tabpanel" aria-labelledby="Process-tab">
-							<table id="example1" class="table table-bordered table-sm table-hover datatable">
+							<table class="table table-bordered table-sm table-hover datatable">
 								<thead class="text-center table-light">
 									<tr class="text-center">
-										<th width="50">No.</th>
-										<th class="text-left">Company</th>
-										<th>Standard</th>
-										<th>Regulation</th>
-										<th>Start Date</th>
-										<th>Status</th>
-										<th width="150">Action</th>
+										<!-- <th width="50">No.</th> -->
+										<th class="text-left p-2" width="150">Company</th>
+										<th class="p-2" width="150">Standard</th>
+										<th class="p-2">Regulation</th>
+										<th class="p-2" width="150">Action</th>
 									</tr>
 								</thead>
 								<tbody>
 									<?php if (isset($data) && $data) :
 										$n = 0;
 										foreach ($data as $dt) : $n++; ?>
-											<tr class="text-center">
-												<td><?= $n; ?></td>
-												<td class="text-left"><?= $dt->nm_perusahaan; ?></td>
-												<td>
-
+											<tr class="text-center p-2">
+												<!-- <td><?= $n; ?></td> -->
+												<td class="text-left p-2" style="vertical-align: top;"><?= $dt->nm_perusahaan; ?></td>
+												<td class="p-2" style="vertical-align: top;">
 													<?php if (isset($ArrStd[$dt->id])) : ?>
 														<?= implode(",<br>", $ArrStd[$dt->id]); ?>
 													<?php endif; ?>
 												</td>
-												<td>
+												<td class="p-2" style="vertical-align: top;">
 													<ul class="text-left">
 														<?php if (isset($ArrReg[$dt->id])) : ?>
 															<?php foreach ($ArrReg[$dt->id] as $reg) : ?>
@@ -59,12 +56,10 @@
 														<?php endif; ?>
 													</ul>
 												</td>
-												<td><?= $dt->sdate; ?></td>
-												<td><?= $dt->status; ?></td>
-												<td>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-edit"></i></a>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-trash"></i></button>
+												<td class="p-2" style="vertical-align: top;">
+													<button type="button" class="btn btn-xs btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
+													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-xs btn-icon rounded-circle btn-warning edit" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-edit"></i></a>
+													<button type="button" class="btn btn-xs btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -136,11 +131,11 @@
 			}).columns.adjust();
 		});
 
-		$('#example1,#example2').DataTable({
+		$('.datatable').DataTable({
 			orderCellsTop: false,
 			// fixedHeader: true,
 			// scrollX: true,
-			ordering: false,
+			// ordering: false,
 			// info: false
 		});
 

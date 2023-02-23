@@ -14,7 +14,7 @@
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
 	<div class="d-flex flex-column-fluid">
 		<div class="container">
-			<form id="form-procedure">
+			<form id="form-procedure" enctype="multipart/form-data">
 				<div class="card card-stretch shadow card-custom">
 					<div class="card-header justify-content-between d-flex align-items-center">
 						<h2 class="m-0"><i class="fa fa-plus mr-2"></i><?= $title; ?></h2>
@@ -226,13 +226,13 @@
 																			<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
 																				<div class="dropzone-desc">
 																					<?php if ($data->image_flow_1) : ?>
-																						<img width="150" src="<?= base_url("./image_flow/$data->image_flow_1"); ?>" />
+																						<img width="150" src="<?= base_url("./directory/FLOW_IMG/$data->company_id/$data->image_flow_1"); ?>" />
 																					<?php else : ?>
 																						<i class="fa fa-upload"></i>
 																						<p>Choose an image file or drag it here.</p>
 																					<?php endif; ?>
 																				</div>
-																				<input type="file" name="img_flow[]" data-index="1" class="dropzone dropzone-1">
+																				<input type="file" name="img_flow[]" accept="image/*" data-index="1" class="dropzone dropzone-1">
 																				<?php if ($data->image_flow_1) : ?>
 																					<div class="middle d-flex justify-content-center align-items-center">
 																						<button type="button" onclick="$(this).parent().parent().find('.dropzone').click()" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle"><i class="fa fa-edit"></i></button>
@@ -244,14 +244,14 @@
 																			<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
 																				<div class="dropzone-desc">
 																					<?php if ($data->image_flow_2) : ?>
-																						<img width="150" src="<?= base_url("./image_flow/$data->image_flow_2"); ?>" />
+																						<img width="150" src="<?= base_url("./directory/FLOW_IMG/$data->company_id/$data->image_flow_2"); ?>" />
 																					<?php else : ?>
 																						<i class="fa fa-upload"></i>
 																						<p>Choose an image file or drag it here.</p>
 																					<?php endif; ?>
 																				</div>
 
-																				<input type="file" name="img_flow[]" data-index="2" class="dropzone dropzone-2">
+																				<input type="file" name="img_flow[]" accept="image/*" data-index="2" class="dropzone dropzone-2">
 																				<?php if ($data->image_flow_2) : ?>
 																					<div class="middle d-flex justify-content-center align-items-center">
 																						<button type="button" onclick="$(this).parent().parent().find('.dropzone').click()" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle"><i class="fa fa-edit"></i></button>
@@ -265,13 +265,13 @@
 																			<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
 																				<div class="dropzone-desc">
 																					<?php if ($data->image_flow_3) : ?>
-																						<img width="150" src="<?= base_url("./image_flow/$data->image_flow_3"); ?>" />
+																						<img width="150" src="<?= base_url("./directory/FLOW_IMG/$data->company_id/$data->image_flow_3"); ?>" />
 																					<?php else : ?>
 																						<i class="fa fa-upload"></i>
 																						<p>Choose an image file or drag it here.</p>
 																					<?php endif; ?>
 																				</div>
-																				<input type="file" name="img_flow[]" data-index="3" class="dropzone dropzone-3">
+																				<input type="file" name="img_flow[]" accept="image/*" data-index="3" class="dropzone dropzone-3">
 																				<?php if ($data->image_flow_3) : ?>
 																					<div class="middle d-flex justify-content-center align-items-center">
 																						<button type="button" onclick="$(this).parent().parent().find('.dropzone').click()" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle"><i class="fa fa-edit"></i></button>
@@ -501,48 +501,42 @@
 							<div class="tab-pane fade" id="form" role="tabpanel" aria-labelledby="form-tab">
 								<button type="button" class="btn btn-primary mb-3" id="add_form"><i class="fa fa-plus"></i> Add Form</button>
 								<div id="form-data-content">
-									<table class="table table-bordered table-hover">
+									<table class="table datatable table-bordered table-hover">
 										<thead>
 											<tr class="table-light">
-												<th width="50" class="text-center">No</th>
-												<th class="text-center">Name</th>
-												<th width="100" class="text-">Link Form</th>
-												<th width="50" class="text-center">File</th>
-												<th width="200" class="text-center">Update</th>
-												<th width="150" class="text-center">Opis</th>
+												<th width="50" class="p-2 text-center">No</th>
+												<th class="p-2 text-center">Name</th>
+												<th width="100" class="p-2 text-">Link Form</th>
+												<th width="50" class="p-2 text-center">File</th>
+												<th width="200" class="p-2 text-center">Update</th>
+												<th width="150" class="p-2 text-center">Opis</th>
 											</tr>
 										</thead>
 										<tbody>
 											<?php if (isset($getForms)) : $n = 0; ?>
 												<?php foreach ($getForms as $form) : $n++; ?>
 													<tr>
-														<td class="text-center"><?= $n; ?></td>
-														<td class=""><?= $form->name; ?></td>
-														<td class="text-center">
+														<td class="p-2 text-center"><?= $n; ?></td>
+														<td class="p-2"><?= $form->name; ?></td>
+														<td class="p-2 text-center">
 															<a target="_blank" href="<?= $form->link_form; ?>">
 																<span class="badge bg-primary text-white"><?= $form->link_form; ?></span>
 															</a>
 														</td>
-														<td class="text-center">
+														<td class="p-2 text-center">
 															<?php if ($form->file_name) : ?>
 																<button type="button" class="btn p-0 btn-sm btn-link text-success btn-icon view-form" data-id="<?= $form->id; ?>"><i class="fas fa-file-pdf text-success"></i></button>
 															<?php else : ?>
 																<i class="fa fa-times text-danger"></i>
 															<?php endif; ?>
 														</td>
-														<td class="text-center"><?= $form->created_at; ?></td>
-														<td class="text-center">
-															<button type="button" class="btn btn-sm btn-icon btn-warning shadow-sm edit-form" data-id="<?= $form->id; ?>"><i class="fa fa-edit"></i></button>
-															<button type="button" class="btn btn-sm btn-icon btn-danger shadow-sm delete-form" data-id="<?= $form->id; ?>"><i class="fa fa-trash"></i></button>
+														<td class="p-2 text-center"><?= $form->created_at; ?></td>
+														<td class="p-2 text-center">
+															<button type="button" class="btn btn-xs btn-icon btn-warning edit-form" data-id="<?= $form->id; ?>"><i class="fa fa-edit"></i></button>
+															<button type="button" class="btn btn-xs btn-icon btn-danger delete-form" data-id="<?= $form->id; ?>"><i class="fa fa-trash"></i></button>
 														</td>
 													</tr>
 												<?php endforeach; ?>
-											<?php else : ?>
-												<tr>
-													<td colspan="3" class="text-center py-3">
-														<h5 class="text-light-secondary">~ No data available~ </h5>
-													</td>
-												</tr>
 											<?php endif; ?>
 										</tbody>
 									</table>
@@ -552,42 +546,36 @@
 							<div class="tab-pane fade" id="guides" role="tabpanel" aria-labelledby="guides-tab">
 								<button type="button" class="btn btn-primary mb-3" id="add_guide"><i class="fa fa-plus"></i> Add IK</button>
 								<div id="guide-data-content">
-									<table class="table table-bordered table-hover">
+									<table class="table datatable table-bordered table-hover">
 										<thead>
 											<tr class="table-light">
-												<th width="50" class="text-center">No</th>
-												<th class="text-center">Name</th>
-												<th width="50" class="text-center">File</th>
-												<th width="200" class="text-center">Update</th>
-												<th width="150" class="text-center">Opis</th>
+												<th width="50" class="p-2 text-center">No</th>
+												<th class="p-2 text-center">Name</th>
+												<th width="50" class="p-2 text-center">File</th>
+												<th width="200" class="p-2 text-center">Update</th>
+												<th width="150" class="p-2 text-center">Opis</th>
 											</tr>
 										</thead>
 										<tbody>
 											<?php if (isset($getGuides)) : $n = 0; ?>
 												<?php foreach ($getGuides as $ik) : $n++; ?>
 													<tr>
-														<td class="text-center"><?= $n; ?></td>
-														<td class=""><?= $ik->name; ?></td>
-														<td class="text-center">
+														<td class="p-2 text-center"><?= $n; ?></td>
+														<td class="p-2"><?= $ik->name; ?></td>
+														<td class="p-2 text-center">
 															<?php if ($ik->file_name) : ?>
 																<button type="button" class="btn p-0 btn-sm btn-link text-success btn-icon view-guide" data-id="<?= $ik->id; ?>"><i class="fas fa-file-pdf text-success"></i></button>
 															<?php else : ?>
 																<i class="fa fa-times text-danger"></i>
 															<?php endif; ?>
 														</td>
-														<td class="text-center"><?= $ik->created_at; ?></td>
-														<td class="text-center">
-															<button type="button" class="btn btn-sm btn-icon btn-warning shadow-sm edit-guide" data-id="<?= $ik->id; ?>"><i class="fa fa-edit"></i></button>
-															<button type="button" class="btn btn-sm btn-icon btn-danger shadow-sm delete-guide" data-id="<?= $ik->id; ?>"><i class="fa fa-trash"></i></button>
+														<td class="p-2 text-center"><?= $ik->created_at; ?></td>
+														<td class="p-2 text-center">
+															<button type="button" class="btn btn-xs btn-icon btn-warning edit-guide" data-id="<?= $ik->id; ?>"><i class="fa fa-edit"></i></button>
+															<button type="button" class="btn btn-xs btn-icon btn-danger delete-guide" data-id="<?= $ik->id; ?>"><i class="fa fa-trash"></i></button>
 														</td>
 													</tr>
 												<?php endforeach; ?>
-											<?php else : ?>
-												<tr>
-													<td colspan="3" class="text-center py-3">
-														<h5 class="text-light-secondary">~ No data available~ </h5>
-													</td>
-												</tr>
 											<?php endif; ?>
 										</tbody>
 									</table>
@@ -601,7 +589,7 @@
 									<button type="button" class="btn btn-success btn-icon mb-3" id="refresh" title="Refresh"><i class="fa fa-sync-alt"></i></button>
 									<hr>
 									<input type="hidden" id="refresh_id" value="">
-									<table class="table table-hover">
+									<table class="table datatable table-hover">
 										<thead>
 											<tr>
 												<th class="py-0">File or Folder Name</th>
@@ -692,6 +680,14 @@
 
 <script>
 	$(document).ready(function() {
+		$('button[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+			$.fn.dataTable.tables({
+				visible: true,
+				api: true
+			}).columns.adjust();
+		});
+
+		$('.datatable').DataTable()
 		$('.select2').select2({
 			placeholder: "Choose an options",
 			width: "100%",
@@ -889,6 +885,22 @@
 				return false;
 			}
 
+			var validate = true
+			$('input[name="img_flow[]"]').each(function() {
+				console.log(this.files[0]);
+				if (this.files[0]) {
+					size = this.files[0].size
+					if (size > 5 * 1024 * 1024) {
+						Swal.fire('Warning', 'ukuran file lebih dari 5MB', 'warning', 3000)
+						validate = false
+					}
+				}
+			});
+
+			if (!validate) {
+				return false
+			}
+			// console.log(img);
 			$.ajax({
 				url: siteurl + active_controller + 'save',
 				data: formdata,
@@ -905,6 +917,7 @@
 					btn.attr('disabled', false)
 					btn.html('<i class="fa fa-save"></i>Save')
 				},
+
 				success: function(result) {
 					if (result.status == 1) {
 						Swal.fire({
@@ -912,9 +925,12 @@
 							icon: 'success',
 							text: result.msg,
 							timer: 2000
+						}).then(() => {
+							location.reload()
+							$('#modelId').modal('hide')
+							$('#flowDetail table tbody').load(siteurl + active_controller + 'loadFlow/' + result.id)
 						})
-						$('#modelId').modal('hide')
-						$('#flowDetail table tbody').load(siteurl + active_controller + 'loadFlow/' + result.id)
+
 					} else {
 						Swal.fire({
 							title: 'Warning!',
@@ -1869,34 +1885,43 @@
 			confirmButtonText: 'Yes, Delete <i class="fa fa-trash text-white"></i>',
 		}).then((value) => {
 			if (value.isConfirmed) {
-				$.ajax({
-					url: siteurl + active_controller + 'delete_img/' + id + '/' + dataImg,
-					type: 'GET',
-					dataType: 'JSON',
-					success: function(result) {
-						if (result.status == '1') {
-							Swal.fire({
-								title: 'Success!!',
-								text: result.msg,
-								icon: 'success',
-								timer: 1500
-							});
+				if (id && dataImg) {
+					$.ajax({
+						url: siteurl + active_controller + 'delete_img/' + id + '/' + dataImg,
+						type: 'GET',
+						dataType: 'JSON',
+						success: function(result) {
+							if (result.status == '1') {
+								Swal.fire({
+									title: 'Success!!',
+									text: result.msg,
+									icon: 'success',
+									timer: 1500
+								});
 
-							let srcFile = $(e).parent().parent().find('.dropzone-desc').find('img').attr('src')
-							$(e).parent().parent().find('input.dropzone').val();
-							$(e).parent().parent().find('input.dropzone').off();
-							$(e).parent().parent().find('.dropzone-desc').empty().append('<i class="fa fa-upload"></i><p> Choose an image file or drag it here. </p>');
-							// $(e).parent().parent().find('.for-delete').empty().append('<input type="hidden" name="delete_image[]" value="' + srcFile + '">');
-							$(e).parent().remove();
+								let srcFile = $(e).parent().parent().find('.dropzone-desc').find('img').attr('src')
+								$(e).parent().parent().find('input.dropzone').val('');
+								$(e).parent().parent().find('input.dropzone').off();
+								$(e).parent().parent().find('.dropzone-desc').empty().append('<i class="fa fa-upload"></i><p> Choose an image file or drag it here. </p>');
+								// $(e).parent().parent().find('.for-delete').empty().append('<input type="hidden" name="delete_image[]" value="' + srcFile + '">');
+								$(e).parent().remove();
 
-						} else {
-							Swal.fire('Warning', "Can't delete data. Please try again!", 'warning', 2000)
+							} else {
+								Swal.fire('Warning', "Can't delete data. Please try again!", 'warning', 2000)
+							}
+						},
+						error: function() {
+							Swal.fire('Error!', 'Server timeout. Please try again!', 'error', 3000)
 						}
-					},
-					error: function() {
-						Swal.fire('Error!', 'Server timeout. Please try again!', 'error', 3000)
-					}
-				})
+					})
+				} else {
+					let srcFile = $(e).parent().parent().find('.dropzone-desc').find('img').attr('src')
+					$(e).parent().parent().find('input.dropzone').val('');
+					$(e).parent().parent().find('input.dropzone').off();
+					$(e).parent().parent().find('.dropzone-desc').empty().append('<i class="fa fa-upload"></i><p> Choose an image file or drag it here. </p>');
+					// $(e).parent().parent().find('.for-delete').empty().append('<input type="hidden" name="delete_image[]" value="' + srcFile + '">');
+					$(e).parent().remove();
+				}
 			}
 		})
 

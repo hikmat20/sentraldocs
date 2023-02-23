@@ -5,22 +5,21 @@
 				<div class="card-header">
 					<h2 class="mt-5"><i class="<?= $icon; ?> mr-2"></i><?= $title; ?></h2>
 					<div class="mt-4 float-right ">
-						<!-- <button type="button" class="btn btn-primary cross" title="Cross Pasal to Proses">Cross Pasal to Proses</button> -->
+						<!-- <button type="button" class="btn btn-primary cross" data-toggle="tooltip" title="Cross Pasal to Proses">Cross Pasal to Proses</button> -->
 						<!-- <a href="<?= base_url($this->uri->segment(1) . '/pasal_to_process'); ?>" class="btn btn-primary" title="Cross Pasal to Proses">
 							Cross Pasal to Proses
 						</a> -->
-						<a target="_blank" href="<?= base_url($this->uri->segment(1) . '/process_to_pasal'); ?>" class="btn btn-success" title="Cross Proses to Pasal">Cross Proses to Pasal</a>
-						<a target="_blank" href="<?= base_url($this->uri->segment(1) . '/print_process_to_pasal/' . $company_id); ?>" class="btn btn-secondary btn-icon" title="Print Cross Pasal to Proses"><i class="fa fa-print"></i></a>
+						<a href="<?= base_url($this->uri->segment(1) . '/process_to_pasal'); ?>" class="btn btn-success" data-toggle="tooltip" title="Cross Proses to Pasal">Cross Proses to Pasal</a>
+						<a target="_blank" href="<?= base_url($this->uri->segment(1) . '/print_process_to_pasal/' . $company_id); ?>" class="btn btn-light btn-icon" data-toggle="tooltip" title="Print Cross Pasal to Proses"><i class="fa fa-print"></i></a>
 					</div>
 				</div>
 				<div class="card-body">
-					<table id="example1" class="table table-bordered table-sm table-hover datatable">
+					<table id="example1" class="table table-bordered table-hover table-sm datatable">
 						<thead class="text-center">
 							<tr class="text-center">
-								<th width="40">No.</th>
-								<th class="text-left">Nama</th>
-
-								<th width="150">Action</th>
+								<th class="p-2" width="40">No.</th>
+								<th class="p-2 text-left">Nama</th>
+								<th class="p-2" width="100">Action</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -28,12 +27,12 @@
 								$n = 0;
 								foreach ($data as $dt) : $n++; ?>
 									<tr class="text-center">
-										<td><?= $n; ?></td>
-										<td class="text-left"><?= $dt->name; ?></td>
-										<td>
-											<a href="<?= base_url($this->uri->segment(1) . '/print_cross_pasal_to_process/' . $dt->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-secondary print" data-id="<?= $dt->id; ?>" title="Print"><i class="fa fa-print"></i></a>
-											<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-											<a href="<?= base_url($this->uri->segment(1) . '/cross_pasal/' . $dt->standard_id); ?>" class="btn btn-sm btn-icon rounded-circle btn-primary edit" data-id="<?= $dt->id; ?>" title="Edit"><i class="fa fa-random"></i></a>
+										<td class="p-2"><?= $n; ?></td>
+										<td class="p-2 text-left"><?= $dt->name; ?></td>
+										<td class="p-2">
+											<button type="button" class="btn btn-xs btn-icon btn-info view" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
+											<a href="<?= base_url($this->uri->segment(1) . '/print_cross_pasal_to_process/' . $dt->id); ?>" class="btn btn-xs btn-icon btn-light print" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Print"><i class="fa fa-print"></i></a>
+											<a href="<?= base_url($this->uri->segment(1) . '/cross_pasal/' . $dt->standard_id); ?>" class="btn btn-xs btn-icon btn-success edit" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Edit Cross Reference"><i class="fa fa-random"></i></a>
 										</td>
 									</tr>
 							<?php endforeach;
@@ -74,7 +73,7 @@
 			orderCellsTop: false,
 			// fixedHeader: true,
 			// scrollX: true,
-			ordering: false,
+			// ordering: false,
 			// info: false
 		});
 

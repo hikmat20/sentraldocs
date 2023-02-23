@@ -24,7 +24,7 @@ class Company_reference extends Admin_Controller
 
 	public function index()
 	{
-		$data		= $this->db->get_where('view_references', ['status' => 'OPN'])->result();
+		$data		= $this->db->get_where('view_references', ['status' => 'OPN', 'company_id' => $this->company])->result();
 		$done		= $this->db->get_where('view_references', ['status' => 'DONE'])->result();
 		$lsStd 		= $this->db->get_where('view_ref_standards')->result();
 		$lsReg 		= $this->db->get_where('view_ref_regulations')->result();

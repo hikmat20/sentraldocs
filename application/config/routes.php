@@ -73,7 +73,7 @@ $route['list/compliances/(:any)'] = 'documents_list/compliances/$1';
 $route['list/materi'] = 'documents_list/materi';
 $route['list/materi/(:any)'] = 'documents_list/materi/$1';
 
-/* MATERI TRAINING */
+/* MATERI GUIDES */
 $route['list/guides'] = 'documents_list/guides';
 $route['list/guides/(:any)'] = 'documents_list/guides/$1';
 

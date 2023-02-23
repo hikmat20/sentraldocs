@@ -51,7 +51,7 @@ class Standard extends Admin_Controller
 	{
 		$standards 		= $this->db->get_where('standards', ['id' => $id])->row();
 		$category 		= $this->db->get_where('standard_category')->result();
-		$scopes 		= $this->db->get_where('tool_scopes')->result();
+		$scopes 		= $this->db->get_where('tool_scopes', ['company_id' => $this->company])->result();
 		$exists_file 	= "./directory/STANDARDS/$this->company/$standards->document";
 		if ($standards) {
 			$this->template->set([

@@ -5,7 +5,7 @@
 				<div class="card-header">
 					<h2 class="mt-5"><i class="<?= $icon; ?> mr-2"></i><?= $title; ?></h2>
 					<div class="mt-4 float-right ">
-						<a href="<?= base_url($this->uri->segment(1) . '/add'); ?>" class="btn btn-primary" title="Back">
+						<a href="<?= base_url($this->uri->segment(1) . '/add'); ?>" class="btn btn-primary" data-toggle="tooltip" title="Add New">
 							<i class="fa fa-plus mr-1"></i>Add New
 						</a>
 					</div>
@@ -27,13 +27,13 @@
 							<table id="example1" class="table table-bordered table-sm table-hover datatable">
 								<thead class="text-center table-light">
 									<tr class="text-center">
-										<th width="5%">No.</th>
-										<th class="text-left">Regulation Name</th>
-										<th class="text-center">Year</th>
-										<th width="150">Subject</th>
-										<th>Category</th>
-										<th width="70">Last Update</th>
-										<th width="70">Action</th>
+										<th class="p-2" width="50">No.</th>
+										<th class="p-2 text-left">Regulation Name</th>
+										<th class="p-2 text-center" width="70">Year</th>
+										<th class="p-2" width="150">Subject</th>
+										<th class="p-2" width="170">Category</th>
+										<th class="p-2" width="100">Last Update</th>
+										<th class="p-2" width="90">Action</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -41,17 +41,17 @@
 										$n = 0;
 										foreach ($data as $dt) : $n++; ?>
 											<tr>
-												<td class="p-1"><?= $n; ?></td>
-												<td class="p-1"><?= $dt->name; ?></td>
-												<td class="p-1 text-center"><?= $dt->year; ?></td>
-												<td class="p-1 text-center">
+												<td class="p-2 text-center"><?= $n; ?></td>
+												<td class="p-2"><?= $dt->name; ?></td>
+												<td class="p-2 text-center"><?= $dt->year; ?></td>
+												<td class="p-2 text-center">
 													<?php if (isset($ArrRegSjb[$dt->id])) : ?>
 														<?php foreach ($ArrRegSjb[$dt->id] as $sbj) : ?>
 															<span class="label label-danger label-inline mb-1"><?= $sbj->subject_name; ?></span>
 														<?php endforeach; ?>
 													<?php endif; ?>
 												</td>
-												<td class="p-1 text-center">
+												<td class="p-2 text-center">
 													<?php if (isset($ArrRegScp[$dt->id])) : ?>
 														<?php foreach ($ArrRegScp[$dt->id] as $scp) : ?>
 															<span class="label label-success label-inline mb-1"><?= $scp->scope_name; ?></span>
@@ -61,10 +61,10 @@
 												<td class="text-center">
 													<?= ($dt->modified_at) ?: $dt->created_at; ?>
 												</td>
-												<td class="text-center p-1">
-													<button type="button" class="btn btn-xs btn-icon rounded-circle btn-info view" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-xs btn-icon rounded-circle btn-warning edit" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-edit"></i></a>
-													<button type="button" class="btn btn-xs btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id; ?>" title="Delete Data"><i class="fa fa-trash"></i></button>
+												<td class="text-center p-2">
+													<button type="button" class="btn btn-xs btn-icon btn-info view" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
+													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-xs btn-icon btn-warning edit" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-edit"></i></a>
+													<button type="button" class="btn btn-xs btn-icon btn-danger delete" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Delete Data"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -76,26 +76,44 @@
 							<table id="example2" class="table table-bordered table-sm table-hover datatable">
 								<thead class="text-center table-light">
 									<tr class="text-center">
-										<th width="80">No.</th>
-										<th class="text-left">Nama</th>
-										<th>Tahun</th>
-										<th>Nomor</th>
-										<th width="150">Action</th>
+										<th class="p-2" width="50">No.</th>
+										<th class="p-2 text-left">Regulation Name</th>
+										<th class="p-2 text-center">Year</th>
+										<th class="p-2" width="150">Subject</th>
+										<th class="p-2" width="170">Category</th>
+										<th class="p-2" width="70">Last Update</th>
+										<th class="p-2" width="90">Action</th>
 									</tr>
 								</thead>
 								<tbody>
 									<?php if (isset($drafts) && $drafts) :
 										$n = 0;
 										foreach ($drafts as $draft) : $n++; ?>
-											<tr class="text-center">
-												<td><?= $n; ?></td>
-												<td class="text-left"><?= $draft->name; ?></td>
-												<td><?= $draft->year; ?></td>
-												<td><?= $draft->number; ?></td>
-												<td>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $draft->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $draft->id); ?>" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $draft->id; ?>" title="View Data"><i class="fa fa-edit"></i></a>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $draft->id; ?>" title="View Data"><i class="fa fa-trash"></i></button>
+											<tr>
+												<td class="p-2 text-center"><?= $n; ?></td>
+												<td class="p-2"><?= $draft->name; ?></td>
+												<td class="p-2 text-center"><?= $draft->year; ?></td>
+												<td class="p-2 text-center">
+													<?php if (isset($ArrRegSjb[$draft->id])) : ?>
+														<?php foreach ($ArrRegSjb[$draft->id] as $sbj) : ?>
+															<span class="label label-danger label-inline mb-1"><?= $sbj->subject_name; ?></span>
+														<?php endforeach; ?>
+													<?php endif; ?>
+												</td>
+												<td class="p-2 text-center">
+													<?php if (isset($ArrRegScp[$draft->id])) : ?>
+														<?php foreach ($ArrRegScp[$draft->id] as $scp) : ?>
+															<span class="label label-success label-inline mb-1"><?= $scp->scope_name; ?></span>
+														<?php endforeach; ?>
+													<?php endif; ?>
+												</td>
+												<td class="text-center">
+													<?= ($draft->modified_at) ?: $draft->created_at; ?>
+												</td>
+												<td class="text-center p-2">
+													<button type="button" class="btn btn-xs btn-icon btn-info view" data-id="<?= $draft->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
+													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $draft->id); ?>" class="btn btn-xs btn-icon btn-warning edit" data-id="<?= $draft->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-edit"></i></a>
+													<button type="button" class="btn btn-xs btn-icon btn-danger delete" data-id="<?= $draft->id; ?>" data-toggle="tooltip" title="Delete Data"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 									<?php endforeach;
