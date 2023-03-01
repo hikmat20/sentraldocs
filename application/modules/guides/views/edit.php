@@ -40,7 +40,7 @@
 				<div class="col-8">
 					<select name="reference[]" id="reference" class="form-control select2" multiple data-placeholder="Choose an options" data-allow-clear="true">
 						<?php if ($references) foreach ($references as $ref) : ?>
-							<option value="<?= $ref->id; ?>" <?= (in_array($ref->id, json_decode($data->reference))) ? 'selected' : ''; ?>><?= $ref->name; ?></option>
+							<option value="<?= $ref->id; ?>" <?= (in_array($ref->id, json_decode($data->reference))) ? 'selected' : ''; ?>><?= $ref->alias; ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>

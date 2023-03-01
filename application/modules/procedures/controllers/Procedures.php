@@ -1,12 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-/*
- * @author Syamsudin
- * @copyright Copyright (c) 2021, Syamsudin
- *
- * This is controller for Folders
- */
-
 class Procedures extends Admin_Controller
 {
 	protected $status;
@@ -183,6 +176,9 @@ class Procedures extends Admin_Controller
 		$Data 			= $this->input->post();
 		$Data_flow 		= $this->input->post('flow');
 
+		unset($Data['DataTables_Table_0_length']);
+		unset($Data['DataTables_Table_1_length']);
+		unset($Data['DataTables_Table_2_length']);
 		if ($Data) {
 			if (isset($_FILES)) {
 				$images = $this->upload_images();
@@ -429,12 +425,12 @@ class Procedures extends Admin_Controller
 		$data = $this->input->post('forms');
 
 		if ($_FILES['forms_image']) {
-			if (!is_dir("./directory/RECORDS")) {
-				mkdir("./directory/RECORDS", 0755, TRUE);
-				chmod("./directory/RECORDS", 0755);  // octal; correct value of mode
-				chown("./directory/RECORDS", 'www-data');
+			if (!is_dir("./directory/RECORDS/$this->company/")) {
+				mkdir("./directory/RECORDS/$this->company/", 0755, TRUE);
+				chmod("./directory/RECORDS/$this->company/", 0755);  // octal; correct value of mode
+				chown("./directory/RECORDS/$this->company/", 'www-data');
 			}
-			$config['upload_path'] 		= "./directory/RECORDS"; //path folder
+			$config['upload_path'] 		= "./directory/RECORDS/$this->company/"; //path folder
 			$config['allowed_types'] 	= 'pdf'; //type yang dapat diakses bisa anda sesuaikan
 			$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
 			// $config['file_name'] 		= $new_name;
@@ -460,8 +456,8 @@ class Procedures extends Admin_Controller
 				unset($data['old_file']);
 
 				if ($old_file != null) {
-					if (file_exists("./directory/RECORDS/" . $old_file)) {
-						unlink("./directory/RECORDS/" . $old_file);
+					if (file_exists("./directory/RECORDS/$this->company/" . $old_file)) {
+						unlink("./directory/RECORDS/$this->company/" . $old_file);
 					}
 				}
 
@@ -838,10 +834,10 @@ class Procedures extends Admin_Controller
 			unset($data['type']);
 
 			if (isset($_FILES['forms_image'])) {
-				if (!is_dir("./directory/FORMS")) {
-					mkdir("./directory/FORMS", 0755, TRUE);
-					chmod("./directory/FORMS", 0755);  // octal; correct value of mode
-					chown("./directory/FORMS", 'www-data');
+				if (!is_dir("./directory/FORMS/$this->company/")) {
+					mkdir("./directory/FORMS/$this->company/", 0755, TRUE);
+					chmod("./directory/FORMS/$this->company/", 0755);  // octal; correct value of mode
+					chown("./directory/FORMS/$this->company/", 'www-data');
 				}
 				$config['upload_path'] 		= "./directory/FORMS"; //path folder
 				$config['allowed_types'] 	= 'pdf'; //type yang dapat diakses bisa anda sesuaikan
@@ -861,8 +857,8 @@ class Procedures extends Admin_Controller
 					unset($data['old_file']);
 
 					if ($old_file != null) {
-						if (file_exists("./directory/FORMS/" . $old_file)) {
-							unlink("./directory/FORMS/" . $old_file);
+						if (file_exists("./directory/FORMS/$this->company/" . $old_file)) {
+							unlink("./directory/FORMS/$this->company/" . $old_file);
 						}
 					};
 
@@ -928,8 +924,8 @@ class Procedures extends Admin_Controller
 	private function _delete_file($dir = null, $file_name = null)
 	{
 		if ($dir && $file_name) {
-			if (file_exists("./directory/$dir/" . $file_name)) {
-				unlink("./directory/$dir/" . $file_name);
+			if (file_exists("./directory/$dir/$this->company/" . $file_name)) {
+				unlink("./directory/$dir/$this->company/" . $file_name);
 			}
 		}
 	}
@@ -1034,12 +1030,12 @@ class Procedures extends Admin_Controller
 		$data = $this->input->post('forms');
 
 		if ($_FILES['forms_image']) {
-			if (!is_dir("./directory/GUIDES")) {
-				mkdir("./directory/GUIDES", 0755, TRUE);
-				chmod("./directory/GUIDES", 0755);  // octal; correct value of mode
-				chown("./directory/GUIDES", 'www-data');
+			if (!is_dir("./directory/GUIDES/$this->company")) {
+				mkdir("./directory/GUIDES/$this->company", 0755, TRUE);
+				chmod("./directory/GUIDES/$this->company", 0755);  // octal; correct value of mode
+				chown("./directory/GUIDES/$this->company", 'www-data');
 			}
-			$config['upload_path'] 		= "./directory/GUIDES"; //path folder
+			$config['upload_path'] 		= "./directory/GUIDES/$this->company"; //path folder
 			$config['allowed_types'] 	= 'pdf'; //type yang dapat diakses bisa anda sesuaikan
 			$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
 			// $config['file_name'] 		= $new_name;
@@ -1066,8 +1062,8 @@ class Procedures extends Admin_Controller
 				unset($data['old_file']);
 
 				if ($old_file != null) {
-					if (file_exists("./directory/GUIDES/" . $old_file)) {
-						unlink("./directory/GUIDES/" . $old_file);
+					if (file_exists("./directory/GUIDES/$this->company/" . $old_file)) {
+						unlink("./directory/GUIDES/$this->company/" . $old_file);
 					}
 				}
 
@@ -1253,10 +1249,7 @@ class Procedures extends Admin_Controller
 
 		unset($Data['folder_id']);
 		unset($Data['folder_name']);
-		// echo '<pre>';
-		// print_r($Data);
-		// echo '<pre>';
-		// exit;
+
 		$this->db->trans_begin();
 		if ($Data) {
 			if (isset($Data['id']) && $Data['id']) {
@@ -1323,7 +1316,6 @@ class Procedures extends Admin_Controller
 			$getRecords = $this->db->get_where('dir_records', ['procedure_id' => $procedure_id, 'status !=' => 'DEL', 'flag_type' => 'FOLDER'])->result();
 			$EOF = true;
 		}
-
 
 		$this->template->set([
 			'getRecords' => $getRecords,

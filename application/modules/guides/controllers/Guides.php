@@ -26,6 +26,7 @@ class Guides extends Admin_Controller
 		$selected 				= $details = $breadcumb = $sub = $methode = '';
 		$details_data 			= 0;
 		$dirs 	  				= $this->db->get_where('guides', ['status' => '1', 'company_id' => $this->company])->result();
+		$references 	 = $this->db->get_where('view_standards', ['status' => 'PUB'])->result();
 
 		if (isset($_GET['d']) && ($_GET['d'])) {
 			$selected 			= $_GET['d'];
@@ -42,7 +43,10 @@ class Guides extends Admin_Controller
 			$breadcumb 			= ($details) ? ["<a href='" . base_url($this->uri->segment(1) . '/?d=' . $selected) . "'>$details->guide_name</a>", $details->guide_detail_name] : '';
 			$methode 			= ['INS' => 'Insitu', 'LAB' => 'Inlab'];
 		}
-
+		$ArrRef = [];
+		foreach ($references as $ref) {
+			$ArrRef[$ref->id] = $ref->alias;
+		}
 		$this->template->set([
 			'data' 				=> $dirs,
 			'details' 			=> $details,
@@ -51,6 +55,7 @@ class Guides extends Admin_Controller
 			'breadcumb'  		=> $breadcumb,
 			'sub'  				=> $sub,
 			'methode'  			=> $methode,
+			'ArrRef'  			=> $ArrRef,
 		]);
 
 		$this->template->render('index');
@@ -274,23 +279,22 @@ class Guides extends Admin_Controller
 	}
 
 
-
 	/* UPLOAD FILE */
 
 	public function upload_file()
 	{
 		$guide_detail_id = $this->input->get('dtl');
 		$group_tools 	 = $this->db->get_where('tool_scopes')->result();
-		$references 	 = $this->db->get_where('standards', ['status' => 'PUB'])->result();
+		$references 	 = $this->db->get_where('view_standards', ['status' => 'PUB'])->result();
 
 		$this->template->set([
 			'guide_detail_id' 	=> $guide_detail_id,
 			'group_tools' 		=> $group_tools,
 			'references' 		=> $references
 		]);
+
 		$this->template->render('form');
 	}
-
 
 	private function getNumber($group_id)
 	{
@@ -466,7 +470,7 @@ class Guides extends Admin_Controller
 		if ($id) {
 			$data 					= $this->db->get_where('guide_detail_data', ['id' => $id])->row();
 			$group_tools 	 		= $this->db->get_where('tool_scopes')->result();
-			$references 	 		= $this->db->get_where('standards', ['status' => 'PUB'])->result();
+			$references 	 		= $this->db->get_where('view_standards', ['status' => 'PUB'])->result();
 
 			$this->template->set([
 				'data' 				=> $data,
@@ -504,10 +508,10 @@ class Guides extends Admin_Controller
 		$data 			= $this->db->get_where('view_guides_detail_data', ['id' => $id])->row();
 		$file 			= './directory/MASTER_GUIDES/' . $data->company_id . '/' . $data->document;
 		$methode 		= ['INS' => 'Insitu', 'LAB' => 'Inlab'];
-		$standards 		= $this->db->get_where('standards', ['status' => 'PUB'])->result();
+		$standards 		= $this->db->get_where('view_standards', ['status' => 'PUB'])->result();
 		$ArrStd 		= [];
 		foreach ($standards as $std) {
-			$ArrStd[$std->id] = $std->name;
+			$ArrStd[$std->id] = $std->alias;
 		}
 
 		// $file 			= $this->db->get_where('guide_detail_data', ['id' => $id])->row();

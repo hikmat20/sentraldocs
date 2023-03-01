@@ -25,7 +25,15 @@
 				<tr>
 					<td>Referensi</td>
 					<td>:</td>
-					<td><?php if ($data->reference) foreach (json_decode($data->reference) as $ref) echo "<span class='badge badge-light'>" . (isset($ArrStd[$ref])) ? $ArrStd[$ref] : '' . "</span> "; ?></td>
+					<td>
+						<?php if ($data->reference) : ?>
+							<ul style="list-style-type: none;" class="px-0">
+								<?php foreach (json_decode($data->reference) as $ref) : ?>
+									<li><?= (isset($ArrStd[$ref])) ? $ArrStd[$ref] : ''; ?></li>
+								<?php endforeach; ?>
+							</ul>
+						<?php endif; ?>
+					</td>
 				</tr>
 				<tr>
 					<td>Rentang Ukur</td>
@@ -64,11 +72,15 @@
 	<div class="col-lg-3">
 		<label class="control-label">Document</label>
 		<div class="">
-			<input type="hidden" name="document" id="document" value="<?= $data->document; ?>">
-			<input type="hidden" name="company" id="company" value="<?= $data->company_id; ?>">
-			<canvas class="border border-2 rounded-lg cursor-pointer pdf-preview" title="<?= $data->guide_detail_data_name; ?>" id="pdf-preview" width="150" height="194" style="display: none;">
-			</canvas>
-			<img height="120" id="no-file" style="display: inline-block;" class="border border-2 rounded-lg" src="<?= base_url(); ?>directory/no-file.png" alt="">
+			<?php if ($data->document) : ?>
+				<input type="hidden" name="document" id="document" value="<?= $data->document; ?>">
+				<input type="hidden" name="company" id="company" value="<?= $data->company_id; ?>">
+				<canvas class="border border-2 rounded-lg cursor-pointer pdf-preview" title="<?= $data->guide_detail_data_name; ?>" id="pdf-preview" width="150" height="194" style="display: none;">
+				</canvas>
+				<img height="120" id="no-file" style="display: inline-block;" class="border border-2 rounded-lg" src="<?= base_url(); ?>directory/no-file.png" alt="">
+			<?php else : ?>
+				<p>-</p>
+			<?php endif; ?>
 		</div>
 
 	</div>
@@ -76,9 +88,13 @@
 		<div class="row">
 			<label class="col-2 control-label">Video</label>
 			<div class="col-8">
-				<video controls width="320" height="180" controlsList="nodownload" oncontextmenu="return false">
-					<source src="<?= base_url('directory/MASTER_GUIDES/VIDEO/' . $data->company_id . '/') . $data->video; ?>">
-				</video>
+				<?php if ($data->video) : ?>
+					<video controls width="320" height="180" controlsList="nodownload" oncontextmenu="return false">
+						<source src="<?= base_url('directory/MASTER_GUIDES/VIDEO/' . $data->company_id . '/') . $data->video; ?>">
+					</video>
+				<?php else : ?>
+					<p>-</p>
+				<?php endif; ?>
 			</div>
 		</div>
 

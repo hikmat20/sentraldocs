@@ -205,21 +205,32 @@
 									<table class="table py-0 table-sm table-hover datatable">
 										<thead>
 											<tr>
-												<th class="py-2">Nama</th>
-												<th class="py-2">Kelompok</th>
-												<th class="py-2">Metode</th>
-												<th class="py-2">Tgl. Terbit</th>
-												<th class="py-2 text-center" width="100">Action</th>
+												<th class="py-2" width="100">Kelompok</th>
+												<th class="py-2">Jenis Alat</th>
+												<th class="py-2" width="150">Rentang Ukur</th>
+												<th class="py-2">Dokumen Standar</th>
+												<th class="py-2 text-center" width="100">Opsi</th>
 											</tr>
 										</thead>
 										<tbody>
 											<?php if (isset($details_data)) : foreach ($details_data as $dtDtl) : ?>
-
 													<tr>
-														<td class="cursor-pointer"><i class="fa fa-file-alt mr-2 text-primary"></i><?= $dtDtl->guide_detail_data_name; ?></td>
-														<td class="cursor-pointer"><?= $dtDtl->group_name; ?></td>
-														<td class="cursor-pointer"><?php if ($dtDtl->methode) foreach (json_decode($dtDtl->methode) as $mth) echo '<span class="badge badge-success me-1">' . $methode[$mth] . '</span> '; ?></td>
-														<td class="cursor-pointer"><?= $dtDtl->publish_date; ?></td>
+														<td style="vertical-align: top;"><?= $dtDtl->group_name; ?></td>
+														<td style="vertical-align: top;"><?= $dtDtl->guide_detail_data_name; ?></td>
+														<td style="vertical-align: top;">
+															<ul style="list-style-type: none;" class="px-0">
+																<?php foreach (json_decode($dtDtl->range_measure) as $range) : ?>
+																	<li class="px-0"><?= $range; ?></li>
+																<?php endforeach; ?>
+															</ul>
+														</td>
+														<td style="vertical-align: top;">
+															<ul style="list-style-type: none;" class="px-0">
+																<?php foreach (json_decode($dtDtl->reference) as $ref) : ?>
+																	<li class="px-0"><?= $ArrRef[$ref]; ?></li>
+																<?php endforeach; ?>
+															</ul>
+														</td>
 														<td class="text-center">
 															<button type="button" class="btn btn-xs btn-icon btn-info view-file" data-guide_detail_id="<?= $sub; ?>" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-eye"></i></button>
 															<button type="button" class="btn btn-xs btn-icon btn-warning edit-file" data-guide_detail_id="<?= $sub; ?>" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-edit"></i></button>

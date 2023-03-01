@@ -40,7 +40,7 @@
 					<select name="reference[]" id="reference" data-allow-clear="true" multiple="multiple" class="form-select select2">
 						<option value=""></option>
 						<?php if ($references) foreach ($references as $ref) : ?>
-							<option value="<?= $ref->id; ?>"><?= $ref->name; ?></option>
+							<option value="<?= $ref->id; ?>"><?= $ref->alias; ?></option>
 						<?php endforeach; ?>
 					</select>
 				</div>
