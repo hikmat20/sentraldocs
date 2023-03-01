@@ -154,7 +154,7 @@
 		$('#modalId .modal-title').text('New Checksheet')
 		$('#modalId').modal('show')
 		$('#modalId .modal-body').load(siteurl + active_controller + 'load_sheet')
-		$('.btn-save').html(`<button type="button" class="btn btn-primary save"><i class="fa fa-save"></i>Save</button>`)
+		// $('.btn-save').html(`<button type="button" class="btn btn-primary save"><i class="fa fa-save"></i>Save</button>`)
 	})
 
 

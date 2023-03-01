@@ -61,7 +61,7 @@
 					<th rowspan="2" class="p-2" width="50">No</th>
 					<th rowspan="2" class="p-2" width="">Items</th>
 					<th rowspan="2" class="p-2" width="">Standard</th>
-					<th colspan="7" class="p-2 text-center" width="20%">Result</th>
+					<th colspan="<?= $count; ?>" class="p-2 text-center" width="20%">Result</th>
 				</tr>
 				<tr>
 					<?php for ($i = 1; $i <= $count; $i++) : ?>
