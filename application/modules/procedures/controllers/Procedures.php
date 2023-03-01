@@ -920,7 +920,6 @@ class Procedures extends Admin_Controller
 		$this->template->render('data-forms');
 	}
 
-
 	private function _delete_file($dir = null, $file_name = null)
 	{
 		if ($dir && $file_name) {

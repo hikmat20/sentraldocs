@@ -329,7 +329,7 @@
 
 <script>
 	$(document).ready(function() {
-		$(document).on('paste keypress', '.numeric', function(e) {
+		$(document).on('paste keypress', '.-numeric', function(e) {
 			const element = $(this)
 			element.removeClass('is-invalid')
 			element.css(

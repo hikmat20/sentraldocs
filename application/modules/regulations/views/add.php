@@ -33,7 +33,7 @@
 								<div class="mb-3 row flex-nowrap">
 									<label fos="col-8" class="col-4 col-form-label font-weight-bold">Number</label>
 									<div class="col-8">
-										<input type="text" name="number" id="number" autocomplete="off" onchange="getName()" class="form-control numeric" placeholder="---">
+										<input type="text" name="number" id="number" autocomplete="off" maxlength="15" onchange="getName()" class="form-control numeric" placeholder="---/--/--">
 									</div>
 								</div>
 
@@ -206,7 +206,7 @@
 <script>
 	$(document).ready(function() {
 
-		$(document).on('paste keypress', '.numeric', function(e) {
+		$(document).on('paste keypress', '.-numeric', function(e) {
 			const element = $(this)
 			element.removeClass('is-invalid')
 			element.css(
