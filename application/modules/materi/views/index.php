@@ -150,7 +150,7 @@
 							<div class="card-body border border-1 border-left py-2 px-1 h-550px">
 								<?php if (!isset($details) || !$details) : ?>
 									<div class="px-3">
-										<button type="button" class="btn mb-2 btn-sm btn-light-success add-sub-directory" data-id="<?= $selected; ?>" title="New Sub Directory"><i class="fa fa-plus"></i> New Sub Directory</button>
+										<button type="button" class="btn mb-2 btn-sm btn-light-success add-sub-directory <?= ($selected) ? '' : 'd-none'; ?>" data-id="<?= $selected; ?>" title="New Sub Directory"><i class="fa fa-plus"></i> New Sub Directory</button>
 									</div>
 									<div class="d-flex justify-content-center align-items-center py-10">
 										<img src="<?= base_url('assets\images\dashboard\folder-file.gif'); ?>" alt="" width="300px" class="img-responsive text-center opacity-30">
@@ -158,7 +158,7 @@
 								<?php else : ?>
 									<?php if ($details && !$details_data) : ?>
 										<div class="px-3">
-											<button type="button" class="btn mb-2 btn-sm btn-light-success add-sub-directory" data-id="<?= $selected; ?>" title="New Sub Directory"><i class="fa fa-plus"></i> New Sub Directory</button>
+											<button type="button" class="btn mb-2 btn-sm btn-light-success add-sub-directory <?= ($selected) ? '' : 'd-none'; ?>" data-id="<?= $selected; ?>" title="New Sub Directory"><i class="fa fa-plus"></i> New Sub Directory</button>
 										</div>
 										<table class="table table-hover datatable" style="margin:0px 0px !important;">
 											<thead>

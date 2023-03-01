@@ -76,7 +76,8 @@ class Process_checksheets extends Admin_Controller
 			return false;
 		}
 
-		$details_data = $this->db->get_where('view_checksheet_detail_data', ['status' => '1'])->result();
+		$details_data = $this->db->get_where('view_checksheet_results', ['status' => '1', 'company_id' => $this->company])->result();
+
 		$this->template->set([
 			'details_data'  	=> $details_data,
 		]);
@@ -229,6 +230,57 @@ class Process_checksheets extends Admin_Controller
 		echo json_encode($Return);
 	}
 
+	public function view_sheet($id = null)
+	{
+		if ($id) {
+			$data 			= $this->db->get_where('view_checksheet_results', ['id' => $id])->row();
+			$data_detail 	= $this->db->get_where('checksheet_result_items', ['checksheet_result_number' => $data->number])->result();
+			$periode 			= [
+				'1' => 'Once Time',
+				'2' => 'Weekly~Daily',
+				'3' => 'Monthly~Daily',
+				'4' => 'Weekly~Monthly',
+				'5' => 'Yearly~Monthly',
+			];
+
+			$width = $count = $name_col = '';
+			if ($data->periode == 1) {
+				$width 		= '100%';
+				$col_width 	= '20%';
+				$count 		= 1;
+				$name_col 	= 'Day';
+			} elseif ($data->periode == 2) {
+				$width 		= '150%';
+				$col_width 	= '20%';
+				$count 		= 7;
+				$name_col 	= 'Day';
+			} elseif ($data->periode == 3) {
+				$width 		= '500%';
+				$count 		= 31;
+				$name_col 	= 'Day';
+			} elseif ($data->periode == 4) {
+				$width 		= '120%';
+				$count 		= 5;
+				$name_col 	= 'Week';
+			} elseif ($data->periode == 5) {
+				$width 		= '220%';
+				$count 		= 12;
+				$name_col 	= 'Month';
+			}
+
+			$this->template->set(
+				[
+					'data' 			=> $data,
+					'data_detail' 	=> $data_detail,
+					'periode' 		=> $periode,
+					'width' 		=> $width,
+					'count' 		=> $count,
+					'name_col' 		=> $name_col,
+				]
+			);
+			$this->template->render('view-sheet');
+		}
+	}
 
 	/* SUB DIRECTORY */
 
@@ -488,7 +540,7 @@ class Process_checksheets extends Admin_Controller
 			'periode' 			=> $periode,
 		]);
 
-		$this->template->render('view-file');
+		$this->template->render('view-sheet');
 	}
 
 	public function delete_sheet()

@@ -17,9 +17,9 @@
 						<thead class="table-light">
 							<tr>
 								<th class="p-2" width="50">No</th>
-								<th class="p-2">Dir.</th>
+								<th class="p-2">Checksheet Name</th>
 								<th class="p-2">Sub Dir.</th>
-								<th class="p-2">Checksheet</th>
+								<th class="p-2">Directory</th>
 								<th class="p-2" width="100">Opsi</th>
 							</tr>
 						</thead>
@@ -27,11 +27,13 @@
 							<?php $n = 0;
 							if ($details_data) foreach ($details_data as $dt) : $n++; ?>
 								<tr>
-									<td><?= $n; ?></td>
-									<td><?= $dt->checksheet_name; ?></td>
-									<td><?= $dt->checksheet_detail_name; ?></td>
-									<td></td>
-									<td></td>
+									<td class="py-2"><?= $n; ?></td>
+									<td class="py-2"><?= $dt->checksheet_detail_data_name; ?></td>
+									<td class="py-2"><?= $dt->checksheet_detail_name; ?></td>
+									<td class="py-2"><?= $dt->checksheets_name; ?></td>
+									<td class="py-2 text-center">
+										<button type="button" data-id="<?= $dt->id; ?>" class="btn btn-xs btn-success btn-icon view"><i class="fa fa-eye"></i></button>
+									</td>
 								</tr>
 							<?php endforeach; ?>
 						</tbody>
@@ -210,6 +212,14 @@
 		})
 	})
 
+	$(document).on('click', '.view', function() {
+		const id = $(this).data('id')
+		if (id) {
+			$('#modalView .modal-title').text('View Checksheet')
+			$('#modalView').modal('show')
+			$('#modalView .modal-body').load(siteurl + active_controller + 'view_sheet/' + id)
+		}
+	})
 
 	var _PDF_DOC,
 		_CANVAS = document.querySelector('#pdf-preview'),

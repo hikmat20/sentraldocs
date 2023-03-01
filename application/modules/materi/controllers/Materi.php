@@ -27,7 +27,7 @@ class Materi extends Admin_Controller
 	public function index()
 	{
 		if (!isset($_GET['d']) || $_GET['d'] == '') {
-			redirect('materi/?d=1');
+			redirect('materi/?d=0');
 		}
 
 		$ArrDetail 				= '';
