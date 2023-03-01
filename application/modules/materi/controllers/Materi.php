@@ -14,7 +14,6 @@ class Materi extends Admin_Controller
 		// $this->load->model('manage_documents/manage_documents_model', 'DOCS');
 		$this->load->library('upload');
 		$this->template->page_icon('fa fa-file-alt');
-		$this->MainData 	= $this->db->get_where('view_directories', ['parent_id' => '0'])->result();
 		$this->sts = [
 			'' => '<span class="label label-light-secondary label-pill label-inline mr-2 text-dark-50">!Null!</span>',
 			'OPN' => '<span class="label label-light-primary label-pill label-inline mr-2">New</span>',
@@ -33,19 +32,19 @@ class Materi extends Admin_Controller
 
 		$ArrDetail 				= '';
 		$selected 				= $details = $details_data = $breadcumb = $sub = '';
-		$dirs 	  				= $this->db->get_where('materi', ['status' => '1'])->result();
+		$dirs 	  				= $this->db->get_where('materi', ['status' => '1', 'company_id' => $this->company])->result();
 		if (isset($_GET['d']) && ($_GET['d'])) {
 			$selected 			= $_GET['d'];
-			$details 	  		= $this->db->get_where('view_materi_details', ['materi_id' => $selected, 'status' => '1'])->result();
-			$materi 			= $this->db->get_where('materi', ['id' => $selected])->row();
+			$details 	  		= $this->db->get_where('view_materi_details', ['materi_id' => $selected, 'status' => '1', 'company_id' => $this->company])->result();
+			$materi 			= $this->db->get_where('materi', ['id' => $selected, 'company_id' => $this->company])->row();
 			$breadcumb 			= [($materi) ? $materi->name : ''];
 		}
 
 		if ((isset($_GET['d']) && ($_GET['d'])) && (isset($_GET['sub']) && ($_GET['sub']))) {
 			$selected 			= $_GET['d'];
 			$sub 				= $_GET['sub'];
-			$details 	  		= $this->db->get_where('view_materi_details', ['id' => $sub, 'status' => '1'])->row();
-			$details_data 	  	= $this->db->get_where('view_materi_detail_data', ['materi_detail_id' => $sub, 'status' => '1'])->result();
+			$details 	  		= $this->db->get_where('view_materi_details', ['id' => $sub, 'status' => '1', 'company_id' => $this->company])->row();
+			$details_data 	  	= $this->db->get_where('view_materi_detail_data', ['materi_detail_id' => $sub, 'status' => '1', 'company_id' => $this->company])->result();
 			$breadcumb 			= ($details) ? [$details->materi_name, $details->materi_detail_name] : '';
 
 			$ArrDetail 			= [0];
