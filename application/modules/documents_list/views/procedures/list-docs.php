@@ -435,11 +435,11 @@
 	})
 
 	$(document).ready(function() {
-		$(document).on('click', '.view-form-2', function() {
+		$(document).on('click', '.view-guide', function() {
 			const id = $(this).data('id') || ''
 			if (id) {
 				$('#modalViewForm').modal('show')
-				$('#modalViewForm').find('#data-file').load(siteurl + active_controller + 'view_form/' + id)
+				$('#modalViewForm').find('#data-file').load(siteurl + active_controller + 'view_guide/' + id)
 			}
 		})
 	})

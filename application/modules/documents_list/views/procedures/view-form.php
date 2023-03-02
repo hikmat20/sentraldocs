@@ -26,9 +26,9 @@
 			<iframe src="<?= $form->link_form; ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
 		<?php else : ?>
 			<?php if ($form->ext == '.pdf' || $form->ext == '.PDF') : ?>
-				<iframe src="<?= base_url("directory/FORMS/$form->file_name"); ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
+				<iframe src="<?= base_url("directory/FORMS/$form->company_id/$form->file_name"); ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
 			<?php else : ?>
-				<iframe src="https://docs.google.com/gview?embedded=true&url=<?= base_url("directory/FORMS/$form->file_name"); ?>&rm=minimal#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
+				<iframe src="https://docs.google.com/gview?embedded=true&url=<?= base_url("directory/FORMS/$form->company_id/$form->file_name"); ?>&rm=minimal#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
 			<?php endif; ?>
 		<?php endif; ?>
 		<hr>

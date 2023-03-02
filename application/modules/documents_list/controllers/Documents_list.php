@@ -194,23 +194,23 @@ class Documents_list extends Admin_Controller
 		$this->template->render('procedures/view-form');
 	}
 
-	public function view_form_2($id)
+	public function view_guide($id)
 	{
-		$form 			= $this->db->get_where('dir_forms', ['id' => $id])->row();
+		$guide 			= $this->db->get_where('dir_guides', ['id' => $id])->row();
 		$history			= $this->db->order_by('updated_at', 'ASC')->get_where('directory_log', ['directory_id' => $id])->result();
 		$users = $this->db->get_where('users', ['status' => 'ACT'])->result();
 		foreach ($users as $user) {
 			$ArrUsr[$user->id_user] = $user;
 		}
 		$this->template->set([
-			'form' 			=> $form,
-			'history' 			=> $history,
-			'sts'				=> $this->sts,
-			'ArrUsr'			=> $ArrUsr
+			'guide' 		=> $guide,
+			'history' 		=> $history,
+			'sts'			=> $this->sts,
+			'ArrUsr'		=> $ArrUsr
 		]);
 
-		redirect('directory/FORMS/' . $form->file_name);
-		// $this->template->render('procedures/view-form2');
+		// redirect("directory/GUIDES/$guide->company_id/" . $guide->file_name);
+		$this->template->render('procedures/view-guide');
 	}
 
 	/* PROCEDURES */
