@@ -83,7 +83,7 @@ class Auth
             $this->ci->template->set_message(lang('users_login_fail'), 'error');
             return FALSE;
         } else {
-            if ($existUser->status == 'N') {
+            if ($existUser->status == 'NAC') {
                 $this->ci->template->set_message(lang('users_not_active'), 'error');
                 return FALSE;
             }
