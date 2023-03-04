@@ -280,6 +280,8 @@
  <!-- <script src="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/jstree/treeview.js?"></script> -->
  <script src="https://cdn.tiny.cloud/1/jou4no6cbvv6kyct0kcjoumfc81n00cy2rnwk7wbidnj1d57/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
  <!-- <script src="<?= base_url('assets\plugins\tinymce\tinymce.js'); ?>"></script> -->
+ <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
  <script>
      function loading_spinner() {
          Swal.fire({

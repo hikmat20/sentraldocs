@@ -56,17 +56,16 @@
 			</div>
 		</div>
 		<div class="col-6">
-
 			<div class="row mb-3">
 				<label class="col-4 col-form-label">Tanggal Terbit <span class="text-danger">*</span></label>
 				<div class="col-8">
-					<input type="date" name="publish_date" id="publish_date" placeholder="nate" class="form-control">
+					<input type="text" name="publish_date" id="publish_date" placeholder="dd/mm/yyyy" class="form-control">
 				</div>
 			</div>
 			<div class="row mb-3">
 				<label class="col-4 col-form-label">Tanggal Revisi</label>
 				<div class="col-8">
-					<input type="date" name="revision_date" id="revision_date" placeholder="nate" class="form-control">
+					<input type="text" name="revision_date" id="revision_date" placeholder="dd/mm/yyyy" class="form-control">
 				</div>
 			</div>
 			<div class="row mb-3">
@@ -105,7 +104,6 @@
 					<div class="for-delete text-center">
 						<button type="button" id="remove-video" class="btn btn-xs btn-icon btn-light-danger rounded-circle d-none"><i class="fa fa-times"></i></button>
 					</div>
-
 				</div>
 			</div>
 		</div>
@@ -118,5 +116,19 @@
 		placeholder: 'Choose an options',
 		allowClear: true,
 		closeOnSelect: false
+	})
+
+	$(document).ready(function() {
+		/* DATEPICKER */
+		$('#publish_date').flatpickr({
+			dateFormat: "d-m-Y", // Displays: 2017-01-22Z
+			static: true
+		})
+		$('#revision_date').flatpickr({
+			dateFormat: "d-m-Y", // Displays: 2017-01-22Z
+			static: true
+		})
+
+
 	})
 </script>

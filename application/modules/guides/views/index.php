@@ -335,6 +335,8 @@
 		$(document).on('input paste', '#search', function() {
 			oTable.search($(this).val()).draw();
 		})
+
+
 	})
 
 	/* DIRECTORY */

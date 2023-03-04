@@ -11,13 +11,15 @@
   <link rel="shortcut icon" href="<?= base_url(); ?>assets/img/logo.png" />
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
-  <script src="<?= base_url('assets/plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
   <link href="<?= base_url(); ?>themes/dashboard/assets/plugins/global/plugins.bundle1036.css?v=2.1.1" rel="stylesheet" type="text/css" />
   <link href="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/prismjs/prismjs.bundle1036.css?v=2.1.1" rel="stylesheet" type="text/css" />
   <link href="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/fullcalendar/fullcalendar.bundle1036.css?v=2.1.1" rel="stylesheet" type="text/css" />
   <link href="<?= base_url(); ?>themes/dashboard/assets/css/style.bundle1036.css?v=2.1.1" rel="stylesheet" type="text/css" />
   <link href="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/jstree/jstree.bundle.css?v=2.1.1" rel="stylesheet" type="text/css" />
   <link href="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/datatables/datatables.bundle1036.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+  <script src="<?= base_url('assets/plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
   <script src="<?= base_url('themes/dashboard/assets/plugins/custom/pdf/pdf.js'); ?>"></script>
   <script src="<?= base_url('themes/dashboard/assets/plugins/custom/pdf/pdf.worker.js'); ?>"></script>
 

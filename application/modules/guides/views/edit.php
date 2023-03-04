@@ -73,13 +73,13 @@
 			<div class="row mb-3">
 				<label class="col-4 col-form-label">Tanggal Terbit</label>
 				<div class="col-8">
-					<input type="date" name="publish_date" id="publish_date" value="<?= $data->publish_date; ?>" placeholder="nate" class="form-control">
+					<input type="date" name="publish_date" id="publish_date" value="<?= $data->publish_date; ?>" placeholder="dd/mm/yyyy" class="form-control">
 				</div>
 			</div>
 			<div class="row mb-3">
 				<label class="col-4 col-form-label">Tanggal Revisi</label>
 				<div class="col-8">
-					<input type="date" name="revision_date" id="revision_date" value="<?= ($data->revision_date) ?: ''; ?>" placeholder="nate" class="form-control">
+					<input type="date" name="revision_date" id="revision_date" value="<?= ($data->revision_date) ?: ''; ?>" placeholder="dd/mm/yyyy" class="form-control">
 				</div>
 			</div>
 			<div class="row mb-3">
@@ -152,5 +152,15 @@
 	$('.select2').select2({
 		width: '100%',
 		placeholder: 'Choose an options'
+	})
+
+	/* DATEPICKER */
+	$('#publish_date').flatpickr({
+		dateFormat: "d/m/Y",
+		static: true
+	})
+	$('#revision_date').flatpickr({
+		dateFormat: "d/m/Y",
+		static: true
 	})
 </script>

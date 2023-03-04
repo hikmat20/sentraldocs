@@ -313,7 +313,12 @@ class Guides extends Admin_Controller
 
 	public function upload_document()
 	{
-		$data 						= $this->input->post();
+		$data 					= $this->input->post();
+		if (isset($data['publish_date']) && $data['revision_date'])
+			$data['publish_date'] 	= date_format(date_create(str_replace("/", "-", $data['publish_date'])), 'Y-m-d');
+
+		if (isset($data['revision_date']) && $data['revision_date'])
+			$data['revision_date'] 	= date_format(date_create(str_replace("/", "-", $data['revision_date'])), 'Y-m-d');
 
 		if ($data) {
 			try {

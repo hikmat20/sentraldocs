@@ -399,16 +399,20 @@ class Menu_generator
 			$Query	= "SELECT menus.* FROM menus INNER JOIN group_menus ON menus.id=group_menus.menu_id WHERE menus.status='1' AND group_menus.group_id='$group->id_group'  AND group_menus.company_id='$company' ORDER BY menus.parent_id,menus.id ASC";
 		}
 
+
+
 		$count		= $this->ci->db->query($Query)->num_rows();
 
 		if ($count > 0) {
 			$results		= $this->ci->db->query($Query)->result_array();
+
 			foreach ($results as $key => $val) {
 				$ArrMenu[$key]['Menu']['id']		= $val['id'];
 				$ArrMenu[$key]['Menu']['title']		= $val['title'];
 				$ArrMenu[$key]['Menu']['link']		= $val['link'];
 				$ArrMenu[$key]['Menu']['parent_id']	= $val['parent_id'];
 				$ArrMenu[$key]['Menu']['icon']		= $val['icon'];
+				$ArrMenu[$key]['Menu']['flag_new']	= $val['flag_new'];
 			}
 
 			$childs = array();
@@ -451,31 +455,32 @@ class Menu_generator
 		}
 
 		//loop children
-		foreach ($Menus as $key => $value) {
-			$path = $value['link'] == '' ? 'javascript:void()' : base_url() .  strtolower($value['link']);
-			$icons = $value['icon'];
-
-			if (array_key_exists('child', $value)) {
+		foreach ($Menus as $key => $value) :
+			$path 	= $value['link'] == '' ? 'javascript:void()' : base_url() .  strtolower($value['link']);
+			$icons 	= $value['icon'];
+			$new 	= ($value['flag_new'] == 0) ? 'd-none' : '';
+			if (array_key_exists('child', $value)) :
 				echo "<li class='menu-item menu-item-submenu'>
 						<a href='" . $path . "' class='menu-link menu-toggle'>
-								<i class='$icons text-info mr-3 my-auto'></i>
-		                		<span class='menu-text'><h6 class='m-0'>" . ucwords($value['title']) . "</h6></span>
-								<i class='menu-arrow h6 my-auto'></i>
-		        			</a>";
+							<i class='$icons text-info mr-3 my-auto'></i>
+							<span class='menu-text'><h6 class='m-0 pr-1'>" . ucwords($value['title']) . "</h6> <label class='label label-danger label-inline $new'>New</label></span>
+							<i class='menu-arrow h6 my-auto'></i>
+						</a>";
 				echo ("<div class='menu-submenu'>
 						<i class='menu-arrow'></i>
 						<ul class='menu-subnav'>");
 				$this->render_left_menus($value['child'], $dept + 1);
 				echo ('</ul></div>');
-			} else {
+			else :
 				echo "<li class='menu-item'>
 					<a href='" . $path . "' class='menu-link'>
 						<i class='$icons text-info mr-3 my-auto'></i>
-						<span class='menu-text'><h6 class='m-0'>" . ucwords($value['title']) . "</h6></span>
+						<span class='menu-text'><h6 class='m-0 pr-1'>" . ucwords($value['title']) . "</h6><label class='label label-danger label-inline $new'>New</label></span>
+						
 					</a>";
-			}
+			endif;
 			echo ('</li>');
-		}
+		endforeach;
 		if ($dept == 0) echo ('</ul>');
 	}
 
