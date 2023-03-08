@@ -71,7 +71,7 @@ class Checksheets extends Admin_Controller
 
 		if (!isset($post['id'])) {
 			$name 			= $post['name'];
-			$is_exist 		= $this->db->get_where('checksheets', ['name' => $name])->num_rows();
+			$is_exist 		= $this->db->get_where('checksheets', ['name' => $name, 'company_id' => $this->company])->num_rows();
 
 			if ($is_exist > 0) {
 				$return = [

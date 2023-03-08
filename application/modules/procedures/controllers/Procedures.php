@@ -691,6 +691,7 @@ class Procedures extends Admin_Controller
 			chmod('./directory/FLOW_IMG/' . $this->company . '/', 0755);  // octal; correct value of mode
 			chown('./directory/FLOW_IMG/' . $this->company . '/', 'www-data');
 		}
+		
 		$cpt = count($_FILES['img_flow']['name']);
 
 		for ($i = 0; $i < $cpt; $i++) {
