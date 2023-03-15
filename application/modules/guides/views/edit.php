@@ -73,13 +73,13 @@
 			<div class="row mb-3">
 				<label class="col-4 col-form-label">Tanggal Terbit</label>
 				<div class="col-8">
-					<input type="date" name="publish_date" id="publish_date" value="<?= $data->publish_date; ?>" placeholder="dd/mm/yyyy" class="form-control">
+					<input type="text" name="publish_date" id="publish_date" value="<?= ($data->publish_date) ? date_format(date_create($data->publish_date), 'd/m/Y') : ''; ?>" placeholder="dd/mm/yyyy" class="form-control">
 				</div>
 			</div>
 			<div class="row mb-3">
 				<label class="col-4 col-form-label">Tanggal Revisi</label>
 				<div class="col-8">
-					<input type="date" name="revision_date" id="revision_date" value="<?= ($data->revision_date) ?: ''; ?>" placeholder="dd/mm/yyyy" class="form-control">
+					<input type="text" name="revision_date" id="revision_date" value="<?= ($data->revision_date) ? date_format(date_create($data->revision_date), 'd/m/Y') : ''; ?>" placeholder="dd/mm/yyyy" class="form-control">
 				</div>
 			</div>
 			<div class="row mb-3">
@@ -155,11 +155,7 @@
 	})
 
 	/* DATEPICKER */
-	$('#publish_date').flatpickr({
-		dateFormat: "d/m/Y",
-		static: true
-	})
-	$('#revision_date').flatpickr({
+	$('#publish_date,#revision_date').flatpickr({
 		dateFormat: "d/m/Y",
 		static: true
 	})

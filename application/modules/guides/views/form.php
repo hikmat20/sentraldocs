@@ -120,15 +120,9 @@
 
 	$(document).ready(function() {
 		/* DATEPICKER */
-		$('#publish_date').flatpickr({
-			dateFormat: "d-m-Y", // Displays: 2017-01-22Z
+		$('#publish_date,#revision_date').flatpickr({
+			dateFormat: "d/m/Y", // Displays: 2017-01-22Z
 			static: true
 		})
-		$('#revision_date').flatpickr({
-			dateFormat: "d-m-Y", // Displays: 2017-01-22Z
-			static: true
-		})
-
-
 	})
 </script>
