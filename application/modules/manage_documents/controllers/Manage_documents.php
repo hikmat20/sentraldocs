@@ -540,7 +540,7 @@ class Manage_documents extends Admin_Controller
 	{
 		$dataLog = [
 			'directory_id'  => $data['id'],
-			'status' 	 	=> $data['status'],
+			'new_status' 	 	=> $data['status'],
 			'note' 		    => $data['note'],
 			'updated_by'    => $this->auth->user_id(),
 			'updated_at'    => date('Y-m-d H:i:s'),
