@@ -714,10 +714,11 @@
 			selector: 'textarea',
 			height: 100,
 			resize: true,
+			fontsize_formats: "6pt 8pt 10pt 12pt 14pt 16pt 18pt 20pt 22pt 24pt 28pt 30pt 32pt 34pt 36pt 38pt 40pt",
 			plugins: 'autoresize autosave emoticons preview importcss searchreplace autolink autosave save ' +
 				'directionality  visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
 			toolbar: 'restoredraft preview searchreplace | undo redo | blocks ' +
-				'bold italic backcolor forecolor | alignleft aligncenter ' +
+				'fontsizeselect bold italic backcolor forecolor | alignleft aligncenter ' +
 				'alignright alignjustify | template codesample bullist numlist outdent indent | link image ' +
 				'table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol' +
 				'removeformat emoticons | help',
