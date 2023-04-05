@@ -7,7 +7,7 @@
 <div class="row mb-3">
 	<label class="col-2 col-form-label">Periode & Frequency</label>
 	<div class="col-6">
-		<?= $periode[$data->periode]; ?>
+		<?= $freq[$data->frequency_execution]; ?>
 	</div>
 </div>
 <hr>

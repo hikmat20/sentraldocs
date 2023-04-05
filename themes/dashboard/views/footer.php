@@ -281,6 +281,9 @@
  <script src="https://cdn.tiny.cloud/1/jou4no6cbvv6kyct0kcjoumfc81n00cy2rnwk7wbidnj1d57/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
  <!-- <script src="<?= base_url('assets\plugins\tinymce\tinymce.js'); ?>"></script> -->
  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+ <script src="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/jquery-ui/jquery-ui.min.js"></script>
+ <script src="<?= base_url('themes/dashboard/assets/plugins/custom/monthpicker/MonthPicker.js'); ?>"></script>
+ <script src="https://cdn.rawgit.com/digitalBush/jquery.maskedinput/1.4.1/dist/jquery.maskedinput.min.js"></script>
 
  <script>
      function loading_spinner() {
@@ -299,40 +302,50 @@
          var success = true;
          $('input,select,textarea,file').removeClass('is-invalid')
          $('span.select2-selection').css('border-color', '');
+
          $("form" + f + " .required").each(function() {
              var node = $(this).prop('nodeName');
              var type = $(this).prop('type');
              var success = true;
-             if ((node == 'INPUT' && type == 'radio') || (node == 'INPUT' && type == 'checkbox')) {
-                 $(this).parents('div.form-group').removeClass('validated')
-                 var c = 0;
-                 $("input[name='" + $(this).attr('name') + "']").each(function() {
-                     if ($(this).prop('checked') == true) {
-                         c++;
+
+             if (!$(this).is(':disabled')) {
+                 if ((node == 'INPUT' && type == 'radio') || (node == 'INPUT' && type == 'checkbox')) {
+                     //  $(this).parents('div.form-group').removeClass('validated')
+                     $(this).removeClass('is-invalid')
+                     var c = 0;
+                     $("input[name='" + $(this).attr('name') + "']").each(function() {
+                         if ($(this).prop('checked') == true) {
+                             c++;
+                         }
+                     });
+                     console.log(c);
+
+                     if (c == 0) {
+                         var name = $(this).attr('name');
+                         //  var id = $(this).attr('id');
+                         //  $('.' + name).removeClass('hideIt');
+                         //  $('.' + name).css('display', 'inline-block');
+                         //  $(this).parents('div.form-group').addClass('validated')
+                         $(this).addClass('is-invalid').focus()
+                         count = count + 1;
+                         console.log(name);
                      }
-                 });
-                 console.log(type);
-                 if (c == 0) {
-                     //  var name = $(this).attr('name');
-                     //  var id = $(this).attr('id');
-                     //  $('.' + name).removeClass('hideIt');
-                     //  $('.' + name).css('display', 'inline-block');
-                     $(this).parents('div.form-group').addClass('validated')
-                     count = count + 1;
-                     console.log(name);
                  }
 
-             } else if ((node == 'INPUT' && type == 'text') || (node == 'INPUT' && type == 'password') || (node == 'SELECT') || (node == 'TEXTAREA') || (node == 'INPUT' && type == 'date') || (node == 'INPUT' && type == 'file')) {
-                 if ($(this).val() == null || $(this).val() == '') {
-                     const id = $(this).prop('id')
-                     $(this).addClass('is-invalid').focus()
-                     $('span[aria-labelledby=select2-' + id + '-container].select2-selection').css('border-color', 'red');
-                     count = count + 1;
-                     console.log(name);
+                 if ((node == 'INPUT' && type == 'text') || (node == 'INPUT' && type == 'password') || (node == 'SELECT') || (node == 'TEXTAREA') || (node == 'INPUT' && type == 'date') || (node == 'INPUT' && type == 'file')) {
+                     console.log(($(this).val() == null || $(this).val() == '') && ($(this).is(':disabled') == true));
+                     if (($(this).val() == null || $(this).val() == '')) {
+                         const id = $(this).prop('id')
+                         $(this).addClass('is-invalid').focus()
+                         $('span[aria-labelledby=select2-' + id + '-container].select2-selection').css('border-color', 'red');
+                         count = count + 1;
+                         console.log($(this));
+                         //  console.log(name);
+                     }
                  }
              }
-
          });
+
          if (count == 0) {
              return success;
          } else {

@@ -221,7 +221,7 @@
 													<tr>
 														<td><?= $n; ?></td>
 														<td class="cursor-pointer"><i class="fa fa-file-alt mr-2 text-primary"></i><?= $dtDtl->checksheet_detail_data_name; ?></td>
-														<td class="cursor-pointer"><?= $periode[$dtDtl->periode]; ?></td>
+														<td class="cursor-pointer"><?= $freq[$dtDtl->frequency_execution]; ?></td>
 														<td class="text-center">
 															<button type="button" class="btn btn-xs btn-icon btn-info view-file" data-checksheet_detail_id="<?= $sub; ?>" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-eye"></i></button>
 															<button type="button" class="btn btn-xs btn-icon btn-warning edit-file" data-checksheet_detail_id="<?= $sub; ?>" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-edit"></i></button>
@@ -699,7 +699,7 @@
 
 	$(document).on('click', '.update-files', function() {
 		const name = $('#name').val()
-		const periode = $('#periode').val()
+		const frequency = $('#frequency-execution').val()
 		// const range_measure = $('input[name="range_measure[]"]')
 		// const publish_date = $('#publish_date').val()
 		// const revision_date = $('#revision_date').val()
@@ -715,7 +715,7 @@
 			return false;
 		}
 		$('select#periode').next().find('span.selection .select2-selection.select2-selection--single').removeClass('is-invalid')
-		if (!periode) {
+		if (!frequency) {
 			$('select#periode').next().find('span.selection .select2-selection.select2-selection--single').addClass('is-invalid')
 			return false;
 		}

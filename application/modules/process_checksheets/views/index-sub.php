@@ -9,13 +9,24 @@
 		<div class="container">
 			<div class="card card-stretch shadow card-custom">
 				<div class="card-header justify-content-between d-flex align-items-center">
-					<h3 class="m-0"><i class="fa fa-home"></i> List Folder</h3>
-					<button type="button" class="btn btn-primary" id="add-folder"><i class="fa fa-plus"></i> New Folder</button>
+					<h3 class="m-0">
+						<a href="<?= base_url($this->uri->segment(1)); ?>" title="Back" class="btn btn-light btn-sm btn-icon"><i class="fa fa-arrow-left text-dark"></i></a> List Folder
+					</h3>
+					<button type="button" class="btn btn-primary" id="add-sub-folder"><i class="fa fa-plus"></i> New Folder</button>
 				</div>
 				<div class="card-body">
-					<div class="input-group  w-25">
-						<div class="input-group-text input-group-prepend rounded-right-0"><i class="fa fa-search"></i></div>
-						<input data type="text" name="search" id="search" class="form-control d-inline-block" placeholder="Search">
+					<div class="d-flex justify-content-between align-items-center">
+						<div class="searching">
+							<div class="input-group">
+								<div class="input-group-text input-group-prepend rounded-right-0"><i class="fa fa-search"></i></div>
+								<input data type="text" name="search" id="search" class="form-control w-200px d-inline-block" placeholder="Search">
+							</div>
+						</div>
+						<input type="hidden" id="process_id" value="<?= $parent->id; ?>">
+						<nav class="breadcrumb py-2 line-height-0 m-0">
+							<a class="breadcrumb-item" href="<?= base_url($this->uri->segment(1)); ?>"><i class="fa fa-home"></i></a>
+							<span class="breadcrumb-item active"><?= $parent->name; ?></span>
+						</nav>
 					</div>
 					<table class="table table-sm table-bordered datatable">
 						<thead class="table-light">
@@ -25,12 +36,13 @@
 								<th class="py-2 text-center" width="50">Opsi</th>
 							</tr>
 						</thead>
+
 						<tbody>
 							<?php $n = 0;
-							if ($parents) foreach ($parents as $dt) : $n++; ?>
+							if ($subFolder) foreach ($subFolder as $dt) : $n++; ?>
 								<tr>
 									<td class="py-2">
-										<a href="<?= base_url($this->uri->segment(1) . "/?p=" . $dt->id); ?>" class="<?= ($dt->status == '0') ? 'text-muted' : ''; ?>">
+										<a href="<?= base_url($this->uri->segment(1) . "/?p=" . $dt->process_id . "&sub=" . $dt->id); ?>">
 											<h4 class="mb-0 d-flex align-items-end">
 												<i class="fa fa-folder mr-2 text-success" style="font-size: 28px;"></i><?= $dt->name; ?>
 											</h4>
@@ -38,8 +50,8 @@
 									</td>
 									<td class="py-2 text-center"><?= $dt->created_at; ?></td>
 									<td class="py-2 text-center">
-										<button type="button" class="btn btn-warning btn-xs btn-icon edit" data-id="<?= $dt->id; ?>"><i class="fa fa-edit"></i></button>
-										<button type="button" class="btn btn-danger btn-xs btn-icon delete" data-id="<?= $dt->id; ?>"><i class="fa fa-trash"></i></button>
+										<button type="button" class="btn btn-icon btn-xs btn-warning edit" data-id="<?= $dt->id; ?>"><i class="fa fa-edit"></i></button>
+										<button type="button" class="btn btn-icon btn-xs btn-danger delete" data-id="<?= $dt->id; ?>"><i class="fa fa-trash"></i></button>
 									</td>
 								</tr>
 							<?php endforeach; ?>
@@ -63,7 +75,9 @@
 			</div>
 			<div class="modal-body"></div>
 			<div class="modal-footer">
-				<div class="btn-save"></div>
+				<div class="btn-save">
+
+				</div>
 				<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
 			</div>
 		</div>
@@ -106,29 +120,37 @@
 
 	/* DIRECTORY */
 
-	$(document).on('click', '#add', function() {
-
-		$('#modalId .modal-title').text('New Checksheet')
-		$('#modalId').modal('show')
-		$('#modalId .modal-body').load(siteurl + active_controller + 'load_sheet')
-		// $('.btn-save').html(`<button type="button" class="btn btn-primary save"><i class="fa fa-save"></i>Save</button>`)
-	})
-
-	$(document).on('click', '#add-folder', function() {
+	$(document).on('click', '#add-sub-folder', function() {
 		$('#modalId .modal-title').text('New Folder')
 		$('#modalId').modal('show')
 		$('#modalId .modal-body').html(`
-		<label for="">Directory Name</label>
-		<input type="text" id="folder-name" autocomplete="off" class="form-control" placeholder="New Folder">
-		<span class="invalid-feedback">Directory Name not be empty</span>
-		`)
+			<label for="">Folder Name</label>
+			<input type="text" id="folder-name" class="form-control" placeholder="Folder Name">
+			<span class="invalid-feedback">Folder Name not be empty</span>`)
 		$('.btn-save').html(`
-		<button type="button" class="btn btn-primary" id="save-folder"><i class="fas fa-save"></i>Save</button>
+		<button type="button" class="btn btn-primary" id="save-sub-folder"><i class="fa fa-save"></i> Save</button>
 		`)
 	})
 
-	$(document).on('click', '#save-folder', function() {
+	$(document).on('click', '.edit', function() {
+		const id = $(this).data('id')
+		$.getJSON(siteurl + active_controller + 'edit_sub_folder/' + id, function(data) {
+			var items = [];
+			$('#modalId .modal-title').text('Edit Folder')
+			$('#modalId').modal('show')
+			$('#modalId .modal-body').html(`
+			<label for="">Folder Name</label>
+			<input type="text" id="id" class="form-control d-none" value="` + data.data.id + `">
+			<input type="text" id="folder-name" class="form-control" placeholder="New Folder" value="` + data.data.name + `">
+			<span class="invalid-feedback">Folder Name not be empty</span>
+			`)
+			$('.btn-save').html(`<button type="button" class="btn btn-primary" id="save-sub-folder"><i class="fas fa-save"></i> Save</button>`)
+		});
+	})
+
+	$(document).on('click', '#save-sub-folder', function() {
 		const name = $('#folder-name').val();
+		const process_id = $('#process_id').val();
 		const id = $('#id').val();
 
 		if (!name) {
@@ -146,12 +168,13 @@
 		}).then((value) => {
 			if (value.isConfirmed) {
 				$.ajax({
-					url: siteurl + active_controller + 'save_folder',
+					url: siteurl + active_controller + 'save_sub_folder',
 					dataType: 'JSON',
 					type: 'POST',
 					data: {
+						process_id,
 						name,
-						id
+						id,
 					},
 					success: function(result) {
 						if (result.status == 1) {
@@ -183,25 +206,6 @@
 				})
 			}
 		})
-	})
-
-	$(document).on('click', '.edit', function() {
-		const id = $(this).data('id')
-		$.getJSON(siteurl + active_controller + 'edit_folder/' + id, function(data) {
-			var items = [];
-			$('#modalId .modal-title').text('Edit Folder')
-			$('#modalId').modal('show')
-			$('#modalId .modal-body').html(`
-			<label for="">Folder Name</label>
-			<input type="text" id="id" class="form-control d-none" value="` + data.data.id + `">
-			<input type="text" id="folder-name" class="form-control" placeholder="New Folder" value="` + data.data.name + `">
-			<span class="invalid-feedback">Folder Name not be empty</span>
-			`)
-
-			$('.btn-save').html(`
-			<button type="button" class="btn btn-primary" id="save-folder"><i class="fa fa-save"></i> Save</button>
-			`)
-		});
 	})
 
 	$(document).on('click', '.delete', function() {
@@ -214,7 +218,7 @@
 		}).then((value) => {
 			if (value.isConfirmed) {
 				$.ajax({
-					url: siteurl + active_controller + 'delete_folder',
+					url: siteurl + active_controller + 'delete_sub_folder',
 					dataType: 'JSON',
 					type: 'POST',
 					data: {
@@ -251,14 +255,5 @@
 				})
 			}
 		})
-	})
-
-	$(document).on('click', '.view', function() {
-		const id = $(this).data('id')
-		if (id) {
-			$('#modalView .modal-title').text('View Checksheet')
-			$('#modalView').modal('show')
-			$('#modalView .modal-body').load(siteurl + active_controller + 'view_sheet/' + id)
-		}
 	})
 </script>

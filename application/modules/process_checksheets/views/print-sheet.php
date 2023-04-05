@@ -1,48 +1,62 @@
-<div class="row mb-3">
-	<label for="" class="col-md-2 control-label">Checksheet Name</label>
-	<div class="col-md-4">:
-		<input type="hidden" name="id" value="<?= $data->id; ?>">
-		<label for=""><?= $data->checksheet_name; ?></label>
-	</div>
-</div>
-<div class="row mb-3">
-	<label for="" class="col-md-2 control-label">Frequency Execution</label>
-	<div class="col-md-4">:
-		<label for=""><?= $fExecution[$data->frequency_execution]; ?></label>
-	</div>
-</div>
-<div class="row mb-3">
-	<label for="" class="col-md-2 control-label">Periode</label>
-	<div class="col-md-4">:
-		<label><?= date_format(date_create($data->periode), 'M, Y'); ?></label>
-	</div>
-</div>
-<div class="row mb-3">
-	<label for="" class="col-md-2 control-label">Checksheet Name</label>
-	<div class="col-md-4">:
-		<label for=""><?= $data->checksheet_name; ?></label>
-	</div>
-</div>
-<div class="row mb-3">
-	<label for="" class="col-md-2 control-label">Frequency Checking</label>
-	<div class="col-md-4">:
-		<label for=""><?= $fChecking[$data->frequency_checking]; ?></label>
-	</div>
-</div>
-<hr>
-<h5>List Checksheets</h5>
-<div class="table-responsive" style="overflow-x:auto;">
-	<table class="table table-bordered" style="width:<?= $width; ?>;">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title><?= $data->checksheet_name; ?></title>
+	<style>
+		* {
+			font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+			font-size: 11px;
+		}
+	</style>
+</head>
+
+<body>
+	<table>
+		<thead>
+			<tr>
+				<th style="text-align: left;">Checksheet Name</th>
+				<th>:</th>
+				<th style="text-align: left;"><?= $data->checksheet_name; ?></th>
+			</tr>
+			<tr>
+				<th style="text-align: left;">Frequency Execution</th>
+				<th>:</th>
+				<th style="text-align: left;"><?= $fExecution[$data->frequency_execution]; ?></th>
+			</tr>
+			<tr>
+				<th style="text-align: left;">Periode</th>
+				<th>:</th>
+				<th style="text-align: left;"><?= date_format(date_create($data->periode), 'M, Y'); ?></th>
+			</tr>
+			<tr>
+				<th style="text-align: left;">Checksheet Name</th>
+				<th>:</th>
+				<th style="text-align: left;"><?= $data->checksheet_name; ?></th>
+			</tr>
+			<tr>
+				<th style="text-align: left;">Frequency Checking</th>
+				<th>:</th>
+				<th style="text-align: left;"><?= $fChecking[$data->frequency_checking]; ?></th>
+			</tr>
+		</thead>
+	</table>
+	<hr>
+	<h3>List Checksheets</h3>
+	<table border="1" style="width:100%;border-collapse: collapse;">
 		<thead class="table-light">
 			<tr>
 				<th rowspan="2" class="p-2" width="50">No</th>
 				<th rowspan="2" class="p-2" width="">Items</th>
 				<th rowspan="2" class="p-2" width="">Standard</th>
-				<th colspan="<?= $count; ?>" class="p-2 text-center" width="<?= $col_width; ?>">Result</th>
+				<th colspan="<?= $count; ?>" class="p-2 text-center">Result <?= $name_col; ?></th>
 			</tr>
 			<tr>
 				<?php for ($i = 1; $i <= $count; $i++) : ?>
-					<th class="text-center"><?= $name_col . " " . $i; ?></th>
+					<th class="text-center"><?= $i; ?></th>
 				<?php endfor; ?>
 			</tr>
 		</thead>
@@ -62,7 +76,7 @@
 							<?php if ($it->check_type == 'boolean') : ?>
 								<?php if ($it->$nn == 'no') : ?>
 									<label for="" class="label-danger label"><?= ucfirst($it->$nn); ?></label>
-									<?php if ($ArrNotes[$it->id]->$Nn) : ?>
+									<?php if (isset($ArrNotes[$it->id]->$Nn)) : ?>
 										<div class="alert alert-light p-2 my-1 font-italic" role="alert">
 											<?= $ArrNotes[$it->id]->$Nn; ?>
 										</div>
@@ -121,4 +135,6 @@
 			</tr>
 		</tfoot>
 	</table>
-</div>
+</body>
+
+</html>

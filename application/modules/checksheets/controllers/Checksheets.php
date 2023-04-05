@@ -22,7 +22,7 @@ class Checksheets extends Admin_Controller
 		}
 
 		$ArrDetail 				= '';
-		$selected 				= $checksheets = $details = $breadcumb = $sub = $periode = '';
+		$selected 				= $checksheets = $details = $breadcumb = $sub = $freq = '';
 		$details_data 			= 0;
 		$dirs 	  				= $this->db->get_where('checksheets', ['status' => '1', 'company_id' => $this->company])->result();
 
@@ -42,14 +42,14 @@ class Checksheets extends Admin_Controller
 			$details 	  		= $this->db->get_where('view_checksheet_details', ['checksheet_id' => $checksheets->id, 'status' => '1'])->row();
 			$details_data 	  	= $this->db->get_where('view_checksheet_detail_data', ['checksheet_detail_id' => $sub, 'status' => '1'])->result();
 			$breadcumb 			= ($details) ? ["<a href='" . base_url($this->uri->segment(1) . '/?d=' . $checksheets->id) . "'>$details->checksheet_name</a>", $details->checksheet_detail_name] : '';
-			$periode 			= [
-				'1' => 'Once Time',
-				'2' => 'Weekly~Daily',
-				'3' => 'Monthly~Daily',
-				'4' => 'Weekly~Monthly',
-				'5' => 'Yearly~Monthly',
-			];
 		}
+		$freq 			= [
+			'1' => 'Once Time',
+			'2' => 'Weekly~Daily',
+			'3' => 'Monthly~Daily',
+			'4' => 'Weekly~Monthly',
+			'5' => 'Yearly~Monthly',
+		];
 
 		$this->template->set([
 			'data' 				=> $dirs,
@@ -59,7 +59,7 @@ class Checksheets extends Admin_Controller
 			'details_data'  	=> $details_data,
 			'breadcumb'  		=> $breadcumb,
 			'sub'  				=> $sub,
-			'periode'  			=> $periode,
+			'freq'  			=> $freq,
 		]);
 
 		$this->template->render('index');
@@ -433,7 +433,7 @@ class Checksheets extends Admin_Controller
 	{
 		$data 					= $this->db->get_where('checksheet_detail_data', ['id' => $id])->row();
 		$data_item 	 			= $this->db->get_where('checksheet_data_items', ['checksheet_data_number' => $data->number, 'status' => '1'])->result();
-		$periode 			= [
+		$freq 			= [
 			'1' => 'Once Time',
 			'2' => 'Weekly~Daily',
 			'3' => 'Monthly~Daily',
@@ -443,7 +443,7 @@ class Checksheets extends Admin_Controller
 		$this->template->set([
 			'data' 				=> $data,
 			'data_item' 		=> $data_item,
-			'periode' 			=> $periode,
+			'freq' 				=> $freq,
 		]);
 
 		$this->template->render('view-file');

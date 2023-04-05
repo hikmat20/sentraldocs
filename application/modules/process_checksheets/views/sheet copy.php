@@ -3,7 +3,7 @@
 		<div class="container">
 			<div class="card">
 				<div class="card-header">
-					<h2 class="">Checking Process</h2>
+					<h2 class="">New Checksheet</h2>
 				</div>
 				<div class="card-body overflow-auto">
 					<form id="form-checksheet">
@@ -21,21 +21,32 @@
 							</div>
 						</div>
 						<div class="row mb-3">
-							<label for="" class="col-md-2 control-label">Periode & Frequency</label>
+							<label for="" class="col-md-2 control-label">Frequency Execution</label>
 							<div class="col-md-4">:
 								<label for=""><?= $periode[$data->periode]; ?></label>
 							</div>
 						</div>
 						<div class="row mb-3">
-							<label for="" class="col-md-2 control-label">Date Checking</label>
+							<label for="" class="col-md-2 control-label">Periode</label>
 							<div class="col-md-4">
-								<input type="date" name="date_checking" id="date-checking" class="form-control">
+								<input type="text" name="periode_check" placeholder="Bulan, Tahun" id="periode-check" class="datepicker form-control">
 							</div>
 						</div>
 						<div class="row mb-3">
-							<label for="" class="col-md-2 control-label">Checking By</label>
+							<label for="" class="col-md-2 control-label">Checksheet Name</label>
 							<div class="col-md-4">
-								<input type="text" placeholder="Operator" name="checking_by" id="checking-by" class="form-control">
+								<input type="text" placeholder="Checksheet Name" name="checksheet_name" id="checksheet-name" class="form-control">
+							</div>
+						</div>
+						<div class="row mb-3">
+							<label for="" class="col-md-2 control-label">Frequency Checking</label>
+							<div class="col-md-4">
+								<select name="frequency_chekcking" id="frequency-chekcking" class="select2 form-control">
+									<option value=""></option>
+									<option value="1">Daily</option>
+									<option value="2">Weekly</option>
+									<option value="3">Monthly</option>
+								</select>
 							</div>
 						</div>
 						<hr>
@@ -50,8 +61,9 @@
 										<th colspan="7" class="p-2 text-center" width="20%">Result</th>
 									</tr>
 									<tr>
+
 										<?php for ($i = 1; $i <= $count; $i++) : ?>
-											<th><?= $name_col . " " . $i; ?></th>
+											<th><?php $name_col . " " . $i; ?></th>
 										<?php endfor; ?>
 									</tr>
 								</thead>
@@ -110,7 +122,6 @@
 		</div>
 	</div>
 </div>
-
 <script>
 	$(document).ready(function() {
 		$('.select2').select2({
@@ -118,6 +129,22 @@
 			allowClear: true,
 			placeholder: 'Choose an options'
 		})
+
+		// $('.datepicker').MonthPicker('option', 'AltField': '#OtherField');
+
+		$('.datepicker').MonthPicker({
+			ShowIcon: false,
+			MonthFormat: 'MM, yy',
+			Button: false,
+			MinMonth: "0",
+			StartYear: 2023
+			// Position: {
+			// 	collision: 'fit flip'
+			// }
+		});
+
+		$('input[type=month]').MonthPicker().css('backgroundColor', 'lightyellow');
+
 		$('.datatable').DataTable()
 
 		$(document).on('click', '#save', function() {

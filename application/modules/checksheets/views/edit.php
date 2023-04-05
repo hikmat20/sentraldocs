@@ -8,15 +8,15 @@
 		</div>
 	</div>
 	<div class="row mb-3">
-		<label class="col-2 col-form-label">Periode & Frequency <span class="text-danger">*</span></label>
+		<label class="col-2 col-form-label">Frequency <span class="text-danger">*</span></label>
 		<div class="col-6">
-			<select name="periode" id="periode" class="form-control select2">
+			<select name="frequency_execution" id="frequency-execution" class="form-control select2">
 				<option value=""></option>
-				<option value="1" <?= ($data->periode == '1') ? 'selected' : ''; ?>>Once Time</option>
-				<option value="2" <?= ($data->periode == '2') ? 'selected' : ''; ?>>Weekly-Daily</option>
-				<option value="3" <?= ($data->periode == '3') ? 'selected' : ''; ?>>Monthly-Daily</option>
-				<option value="4" <?= ($data->periode == '4') ? 'selected' : ''; ?>>Weekly-Monthly</option>
-				<option value="5" <?= ($data->periode == '5') ? 'selected' : ''; ?>>Yearly-Monthly</option>
+				<option value="1" <?= ($data->frequency_execution == '1') ? 'selected' : ''; ?>>Once Time</option>
+				<option value="2" <?= ($data->frequency_execution == '2') ? 'selected' : ''; ?>>Weekly-Daily</option>
+				<option value="3" <?= ($data->frequency_execution == '3') ? 'selected' : ''; ?>>Monthly-Daily</option>
+				<option value="4" <?= ($data->frequency_execution == '4') ? 'selected' : ''; ?>>Weekly-Monthly</option>
+				<option value="5" <?= ($data->frequency_execution == '5') ? 'selected' : ''; ?>>Yearly-Monthly</option>
 			</select>
 		</div>
 	</div>

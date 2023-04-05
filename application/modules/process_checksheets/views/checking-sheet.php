@@ -1,7 +1,7 @@
 <div class="row mb-3">
 	<label for="" class="col-md-2 control-label">Checksheet Name</label>
 	<div class="col-md-4">:
-		<input type="hidden" name="id" value="<?= $data->id; ?>">
+		<input type="hidden" id="data-id" value="<?= $data->id; ?>">
 		<label for=""><?= $data->checksheet_name; ?></label>
 	</div>
 </div>
@@ -42,7 +42,18 @@
 			</tr>
 			<tr>
 				<?php for ($i = 1; $i <= $count; $i++) : ?>
-					<th class="text-center"><?= $name_col . " " . $i; ?></th>
+					<th class="text-center"><?= $name_col . " " . $i; ?>
+						<?php if ($weekOfMonth) : ?>
+							<?php if ($weekOfMonth == $i) : ?>
+								<input type="hidden" id="field" value="<?= $i; ?>">
+							<?php endif; ?>
+						<?php else : ?>
+							<?php if ($i == (date('d'))) : ?>
+								<input type="hidden" id="field" value="<?= $i; ?>">
+							<?php endif; ?>
+						<?php endif; ?>
+					</th>
+
 				<?php endfor; ?>
 			</tr>
 		</thead>
@@ -62,7 +73,7 @@
 							<?php if ($it->check_type == 'boolean') : ?>
 								<?php if ($it->$nn == 'no') : ?>
 									<label for="" class="label-danger label"><?= ucfirst($it->$nn); ?></label>
-									<?php if ($ArrNotes[$it->id]->$Nn) : ?>
+									<?php if (isset($ArrNotes[$it->id]->$Nn)) : ?>
 										<div class="alert alert-light p-2 my-1 font-italic" role="alert">
 											<?= $ArrNotes[$it->id]->$Nn; ?>
 										</div>
@@ -106,9 +117,30 @@
 				<?php
 				$day = 'day';
 				$date = 'date';
+				$showButton = '<label class="btn btn-outline-success">Checked</label>';
 				for ($i = 1; $i <= $count; $i++) :
-					$dayCheck = $day . $i;
-					$dateCheck = $date . $i;
+					$dayCheck 	= $day . $i;
+					$dateCheck 	= $date . $i;
+					echo $ArrCheck[$data->id]->$dayCheck;
+					if (isset($weekOfMonth)) {
+						if ($weekOfMonth == $i) {
+							if (!isset($ArrCheck[$data->id]->$dayCheck)) {
+								$showButton = '
+								<button type="button" class="btn btn-primary" id="check-done">
+									<i class="fa fa-check"></i>
+									Check Done
+								</button>';
+							}
+						}
+					} elseif ($i == (date('d'))) {
+						if (!isset($ArrCheck[$data->id]->$dayCheck)) {
+							$showButton = '
+							<button type="button" class="btn btn-primary" id="check-done">
+								<i class="fa fa-check"></i>
+								Check Done
+							</button>';
+						}
+					}
 				?>
 					<td class="text-muted p-1">
 						<small for="">
@@ -121,4 +153,7 @@
 			</tr>
 		</tfoot>
 	</table>
+</div>
+<div class="p-3">
+	<?= $showButton; ?>
 </div>
