@@ -121,7 +121,6 @@
 				for ($i = 1; $i <= $count; $i++) :
 					$dayCheck 	= $day . $i;
 					$dateCheck 	= $date . $i;
-					echo $ArrCheck[$data->id]->$dayCheck;
 					if (isset($weekOfMonth)) {
 						if ($weekOfMonth == $i) {
 							if (!isset($ArrCheck[$data->id]->$dayCheck)) {
