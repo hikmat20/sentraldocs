@@ -70,22 +70,24 @@ class Compliances extends Admin_Controller
     public function index()
     {
         $reference = $this->db->get_where('view_references', ['company_id' => $this->company, 'status' => 'OPN'])->row();
-        $regulations = $this->db->get_where('view_ref_regulations', ['reference_id' => $reference->id])->result();
-        $reviews     = $this->db->get_where('compilation_reviews', ['reference_id' => $reference->id])->result();
-        $users       = $this->db->get_where('view_users', ['company_id' => $this->company, 'status' => 'ACT'])->result();
-        $summary     = $this->db->order_by('last_review', 'DESC')->get_where('compilation_reviews', ['reference_id' => $reference->id])->row();
         $ArrUsers = [];
+        if ($reference) {
+            $regulations = $this->db->get_where('view_ref_regulations', ['reference_id' => $reference->id])->result();
+            $reviews     = $this->db->get_where('compilation_reviews', ['reference_id' => $reference->id])->result();
+            $users       = $this->db->get_where('view_users', ['company_id' => $this->company, 'status' => 'ACT'])->result();
+            $summary     = $this->db->order_by('last_review', 'DESC')->get_where('compilation_reviews', ['reference_id' => $reference->id])->row();
 
-        foreach ($users as $usr) {
-            $ArrUsers[$usr->id_user] = $usr->full_name;
+            foreach ($users as $usr) {
+                $ArrUsers[$usr->id_user] = $usr->full_name;
+            }
         }
 
 
         $this->template->set([
-            'regulations'   => $regulations,
-            'reference'     => $reference,
-            'reviews'       => $reviews,
-            'summary'       => $summary,
+            'regulations'   => $regulations ?: [],
+            'reference'     => $reference ?: [],
+            'reviews'       => $reviews ?: [],
+            'summary'       => $summary ?: '',
             'ArrUsers'       => $ArrUsers,
         ]);
 
