@@ -73,7 +73,7 @@
 								echo '</pre>';
 								// exit;
 								?>
-								<!-- <a target="_blank" href="<?= base_url($this->uri->segment(1) . '/export_pdf/' . (($reference)) ? $reference->id : ''); ?>" class="btn btn-light btn-block to-pdf" data-comp_id="<?= ($reference) ? $reference->company_id : ''; ?>"><i class="fa fa-file-pdf"></i>Export PDF</a> -->
+								<a target="_blank" href="<?= base_url($this->uri->segment(1) . '/export_pdf/' . (($reference) ? $reference->id : '')); ?>" class="btn btn-light btn-block to-pdf" data-comp_id="<?= (($reference) ? $reference->company_id : ''); ?>"><i class="fa fa-file-pdf"></i>Export PDF</a>
 							</div>
 						</div>
 					</div>
