@@ -33,7 +33,7 @@
 								</tr>
 								<tr>
 									<th>Review By</th>
-									<td><?= isset($ArrUsers[$reference->review_by]) ? $ArrUsers[$reference->review_by] : ''; ?></td>
+									<td><?= ($reference) && isset($ArrUsers[$reference->review_by]) ? $ArrUsers[$reference->review_by] : ''; ?></td>
 								</tr>
 							</table>
 						</div>
