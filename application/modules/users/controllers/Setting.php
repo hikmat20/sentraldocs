@@ -149,12 +149,17 @@ class Setting extends Admin_Controller
 
     public function edit($id = 0)
     {
-        $data           = $this->db->get_where('view_users', ['id_user' => $id, 'status' => 'ACT'])->row();
+        $data           = $this->db->get_where('users', ['id_user' => $id])->row();
         $levels         = $this->db->get_where('groups', ['active' => 'Y', 'id_group !=' => '1'])->result();
         $user_group     = $this->db->get_where('user_groups', ['user_id' => $id])->row();
         $companies      = $this->db->get_where('companies')->result();
         // $levels         = $this->db->get_where('groups', ['active' => 'Y', 'company_id' => null, 'id_group !=' => '1'])->result();
         $levelsComp     = $this->db->get_where('groups', ['active' => 'Y', 'company_id' => $this->company])->result();
+
+        // echo '<pre>';
+        // print_r($user_group);
+        // echo '</pre>';
+        // exit;
 
         $this->template->set('levels', array_merge($levels, $levelsComp));
         $this->template->set('companies', $companies);
@@ -170,7 +175,6 @@ class Setting extends Admin_Controller
     public function permission($id = 0)
     {
         $this->auth->restrict($this->managePermission);
-
         if ($id == 0 || is_numeric($id) == FALSE || $id == 1) {
             $this->template->set_message(lang('users_invalid_id'), 'error');
             redirect('users/setting');
@@ -191,6 +195,7 @@ class Setting extends Admin_Controller
                 redirect('users/setting');
             }
         }
+
         //All Permission
         $permissions = $this->permissions_model
             ->order_by("nm_permission", "ASC")

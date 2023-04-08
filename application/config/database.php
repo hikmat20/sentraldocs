@@ -76,7 +76,11 @@ $query_builder = true;
 
 $db['default'] = array(
     'dsn' => '',
+<<<<<<< HEAD
     'hostname' => '149.129.215.79',
+=======
+    'hostname' => 'localhost',
+>>>>>>> b6d6d8c4af273ace3214ac991858ce3e4a42f460
     'username' => 'admin_mysql',
     'password' => 'Sentral203!',
     'database' => 'elibrary',

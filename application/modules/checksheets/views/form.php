@@ -9,13 +9,13 @@
 	<div class="row mb-3">
 		<label class="col-2 col-form-label">Periode & Frequency <span class="text-danger">*</span></label>
 		<div class="col-6">
-			<select name="periode" id="periode" class="form-control select2">
+			<select name="frequency_execution" id="periode" class="form-control select2">
 				<option value=""></option>
 				<option value="1">Once Time</option>
-				<option value="2">Weekly-Daily</option>
-				<option value="3">Monthly-Daily</option>
-				<option value="4">Weekly-Monthly</option>
-				<option value="5">Yearly-Monthly</option>
+				<!-- <option value="2">Weekly-Daily</option> -->
+				<option value="4">Weekly</option>
+				<option value="3">Monthly</option>
+				<option value="5">Yearly</option>
 			</select>
 		</div>
 	</div>
