@@ -13,23 +13,23 @@
 							<table class="table table-striped table-bordered table-sm">
 								<tr>
 									<th width="150">Company</th>
-									<td><?= $reference->nm_perusahaan; ?></td>
+									<td><?= ($reference) ? $reference->nm_perusahaan : ''; ?></td>
 								</tr>
 								<tr>
 									<th>State</th>
-									<td><?= $reference->status; ?></td>
+									<td><?= ($reference) ? $reference->status : ''; ?></td>
 								</tr>
 								<tr>
 									<th>Created On</th>
-									<td><?= $reference->sdate; ?></td>
+									<td><?= ($reference) ? $reference->sdate : ''; ?></td>
 								</tr>
 								<tr>
 									<th>Last Review</th>
-									<td><?= $reference->last_review; ?></td>
+									<td><?= ($reference) ? $reference->last_review : ''; ?></td>
 								</tr>
 								<tr>
 									<th>Count Review</th>
-									<td><?= $reference->counter_review; ?></td>
+									<td><?= ($reference) ? $reference->counter_review : ''; ?></td>
 								</tr>
 								<tr>
 									<th>Review By</th>
