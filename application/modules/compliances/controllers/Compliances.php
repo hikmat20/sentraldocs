@@ -74,6 +74,7 @@ class Compliances extends Admin_Controller
         $regulations = '';
         $reference = '';
         $reviews = '';
+        $summary = '';
 
         if ($reference) {
             $regulations = $this->db->get_where('view_ref_regulations', ['reference_id' => $reference->id])->result();
