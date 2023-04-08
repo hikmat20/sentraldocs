@@ -67,7 +67,7 @@
 							<div class="btn-block">
 								<button type="button" class="btn btn-success btn-block" data-id="<?= ($reference) ? $reference->id : ''; ?>" id="compilation"><i class="fa fa-bolt"></i> Compilation</button>
 								<button type="button" class="btn btn-info btn-block" data-id="<?= ($reference) ? $reference->id : ''; ?>" id="view-compilation"><i class="fa fa-eye"></i> View Compilation</button>
-								<a target="_blank" href="<?= base_url($this->uri->segment(1) . '/export_pdf/' . ($reference) ? $reference->id : ''); ?>" class="btn btn-light btn-block to-pdf" data-comp_id="<?= ($reference) ? $reference->company_id : ''; ?>"><i class="fa fa-file-pdf"></i>Export PDF</a>
+								<a target="_blank" href="<?= base_url($this->uri->segment(1) . '/export_pdf/' . (isset($reference)) ? $reference->id : ''); ?>" class="btn btn-light btn-block to-pdf" data-comp_id="<?= isset($reference) ? $reference->company_id : ''; ?>"><i class="fa fa-file-pdf"></i>Export PDF</a>
 							</div>
 						</div>
 					</div>
