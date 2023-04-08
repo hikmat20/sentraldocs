@@ -71,6 +71,10 @@ class Compliances extends Admin_Controller
     {
         $reference = $this->db->get_where('view_references', ['company_id' => $this->company, 'status' => 'OPN'])->row();
         $ArrUsers = [];
+        $regulations = '';
+        $reference = '';
+        $reviews = '';
+
         if ($reference) {
             $regulations = $this->db->get_where('view_ref_regulations', ['reference_id' => $reference->id])->result();
             $reviews     = $this->db->get_where('compilation_reviews', ['reference_id' => $reference->id])->result();
@@ -81,7 +85,6 @@ class Compliances extends Admin_Controller
                 $ArrUsers[$usr->id_user] = $usr->full_name;
             }
         }
-
 
         $this->template->set([
             'regulations'   => $regulations ?: [],
