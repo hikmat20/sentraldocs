@@ -27,6 +27,7 @@ class Admin_Controller extends Base_Controller
         $this->company      = $this->session->company->id_perusahaan;
         $this->group_id     = $this->session->group->id_group;
         $this->form_validation->set_error_delimiters('', '');
+        $companies          = $this->db->get_where('companies')->result();
 
         $positions = $this->db->get_where('positions', ['assign_user' => $this->auth->user_id()])->result();
         $ArrPos = [];
@@ -57,6 +58,7 @@ class Admin_Controller extends Base_Controller
         // Basic setup
         $this->template->set('userData', $this->user_data);
         $this->template->set('idt', $idt);
+        $this->template->set('companies', $companies);
 
         // $this->template->set_theme('admin');
         $this->template->set_theme('dashboard');

@@ -72,7 +72,6 @@
 						</div>
 					</div>
 
-
 					<!-- <hr> -->
 					<div class="mb-5 mt-5">
 						<h2 class="mb-5"><i class="fa fa-desktop"></i> List Regulations</h2>

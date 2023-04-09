@@ -7,7 +7,7 @@
 			<div class="row justify-content-center px-8 py-5">
 				<div class="col-xl-12 col-xxl-10">
 					<!--begin::Wizard Form-->
-					<form id="frm_users">
+					<form id="frm_users" enctype="multipart/form-data">
 						<div class="row justify-content-center">
 							<div class="col-xl-10">
 								<!--begin::Wizard Step 1-->
@@ -20,6 +20,28 @@
 									<?php endif; ?>
 									<!--end::Group-->
 									<!--begin::Group-->
+									<div class="form-group row">
+										<label class="col-xl-3 col-lg-3 col-form-label">Username</label>
+										<div class="col-lg-9 col-xl-9">
+											<input type="text" id="username" class="form-control form-control-solid form-control-lg required" name="username" placeholder="username" <?= (isset($data) && $data->username) ? 'readonly' : '';; ?> value="<?= isset($data) ? $data->username : ''; ?>" />
+											<span class="invalid-feedback">Username can't be empty..!</span>
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-xl-3 col-lg-3 col-form-label">Password</label>
+										<div class="col-lg-9 col-xl-9">
+											<input type="password" id="password" class="form-control  form-control-solid form-control-lg" name="password" placeholder="password" />
+											<span class="invalid-feedback">Password can't be empty..!</span>
+										</div>
+									</div>
+									<div class="form-group row">
+										<label class="col-xl-3 col-lg-3 col-form-label">Re-Password</label>
+										<div class="col-lg-9 col-xl-9">
+											<input type="password" id="re-password" class="form-control  form-control-solid form-control-lg" name="re-password" placeholder="re-password" />
+											<span class="invalid-feedback">Re-Password can't be empty..!</span>
+										</div>
+									</div>
+									<hr>
 									<div class="form-group row">
 										<label class="col-xl-3 col-lg-3 col-form-label">Full Name</label>
 										<div class="col-lg-9 col-xl-9">
@@ -78,6 +100,7 @@
 									<div class="form-group row">
 										<label class="col-xl-3 col-lg-3 col-form-label">Company</label>
 										<div class="col-lg-9 col-xl-9">
+
 											<select name="company_id" id="company_id" class="form-control required form-control-solid select2">
 												<option value=""></option>
 												<?php foreach ($companies as $com) : ?>
@@ -90,7 +113,7 @@
 									<div class="form-group row">
 										<label class="col-xl-3 col-lg-3 col-form-label">Level</label>
 										<div class="col-lg-9 col-xl-9">
-											<select name="group_id" id="group_id" disabled class="form-control required form-control-solid select2">
+											<select name="group_id" id="group_id" <?= !isset($user_group->id_group) ? 'disabled' : ''; ?> class="form-control required form-control-solid select2">
 												<option value=""></option>
 												<?php foreach ($levels as $level) : ?>
 													<option value="<?= $level->id_group; ?>" <?= (isset($user_group) && $user_group->id_group == $level->id_group) ? 'selected' : ""; ?>><?= $level->nm_group; ?></option>
@@ -104,13 +127,12 @@
 										<label class="col-xl-3 col-lg-3 col-form-label text-left">Photo</label>
 										<div class="col-lg-9 col-xl-9">
 											<div class="image-input image-input-outline" id="kt_user_add_avatar">
-												<div id="preview" class="image-input-wrapper" style="background-image: url('<?= base_url('assets/img/') . set_value('photo', isset($data->photo) ? $data->photo : 'avatar.png') ?>')"></div>
+												<img src="<?= base_url('assets/img/avatar/') . set_value('photo', isset($data->photo) ? $data->photo : 'no-user.jpg') ?>" id="preview" class="image-input-wrapper" />
 												<label class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow" data-action="change" data-toggle="tooltip" title="" data-original-title="Change avatar">
 													<i class="fa fa-pen icon-sm text-muted"></i>
-													<input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg" />
-													<input type="hidden" name="profile_avatar_remove" />
-													<input type="file" name="profile_avatar" onchange="preview_image(event)" id="profile_avatar" class="hidden">
-													<!-- <input type="hidden" name="old_photo" id="old_photo" value="<?= isset($data->photo) ? $data->photo : 'avatar.png' ?>"> -->
+													<!-- <input type="hidden" name="profile_avatar_remove" /> -->
+													<input type="file" name="profile_avatar" accept=".png, .jpg, .jpeg" onchange="preview_image(event)" id="profile_avatar" class="hidden">
+													<input type="hidden" name="old_photo" id="old_photo" value="<?= isset($data->photo) ? $data->photo : '' ?>">
 													<!-- <button class="btn btn-warning" onclick="$('#photo').click()" type="button"><i class="fa fa-upload"></i> Upload Gambar</button> -->
 
 												</label>
@@ -121,31 +143,7 @@
 										</div>
 									</div>
 								</div>
-								<!--end::Wizard Step 1-->
-								<div class="my-5 step border-top pt-10 mt-15" data-wizard-type="step-content" data-wizard-state="current">
-									<div class="form-group row">
-										<label class="col-xl-3 col-lg-3 col-form-label">Username</label>
-										<div class="col-lg-9 col-xl-9">
-											<input type="text" id="username" class="form-control form-control-solid form-control-lg" name="username" placeholder="username" <?= (isset($data) && $data->username) ? 'readonly' : '';; ?> value="<?= isset($data) ? $data->username : ''; ?>" />
-											<span class="invalid-feedback">Username can't be empty..!</span>
-										</div>
-									</div>
-									<div class="form-group row">
-										<label class="col-xl-3 col-lg-3 col-form-label">Password</label>
-										<div class="col-lg-9 col-xl-9">
-											<input type="password" id="password" class="form-control  form-control-solid form-control-lg" name="password" placeholder="password" />
-											<span class="invalid-feedback">Password can't be empty..!</span>
-										</div>
-									</div>
-									<div class="form-group row">
-										<label class="col-xl-3 col-lg-3 col-form-label">Re-Password</label>
-										<div class="col-lg-9 col-xl-9">
-											<input type="password" id="re-password" class="form-control  form-control-solid form-control-lg" name="re-password" placeholder="re-password" />
-											<span class="invalid-feedback">Re-Password can't be empty..!</span>
-										</div>
-									</div>
-								</div>
-								<!--begin::Wizard Actions-->
+
 								<div class="d-flex justify-content-between border-top pt-10 mt-15">
 									<a href="<?= base_url('users/setting'); ?>" class="btn btn-danger"><i class="fa fa-reply mr-2"></i>Back</a>
 									<button type="button" name="save" id="save" class="btn btn-primary"><i class="fa fa-save"></i><?= lang('users_btn_save') ?></button>
@@ -227,7 +225,7 @@
 			}
 
 			const valid = getValidation('#frm_users')
-			console.log(formdata);
+
 			if (valid) {
 				$.ajax({
 					url: base_url + active_controller + 'setting/save',
@@ -276,14 +274,6 @@
 			}
 		})
 	});
-
-
-
-	// $('#company_id').on('select2:selecting', function(e) {
-	// 	var data = e.params.data;
-	// 	console.log(data);
-	// });
-
 
 	function preview_image(event) {
 		var reader = new FileReader();

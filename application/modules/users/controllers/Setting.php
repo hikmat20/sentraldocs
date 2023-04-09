@@ -125,8 +125,12 @@ class Setting extends Admin_Controller
 
     public function index()
     {
-        $data = $this->db->get_where('users')->result();
-        $this->template->set('results', $data);
+        $userActive = $this->db->get_where('users', ['status' => 'ACT'])->result();
+        $userNonActive = $this->db->get_where('users', ['status' => 'NAC'])->result();
+        $this->template->set([
+            'userActive' => $userActive,
+            'userNonActive' => $userNonActive,
+        ]);
         $this->template->render('list');
     }
     public function create()
@@ -149,17 +153,11 @@ class Setting extends Admin_Controller
 
     public function edit($id = 0)
     {
-        $data           = $this->db->get_where('users', ['id_user' => $id])->row();
+        $data           = $this->db->get_where('view_users', ['id_user' => $id])->row();
         $levels         = $this->db->get_where('groups', ['active' => 'Y', 'id_group !=' => '1'])->result();
         $user_group     = $this->db->get_where('user_groups', ['user_id' => $id])->row();
         $companies      = $this->db->get_where('companies')->result();
-        // $levels         = $this->db->get_where('groups', ['active' => 'Y', 'company_id' => null, 'id_group !=' => '1'])->result();
         $levelsComp     = $this->db->get_where('groups', ['active' => 'Y', 'company_id' => $this->company])->result();
-
-        // echo '<pre>';
-        // print_r($user_group);
-        // echo '</pre>';
-        // exit;
 
         $this->template->set('levels', array_merge($levels, $levelsComp));
         $this->template->set('companies', $companies);
@@ -315,17 +313,9 @@ class Setting extends Admin_Controller
     {
         $data           = $this->input->post();
         $data['ip']     = $this->input->ip_address();
-        $company_id = $data['company_id'];
+        $company_id     = $data['company_id'];
         unset($data['company_id']);
-        // echo '<pre>';
-        // print_r($data);
-        // echo '<pre>';
-        // exit;
-        // $newPhoto = ($photo) ? $photo : $old_photo;
-        // echo '<pre>';
-        // print_r($dataPhoto);
-        // echo '<pre>';
-        // exit;
+
         /**
          * This code will benchmark your server to determine how high of a cost you can
          * afford. You want to set the highest cost that you can without slowing down
@@ -342,7 +332,7 @@ class Setting extends Admin_Controller
             password_hash("test", PASSWORD_BCRYPT, ["cost" => $cost]);
             $end = microtime(true);
         } while (($end - $start) < $timeTarget);
-        //End finding cost
+
 
         $options = [
             'cost' => $cost,
@@ -353,41 +343,42 @@ class Setting extends Admin_Controller
         } else {
             unset($data['password']);
         }
+        // $data['photo'] = null;
+        if ($_FILES['profile_avatar']['name']) {
+            $config['upload_path']          = './assets/img/avatar/';
+            $config['allowed_types']        = 'gif|jpg|png';
+            $config['max_size']             = 2048;
+            $config['max_width']            = 1024;
+            $config['max_height']           = 1024;
+            $config['file_name']            = $data['username'];
+            $this->load->library('upload', $config);
+            $this->upload->initialize($config);
 
-        // if ($_FILES['profile_avatar']['name']) {
-        //     $config['upload_path']          = './assets/img/';
-        //     $config['allowed_types']        = 'gif|jpg|png';
-        //     $config['max_size']             = 2048;
-        //     $config['max_width']            = 2000;
-        //     $config['max_height']           = 2000;
-        //     $config['file_name']            = $data['username'];
-        //     $this->load->library('upload', $config);
-        //     $this->upload->initialize($config);
+            if (!$this->upload->do_upload('profile_avatar')) {
+                $error = $this->upload->display_errors();
+                $this->template->set_message($error, 'error');
+                return FALSE;
+            } else {
+                if ($data['old_photo']) {
+                    if (file_exists('assets/img/avatar/' . $data['old_photo'])) {
+                        unlink('assets/img/avatar/' . $data['old_photo']);
+                    }
+                }
+                $dataPhoto = $this->upload->data();
+                $data['photo'] = $dataPhoto['file_name'];
+            }
+        }
 
-        //     if (!$this->upload->do_upload('profile_avatar')) {
-        //         $error = $this->upload->display_errors();
-        //         $this->template->set_message($error, 'error');
-        //         return FALSE;
-        //     } else {
-        //         $dataPhoto = $this->upload->data();
-        //         $photo = $dataPhoto['file_name'];
-        //         if ($old_photo) {
-        //             unlink('./assets/img/' . $old_photo);
-        //         }
-        //     }
-        // }
-
-        // $group_id = $data['group_id'];
+        $group_id = $data['group_id'];
+        unset($data['group_id']);
+        unset($data['re-password']);
+        unset($data['old_photo']);
 
         $this->db->trans_begin();
-        unset($data['profile_avatar_remove']);
         if (isset($data['id_user']) && $data['id_user']) {
             $data['modified_at'] = date('Y-m-d H:i:s');
             $data['modified_by'] = $this->auth->user_id();
             $data['status'] = (isset($data['status'])) ? $data['status'] : 'NAC';
-
-            unset($data['re-password']);
-            unset($data['group_id']);
             $this->db->update('users', $data, ['id_user' => $data['id_user']]);
         } else {
             $check_check_username   =  $this->check_username($data['username']);
@@ -412,15 +403,12 @@ class Setting extends Admin_Controller
             $data['created_at'] = date('Y-m-d H:i:s');
             $data['created_by'] = $this->auth->user_id();
             $data['status']     = ($data['status']) ?: 'NAC';
-            unset($data['re-password']);
-            unset($data['group_id']);
             $this->db->insert('users', $data);
-            // $this->assign_company($data['username'], $group_id, $company_id);
+            $this->assign_company($data['username'], $group_id, $company_id);
         }
 
         $error = $this->db->error()['message'];
 
-        // exit;
         if ($this->db->trans_status() === TRUE) {
             $this->db->trans_commit();
             $return = [

@@ -44,6 +44,13 @@
       border-color: #704dff #704dff #704dff #bbabff;
     }
 
+    .swal2-container .swal2-html-container {
+      min-height: 50px !important;
+      overflow: visible !important;
+      display: flex !important;
+      justify-content: center !important;
+    }
+
     .box {
       position: relative;
       background: #ffffff;
@@ -137,6 +144,81 @@
     }
   </style>
 
+
+  <style>
+    .loaders {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      -webkit-box-align: center;
+      -ms-flex-align: center;
+      align-items: center;
+      height: 100%;
+    }
+
+    .dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 6px;
+      border-radius: 50%;
+      -webkit-animation: dot-pulse2 1.5s ease-in-out infinite;
+      animation: dot-pulse2 1.5s ease-in-out infinite;
+    }
+
+    .dot-1 {
+      background-color: #4285f4;
+      -webkit-animation-delay: 0s;
+      animation-delay: 0s;
+    }
+
+    .dot-2 {
+      background-color: #34a853;
+      -webkit-animation-delay: 0.3s;
+      animation-delay: 0.3s;
+    }
+
+    .dot-3 {
+      background-color: #fbbc05;
+      -webkit-animation-delay: 0.6s;
+      animation-delay: 0.6s;
+    }
+
+    .dot-4 {
+      background-color: #ea4335;
+      -webkit-animation-delay: 0.9s;
+      animation-delay: 0.9s;
+    }
+
+    .dot-5 {
+      background-color: #4285f4;
+      -webkit-animation-delay: 1.2s;
+      animation-delay: 1.2s;
+    }
+
+    @keyframes dot-pulse2 {
+      0% {
+        -webkit-transform: scale(0.5);
+        transform: scale(0.5);
+        opacity: 0.5;
+      }
+
+      50% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      100% {
+        -webkit-transform: scale(0.5);
+        transform: scale(0.5);
+        opacity: 0.5;
+      }
+    }
+  </style>
 </head>
 <!-- 0c18a9 -->
 
@@ -183,7 +265,7 @@
         <div class="btn btn-icon btn-hover-transparent-white w-auto d-flex align-items-center btn-lg px-2" id="kt_quick_user_toggle">
           <div class="symbol symbol-circle symbol-30 bg-white overflow-hidden">
             <div class="symbol-label">
-              <img alt="Logo" src="<?= (isset($userData->photo) && file_exists('assets/images/users/' . $userData->photo)) ? base_url('assets/images/users/' . $userData->photo) : base_url('assets/images/male-def.png'); ?>" class="h-75 align-self-end" />
+              <img alt="avatar" src="<?= (isset($userData->photo) && file_exists('/assets/img/avatar/' . $userData->photo)) ? base_url('/assets/img/avatar/' . $userData->photo) : base_url('/assets/img/avatar/no-user.jpg'); ?>" class="h-75 align-self-end" />
             </div>
           </div>
         </div>
@@ -198,6 +280,14 @@
       <!--begin::Menu Container-->
       <div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500">
         <!--begin::Menu Nav-->
+
+        <div class="text-center">
+          <img src="<?= base_url('assets/img/logo-2.png'); ?>" width="50px" class="img-fluid" alt="Logo">
+          <h5 for="" class="text-center"><strong>
+              <?= $this->session->company->nm_perusahaan ?>
+            </strong></h5>
+        </div>
+        <hr class="mb-0">
         <?= $this->menu_generator->show_menus_new(); ?>
         <!--end::Menu Nav-->
       </div>
@@ -265,12 +355,10 @@
             <!--begin::Topbar-->
             <div class="topbar">
               <!--begin::Quick Actions-->
-              <div class="dropdown">
-                <!--begin::Toggle-->
+              <!-- <div class="dropdown">
                 <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px">
                   <div class="btn btn-icon btn-hover-transparent-white btn-dropdown btn-lg mr-1">
                     <span class="svg-icon svg-icon-xl">
-                      <!--begin::Svg Icon | path:/keen/theme/demo6/dist/assets/media/svg/icons/Communication/Chat6.svg-->
                       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                         <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                           <rect x="0" y="0" width="24" height="24" />
@@ -278,27 +366,25 @@
                           <path fill-rule="evenodd" clip-rule="evenodd" d="M6 7H15C15.5523 7 16 7.44772 16 8C16 8.55228 15.5523 9 15 9H6C5.44772 9 5 8.55228 5 8C5 7.44772 5.44772 7 6 7ZM6 11H11C11.5523 11 12 11.4477 12 12C12 12.5523 11.5523 13 11 13H6C5.44772 13 5 12.5523 5 12C5 11.4477 5.44772 11 6 11Z" fill="black" />
                         </g>
                       </svg>
-                      <!--end::Svg Icon-->
                     </span>
                   </div>
                 </div>
                 <div class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-lg">
-                  <!-- <div class="d-flex flex-column flex-center py-10 rounded-to border-bottom">
+                  <div class="d-flex flex-column flex-center py-10 rounded-to border-bottom">
                     <h4 class="text-dark font-weight-bold">Quick Actions</h4>
                     <span class="btn btn-primary btn-sm font-weight-bold font-size-sm mt-2">23 new tasks</span>
                   </div>
                   <div class="row row-paddingless">
-
-                  </div> -->
-
+                  </div>
                 </div>
-              </div>
+              </div> -->
+
               <div class="topbar-item mr-3">
                 <span class="bg-white rounded py-2 h6 my-0 pl-3 pr-10" style="margin-right:-30px"><?= $userData->full_name; ?></span>
                 <div class="btn btn-icon w-auto d-flex align-items-center btn-lg px-2" onclick="$('#kt_quick_user_toggle').click()">
                   <div class="symbol symbol-circle symbol-50 bg-white overflow-hidden">
                     <div class="symbol-label">
-                      <img alt="Logo" src="<?= (isset($userData->photo) && file_exists('assets/images/users/' . $userData->photo)) ? base_url('assets/images/users/' . $userData->photo) : base_url('assets/images/male-def.png'); ?>" class="h-75 align-self-end" />
+                      <img alt="avatar" src="<?= (isset($userData->photo) && file_exists('assets/img/avatar/' . $userData->photo)) ? base_url('assets/img/avatar/' . $userData->photo) : base_url('assets/img/avatar/no-user.jpg'); ?>" class="h-100 align-self-end" />
                     </div>
                   </div>
                 </div>
