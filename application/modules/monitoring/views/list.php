@@ -47,25 +47,27 @@
                   </td>
                   <td class="text-center">
                     <?php if (isset($ArrPosts)) : ?>
-                      <?php if (in_array($list->reviewer_id, $ArrPosts)) : ?>
-                        <?php if ($list->status == 'REV') : ?>
+                      <?php if ($list->status == 'REV') : ?>
+                        <?php if (in_array($list->reviewer_id, $ArrPosts)) : ?>
                           <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-warning btn-icon review btn-xs shadow-sm"><i class="fa fa-cog"></i></button>
                         <?php endif; ?>
-                        <?php if ($list->status == 'HLD' && $list->deletion_status == 'OPN') : ?>
+                      <?php elseif ($list->status == 'HLD' && $list->deletion_status == 'OPN') : ?>
+                        <?php if (in_array($list->reviewer_id, $ArrPosts)) : ?>
                           <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-warning btn-icon review-del btn-xs shadow-sm"><i class="fa fa-cog"></i></button>
-                        <?php elseif ($list->status == 'HLD' && $list->deletion_status == 'REV') : ?>
+                        <?php endif; ?>
+                      <?php elseif ($list->status == 'HLD' && $list->deletion_status == 'REV') : ?>
+                        <?php if (in_array($list->reviewer_id, $ArrPosts)) : ?>
                           <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-info btn-icon approval-del btn-xs shadow-sm"><i class="fa fa-cog"></i></button>
                         <?php endif; ?>
-                      <?php elseif (in_array($list->approval_id, $ArrPosts)) : ?>
-                        <?php if ($list->status == 'APV') : ?>
+                      <?php elseif ($list->status == 'APV') : ?>
+                        <?php if (in_array($list->approval_id, $ArrPosts)) : ?>
                           <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-info btn-icon approve btn-xs shadow-sm"><i class="fa fa-cog"></i></button>
                         <?php endif; ?>
-                      <?php elseif (in_array($list->prepared_by, $ArrPosts)) : ?>
-                        <?php if ($list->status == 'COR') : ?>
+                      <?php elseif ($list->status == 'COR') : ?>
+                        <?php if (in_array($list->prepared_by, $ArrPosts)) : ?>
                           <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-info btn-icon approve btn-xs shadow-sm"><i class="fa fa-cog"></i></button>
                         <?php endif; ?>
-                      <?php endif; ?>
-                      <?php if ($list->status == 'PUB') : ?>
+                      <?php elseif ($list->status == 'PUB') : ?>
                         <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-success btn-icon view btn-xs shadow-sm"><i class="fa fa-eye"></i></button>
                       <?php else : ?>
                         <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-primary btn-icon view-data btn-xs shadow-sm"><i class="fa fa-eye"></i></button>
