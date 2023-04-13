@@ -429,7 +429,7 @@
 														</div>
 
 														<div class="form-group row">
-															<label class="col-lg-3"><span class="text-danger">*</span> Distribusi</label>
+															<label class="col-lg-3"> Distribusi</label>
 															<div class="col-lg-9">
 																<select name="distribute_id[]" multiple id="distribute_id" data-placeholder="Choose an options" class="form-control select2">;
 																	<option value=""></option>
@@ -875,16 +875,6 @@
 				return false;
 			}
 
-			if ((distribute_id == '' && distribute_id != undefined) || (distribute_id == null && distribute_id != undefined)) {
-				$('#distribute_id').addClass('is-invalid')
-				Swal.fire({
-					title: "Error Message!",
-					text: 'Empty distribusi, please input distribusi first.....',
-					icon: "warning"
-				});
-				$('#approvalDocs').addClass('show');
-				return false;
-			}
 
 			var validate = true
 			$('input[name="img_flow[]"]').each(function() {
