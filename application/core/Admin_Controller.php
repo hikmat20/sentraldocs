@@ -35,7 +35,7 @@ class Admin_Controller extends Base_Controller
         $positions = $this->db->get_where('positions', ['assign_user' => $this->auth->user_id(), 'company_id' => $this->company])->result();
         $ArrPos = [];
         foreach ($positions as $pos) {
-            $ArrPos[$pos->id] = $pos->assign_user;
+            $ArrPos[] = $pos->id;
         }
 
         $this->ArrPosts         = $ArrPos;
