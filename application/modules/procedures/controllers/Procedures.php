@@ -69,7 +69,7 @@ class Procedures extends Admin_Controller
 	{
 		$grProcess	= $this->db->get_where('group_procedure', ['status' => 'ACT'])->result();
 		$users 		= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
-		$jabatan 	= $this->db->get('positions', ['company_id' => $this->company])->result();
+		$jabatan 	= $this->db->get_where('positions', ['company_id' => $this->company])->result();
 
 		$this->template->set([
 			'grProcess' 	=> $grProcess,
@@ -92,7 +92,8 @@ class Procedures extends Admin_Controller
 			$getGuides	= $this->db->get_where('dir_guides', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
 			$getRecords	= $this->db->get_where('dir_records', ['procedure_id' => $id, 'status !=' => 'DEL', 'flag_type' => 'FOLDER', 'parent_id' => null])->result();
 			$users 		= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
-			$jabatan 	= $this->db->get('positions', ['company_id' => $this->company])->result();
+			$jabatan 	= $this->db->get_where('positions', ['company_id' => $this->company])->result();
+
 			$ArrForms = [];
 			foreach ($getForms as $frm) {
 				$ArrForms[$frm->id] = $frm;
