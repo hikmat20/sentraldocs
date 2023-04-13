@@ -5,6 +5,9 @@ class Admin_Controller extends Base_Controller
     protected $pager;
     protected $limit;
     protected $user_data;
+    protected $ArrPosts;
+    protected $company;
+    protected $group_id;
 
     public function __construct()
     {
@@ -29,11 +32,12 @@ class Admin_Controller extends Base_Controller
         $this->form_validation->set_error_delimiters('', '');
         $companies          = $this->db->get_where('companies')->result();
 
-        $positions = $this->db->get_where('positions', ['assign_user' => $this->auth->user_id()])->result();
+        $positions = $this->db->get_where('positions', ['assign_user' => $this->auth->user_id(), 'company_id' => $this->company])->result();
         $ArrPos = [];
         foreach ($positions as $pos) {
-            $ArrPos[] = $pos->id;
+            $ArrPos[$pos->id] = $pos->assign_user;
         }
+
         $this->ArrPosts         = $ArrPos;
         // Pagination config
         $this->pager = array(
