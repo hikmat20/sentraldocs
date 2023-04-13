@@ -358,7 +358,7 @@
 														</div>
 
 														<div class="form-group row">
-															<label class="col-lg-3"><span class="text-danger">*</span> Distribusi</label>
+															<label class="col-lg-3"> Distribusi</label>
 															<div class="col-lg-9">
 																<select name="distribute_id[]" multiple id="distribute_id" data-placeholder="Choose an options" class="form-control select2">;
 																	<option value=""></option>
