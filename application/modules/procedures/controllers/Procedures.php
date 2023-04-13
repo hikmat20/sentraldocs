@@ -69,13 +69,12 @@ class Procedures extends Admin_Controller
 	{
 		$grProcess	= $this->db->get_where('group_procedure', ['status' => 'ACT'])->result();
 		$users 		= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
-		$jabatan 	= $this->db->get('positions')->result();
+		$jabatan 	= $this->db->get('positions', ['company_id' => $this->company])->result();
 
 		$this->template->set([
 			'grProcess' 	=> $grProcess,
 			'users' 		=> $users,
 			'jabatan' 		=> $jabatan,
-
 		]);
 
 		$this->template->set('title', 'Add Procedures');
@@ -93,13 +92,7 @@ class Procedures extends Admin_Controller
 			$getGuides	= $this->db->get_where('dir_guides', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
 			$getRecords	= $this->db->get_where('dir_records', ['procedure_id' => $id, 'status !=' => 'DEL', 'flag_type' => 'FOLDER', 'parent_id' => null])->result();
 			$users 		= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
-			$jabatan 	= $this->db->get('positions')->result();
-
-			// $this->template->set([
-			// 	'jabatan' 		=> $jabatan,
-			// 	'procedure_id' 	=> $id,
-			// 	'type' 			=> "form",
-			// ]);
+			$jabatan 	= $this->db->get('positions', ['company_id' => $this->company])->result();
 			$ArrForms = [];
 			foreach ($getForms as $frm) {
 				$ArrForms[$frm->id] = $frm;
@@ -691,7 +684,7 @@ class Procedures extends Admin_Controller
 			chmod('./directory/FLOW_IMG/' . $this->company . '/', 0755);  // octal; correct value of mode
 			chown('./directory/FLOW_IMG/' . $this->company . '/', 'www-data');
 		}
-		
+
 		$cpt = count($_FILES['img_flow']['name']);
 
 		for ($i = 0; $i < $cpt; $i++) {
