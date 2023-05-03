@@ -7,6 +7,7 @@
 				</div>
 				<div class="card-body overflow-auto">
 					<form id="form-checksheet">
+						<input type="hidden" name="id" value="<?= $data->id; ?>">
 						<input type="hidden" name="dir" value="<?= $dataDir->id; ?>">
 						<div class="row mb-3">
 							<label for="" class="col-md-2 control-label">Directory</label>
@@ -38,7 +39,7 @@
 							<label for="" class="col-md-2 control-label">Periode</label>
 							<div class="col-md-4">
 								<input type="text" autocomplete="off" placeholder="Bulan, Tahun" value="<?= date_format(date_create($data->periode), 'M, Y'); ?>" id="periode-check" class="datepicker form-control">
-								<input type="hidden" name="periode" id="periode-date" value="<?= $data->periode; ?>" class="form-control">
+								<input type="hidden" name="periode" value="<?= $data->periode; ?>" class="form-control">
 							</div>
 						</div>
 						<div class="row mb-3">
@@ -114,12 +115,6 @@
 </style>
 <script>
 	$(document).ready(function() {
-		$('.select2').select2({
-			width: '100%',
-			allowClear: true,
-			placeholder: 'Choose an options'
-		})
-
 		$('.datepicker').MonthPicker({
 			ShowIcon: false,
 			MonthFormat: 'MM, yy',
@@ -127,11 +122,13 @@
 			AltFormat: 'yy-mm-dd',
 			Button: false,
 			MinMonth: "0",
-			StartYear: 2023
-			// Position: {
-			// 	collision: 'fit flip'
-			// }
+			StartYear: 2023,
+			Disabled: true,
+			Position: {
+				collision: 'fit flip'
+			}
 		});
+
 
 		$('input[type=month]').MonthPicker().css('backgroundColor', 'lightyellow');
 
@@ -181,7 +178,7 @@
 						success: function(result) {
 							if (result.status == 1) {
 								Swal.fire("Success!", result.msg, "success", 3000).then(function() {
-									window.location.href = siteurl + active_controller + '?p=' + <?= $data->process_id; ?> + '&cs=' + <?= $data->sub_id; ?> + '&checksheet=' + <?= $data->dir_id; ?>
+									window.location.href = siteurl + active_controller + '?p=' + <?= $data->process_id; ?> + '&sub=' + <?= $data->sub_id; ?> + '&checksheet=' + <?= $data->dir_id; ?>
 								})
 							} else {
 								Swal.fire("Warning!", result.msg, "warning", 3000)

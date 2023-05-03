@@ -326,7 +326,11 @@ class Process_checksheets extends Admin_Controller
 		$data['created_at'] = date('Y-m-d H:i:s');
 		$data['created_by'] = $this->auth->user_id();
 		unset($data['dir']);
-		$this->db->insert('checksheet_process_data', $data);
+		if (isset($data['id'])) {
+			$this->db->update('checksheet_process_data', $data, ['id' => $data['id']]);
+		} else {
+			$this->db->insert('checksheet_process_data', $data);
+		}
 
 		$i = 0;
 		if ($details) {
@@ -510,6 +514,7 @@ class Process_checksheets extends Admin_Controller
 
 			$checkers		= $this->db->get_where('checksheet_checkers', ['data_id' => $data->id])->result();
 			$checking_date	= $this->db->get_where('checksheet_checking_date', ['data_id' => $data->id])->result();
+			$checking_note	= $this->db->get_where('checksheet_checker_note', ['data_id' => $data->id])->result();
 
 			$ArrNotes 		= $this->_makeArray($notes, 'item_id');
 			$ArrUsers 		= $this->_makeArray($users, 'id_user', 'full_name');
@@ -518,7 +523,7 @@ class Process_checksheets extends Admin_Controller
 
 			$ArrCheck   	= $this->_makeArray($checkers, 'data_id');
 			$ArrCheckDate 	= $this->_makeArray($checking_date, 'data_id');
-
+			$ArrCheckNote 	= $this->_makeArray($checking_note, 'data_id');
 
 			$ArrUsers = [];
 			foreach ($users as $usr) {
@@ -1227,6 +1232,40 @@ class Process_checksheets extends Admin_Controller
 	/* ================================================ */
 	/* ADD ITEMS */
 
+	public function delete($id = null)
+	{
+		if ($id) {
+			$this->db->trans_begin();
+
+			/* CHECKING DATE */
+			$data = $this->db->get_where('checksheet_process_data', ['id' => $id])->row();
+			$this->db->delete('checksheet_process_data', ['id' => $id]);
+			$this->db->delete('checksheet_process_details', ['checksheet_process_data_number' => $data->number]);
+			$this->db->delete('checksheet_checker_note', ['data_id' => $id]);
+			$this->db->delete('checksheet_checker_values', ['data_id' => $id]);
+			$this->db->delete('checksheet_checkers', ['data_id' => $id]);
+			$this->db->delete('checksheet_checking_date', ['data_id' => $id]);
+			$this->db->delete('checksheet_execution', ['data_id' => $id]);
+			$this->db->delete('checksheet_execution_date', ['data_id' => $id]);
+			$this->db->delete('checksheet_notes', ['data_id' => $id]);
+		}
+
+		if ($this->db->trans_status() === FALSE) {
+			$this->db->trans_rollback();
+			$Return		= array(
+				'status'		=> 0,
+				'msg'			=> 'Deleted data checkheet failed. Error!'
+			);
+		} else {
+			$this->db->trans_commit();
+			$Return		= array(
+				'status'		=> 1,
+				'msg'			=> 'Deleted data checkheet successfull'
+			);
+		}
+
+		echo json_encode($Return);
+	}
 
 	/* ===================== */
 	public function print_document()

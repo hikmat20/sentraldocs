@@ -164,6 +164,40 @@
 				$('#modalId .modal-body table tbody').html(data)
 			})
 		})
+
+		$(document).on('click', '.delete', function() {
+			const id = $(this).data('id')
+			Swal.fire({
+				title: 'Confirm',
+				text: 'Are sure you want to delete this checkheet?',
+				icon: 'question',
+				showCancelButton: true,
+			}).then((value) => {
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'delete/' + id,
+						dataType: 'JSON',
+						type: 'POST',
+						data: {
+							id
+						},
+						success: function(result) {
+							if (result.status == 1) {
+								Swal.fire("Success!", result.msg, "success", 3000).then(function() {
+									location.reload()
+								})
+							} else {
+								Swal.fire("Warning!", result.msg, "warning", 3000)
+							}
+						},
+						error: function(result) {
+							Swal.fire("Error!", "Server time out.", "error", 3000)
+
+						}
+					})
+				}
+			})
+		})
 	})
 
 	/* DIRECTORY */

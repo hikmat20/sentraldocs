@@ -100,7 +100,7 @@
 
 					<div class="text-right">
 						<button type="button" class="btn btn-primary" id="save"><i class="fa fa-save"></i> Save</button>
-						<!-- <a href="<?= base_url($this->uri->segment(1) . '/?p=' . $data->checksheet_id . '&cs=' . $data->checksheet_detail_id . '&checksheet=' . $dir); ?>" class="btn btn-danger"><i class="fa fa-reply"></i> Back</a> -->
+						<!-- <a href="<?= base_url($this->uri->segment(1) . '/?p=' . $data->checksheet_id . '&sub=' . $data->checksheet_detail_id . '&checksheet=' . $dir); ?>" class="btn btn-danger"><i class="fa fa-reply"></i> Back</a> -->
 					</div>
 				</div>
 			</div>

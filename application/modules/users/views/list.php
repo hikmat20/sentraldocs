@@ -86,7 +86,7 @@
 									<tr>
 										<td class="text-center"><?= $n; ?></td>
 										<td class="">
-											<img src="<?= base_url('assets/img/avatar/' . $record->photo); ?>" alt="<?= $record->full_name; ?>" width="100px" class="img-fluid">
+											<img src="<?= base_url('assets/img/avatar/' . (($record->photo) ?: 'no-user.jpg')); ?>" alt="<?= $record->full_name; ?>" width="50px" class="img-thumbnail">
 										</td>
 										<td><?= $record->username ?></td>
 										<td><?= $record->full_name ?></td>
