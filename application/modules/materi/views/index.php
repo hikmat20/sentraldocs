@@ -92,7 +92,7 @@
 				<div class="row">
 					<div class="col-md-3 pr-0">
 						<div class="card-header px-3 pt-3 h-50px">
-							<button type="button" class="btn btn-sm btn-light-primary add-directory"><i class="fa fa-plus"></i> Add Directory</button>
+							<button type="button" class="btn btn-sm btn-primary add-directory"><i class="fa fa-plus"></i> Add Directory</button>
 						</div>
 
 						<div class="card-body px-0 py-1 overflow-auto h-500px">
@@ -201,7 +201,7 @@
 														<div class="d-flex justify-content-between align-items-center">
 															<h3 for="" class="fw-bold"><i class="fa fa-list mr-2"></i>Materi</h3>
 															<div class="tools pr-3">
-																<button type="button" class="btn btn-light-success btn-sm upload-file" data-materi_detail_id="<?= $sub; ?>" data-cat="MAT" title="Upload New File"><i class="fa fa-upload"></i> Upload File</button>
+																<button type="button" class="btn btn-success btn-sm upload-file" data-materi_detail_id="<?= $sub; ?>" data-cat="MAT" title="Upload New File"><i class="fa fa-upload"></i> Upload File</button>
 															</div>
 														</div>
 														<hr class="my-1">
@@ -219,6 +219,7 @@
 																			<td class="text-center">
 																				<button type="button" class="btn btn-xs btn-icon btn-info view-file" data-materi_detail_id="<?= $sub; ?>" data-cat="MAT" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-eye"></i></button>
 																				<button type="button" class="btn btn-xs btn-icon btn-warning edit-file" data-doc="<?= $dtDtl->document; ?>" data-materi_detail_id="<?= $sub; ?>" data-cat="MAT" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-edit"></i></button>
+																				<button type="button" class="btn btn-xs btn-icon btn-danger delete-file" data-doc="<?= $dtDtl->document; ?>" data-materi_detail_id="<?= $sub; ?>" data-cat="MAT" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-trash"></i></button>
 																			</td>
 																		</tr>
 																<?php endforeach;
@@ -230,7 +231,7 @@
 														<div class="d-flex justify-content-between align-items-center">
 															<h3 for="" class="fw-bold"><i class="fa fa-list mr-2"></i>Pre Test & Post Test</h3>
 															<div class="tools pr-3">
-																<button type="button" class="btn btn-light-success btn-sm upload-file" data-materi_detail_id="<?= $sub; ?>" data-cat="PRE" title="Upload New File"><i class="fa fa-upload"></i> Upload File</button>
+																<button type="button" class="btn btn-success btn-sm upload-file" data-materi_detail_id="<?= $sub; ?>" data-cat="PRE" title="Upload New File"><i class="fa fa-upload"></i> Upload File</button>
 															</div>
 														</div>
 														<hr class="my-1">
@@ -248,6 +249,7 @@
 																			<td class="text-center">
 																				<button type="button" class="btn btn-xs btn-icon btn-info view-file" data-materi_detail_id="<?= $sub; ?>" data-cat="PRE" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-eye"></i></button>
 																				<button type="button" class="btn btn-xs btn-icon btn-warning edit-file" data-doc="<?= $dtDtl->document; ?>" data-materi_detail_id="<?= $sub; ?>" data-cat="PRE" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-edit"></i></button>
+																				<button type="button" class="btn btn-xs btn-icon btn-danger delete-file" data-doc="<?= $dtDtl->document; ?>" data-materi_detail_id="<?= $sub; ?>" data-cat="PRE" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-trash"></i></button>
 																			</td>
 																		</tr>
 																<?php endforeach;
@@ -259,7 +261,7 @@
 														<div class="d-flex justify-content-between align-items-center">
 															<h3 for="" class="fw-bold"><i class="fa fa-list mr-2"></i>Studi Kasus, Quiz & Workshop</h3>
 															<div class="tools pr-3">
-																<button type="button" class="btn btn-light-success btn-sm upload-file" data-materi_detail_id="<?= $sub; ?>" data-cat="STU" title="Upload New File"><i class="fa fa-upload"></i> Upload File</button>
+																<button type="button" class="btn btn-success btn-sm upload-file" data-materi_detail_id="<?= $sub; ?>" data-cat="STU" title="Upload New File"><i class="fa fa-upload"></i> Upload File</button>
 															</div>
 														</div>
 														<hr class="my-1">
@@ -277,6 +279,7 @@
 																			<td class="text-center">
 																				<button type="button" class="btn btn-xs btn-icon btn-info view-file" data-materi_detail_id="<?= $sub; ?>" data-cat="STU" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-eye"></i></button>
 																				<button type="button" class="btn btn-xs btn-icon btn-warning edit-file" data-doc="<?= $dtDtl->document; ?>" data-materi_detail_id="<?= $sub; ?>" data-cat="STU" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-edit"></i></button>
+																				<button type="button" class="btn btn-xs btn-icon btn-danger delete-file" data-doc="<?= $dtDtl->document; ?>" data-materi_detail_id="<?= $sub; ?>" data-cat="STU" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-trash"></i></button>
 																			</td>
 																		</tr>
 																<?php endforeach;
@@ -288,7 +291,7 @@
 														<div class="d-flex justify-content-between align-items-center">
 															<h3 for="" class="fw-bold"><i class="fa fa-list mr-2"></i>Silabus</h3>
 															<div class="tools pr-3">
-																<button type="button" class="btn btn-light-success btn-sm upload-file" data-materi_detail_id="<?= $sub; ?>" data-cat="SIL" title="Upload New File"><i class="fa fa-upload"></i> Upload File</button>
+																<button type="button" class="btn btn-success btn-sm upload-file" data-materi_detail_id="<?= $sub; ?>" data-cat="SIL" title="Upload New File"><i class="fa fa-upload"></i> Upload File</button>
 															</div>
 														</div>
 														<hr class="my-1">
@@ -306,6 +309,7 @@
 																			<td class="text-center">
 																				<button type="button" class="btn btn-xs btn-icon btn-info view-file" data-materi_detail_id="<?= $sub; ?>" data-cat="SIL" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-eye"></i></button>
 																				<button type="button" class="btn btn-xs btn-icon btn-warning edit-file" data-doc="<?= $dtDtl->document; ?>" data-materi_detail_id="<?= $sub; ?>" data-cat="SIL" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-edit"></i></button>
+																				<button type="button" class="btn btn-xs btn-icon btn-danger delete-file" data-doc="<?= $dtDtl->document; ?>" data-materi_detail_id="<?= $sub; ?>" data-cat="SIL" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-trash"></i></button>
 																			</td>
 																		</tr>
 																<?php endforeach;
@@ -317,7 +321,7 @@
 														<div class="d-flex justify-content-between align-items-center">
 															<h3 for="" class="fw-bold"><i class="fa fa-list mr-2"></i>Video</h3>
 															<div class="tools pr-3">
-																<button type="button" class="btn btn-light-success btn-sm upload-file" data-materi_detail_id="<?= $sub; ?>" data-cat="VID" title="Upload New File"><i class="fa fa-upload"></i> Upload File</button>
+																<button type="button" class="btn btn-success btn-sm upload-file" data-materi_detail_id="<?= $sub; ?>" data-cat="VID" title="Upload New File"><i class="fa fa-upload"></i> Upload File</button>
 															</div>
 														</div>
 														<hr class="my-1">
@@ -335,6 +339,7 @@
 																			<td class="text-center">
 																				<button type="button" class="btn btn-xs btn-icon btn-info view-file" data-materi_detail_id="<?= $sub; ?>" data-cat="VID" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-eye"></i></button>
 																				<button type="button" class="btn btn-xs btn-icon btn-warning edit-file" data-doc="<?= $dtDtl->document; ?>" data-materi_detail_id="<?= $sub; ?>" data-cat="VID" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-edit"></i></button>
+																				<button type="button" class="btn btn-xs btn-icon btn-danger delete-file" data-doc="<?= $dtDtl->document; ?>" data-materi_detail_id="<?= $sub; ?>" data-cat="VID" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-trash"></i></button>
 																			</td>
 																		</tr>
 																<?php endforeach;
@@ -346,7 +351,7 @@
 														<div class="d-flex justify-content-between align-items-center">
 															<h3 for="" class="fw-bold"><i class="fa fa-list mr-2"></i>Reference</h3>
 															<div class="tools pr-3">
-																<button type="button" class="btn btn-light-success btn-sm upload-file" data-materi_detail_id="<?= $sub; ?>" data-cat="REF" title="Upload New File"><i class="fa fa-upload"></i> Upload File</button>
+																<button type="button" class="btn btn-success btn-sm upload-file" data-materi_detail_id="<?= $sub; ?>" data-cat="REF" title="Upload New File"><i class="fa fa-upload"></i> Upload File</button>
 															</div>
 														</div>
 														<hr class="mb-0">
@@ -364,6 +369,7 @@
 																			<td class="text-center">
 																				<button type="button" class="btn btn-xs btn-icon btn-info view-file" data-materi_detail_id="<?= $sub; ?>" data-cat="REF" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-eye"></i></button>
 																				<button type="button" class="btn btn-xs btn-icon btn-warning edit-file" data-doc="<?= $dtDtl->document; ?>" data-materi_detail_id="<?= $sub; ?>" data-cat="REF" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-edit"></i></button>
+																				<button type="button" class="btn btn-xs btn-icon btn-danger delete-file" data-doc="<?= $dtDtl->document; ?>" data-materi_detail_id="<?= $sub; ?>" data-cat="REF" data-id="<?= $dtDtl->id; ?>"><i class="fa fa-trash"></i></button>
 																			</td>
 																		</tr>
 																<?php endforeach;
@@ -395,19 +401,18 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body">
-
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary save"><i class="fa fa-save"></i>Save</button>
+			<div class="modal-body"></div>
+			<div class="modal-footer py-2">
+				<!-- <button type="button" class="btn btn-primary save"><i class="fa fa-save"></i>Save</button> -->
 				<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
 			</div>
 		</div>
 	</div>
 </div>
+
 <!-- Modal -->
 <div class="modal fade" id="modalView" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+	<div class="modal-dialog modal-dialog-scrollable" style="max-width:90%" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title"></h5>
@@ -415,10 +420,8 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body">
-
-			</div>
-			<div class="modal-footer">
+			<div class="modal-body p-2"></div>
+			<div class="modal-footer py-2">
 				<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
 			</div>
 		</div>
@@ -699,43 +702,95 @@
 		$('#modalId .modal-title').text('Upload Files')
 		$('#modalId').modal('show')
 		$('#modalId .modal-dialog').addClass('modal-lg')
-
 		$('#modalId .modal-body').html(`
-		<form id="form-upload">
-			<div class="d-flex justify-content-between">
-				<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
-					<div class="dropzone-desc">
-						<i class="fa fa-upload"></i>
-						<p>Choose an image file or drag it here.</p>
+		<form id="form-header" class="mb-4">
+			<input type="hidden" name="materi_detail_id" class="form-control mb-3" placeholder="Document Name" value="` + materi_detail_id + `" aria-describedby="helpId">
+			<input type="hidden" name="category" class="form-control mb-3" placeholder="Document Name" value="` + cat + `" aria-describedby="helpId">
+			<div class="row">
+				<div class="col-md-2">Name</div>
+				<div class="col-md-10">
+					<div class="form flex-grow-1">
+						<input type="text" name="name-file" id="name-file" class="form-control mb-3" placeholder="Document Name" aria-describedby="helpId">
+						<span class="invalid-feedback">Name document can't be empty</span>
 					</div>
-					<input type="file" id="pdf-file" name="documents" accept="application/pdf" class="dropzone dropzone-1" />
-					<canvas id="pdf-preview" width="150"></canvas>
-					<div class="for-delete"></div>
-				</div>
-				<span class="invalid-feedback">File or Document can't be empty</span>
-				<div class="form flex-grow-1">
-					<input type="hidden" name="materi_detail_id" class="form-control mb-3" placeholder="Document Name" value="` + materi_detail_id + `" aria-describedby="helpId">
-					<input type="hidden" name="category" class="form-control mb-3" placeholder="Document Name" value="` + cat + `" aria-describedby="helpId">
-					<input type="text" name="name-file" id="name-file" class="form-control mb-3" placeholder="Document Name" aria-describedby="helpId">
-					<span class="invalid-feedback">Name document can't be empty</span>
-					<button id="cancel-pdf" type="button" class="btn btn-danger d-none rounded-circle btn-icon btn-sm"><i class="fa fa-trash"></i></button>
 				</div>
 			</div>
 		</form>
+		<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-10">
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" id="tab-upload" role="tablist">
+					<li class="nav-item" role="presentation">
+						<button class="nav-link active" id="upload-document-tab" data-toggle="tab" data-target="#upload-document" type="button" role="tab" aria-controls="upload-document" aria-selected="false">Upload Document</button>
+					</li>
+					<li class="nav-item" role="presentation">
+						<button class="nav-link" id="from-external-url-tab" data-toggle="tab" data-target="#from-external-url" type="button" role="tab" aria-controls="from-url" aria-selected="true">External Link <i class="ml-2 fa fa-link text-primary" aria-hidden="true"></i></button>
+					</li>
+					<li class="nav-item" role="presentation">
+						<button class="nav-link" id="from-url-tab" data-toggle="tab" data-target="#from-url" type="button" role="tab" aria-controls="from-url" aria-selected="true">From YouTube <i class="fab fa-youtube ml-1 text-danger"></i></button>
+					</li>
+				</ul>
+		
+				<!-- Tab panes -->
+				<div class="tab-content">
+					<div class="tab-pane active p-3 border border-top-0 rounded-bottom" id="upload-document" role="tabpanel" aria-labelledby="upload-file-tab">
+						<form id="form-document" enctype="multipart/form-data">
+							<div class="dropzone-wrapper mr-2 d-flex flex-column justify-content-center align-items-center" style="width: 100%;height:310px">
+								<div class="dropzone-desc">
+									<i class="fa fa-upload"></i>
+									<p>Choose an image file or drag it here.</p>
+								</div>
+								<input type="file" id="pdf-file" name="documents" accept="application/pdf" class="dropzone dropzone-1" />
+								<canvas id="pdf-preview" width="250"></canvas>
+								<div class="for-delete"></div>
+							</div>
+							<span class="invalid-feedback">File or Document can't be empty</span>
+							<div class="d-flex justify-content-between mt-3">
+								<button type="button" class="btn btn-primary save-files"><i class="fa fa-save"></i>Save</button>
+								<button id="cancel-pdf" type="button" class="btn btn-danger d-none rounded-circle btn-icon btn-sm"><i class="fa fa-trash"></i></button>
+							</div>
+						</form>
+					</div>
+					<div class="tab-pane p-3 border border-top-0 rounded-bottom" id="from-external-url" role="tabpanel" aria-labelledby="from-external-url-tab">
+						<form id="form-external-link">
+							<div class="input-group">
+								<div class="input-group-text rounded-right-0"><i class="fa fa-link" aria-hidden="true"></i></div>
+								<input type="url" name="url_link" id="url-link" class="form-control" placeholder="Url">
+								<span class="invalid-feedback">Name document can't be empty</span>
+							</div>
+							<button type="button" class="btn btn-primary mt-3 save-external-link"><i class="fa fa-save"></i>Save</button>
+						</form>
+					</div>
+					<div class="tab-pane p-3 border border-top-0 rounded-bottom" id="from-url" role="tabpanel" aria-labelledby="from-url-tab">
+						<form id="form-youtube-video">
+							<div class="input-group">
+								<div class="input-group-text rounded-right-0">https://youtube.com/embed/</div>
+								<input type="text"  name="video_link" id="video-link" class="form-control" placeholder="Video Id">
+							</div>
+							<button type="button" class="btn btn-primary mt-3 save-video-youtube"><i class="fa fa-save"></i>Save</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+			
 		`)
 
-		$('.save,.save-sub-folder,.update-files')
-			.removeClass('save-sub-folder')
-			.removeClass('update-files')
-			.removeClass('save')
-			.addClass('save-files').html('<i class="fa fa-upload"></i> Upload File')
+		// $('.save,.save-sub-folder,.update-files')
+		// 	.removeClass('save-sub-folder')
+		// 	.removeClass('update-files')
+		// 	.removeClass('save')
+		// 	.addClass('save-files').html('<i class="fa fa-upload"></i> Upload File')
 	})
+
 
 	$(document).on('click', '.edit-file', function() {
 		const id = $(this).data('id')
 		$('#modalId .modal-title').text('Upload Files')
 		$('#modalId').modal('show')
 		$('#modalId .modal-dialog').addClass('modal-lg')
+		$('#modalId .modal-body').html('')
 
 		$.getJSON(siteurl + active_controller + 'edit_file/' + id, function(result) {
 			var data = result.data
@@ -746,30 +801,81 @@
 			}
 
 			$('#modalId .modal-body').html(`
-			<form id="form-upload">
-				<div class="d-flex justify-content-between">
-					<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
-						<div class="dropzone-desc">
-							<i class="fa fa-upload"></i>
-							<p>Choose an image file or drag it here.</p>
+			<form id="form-header" class="mb-4">
+				<input type="hidden" name="id" class="form-control mb-3" value="` + data.id + `" aria-describedby="helpId">
+				<div class="row">
+					<div class="col-md-2">Name</div>
+					<div class="col-md-10">
+						<div class="form flex-grow-1">
+							<input type="text" name="name-file" id="name-file" class="form-control mb-3" value="` + data.name + `" placeholder="Document Name" aria-describedby="helpId">
+							<span class="invalid-feedback">Name document can't be empty</span>
 						</div>
-						<input type="file" id="pdf-file" name="documents" accept="application/pdf" class="dropzone dropzone-1" />
-						<canvas id="pdf-preview" width="150"></canvas>
-						<div class="for-delete"></div>
-					</div>
-					<span class="invalid-feedback">File or Document can't be empty</span>
-					<div class="form flex-grow-1">
-						<input type="hidden" name="id" class="form-control mb-3" value="` + data.id + `" aria-describedby="helpId">
-						<input type="hidden" name="materi_detail_id" class="form-control mb-3" value="` + data.materi_detail_id + `" aria-describedby="helpId">
-						<input type="hidden" name="category" class="form-control mb-3" value="` + data.category + `" aria-describedby="helpId">
-						<input type="text" name="name-file" id="name-file" class="form-control mb-3" value="` + data.name + `" placeholder="Document Name" aria-describedby="helpId">
-						<input type="hidden" name="old_file" class="form-control mb-3" value="` + data.document + `" aria-describedby="helpId">
-						<span class="invalid-feedback">Name document can't be empty</span>
-						<button id="remove-file" type="button" class="btn ` + d + ` btn-danger rounded-circle btn-icon btn-sm"><i class="fa fa-trash"></i></button>
-						<input id="remove-document" name="remove-document" type="hidden">
 					</div>
 				</div>
-			</form>`)
+			</form>
+			<div class="row">
+				<div class="col-md-2"></div>
+				<div class="col-md-10">
+				
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs" id="tab-upload" role="tablist">
+						<li class="nav-item" role="presentation">
+							<button class="nav-link active" id="upload-document-tab" data-toggle="tab" data-target="#upload-document" type="button" role="tab" aria-controls="upload-document" aria-selected="false">Upload Document</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="from-external-url-tab" data-toggle="tab" data-target="#from-external-url" type="button" role="tab" aria-controls="from-url" aria-selected="true">External Link <i class="ml-2 fa fa-link text-primary" aria-hidden="true"></i></button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="from-url-tab" data-toggle="tab" data-target="#from-url" type="button" role="tab" aria-controls="from-url" aria-selected="true">From YouTube <i class="fab fa-youtube ml-1 text-danger"></i></button>
+						</li>
+					</ul>
+			
+					<!-- Tab panes -->
+					<div class="tab-content">
+						<div class="tab-pane active p-3 border border-top-0 rounded-bottom" id="upload-document" role="tabpanel" aria-labelledby="upload-file-tab">
+							<form id="form-document" enctype="multipart/form-data">
+								<div class="dropzone-wrapper mr-2 d-flex flex-column justify-content-center align-items-center" style="width: 100%;height:310px">
+									<div class="dropzone-desc">
+										<i class="fa fa-upload"></i>
+										<p>Choose an image file or drag it here.</p>
+									</div>
+									<input type="file" id="pdf-file" name="documents" accept="application/pdf" class="dropzone dropzone-1" />
+									<canvas id="pdf-preview" width="250"></canvas>
+									<div class="for-delete"></div>
+									<input type="hidden" name="old_file" class="form-control mb-3" value="` + data.document + `" aria-describedby="helpId">
+									<input id="remove-document" name="remove-document" type="hidden">
+								</div>
+								<span class="invalid-feedback">File or Document can't be empty</span>
+								<div class="d-flex justify-content-between mt-3">
+									<button type="button" class="btn btn-primary save-files"><i class="fa fa-save"></i>Save</button>
+									<button id="cancel-pdf" type="button" class="btn btn-danger d-none rounded-circle btn-icon btn-sm"><i class="fa fa-trash"></i></button>
+									<button id="remove-file" type="button" class="btn ` + d + ` btn-danger rounded-circle btn-icon btn-sm"><i class="fa fa-trash"></i></button>
+								</div>
+							</form>
+						</div>
+						<div class="tab-pane p-3 border border-top-0 rounded-bottom" id="from-external-url" role="tabpanel" aria-labelledby="from-external-url-tab">
+							<form id="form-external-link">
+								<div class="input-group">
+									<div class="input-group-text rounded-right-0"><i class="fa fa-link" aria-hidden="true"></i></div>
+									<input type="url" name="url_link" id="url-link" class="form-control" placeholder="Url"  value="` + (data.url_link !== null ? data.url_link : '') + `" >
+									<span class="invalid-feedback">Name document can't be empty</span>
+								</div>
+								<button type="button" class="btn btn-primary mt-3 save-external-link"><i class="fa fa-save"></i>Save</button>
+							</form>
+						</div>
+						<div class="tab-pane p-3 border border-top-0 rounded-bottom" id="from-url" role="tabpanel" aria-labelledby="from-url-tab">
+							<form id="form-youtube-video">
+								<div class="input-group">
+									<div class="input-group-text rounded-right-0">https://youtube.com/embed/</div>
+									<input type="text"  name="video_link" id="video-link" class="form-control" placeholder="Video Id"  value="` + (data.video_link !== null ? data.video_link : '') + `" >
+								</div>
+								<button type="button" class="btn btn-primary mt-3 save-video-youtube"><i class="fa fa-save"></i>Save</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			`)
 
 			const url = siteurl + 'directory/MATERI/' + data.company_id + '/' + data.document;
 			if (data.document) {
@@ -787,11 +893,11 @@
 						showPDF(_OBJECT_URL);
 					});
 			}
-			$('.save,.save-sub-folder,.save-files')
-				.removeClass('save-sub-folder')
-				.removeClass('save-files')
-				.removeClass('save')
-				.addClass('update-files').html('<i class="fa fa-upload"></i> Upload File')
+			// $('.save,.save-sub-folder,.save-files')
+			// 	.removeClass('save-sub-folder')
+			// 	.removeClass('save-files')
+			// 	.removeClass('save')
+			// 	.addClass('update-files').html('<i class="fa fa-upload"></i> Upload File')
 		});
 	})
 
@@ -803,7 +909,6 @@
 			$('#name-file').addClass('is-invalid')
 			return false;
 		}
-
 		$('#name-file').removeClass('is-invalid')
 
 		if (!document) {
@@ -811,14 +916,19 @@
 			Swal.fire('Warning!', "File or Document can't be empty. Please upload document first.", 'warning', 3000)
 			return false;
 		}
-
 		$('#pdf-file').removeClass('is-invalid')
-		const formdata = new FormData($('#form-upload')[0])
+		let formData = new FormData($('#form-header')[0])
+		let formExternalLink = new FormData($('#form-document')[0])
+		for (var pair of formExternalLink.entries()) {
+			formData.append(pair[0], pair[1]);
+		}
+
+		// const formdata = new FormData($('#form-upload')[0])
 		$.ajax({
-			url: siteurl + active_controller + 'upload_document',
+			url: siteurl + active_controller + 'save_document',
 			type: 'POST',
 			dataType: 'JSON',
-			data: formdata,
+			data: formData,
 			contentType: false,
 			processData: false,
 			cache: false,
@@ -826,7 +936,7 @@
 				btn.html('<i class="spinner-border spinner-border-sm" aria-hidden="true"></i> Loading...').prop('disabled', true)
 			},
 			complete: function() {
-				btn.html('<i class="fa fa-upload" aria-hidden="true"></i> Upload File').prop('disabled', false)
+				btn.html('<i class="fa fa-save" aria-hidden="true"></i> Save').prop('disabled', false)
 			},
 			success: function(result) {
 				if (result.status == 1) {
@@ -863,12 +973,16 @@
 		}
 
 		$('#pdf-file').removeClass('is-invalid')
-		const formdata = new FormData($('#form-upload')[0])
+		let formData = new FormData($('#form-header')[0])
+		let formExternalLink = new FormData($('#form-document')[0])
+		for (var pair of formExternalLink.entries()) {
+			formData.append(pair[0], pair[1]);
+		}
 		$.ajax({
-			url: siteurl + active_controller + 'upload_document',
+			url: siteurl + active_controller + 'save_document',
 			type: 'POST',
 			dataType: 'JSON',
-			data: formdata,
+			data: formData,
 			contentType: false,
 			processData: false,
 			cache: false,
@@ -894,13 +1008,154 @@
 		})
 	})
 
-
 	$(document).on('click', '.view-file', function() {
 		const id = $(this).data('id')
 		$('#modalView .modal-title').text('View Files')
 		$('#modalView').modal('show')
 		$('#modalView .modal-dialog')
 		$('#modalView .modal-body').load(siteurl + active_controller + 'view_file/' + id)
+	})
+
+	$(document).on('click', '.delete-file', function() {
+		const id = $(this).data('id')
+		Swal.fire({
+			title: 'Confirm',
+			text: 'Are sure you want to delete this file?',
+			icon: 'question',
+			showCancelButton: true,
+		}).then((value) => {
+			if (value.isConfirmed) {
+				$.ajax({
+					url: siteurl + active_controller + 'delete_file',
+					dataType: 'JSON',
+					type: 'POST',
+					data: {
+						id
+					},
+					success: function(result) {
+						if (result.status == 1) {
+							Swal.fire("Success!", result.msg, "success", 3000).then(function() {
+								location.reload()
+							})
+						} else {
+							Swal.fire("Warning!", result.msg, "warning", 3000)
+						}
+					},
+					error: function(result) {
+						Swal.fire("Error!", "Server time out.", "error", 3000)
+
+					}
+				})
+			}
+		})
+	})
+
+	/* Save External Link */
+
+	$(document).on('click', '.save-external-link', function() {
+		const name = $('#name-file').val()
+		const url = $('#url-link').val()
+		const btn = $(this)
+
+		$('#name-file').removeClass('is-invalid')
+		if (!name) {
+			$('#name-file').addClass('is-invalid')
+			return false;
+		}
+
+		$('#url-link').removeClass('is-invalid')
+		if (!url) {
+			$('#url-link').addClass('is-invalid')
+			return false;
+		}
+
+		let formData = new FormData($('#form-header')[0])
+		let formExternalLink = new FormData($('#form-external-link')[0])
+		for (var pair of formExternalLink.entries()) {
+			formData.append(pair[0], pair[1]);
+		}
+
+		$.ajax({
+			url: siteurl + active_controller + 'save_document',
+			type: 'POST',
+			dataType: 'JSON',
+			data: formData,
+			contentType: false,
+			processData: false,
+			cache: false,
+			beforeSend: function() {
+				btn.html('<i class="spinner-border spinner-border-sm" aria-hidden="true"></i>Loading...').prop('disabled', true)
+			},
+			complete: function() {
+				btn.html('<i class="fa fa-save" aria-hidden="true"></i>Save').prop('disabled', false)
+			},
+			success: function(result) {
+				if (result.status == 1) {
+					Swal.fire("Success!", result.msg, "success", 3000).then(function() {
+						location.reload()
+					})
+				} else {
+					Swal.fire("Warning!", result.msg, "warning", 3000)
+				}
+			},
+			error: function(result) {
+				Swal.fire("Error!", "Server time out.", "error", 3000)
+
+			}
+		})
+	})
+
+	$(document).on('click', '.save-video-youtube', function() {
+		const name = $('#name-file').val()
+		const video = $('#video-link').val()
+		const btn = $(this)
+
+		$('#name-file').removeClass('is-invalid')
+		if (!name) {
+			$('#name-file').addClass('is-invalid')
+			return false;
+		}
+
+		$('#video-link').removeClass('is-invalid')
+		if (!video) {
+			$('#video-link').addClass('is-invalid')
+			return false;
+		}
+
+		let formData = new FormData($('#form-header')[0])
+		let formVideo = new FormData($('#form-youtube-video')[0])
+		for (var pair of formVideo.entries()) {
+			formData.append(pair[0], pair[1]);
+		}
+
+		$.ajax({
+			url: siteurl + active_controller + 'save_document',
+			type: 'POST',
+			dataType: 'JSON',
+			data: formData,
+			contentType: false,
+			processData: false,
+			cache: false,
+			beforeSend: function() {
+				btn.html('<i class="spinner-border spinner-border-sm" aria-hidden="true"></i>Loading...').prop('disabled', true)
+			},
+			complete: function() {
+				btn.html('<i class="fa fa-save" aria-hidden="true"></i>Save').prop('disabled', false)
+			},
+			success: function(result) {
+				if (result.status == 1) {
+					Swal.fire("Success!", result.msg, "success", 3000).then(function() {
+						location.reload()
+					})
+				} else {
+					Swal.fire("Warning!", result.msg, "warning", 3000)
+				}
+			},
+			error: function(result) {
+				Swal.fire("Error!", "Server time out.", "error", 3000)
+
+			}
+		})
 	})
 
 
@@ -1042,6 +1297,47 @@
 		alert('This will upload file to server');
 	});
 
+	/* video */
+	$(document).on('change', '#video-file', function() {
+		let file = $(this)[0].files[0];
+
+		// allowed MIME types
+		var mime_types = ['video/mp4'];
+
+		// Validate whether PDF
+		if (mime_types.indexOf(file.type) == -1) {
+			Swal.fire('Warning', 'Error : Incorrect file type', 'warning', 3000)
+			return;
+		}
+
+		// validate file size
+		if (file.size > 50 * 1024 * 1024) {
+			Swal.fire('Warning', 'Error : Exceeded size 50MB', 'warning', 3000)
+			return;
+		}
+
+		let blobURL = URL.createObjectURL(file);
+		$("#video-preview").attr('src', blobURL + "#t=10").removeClass('d-none');
+		$('#btn-play-pause').html('<button type="button" id="play-pause" class="btn btn-sm btn-primary btn-icon"><i id="icon-play-pause" class="fa fa-play" aria-hidden="true"></i></button>')
+		$('#remove-video').removeClass('d-none')
+	})
+
+	$('#play-pause').click(function() {
+		ChangeButtonText();
+	});
+
+	function ChangeButtonText() {
+		let video = $('#video-file')[0]
+		console.log(video)
+		if (video.video.paused) {
+			video.video.play();
+			$("#icon-play-pause").addClass('fa fa-stop');
+		} else {
+			video.video.pause();
+			// video.stopListen();
+			$("#icon-play-pause").addClass('fa fa-play');
+		}
+	}
 
 	$(function() {
 		$("#myImg1").hover(

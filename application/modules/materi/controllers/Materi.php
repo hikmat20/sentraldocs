@@ -285,20 +285,20 @@ class Materi extends Admin_Controller
 
 
 	/* UPLOAD FILE */
-
-
-	public function upload_document()
+	public function save_document()
 	{
 		$data 					= $this->input->post();
 		$id						= isset($data['id']) ? $data['id'] : '';
 		$data['company_id']		= $this->company;
 		$nama_file 				= $data['name-file'];
 		$old_file 				= isset($data['old_file']) ? $data['old_file'] : null;
+
 		unset($data['old_file']);
 		unset($data['name-file']);
+
 		try {
 			$DIR_COMP = $this->company;
-			if ($_FILES['documents']['name']) {
+			if (($_FILES) && $_FILES['documents']['name']) {
 				if (!is_dir('./directory/MATERI/' . $DIR_COMP)) {
 					mkdir('./directory/MATERI/' . $DIR_COMP, 0755, TRUE);
 					chmod("./directory/MATERI/" . $DIR_COMP, 0755);  // octal; correct value of mode
@@ -331,35 +331,37 @@ class Materi extends Admin_Controller
 				};
 			}
 
-			// else {
-			// 	$Return = [
-			// 		'status' => 0,
-			// 		'msg'	 => 'No file or data to upload document..'
-			// 	];
-			// }
+			if ($nama_file) {
+				$this->db->trans_begin();
+				$check = $this->db->get_where('materi_detail_data', ['id' => $id])->num_rows();
 
-			$this->db->trans_begin();
-			$check = $this->db->get_where('materi_detail_data', ['id' => $id])->num_rows();
+				if (intval($check) == '0') {
+					$data['created_by']			= $this->auth->user_id();
+					$data['created_at']			= date('Y-m-d H:i:s');
+					$data['name']				= $nama_file;
+					// $data['link_website_name'] 	= $data['link_website_name'];
+					// $data['url_link'] 			= $data['url_link'];
+					// $data['video_name'] 		= $data['video_name'];
+					// $data['video_link'] 		= $data['video_link'];
+					$this->db->insert('materi_detail_data', $data);
+				} else {
+					$data['modified_by']		= $this->auth->user_id();
+					$data['modified_at']		= date('Y-m-d H:i:s');
+					$data['name']				= $nama_file;
+					// $data['link_website_name'] 	= $data['link_website_name'];
+					// $data['url_link'] 			= $data['url_link'];
+					// $data['video_name'] 		= $data['video_name'];
+					// $data['video_link'] 		= $data['video_link'];
 
-			if (intval($check) == '0') {
-				$data['created_by']		= $this->auth->user_id();
-				$data['created_at']		= date('Y-m-d H:i:s');
-				$data['name']			= $nama_file;
-
-				$this->db->insert('materi_detail_data', $data);
-			} else {
-				$data['modified_by']	= $this->auth->user_id();
-				$data['modified_at']	= date('Y-m-d H:i:s');
-				$data['name']			= $nama_file;
-
-				if (isset($data['remove-document']) && $data['remove-document'] == 'x' && !$_FILES['documents']['name']) {
-					if (file_exists("./directory/MATERI/" . $DIR_COMP . $old_file)) {
-						unlink("./directory/MATERI/" . $DIR_COMP . $old_file);
+					if (isset($data['remove-document']) && $data['remove-document'] == 'x' && !$_FILES['documents']['name']) {
+						if (file_exists("./directory/MATERI/" . $DIR_COMP . $old_file)) {
+							unlink("./directory/MATERI/" . $DIR_COMP . $old_file);
+						}
+						$data['document'] = null;
 					}
-					$data['document']			= null;
+					unset($data['remove-document']);
+					$this->db->update('materi_detail_data', $data, ['id' => $id]);
 				}
-				unset($data['remove-document']);
-				$this->db->update('materi_detail_data', $data, ['id' => $id]);
 			}
 		} catch (Exception $e) {
 			$this->db->trans_rollback();
@@ -388,12 +390,12 @@ class Materi extends Admin_Controller
 		echo json_encode($Return);
 	}
 
-
 	public function edit_file($id)
 	{
 		$data = [];
 		if ($id) {
 			$data = $this->db->get_where('materi_detail_data', ['id' => $id])->row();
+
 			$return = [
 				'status' => 1,
 				'data' => $data
@@ -410,16 +412,33 @@ class Materi extends Admin_Controller
 
 	public function view_file($id)
 	{
-		$file 			= $this->db->get_where('materi_detail_data', ['id' => $id])->row();
+		$data 			= $this->db->get_where('materi_detail_data', ['id' => $id])->row();
 		$this->template->set(
 			[
-				'file' => $file,
+				'data' => $data,
 			]
 		);
 
 		$this->template->render('view-file');
 	}
 
+	public function delete_file()
+	{
+		$id = $this->input->post('id');
+		if ($id) {
+			$this->db->update('materi_detail_data', ['status' => '0'], ['id' => $id]);
+
+			$return = [
+				'status' => 1
+			];
+		} else {
+			$return = [
+				'status' => 0
+			];
+		}
+
+		echo json_encode($return);
+	}
 
 
 
@@ -688,28 +707,6 @@ class Materi extends Admin_Controller
 		$this->template->render('procedures/list-data');
 	}
 
-	public function delete_file()
-	{
-		$id 		= $this->input->post('id');
-		$this->db->trans_begin();
-		$this->db->update('directory', ['status' => 'DEL', 'modified_by' => $this->auth->user_id(), 'modified_at' => date('Y-m-d H:i:s')], ['id' => $id]);
-
-		if ($this->db->trans_status() === FALSE) {
-			$this->db->trans_rollback();
-			$Return		= array(
-				'status'		=> 0,
-				'pesan'			=> 'Folder failed deleted'
-			);
-		} else {
-			$this->db->trans_commit();
-			$Return		= array(
-				'status'		=> 1,
-				'msg'			=> 'Folder success deleted'
-			);
-		}
-		echo json_encode($Return);
-	}
-
 	public function save()
 	{
 		$data 				= $this->input->post();
@@ -809,130 +806,130 @@ class Materi extends Admin_Controller
 		return $slug;
 	}
 
-	public function save_document()
-	{
-		$data = $this->input->post();
+	// public function save_document()
+	// {
+	// 	$data = $this->input->post();
 
-		try {
-			$parent_name = $this->db->get_where('view_directories', ['id' => $data['parent_id']])->row()->name;
-			if ($_FILES['image']['name']) {
-				if (!is_dir('./directory/' . $parent_name)) {
-					mkdir('./directory/' . $parent_name, 0755, TRUE);
-					chmod("./directory/" . $parent_name, 0755);  // octal; correct value of mode
-					chown("./directory/" . $parent_name, 'www-data');
-				}
-				// $new_name 					= $this->fixForUri($data['description']);
-				$config['upload_path'] 		= "./directory/$parent_name"; //path folder
-				$config['allowed_types'] 	= 'pdf|xlsx|docx'; //type yang dapat diakses bisa anda sesuaikan
-				$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
-				// $config['file_name'] 		= $new_name;
-				$id 						= (!$data['id']) ? uniqid(date('m')) : $data['id'];
-
-
-				$this->upload->initialize($config);
-				if ($this->upload->do_upload('image')) :
-					$file = $this->upload->data();
-					$file_name  = $file['file_name'];
-					$size  		= $file['file_size'];
-					$ext     	= $file['file_ext'];
+	// 	try {
+	// 		$parent_name = $this->db->get_where('view_directories', ['id' => $data['parent_id']])->row()->name;
+	// 		if ($_FILES['image']['name']) {
+	// 			if (!is_dir('./directory/' . $parent_name)) {
+	// 				mkdir('./directory/' . $parent_name, 0755, TRUE);
+	// 				chmod("./directory/" . $parent_name, 0755);  // octal; correct value of mode
+	// 				chown("./directory/" . $parent_name, 'www-data');
+	// 			}
+	// 			// $new_name 					= $this->fixForUri($data['description']);
+	// 			$config['upload_path'] 		= "./directory/$parent_name"; //path folder
+	// 			$config['allowed_types'] 	= 'pdf|xlsx|docx'; //type yang dapat diakses bisa anda sesuaikan
+	// 			$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
+	// 			// $config['file_name'] 		= $new_name;
+	// 			$id 						= (!$data['id']) ? uniqid(date('m')) : $data['id'];
 
 
-					$data['id']	    		= $id;
-					$data['name']	    	= $data['description'];
-					$data['file_name']		= $file_name;
-					$data['size']			= $size;
-					$data['ext']			= $ext;
-					$data['company_id']		= $this->company;
-					$data['flag_type']		= 'FILE';
-					$dist 					= isset($data['distribute_id']) ? implode(",", $data['distribute_id']) : null;
-					$data['distribute_id']	= $dist;
-					$old_file 				= isset($data['old_file']) ? $data['old_file'] : null;
-					unset($data['old_file']);
+	// 			$this->upload->initialize($config);
+	// 			if ($this->upload->do_upload('image')) :
+	// 				$file = $this->upload->data();
+	// 				$file_name  = $file['file_name'];
+	// 				$size  		= $file['file_size'];
+	// 				$ext     	= $file['file_ext'];
 
-					if ($old_file != null) {
-						if (file_exists('./assets/files/' . $old_file)) {
-							unlink('./assets/files/' . $old_file);
-						}
-					}
 
-					$this->db->trans_begin();
-					$check = $this->db->get_where('view_directories', ['id' => $id])->num_rows();
+	// 				$data['id']	    		= $id;
+	// 				$data['name']	    	= $data['description'];
+	// 				$data['file_name']		= $file_name;
+	// 				$data['size']			= $size;
+	// 				$data['ext']			= $ext;
+	// 				$data['company_id']		= $this->company;
+	// 				$data['flag_type']		= 'FILE';
+	// 				$dist 					= isset($data['distribute_id']) ? implode(",", $data['distribute_id']) : null;
+	// 				$data['distribute_id']	= $dist;
+	// 				$old_file 				= isset($data['old_file']) ? $data['old_file'] : null;
+	// 				unset($data['old_file']);
 
-					if (intval($check) == '0') {
-						$data['created_by']		= $this->auth->user_id();
-						$data['created_at']		= date('Y-m-d H:i:s');
-						$data['note']			= 'First Upload File';
-						$data['status']			= isset($data['status']) ? $data['status'] : (($data['flag_record'] == 'Y') ? 'PUB' : 'OPN');
-						$this->_update_history($data);
-						unset($data['note']);
-						$this->db->insert('directory', $data);
-					} else {
-						$data['modified_by']	= $this->auth->user_id();
-						$data['modified_at']	= date('Y-m-d H:i:s');
-						$data['note']			= 'Re-upload File';
-						$this->_update_history($data);
-						unset($data['note']);
-						$this->db->update('directory', $data, ['id' => $id]);
-					}
+	// 				if ($old_file != null) {
+	// 					if (file_exists('./assets/files/' . $old_file)) {
+	// 						unlink('./assets/files/' . $old_file);
+	// 					}
+	// 				}
 
-					if (isset($data['distribute_id'])) {
-						foreach ($this->input->post('distribute_id') as $key => $value) {
-							$cek = $this->db->where(['id_jabatan' => $value, 'id_file' => $this->input->post('id')])->get('distribusi')->row();
-							$arr_dist = [
-								'id_file' => $this->input->post('id'),
-								'id_jabatan' => $value
-							];
+	// 				$this->db->trans_begin();
+	// 				$check = $this->db->get_where('view_directories', ['id' => $id])->num_rows();
 
-							if ($cek) {
-								$this->db->update('distribusi', $arr_dist, ['id' => $cek->id]);
-							} else if (!$cek) {
-								$this->db->insert('distribusi', $arr_dist);
-							} else {
-								$this->db->delete('distribusi', ['id' => $cek->id]);
-							}
-						}
-					};
+	// 				if (intval($check) == '0') {
+	// 					$data['created_by']		= $this->auth->user_id();
+	// 					$data['created_at']		= date('Y-m-d H:i:s');
+	// 					$data['note']			= 'First Upload File';
+	// 					$data['status']			= isset($data['status']) ? $data['status'] : (($data['flag_record'] == 'Y') ? 'PUB' : 'OPN');
+	// 					$this->_update_history($data);
+	// 					unset($data['note']);
+	// 					$this->db->insert('directory', $data);
+	// 				} else {
+	// 					$data['modified_by']	= $this->auth->user_id();
+	// 					$data['modified_at']	= date('Y-m-d H:i:s');
+	// 					$data['note']			= 'Re-upload File';
+	// 					$this->_update_history($data);
+	// 					unset($data['note']);
+	// 					$this->db->update('directory', $data, ['id' => $id]);
+	// 				}
 
-				else :
-					$error_msg = $this->upload->display_errors();
-					$Return = [
-						'status' => 0,
-						'msg'	 => $error_msg
-					];
-					echo json_encode($Return);
-					return false;
-				endif;
-			} else {
-				$Return = [
-					'status' => 0,
-					'msg'	 => 'No file or data to upload document..'
-				];
-			}
-		} catch (Exception $e) {
-			$this->db->trans_rollback();
-			$Return = [
-				'status' => 1,
-				'msg'	 => $e->getMessage()
-			];
+	// 				if (isset($data['distribute_id'])) {
+	// 					foreach ($this->input->post('distribute_id') as $key => $value) {
+	// 						$cek = $this->db->where(['id_jabatan' => $value, 'id_file' => $this->input->post('id')])->get('distribusi')->row();
+	// 						$arr_dist = [
+	// 							'id_file' => $this->input->post('id'),
+	// 							'id_jabatan' => $value
+	// 						];
 
-			return $Return;
-		}
+	// 						if ($cek) {
+	// 							$this->db->update('distribusi', $arr_dist, ['id' => $cek->id]);
+	// 						} else if (!$cek) {
+	// 							$this->db->insert('distribusi', $arr_dist);
+	// 						} else {
+	// 							$this->db->delete('distribusi', ['id' => $cek->id]);
+	// 						}
+	// 					}
+	// 				};
 
-		if ($this->db->trans_status() === FALSE) {
-			$this->db->trans_rollback();
-			$Return = [
-				'status' => 0,
-				'msg'	 => 'Failed upload document file. Please try again later.!'
-			];
-		} else {
-			$this->db->trans_commit();
-			$Return = [
-				'status' => 1,
-				'msg'	 => 'Success upload document file...'
-			];
-		}
-		echo json_encode($Return);
-	}
+	// 			else :
+	// 				$error_msg = $this->upload->display_errors();
+	// 				$Return = [
+	// 					'status' => 0,
+	// 					'msg'	 => $error_msg
+	// 				];
+	// 				echo json_encode($Return);
+	// 				return false;
+	// 			endif;
+	// 		} else {
+	// 			$Return = [
+	// 				'status' => 0,
+	// 				'msg'	 => 'No file or data to upload document..'
+	// 			];
+	// 		}
+	// 	} catch (Exception $e) {
+	// 		$this->db->trans_rollback();
+	// 		$Return = [
+	// 			'status' => 1,
+	// 			'msg'	 => $e->getMessage()
+	// 		];
+
+	// 		return $Return;
+	// 	}
+
+	// 	if ($this->db->trans_status() === FALSE) {
+	// 		$this->db->trans_rollback();
+	// 		$Return = [
+	// 			'status' => 0,
+	// 			'msg'	 => 'Failed upload document file. Please try again later.!'
+	// 		];
+	// 	} else {
+	// 		$this->db->trans_commit();
+	// 		$Return = [
+	// 			'status' => 1,
+	// 			'msg'	 => 'Success upload document file...'
+	// 		];
+	// 	}
+	// 	echo json_encode($Return);
+	// }
 
 	private function _update_history($data)
 	{

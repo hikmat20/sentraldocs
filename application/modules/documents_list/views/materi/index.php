@@ -66,7 +66,7 @@
                                         </thead>
                                         <tbody>
                                             <?php if (isset($ArrDetail[$dtl->id])) foreach ($ArrDetail[$dtl->id] as $list) : ?>
-                                                <tr class="cursor-pointer" data-id="<?= $list->id; ?>" ondblclick="window.open(siteurl+active_controller+'materi/?f=<?= $dtl->id; ?>&sub=<?= $list->id; ?>','_self')">
+                                                <tr class="cursor-pointer" data-id="<?= $list->id; ?>" onclick="window.open(siteurl+active_controller+'materi/?f=<?= $dtl->id; ?>&sub=<?= $list->id; ?>','_self')">
                                                     <td class="text-center h6 p-1" width="50px"><i class="fa fa-folder fa-2x text-warning"></i></th>
                                                     <td class="font-weight-bolder p-1 h4 text-dark"><?= $list->name; ?></th>
                                                 </tr>
@@ -85,7 +85,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document" style="width:90%">
         <div class="modal-content" data-scroll="true" data-height="700">
             <div class="modal-header">
                 <h5 class="modal-title">View Document</h5>

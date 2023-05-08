@@ -91,7 +91,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document" style="max-width:90%">
         <div class="modal-content" data-scroll="true" data-height="700">
             <div class="modal-header">
                 <h5 class="modal-title">View Document</h5>
@@ -99,7 +99,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body pt-1" id="data-file">
+            <div class="modal-body p-1 m-1" id="data-file">
                 File not found
             </div>
             <div class="modal-footer py-2">

@@ -299,7 +299,7 @@ class Documents_list extends Admin_Controller
 			$sub 			= $this->input->get('sub');
 			$materi 		= $this->db->get_where('materi_details', ['id' => $f])->result();
 
-			$dtlData 	= $this->db->get_where('materi_detail_data', ['materi_detail_id' => $sub])->result();
+			$dtlData 	= $this->db->get_where('materi_detail_data', ['materi_detail_id' => $sub, 'status' => '1'])->result();
 
 			$category 		= [
 				'MAT' => 'Materi Training',
@@ -313,7 +313,6 @@ class Documents_list extends Admin_Controller
 			foreach ($dtlData as $dtl) {
 				$ArrDtlData[$dtl->category][] = $dtl;
 			}
-
 
 			$this->template->set([
 				'materi' 		=> $materi,
