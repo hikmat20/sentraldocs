@@ -210,6 +210,7 @@
 
 	$(document).on('click', '.delete', function() {
 		const id = $(this).data('id')
+		alert(id)
 		Swal.fire({
 			title: 'Confirm',
 			text: 'Are sure you want to delete this folder?',

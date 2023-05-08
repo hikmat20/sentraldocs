@@ -53,9 +53,9 @@ class Process_checksheets extends Admin_Controller
 			echo "Checksheet Directory not valid";
 			return false;
 		} else if ((isset($_GET['sub']) && $_GET['sub']) && !isset($_GET['checksheet'])) {
-			$parent 	=  $this->db->get_where('checksheet_process', ['id' => $_GET['p'], 'company_id' => $this->company])->row();
-			$sub 		=  $this->db->get_where('checksheet_process_sub', ['id' => $_GET['sub'], 'company_id' => $this->company])->row();
-			$data 		=  $this->db->get_where('checksheet_process_dir', ['process_id' => $_GET['p'], 'sub_id' => $_GET['sub'], 'company_id' => $this->company])->result();
+			$parent 	=  $this->db->get_where('checksheet_process', ['id' => $_GET['p'], 'company_id' => $this->company, 'status' => '1'])->row();
+			$sub 		=  $this->db->get_where('checksheet_process_sub', ['id' => $_GET['sub'], 'company_id' => $this->company, 'status' => '1'])->row();
+			$data 		=  $this->db->get_where('checksheet_process_dir', ['process_id' => $_GET['p'], 'sub_id' => $_GET['sub'], 'company_id' => $this->company, 'status' => '1'])->result();
 			$this->template->set(
 				[
 					'data' 		=> $data,
@@ -791,9 +791,7 @@ class Process_checksheets extends Admin_Controller
 
 		$this->db->trans_begin();
 		$this->db->update('checksheet_process_sub', ['status' => '0'], ['id' => $id]);
-
 		$check_dir 	 = $this->db->get_where('checksheet_process_dir', ['sub_id' => $id, 'company_id' => $this->company])->num_rows();
-
 		if ($check_dir > 0) {
 			$this->db->update('checksheet_process_dir', ['status' => '0'], ['sub_id' => $id, 'company_id' => $this->company]);
 		}
@@ -883,13 +881,13 @@ class Process_checksheets extends Admin_Controller
 		$id 		 = $this->input->post('id');
 
 		$this->db->trans_begin();
-		$this->db->update('checksheet_process_sub', ['status' => '0'], ['id' => $id]);
+		$this->db->update('checksheet_process_dir', ['status' => '0'], ['id' => $id]);
+		// $this->db->update('checksheet_process_sub', ['status' => '0'], ['id' => $id]);
 
-		$check_dir 	 = $this->db->get_where('checksheet_process_dir', ['sub_id' => $id, 'company_id' => $this->company])->num_rows();
+		// $check_dir 	 = $this->db->get_where('checksheet_process_dir', ['sub_id' => $id, 'company_id' => $this->company])->num_rows();
 
-		if ($check_dir > 0) {
-			$this->db->update('checksheet_process_dir', ['status' => '0'], ['sub_id' => $id, 'company_id' => $this->company]);
-		}
+		// if ($check_dir > 0) {
+		// }
 
 		if ($this->db->trans_status() === FALSE) {
 			$this->db->trans_rollback();

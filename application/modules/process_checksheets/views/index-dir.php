@@ -26,7 +26,7 @@
 						<input type="hidden" id="sub_id" value="<?= $sub->id; ?>">
 						<nav class="breadcrumb py-2 line-height-0 m-0">
 							<a class="breadcrumb-item" href="<?= base_url($this->uri->segment(1)); ?>"><i class="fa fa-home"></i></a>
-							<a class="breadcrumb-item" href="<?= base_url($this->uri->segment(1)); ?>"><?= $parent->name; ?></a>
+							<a class="breadcrumb-item" href="<?= base_url($this->uri->segment(1)) . '?p=' . $parent->id; ?>"><?= $parent->name; ?></a>
 							<span class="breadcrumb-item active"><?= $sub->name; ?></span>
 						</nav>
 					</div>
@@ -229,6 +229,7 @@
 
 	$(document).on('click', '.delete', function() {
 		const id = $(this).data('id')
+
 		Swal.fire({
 			title: 'Confirm',
 			text: 'Are sure you want to delete this folder?',
@@ -237,7 +238,7 @@
 		}).then((value) => {
 			if (value.isConfirmed) {
 				$.ajax({
-					url: siteurl + active_controller + 'delete_sub_folder',
+					url: siteurl + active_controller + 'delete_process_dir',
 					dataType: 'JSON',
 					type: 'POST',
 					data: {
