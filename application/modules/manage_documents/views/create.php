@@ -84,7 +84,7 @@
 
 <!-- Modal-->
 <div class="modal fade" id="upload" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+	<div class="modal-dialog modal-xl modal-dialog-centered" role="document" style="width: 90%;">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">Upload File</h5>
@@ -102,7 +102,7 @@
 </div>
 
 <div class="modal fade" id="modal-view" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+	<div class="modal-dialog modal-lg modal-dialog-centered" role="document" style="max-width: 90%;">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="exampleModalLabel">View File</h5>

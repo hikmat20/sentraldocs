@@ -1,9 +1,7 @@
 <div class="text-center">
 	<div style="width:92%;height:400px;background-color: red;position: absolute;opacity: 0;"></div>
-	<iframe style="pointer-events:visibleStroke;" onclick="cek(e)" oncontextmenu="cek(r)" src="<?= base_url("directory/$parent_name/$file->file_name"); ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe>
-	<!-- <iframe style="pointer-events:visibleStroke;" src="<?= base_url($this->uri->segment(1) . "/viewfile/$parent_name/$file->file_name"); ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="400px"></iframe> -->
+	<iframe style="pointer-events:visibleStroke;" onclick="cek(e)" oncontextmenu="cek(r)" src="<?= base_url("directory/STANDARDS/$company_id/$parent_name/$file->file_name"); ?>#toolbar=0&navpanes=0" frameborder="0" width="100%" height="500px"></iframe>
 </div>
-<!-- <a href="<?= base_url($this->uri->segment(1) . '/print_document/?p=' . $parent_name . '&f=' . $file->file_name); ?>" target="_blank" class="btn btn-primary">Print</a> -->
 
 <script>
 	function cek(e) {

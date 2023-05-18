@@ -553,10 +553,12 @@ class Manage_documents extends Admin_Controller
 	{
 		$file 			= $this->db->get_where('view_directories', ['id' => $id])->row();
 		$parent_name 	= $this->db->get_where('view_directories', ['id' => $file->parent_id])->row()->name;
+
 		$this->template->set(
 			[
 				'file' => $file,
 				'parent_name' => $parent_name,
+				'company_id' => $this->company,
 			]
 		);
 		$this->template->render('view-file');

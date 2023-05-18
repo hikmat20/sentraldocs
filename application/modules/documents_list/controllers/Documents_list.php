@@ -84,6 +84,10 @@ class Documents_list extends Admin_Controller
 		// pre
 		$dir_name 	= $this->db->get_where('directory', ['id' => $file->parent_id])->row()->name;
 		$history	= $this->db->order_by('updated_at', 'ASC')->get_where('directory_log', ['directory_id' => $id])->result();
+		$type 		= 'STANDARDS';
+
+		$this->template->set('type', $type);
+		$this->template->set('company', $this->company);
 		$this->template->set('dir_name', $dir_name);
 		$this->template->set('sts', $this->sts);
 		$this->template->set('file', $file);
@@ -346,10 +350,17 @@ class Documents_list extends Admin_Controller
 		$file 			= $this->db->get_where('materi_detail_data', ['id' => $id])->row();
 		$array 			= explode('.', $file->document);
 		$extension 		= end($array);
+		$parent 		= $this->db->get_where('view_directories', ['id' => $id])->row()->name;
+		echo '<pre>';
+		print_r($parent);
+		echo '</pre>';
+		exit;
 
 		$this->template->set([
 			'file' 		=> $file,
-			'ext' 		=> $extension
+			'ext' 		=> $extension,
+			'dir' 		=> $parent,
+			'company' 		=> $this->company,
 		]);
 		$this->template->render('materi/show');
 	}
