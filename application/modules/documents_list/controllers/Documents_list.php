@@ -347,19 +347,16 @@ class Documents_list extends Admin_Controller
 
 	public function show_materi($id = null)
 	{
+
+
 		$file 			= $this->db->get_where('materi_detail_data', ['id' => $id])->row();
 		$array 			= explode('.', $file->document);
 		$extension 		= end($array);
-		$parent 		= $this->db->get_where('view_directories', ['id' => $id])->row()->name;
-		echo '<pre>';
-		print_r($parent);
-		echo '</pre>';
-		exit;
 
 		$this->template->set([
 			'file' 		=> $file,
 			'ext' 		=> $extension,
-			'dir' 		=> $parent,
+			// 'dir' 		=> $parent,
 			'company' 		=> $this->company,
 		]);
 		$this->template->render('materi/show');
@@ -447,5 +444,102 @@ class Documents_list extends Admin_Controller
 		]);
 
 		$this->template->render('guides/show');
+	}
+
+
+	/* MANUAL */
+
+	public function manual()
+	{
+		$thisData 		= $this->db->get_where('directory', ['id' => '00062c7fd13bd121'])->row();
+		$Data 			= $this->db->get_where('directory', ['parent_id' => '00062c7fd13bd121', 'flag_type' => 'FOLDER', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
+		$DataFile 			= $this->db->get_where('directory', ['parent_id' => '00062c7fd13bd121', 'flag_type' => 'FILE', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
+
+		$listDataFolder = $this->db->get_where('directory', ['flag_type' => 'FOLDER', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
+		$listDataFile 	= $this->db->get_where('directory', ['flag_type' => 'FILE', 'status' => 'PUB', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
+		$listDataLink 	= $this->db->get_where('directory', ['flag_type' => 'LINK', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
+
+		$ArrDataFolder = [];
+		foreach ($listDataFolder as $listFolder) {
+			$ArrDataFolder[$listFolder->parent_id][] = $listFolder;
+		}
+		$ArrDataFile = [];
+		foreach ($listDataFile as $listFile) {
+			$ArrDataFile[$listFile->parent_id][] = $listFile;
+		}
+		$ArrDataLink = [];
+		foreach ($listDataLink as $listLink) {
+			$ArrDataLink[$listLink->parent_id][] = $listLink;
+		}
+
+		$dt 		= $this->db->get_where('directory', ['id' => '00062c7fd13bd121'])->row_array();
+		$buildBreadcumb = $this->buildBreadcumb($dt);
+
+		$this->template->set('MainData', $this->MainData);
+		$this->template->set('company', $this->company);
+		$this->template->set('Breadcumb', $buildBreadcumb);
+		$this->template->set('thisData', $thisData);
+		$this->template->set('Data', $Data);
+		$this->template->set('DataFile', $DataFile);
+		$this->template->set('ArrDataFolder', $ArrDataFolder);
+		$this->template->set('ArrDataFile', $ArrDataFile);
+		$this->template->set('ArrDataLink', $ArrDataLink);
+
+		$this->template->render('manual/index');
+	}
+
+	public function show_manual($id = null)
+	{
+		$file 		= $this->db->get_where('directory', ['id' => $id])->row();
+		// pre
+		$dir_name 	= $this->db->get_where('directory', ['id' => $file->parent_id])->row()->name;
+		$history	= $this->db->order_by('updated_at', 'ASC')->get_where('directory_log', ['directory_id' => $id])->result();
+		$type 		= 'MANUAL';
+
+		$this->template->set('type', $type);
+		$this->template->set('company', $this->company);
+		$this->template->set('dir_name', $dir_name);
+		$this->template->set('sts', $this->sts);
+		$this->template->set('file', $file);
+		$this->template->set('history', $history);
+		$this->template->render('show');
+	}
+
+	public function find_manual($id)
+	{
+		$thisData 		= $this->db->get_where('directory', ['id' => $id])->row();
+		$Data 			= $this->db->get_where('directory', ['parent_id' => $id, 'flag_type' => 'FOLDER', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
+		$DataFile 			= $this->db->get_where('directory', ['parent_id' => $id, 'flag_type' => 'FILE', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
+		$listDataFolder = $this->db->get_where('directory', ['flag_type' => 'FOLDER', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
+		$listDataFile 	= $this->db->get_where('directory', ['flag_type' => 'FILE', 'status' => 'PUB', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
+		$listDataLink 	= $this->db->get_where('directory', ['flag_type' => 'LINK', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
+
+		$ArrDataFolder = [];
+		foreach ($listDataFolder as $listFolder) {
+			$ArrDataFolder[$listFolder->parent_id][] = $listFolder;
+		}
+		$ArrDataFile = [];
+		foreach ($listDataFile as $listFile) {
+			$ArrDataFile[$listFile->parent_id][] = $listFile;
+		}
+		$ArrDataLink = [];
+		foreach ($listDataLink as $listLink) {
+			$ArrDataLink[$listLink->parent_id][] = $listLink;
+		}
+
+		$dt 		= $this->db->get_where('directory', ['id' => $id])->row_array();
+		$buildBreadcumb = $this->buildBreadcumb($dt);
+
+		$this->template->set('MainData', $this->MainData);
+		$this->template->set('company', $this->company);
+		$this->template->set('Breadcumb', $buildBreadcumb);
+		$this->template->set('thisData', $thisData);
+		$this->template->set('Data', $Data);
+		$this->template->set('DataFile', $DataFile);
+		$this->template->set('ArrDataFolder', $ArrDataFolder);
+		$this->template->set('ArrDataFile', $ArrDataFile);
+		$this->template->set('ArrDataLink', $ArrDataLink);
+
+		$this->template->render('manual/index');
 	}
 }

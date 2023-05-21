@@ -23,7 +23,7 @@ class Dashboard extends Admin_Controller
 	public function index()
 	{
 
-		$Data = $this->db->order_by('created_at', 'ASC')->get_where('directory', ['parent_id' => '0', 'active' => 'Y', 'status !=' => 'DEL'])->result();
+		$Data = $this->db->order_by('created_at', 'ASC')->get_where('directory', ['id' => '00062c7fd5bb37a1', 'active' => 'Y', 'status !=' => 'DEL'])->result();
 		$RecentFiles = $this->db->order_by('created_at', 'DESC')->get_where('directory', ['parent_id !=' => '0', 'active' => 'Y', 'flag_type' => 'FILE', 'status !=' => 'DEL', 'created_at like' => date('Y-m-d') . "%"])->result();
 
 		$this->template->set(

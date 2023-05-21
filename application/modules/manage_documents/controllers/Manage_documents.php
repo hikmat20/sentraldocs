@@ -49,6 +49,7 @@ class Manage_documents extends Admin_Controller
 		$loadFolder = $this->menus($ArrFolder);
 		$this->template->set('loadFolder', $loadFolder);
 		$this->template->set('jabatan', $jabatan);
+		$this->template->set('mainFolder', $mainFolder);
 		$this->template->render('create');
 	}
 
@@ -83,28 +84,19 @@ class Manage_documents extends Admin_Controller
 		return $html;
 	}
 
-	public function load_file($id = null)
+	public function load_file($id = null, $folder = '')
 	{
-
 		if ($id != '0') {
+			$data_file 	= $this->db->get_where('view_directories', ['parent_id' => $id, 'flag_type !=' => 'LINK', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
+			$prev 		= $this->db->get_where('view_directories', ['id' => $id])->row()->parent_id;
 
-			$data_file = $this->db->get_where('view_directories', ['parent_id' => $id, 'flag_type !=' => 'LINK', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
-			$prev = $this->db->get_where('view_directories', ['id' => $id])->row()->parent_id;
-			// echo '<pre>';
-			// print_r($data_file);
-			// echo '<pre>';
-			// exit;
 			$this->template->set('prev', $prev);
 			$this->template->set('parent_id', $id);
 			$this->template->set('sts', $this->sts);
 			$this->template->set('list_file', $data_file);
+			$this->template->set('main', $folder);
 			$this->template->render('list-file');
 		}
-		// else {
-		// 	$data_file = $this->db->get_where('view_directories', ['parent_id' => '0', 'flag_type !=' => 'LINK', 'status !=' => 'DEL'])->result();
-		// 	$this->template->set('list_file', $data_file);
-		// 	$this->template->render('list-file');
-		// }
 	}
 
 	public function previous()
@@ -372,15 +364,16 @@ class Manage_documents extends Admin_Controller
 		echo json_encode($Return);
 	}
 
-	public function upload($parent_id)
+	public function upload($parent, $folder)
 	{
 		$users 		= $this->db->get_where('users', ['status' => 'ACT', 'id_user !=' => '1'])->result();
 		$jabatan 	= $this->db->get('positions')->result();
 
 		$this->template->set([
 			'jabatan' 		=> $jabatan,
-			'parent_id' 	=> $parent_id,
+			'parent_id' 	=> $parent,
 			'users' 		=> $users,
+			'folder' 		=> $folder,
 		]);
 		$this->template->render('upload_file');
 	}
@@ -414,20 +407,19 @@ class Manage_documents extends Admin_Controller
 	public function save_upload()
 	{
 		$data = $this->input->post();
-
+		$mainFolder = $data['folder'];
 		try {
 			$parent_name = $this->db->get_where('view_directories', ['id' => $data['parent_id']])->row()->name;
 			if ($_FILES['image']['name']) {
-				if (!is_dir('./directory/' . $parent_name)) {
-					mkdir('./directory/' . $parent_name, 0755, TRUE);
-					chmod("./directory/" . $parent_name, 0755);  // octal; correct value of mode
-					chown("./directory/" . $parent_name, 'www-data');
+				if (!is_dir("./directory/$mainFolder/$this->company/" . $parent_name)) {
+					mkdir("./directory/$mainFolder/$this->company/" . $parent_name, 0755, TRUE);
+					chmod("./directory/$mainFolder/$this->company/" . $parent_name, 0755);  // octal; correct value of mode
+					chown("./directory/$mainFolder/$this->company/" . $parent_name, 'www-data');
 				}
 				// $new_name 					= $this->fixForUri($data['description']);
-				$config['upload_path'] 		= "./directory/$parent_name"; //path folder
+				$config['upload_path'] 		= "./directory/$mainFolder/$this->company/$parent_name"; //path folder
 				$config['allowed_types'] 	= 'pdf|xlsx|docx'; //type yang dapat diakses bisa anda sesuaikan
 				$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
-				// $config['file_name'] 		= $new_name;
 				$id 						= (!$data['id']) ? uniqid(date('m')) : $data['id'];
 
 
@@ -452,8 +444,8 @@ class Manage_documents extends Admin_Controller
 					unset($data['old_file']);
 
 					if ($old_file != null) {
-						if (file_exists('./assets/files/' . $old_file)) {
-							unlink('./assets/files/' . $old_file);
+						if (file_exists("./directory/$mainFolder/$this->company/$parent_name" . $old_file)) {
+							unlink("./directory/$mainFolder/$this->company/$parent_name" . $old_file);
 						}
 					}
 
@@ -467,12 +459,14 @@ class Manage_documents extends Admin_Controller
 						$data['status']			= isset($data['status']) ? $data['status'] : (($data['flag_record'] == 'Y') ? 'PUB' : 'OPN');
 						$this->_update_history($data);
 						unset($data['note']);
+						unset($data['folder']);
 						$this->db->insert('directory', $data);
 					} else {
 						$data['modified_by']	= $this->auth->user_id();
 						$data['modified_at']	= date('Y-m-d H:i:s');
 						$data['note']			= 'Re-upload File';
 						$this->_update_history($data);
+						unset($data['folder']);
 						unset($data['note']);
 						$this->db->update('directory', $data, ['id' => $id]);
 					}
@@ -549,16 +543,16 @@ class Manage_documents extends Admin_Controller
 		$this->db->insert('directory_log', $dataLog);
 	}
 
-	public function view_file($id)
+	public function view_file($id, $folder = '')
 	{
 		$file 			= $this->db->get_where('view_directories', ['id' => $id])->row();
 		$parent_name 	= $this->db->get_where('view_directories', ['id' => $file->parent_id])->row()->name;
-
 		$this->template->set(
 			[
 				'file' => $file,
 				'parent_name' => $parent_name,
 				'company_id' => $this->company,
+				'folderMain' => $folder,
 			]
 		);
 		$this->template->render('view-file');

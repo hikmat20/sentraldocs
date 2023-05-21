@@ -26,13 +26,18 @@ class Documents extends Admin_Controller
 
 	public function index()
 	{
+		$this->template->render('file-manager');
+	}
+
+	public function index_()
+	{
 		// if (!isset($_GET['d']) || $_GET['d'] == '') {
 		// 	redirect('documents/?d=0');
 		// }
 
 		// Root path for file manager
 		// use absolute path of directory i.e: '/var/www/folder' or $_SERVER['DOCUMENT_ROOT'].'/folder'
-		$root_path = $_SERVER['DOCUMENT_ROOT'] . '/directory';
+		$root_path = $_SERVER['DOCUMENT_ROOT'] . '/data';
 
 		// Root url for links in file manager.Relative to $http_host. Variants: '', 'path/to/subfolder'
 		// Will not working if $root_path will be outside of server document root
@@ -47,7 +52,7 @@ class Documents extends Admin_Controller
 
 		// date() format for file modification date
 		// Doc - https://www.php.net/manual/en/function.date.php
-		$datetime_format = 'm/d/Y g:i A';
+		$datetime_format = 'm/d/Yd g:i A';
 
 		// Enable ace.js (https://ace.c9.io/) on view's page
 		$edit_files = true;

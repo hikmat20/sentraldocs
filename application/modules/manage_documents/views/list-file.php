@@ -2,15 +2,15 @@
 <!-- <button type="button" class="btn btn- btn-icon prev" data-id="<?= $prev; ?>"><i class="fa fa-arrow-left mr-2 <?= ($prev != '0') ? 'text-dark-75' : ''; ?>"></i></button>
 	<button type="button" class="btn btn-light-warning btn-md" onclick="new_folder('<?= $parent_id; ?>')"><i class="fa fa-folder-plus mr-2"></i>Add Folder</button>
 	<button type="button" class="btn btn-light-success btn-md" onclick="upload_file('<?= $parent_id; ?>')"><i class="fa fa-file mr-2"></i>Upload File</button> -->
-
 <!-- </div> -->
+
 <div class="card-body px-0 border border-1 border-left py-2 overflow-auto h-550px">
 	<table class="table table-hover table-borderless">
 		<tbody>
 			<?php $n = 0;
 			if ($list_file) :
 				foreach ($list_file as $list) : $n++; ?>
-					<tr class="cursor-pointer h6 py-0 <?= ($list->flag_type == 'FOLDER') ? 'folder' : 'file'; ?>" data-id="<?= $list->id; ?>">
+					<tr class="cursor-pointer h6 py-0 <?= ($list->flag_type == 'FOLDER') ? 'folder' : 'file'; ?>" data-id="<?= $list->id; ?>" data-folder="<?= $main; ?>">
 						<td style="vertical-align: middle;" class="text-dark-75 py-2">
 							<div class="dropdown dropdown-inline">
 								<button type="button" class="btn btn-light-default btn-icon btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

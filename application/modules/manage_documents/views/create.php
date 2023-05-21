@@ -7,15 +7,23 @@
 						<span class="card-title text-dark-75"><i class="fa fa-folder mr-2 text-warning"></i>Directories</span>
 					</div>
 					<div class="card-body px-4 py-1 overflow-auto h-500px">
-						<div id="kt_tree_2" class="tree-demo">
-							<?= $loadFolder; ?>
-						</div>
+						<table class="table table-condensed">
+							<?php if ($mainFolder) foreach ($mainFolder as $main) : ?>
+								<tr data-id="<?= $main->id; ?>" class="tree-folder cursor-pointer" data-folder="<?= $main->description; ?>" data-parent_id="<?= $main->id; ?>">
+									<td>
+										<h4 class="mb-0"><?= $main->name; ?></h4>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						</table>
+						<!-- <div id="kt_tree_2" class="tree-demo">
+						</div> -->
 					</div>
 				</div>
 
 				<div class="col-md-8 pl-0">
 					<div class="card-header px-0 border-1 border-left pb-11 pt-0 h-20px">
-						<input type="hidden" id="active_parent_id" value="ec">
+						<!-- <input type="hidden" id="active_parent_id" value="ec"> -->
 						<!-- <span class="card-title text-dark-75"><i class="fa fa-file mr-2 text-success"></i>List File & Folder</span> -->
 						<div class="px-1">
 							<ul class="nav nav-light-success nav-pills" id="myTab" role="tablist">
@@ -46,7 +54,7 @@
 									</a>
 								</li>
 								<li class="nav-item dropdown">
-									<a class="nav-link px-2 disabled" id="add-file" data-id="0" href="javascript:void(0)">
+									<a class="nav-link px-2 disabled" id="add-file" data-id="0" data-main="0" href="javascript:void(0)">
 										<span class="nav-icon">
 											<i class="fa fa-file mr-2 nav-icons"></i>
 										</span>
@@ -178,16 +186,19 @@
 		const id = $(this).data('id');
 		const custome = $(this).data('custome');
 		const parent_id = $(this).data('parent_id')
-		if (id) {
-			if (custome == 'Y') {
+		const folder = $(this).data('folder')
 
-			} else {
-				$('#data-file').load(siteurl + active_controller + 'load_file/' + id)
+		$('.tree-folder').removeClass('table-active')
+		$(this).addClass('table-active')
+		if (id) {
+			if (custome == 'Y') {} else {
+				$('#data-file').load(siteurl + active_controller + 'load_file/' + id + "/" + folder)
 			}
 
-			$('#add-folder').data('id', id);
-			$('#add-file').data('id', id);
+			$('#add-folder').data('id', folder);
+			$('a#add-file').attr('data-id', id);
 			$('#refresh').data('id', id);
+
 			if (id != '0') {
 				$('a#back').removeClass('disabled')
 				$('#back span').children('i.nav-icons').addClass('text-success')
@@ -205,6 +216,7 @@
 				$('#back span').children('i.nav-icons').addClass('text-success')
 				$('#back').children('.nav-name').addClass('text-success')
 				// console.log(id);
+				$('a#add-file').attr('data-main', folder);
 			}
 		} else {
 			$('#data-file').html('<tr class="text-center"><td colspan="3" class="text-center">Not available data</td></tr>')
@@ -213,13 +225,13 @@
 
 	$(document).on("dblclick", ".folder", function() {
 		const id = $(this).data('id');
+		const main = $(this).data('folder');
 		if (id) {
-			$('#data-file').load(siteurl + active_controller + 'load_file/' + id)
+			$('#data-file').load(siteurl + active_controller + 'load_file/' + id + "/" + main)
 			$('#back').data('id', id);
 			$('#add-folder').data('id', id);
-			$('#add-file').data('id', id);
+			$('#add-file').attr('data-id', id);
 			$('#refresh').data('id', id);
-			console.log(id);
 		} else {
 			$('#data-file').html(`
 			<div class="card-body border border-1 border-left py-2 overflow-auto h-550px">
@@ -234,9 +246,10 @@
 
 	$(document).on("dblclick", ".file", function() {
 		const id = $(this).data('id');
+		const main = $(this).data('folder');
 		if (id) {
 			$('#modal-view').modal('show')
-			$('#viewDataFile').load(siteurl + active_controller + 'view_file/' + id)
+			$('#viewDataFile').load(siteurl + active_controller + 'view_file/' + id + "/" + main)
 		} else {
 			$('#viewDataFile').html('')
 
@@ -476,7 +489,8 @@
 		const id_master = $('#id_master').val();
 		const image = $('#image').val();
 		const parent_id = $('#parent_id').val();
-		console.log(reviewer_id)
+		const folder = $('input[name="folder"]').val();
+		console.log(parent_id)
 		if (description == '' || description == null) {
 			$('#description').addClass('is-invalid')
 			return false;
@@ -564,7 +578,7 @@
 								allowOutsideClick: false
 							});
 							$('#upload').modal('hide')
-							$('#data-file').load(siteurl + active_controller + 'load_file/' + parent_id)
+							$('#data-file').load(siteurl + active_controller + 'load_file/' + parent_id + "/" + folder)
 							$('#viewData').html('')
 						} else {
 							if (data.status == 0) {
@@ -652,8 +666,8 @@
 
 	$(document).on('click', '#add-file', function() {
 		const id = $(this).data('id')
-		upload_file(id)
-		console.log(id);
+		const main = $(this).data('main')
+		upload_file(id, main)
 	})
 
 	$(document).on('click', '#add-folder', function() {
@@ -745,9 +759,13 @@
 		$('#form-data').load(siteurl + active_controller + 'rename/' + id)
 	}
 
-	function upload_file(parent_id) {
+	function upload_file(parent_id, main = '') {
+		if (main) {
+			main = "/" + main
+		}
+
 		$('#upload').modal('show')
-		$('#viewData').load(siteurl + active_controller + 'upload/' + parent_id)
+		$('#viewData').load(siteurl + active_controller + 'upload/' + parent_id + main)
 		$('.parent_id').val(parent_id)
 	}
 

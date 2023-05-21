@@ -77,10 +77,15 @@ $route['list/materi/(:any)'] = 'documents_list/materi/$1';
 $route['list/guides'] = 'documents_list/guides';
 $route['list/guides/(:any)'] = 'documents_list/guides/$1';
 
+/* MATERI GUIDES */
+$route['list/manual'] = 'documents_list/manual';
+$route['list/manual/(:any)'] = 'documents_list/find_manual/$1';
+
 /* List Documents */
 $route['list/(:any)/(:any)'] = 'documents_list/$1/$2';
 $route['list/(:any)'] = 'documents_list/find/$1';
 $route['list'] = 'dashboard';
+
 
 /* Manage Documents */
 $route['docs/procedures'] = 'manage_documents/procedures/$1';

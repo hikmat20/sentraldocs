@@ -4,6 +4,7 @@
 			<div class="row">
 				<label class="col-12 col-form-label">Document Name :</label>
 				<div class="col-12">
+					<input type="hidden" name="folder" value="<?= $folder; ?>">
 					<input type="hidden" id="id" name="id" class="form-control" placeholder="" value="<?= isset($file) ? $file->id : ''; ?>" />
 					<input type="hidden" id="parent_id" name="parent_id" class="form-control" placeholder="" value="<?= $parent_id; ?>" />
 					<input type="text" class="form-control" id="description" placeholder="Description" name="description" value="<?= isset($file) ? $file->name : ''; ?>" autocomplete="off" />
