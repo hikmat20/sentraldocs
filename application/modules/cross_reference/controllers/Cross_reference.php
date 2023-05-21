@@ -67,7 +67,7 @@ class Cross_reference extends Admin_Controller
 
 		$this->db->select('*')->from('view_cross_reference_details');
 		$this->db->where("find_in_set($id, procedure_id)");
-		$this->db->where("company_id", '1');
+		$this->db->where("company_id", $this->company);
 		$Data = $this->db->get()->result();
 
 		$ArrData = [];
@@ -340,7 +340,7 @@ class Cross_reference extends Admin_Controller
 	{
 		$mpdf = new Mpdf('', '', '', 10, 10, 10, 10);
 
-		$crossStd  		= $this->db->get_where('view_cross_references', ['company_id' => $id])->row();
+		$crossStd  		= $this->db->get_where('view_cross_references', ['company_id' => $this->company])->row();
 		$dtlCross 		= $this->db->get_where('view_cross_reference_details', ['reference_id' => $crossStd->reference_id])->result();
 
 		$procedures 	= $this->db->get_where('procedures', ['company_id' => $this->company, 'status !=' => 'DEL'])->result();
