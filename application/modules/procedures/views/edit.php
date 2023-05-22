@@ -214,75 +214,97 @@
 										</div>
 										<div id="flowImages" class="collapse in" role="tabpanel" aria-labelledby="sectionFlowImages">
 											<div class="card-body">
-												<div class="mb-3">
-													<h4 class="">Flow Images</h4>
-													<div class="row">
-														<div class="col-md-12">
-															<div class="form-group">
-																<label class="control-label">Upload File</label>
-																<div class="preview-zone hidden">
-																	<div class="box box-solid">
-																		<div class="box-body d-flex justify-content-start align-items-center">
-																			<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
-																				<div class="dropzone-desc">
-																					<?php if ($data->image_flow_1) : ?>
-																						<img width="150" src="<?= base_url("./directory/FLOW_IMG/$data->company_id/$data->image_flow_1"); ?>" />
-																					<?php else : ?>
-																						<i class="fa fa-upload"></i>
-																						<p>Choose an image file or drag it here.</p>
-																					<?php endif; ?>
-																				</div>
-																				<input type="file" name="img_flow[]" accept="image/*" data-index="1" class="dropzone dropzone-1">
-																				<?php if ($data->image_flow_1) : ?>
-																					<div class="middle d-flex justify-content-center align-items-center">
-																						<button type="button" onclick="$(this).parent().parent().find('.dropzone').click()" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle"><i class="fa fa-edit"></i></button>
-																						<button type="button" onclick="remove_image(this)" data-id="<?= $data->id; ?>" data-img="image_flow_1" class="btn btn-sm mr-1 btn-icon btn-danger remove-image rounded-circle"><i class="fa fa-trash"></i></button>
-																					</div>
-																				<?php endif; ?>
-																				<div class="for-delete"></div>
-																			</div>
-																			<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
-																				<div class="dropzone-desc">
-																					<?php if ($data->image_flow_2) : ?>
-																						<img width="150" src="<?= base_url("./directory/FLOW_IMG/$data->company_id/$data->image_flow_2"); ?>" />
-																					<?php else : ?>
-																						<i class="fa fa-upload"></i>
-																						<p>Choose an image file or drag it here.</p>
-																					<?php endif; ?>
-																				</div>
-
-																				<input type="file" name="img_flow[]" accept="image/*" data-index="2" class="dropzone dropzone-2">
-																				<?php if ($data->image_flow_2) : ?>
-																					<div class="middle d-flex justify-content-center align-items-center">
-																						<button type="button" onclick="$(this).parent().parent().find('.dropzone').click()" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle"><i class="fa fa-edit"></i></button>
-																						<button type="button" onclick="remove_image(this)" data-id="<?= $data->id; ?>" data-img="image_flow_2" class="btn btn-sm mr-1 btn-icon btn-danger remove-image rounded-circle"><i class="fa fa-trash"></i></button>
-																					</div>
-																				<?php endif; ?>
-																				<div class="for-delete"></div>
-																			</div>
-
-
-																			<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
-																				<div class="dropzone-desc">
-																					<?php if ($data->image_flow_3) : ?>
-																						<img width="150" src="<?= base_url("./directory/FLOW_IMG/$data->company_id/$data->image_flow_3"); ?>" />
-																					<?php else : ?>
-																						<i class="fa fa-upload"></i>
-																						<p>Choose an image file or drag it here.</p>
-																					<?php endif; ?>
-																				</div>
-																				<input type="file" name="img_flow[]" accept="image/*" data-index="3" class="dropzone dropzone-3">
-																				<?php if ($data->image_flow_3) : ?>
-																					<div class="middle d-flex justify-content-center align-items-center">
-																						<button type="button" onclick="$(this).parent().parent().find('.dropzone').click()" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle"><i class="fa fa-edit"></i></button>
-																						<button type="button" onclick="remove_image(this)" data-id="<?= $data->id; ?>" data-img="image_flow_3" class="btn btn-sm mr-1 btn-icon btn-danger remove-image rounded-circle"><i class="fa fa-trash"></i></button>
-																					</div>
-																				<?php endif; ?>
-																				<div class="for-delete"></div>
-
-																			</div>
-																		</div>
+												<h5 class="mb-4">Flow Images</h5>
+												<div class="mb-4">
+													<div class="preview-zone hidden">
+														<div class="box box-solid">
+															<div class="box-body d-flex justify-content-start align-items-center">
+																<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
+																	<div class="dropzone-desc">
+																		<?php if ($data->image_flow_1) : ?>
+																			<img width="150" src="<?= base_url("./directory/FLOW_IMG/$data->company_id/$data->image_flow_1"); ?>" />
+																		<?php else : ?>
+																			<i class="fa fa-upload"></i>
+																			<p>Choose an image file or drag it here.</p>
+																		<?php endif; ?>
 																	</div>
+																	<input type="file" name="img_flow[]" accept="image/*" data-index="1" class="dropzone dropzone-1">
+																	<?php if ($data->image_flow_1) : ?>
+																		<div class="middle d-flex justify-content-center align-items-center">
+																			<button type="button" onclick="$(this).parent().parent().find('.dropzone').click()" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle"><i class="fa fa-edit"></i></button>
+																			<button type="button" onclick="remove_image(this)" data-id="<?= $data->id; ?>" data-img="image_flow_1" class="btn btn-sm mr-1 btn-icon btn-danger remove-image rounded-circle"><i class="fa fa-trash"></i></button>
+																		</div>
+																	<?php endif; ?>
+																	<div class="for-delete"></div>
+																</div>
+
+																<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
+																	<div class="dropzone-desc">
+																		<?php if ($data->image_flow_2) : ?>
+																			<img width="150" src="<?= base_url("./directory/FLOW_IMG/$data->company_id/$data->image_flow_2"); ?>" />
+																		<?php else : ?>
+																			<i class="fa fa-upload"></i>
+																			<p>Choose an image file or drag it here.</p>
+																		<?php endif; ?>
+																	</div>
+
+																	<input type="file" name="img_flow[]" accept="image/*" data-index="2" class="dropzone dropzone-2">
+																	<?php if ($data->image_flow_2) : ?>
+																		<div class="middle d-flex justify-content-center align-items-center">
+																			<button type="button" onclick="$(this).parent().parent().find('.dropzone').click()" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle"><i class="fa fa-edit"></i></button>
+																			<button type="button" onclick="remove_image(this)" data-id="<?= $data->id; ?>" data-img="image_flow_2" class="btn btn-sm mr-1 btn-icon btn-danger remove-image rounded-circle"><i class="fa fa-trash"></i></button>
+																		</div>
+																	<?php endif; ?>
+																	<div class="for-delete"></div>
+																</div>
+
+																<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
+																	<div class="dropzone-desc">
+																		<?php if ($data->image_flow_3) : ?>
+																			<img width="150" src="<?= base_url("./directory/FLOW_IMG/$data->company_id/$data->image_flow_3"); ?>" />
+																		<?php else : ?>
+																			<i class="fa fa-upload"></i>
+																			<p>Choose an image file or drag it here.</p>
+																		<?php endif; ?>
+																	</div>
+																	<input type="file" name="img_flow[]" accept="image/*" data-index="3" class="dropzone dropzone-3">
+																	<?php if ($data->image_flow_3) : ?>
+																		<div class="middle d-flex justify-content-center align-items-center">
+																			<button type="button" onclick="$(this).parent().parent().find('.dropzone').click()" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle"><i class="fa fa-edit"></i></button>
+																			<button type="button" onclick="remove_image(this)" data-id="<?= $data->id; ?>" data-img="image_flow_3" class="btn btn-sm mr-1 btn-icon btn-danger remove-image rounded-circle"><i class="fa fa-trash"></i></button>
+																		</div>
+																	<?php endif; ?>
+																	<div class="for-delete"></div>
+																</div>
+
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<h5 class="mb-4">Upload File</h5>
+												<div class="mb-4">
+													<div class="preview-zone hidden">
+														<div class="box box-solid">
+															<div class="box-body d-flex justify-content-start align-items-center">
+																<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
+																	<div class="dropzone-desc">
+																		<?php if ($data->flow_file) : ?>
+																			<img width="150" src="" alt="flow-file" />
+																		<?php else : ?>
+																			<i class="fa fa-upload"></i>
+																			<p>Choose an PDF file or drag it here.</p>
+																		<?php endif; ?>
+																	</div>
+																	<input type="file" id="pdf-file" name="flow_file" value="<?= $data->flow_file; ?>" accept="application/pdf" data-index="1" class="dropzone dropzone-file">
+																	<canvas id="pdf-preview" class="" width="150"></canvas>
+																	<?php if ($data->flow_file) : ?>
+																		<div class="middle d-flex justify-content-center align-items-center">
+																			<button type="button" onclick="$(this).parent().parent().find('.dropzone').click()" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle"><i class="fa fa-edit"></i></button>
+																			<button type="button" onclick="remove_image(this)" data-id="<?= $data->id; ?>" data-img="flow_file" class="btn btn-sm mr-1 btn-icon btn-danger remove-image rounded-circle"><i class="fa fa-trash"></i></button>
+																		</div>
+																	<?php endif; ?>
+																	<div class="for-delete"></div>
 																</div>
 															</div>
 														</div>
@@ -680,6 +702,33 @@
 
 <script>
 	$(document).ready(function() {
+		let id = '<?= $data->id; ?>'
+		$.getJSON(siteurl + active_controller + 'load_file_flow/' + id, function(result) {
+			var data = result.data
+			var d = ''
+			const url = siteurl + 'directory/FLOW_FILE/' + data.company_id + '/' + data.flow_file;
+			console.log(url);
+			if (!data.flow_file) {
+				$("#pdf-preview").css('display', 'none');
+			}
+			if (data.flow_file) {
+				fetch(url)
+					.then((res) => res.blob())
+					.then((myBlob) => {
+						// console.log(myBlob);
+						// logs: Blob { size: 1024, type: "image/jpeg" }
+						myBlob.name = data.flow_file;
+						myBlob.lastModified = new Date();
+						// console.log(myBlob instanceof File);
+						// logs: false
+						_OBJECT_URL = URL.createObjectURL(myBlob)
+						// console.log(_OBJECT_URL);
+						showPDF(_OBJECT_URL);
+					});
+			}
+		});
+
+
 		$('button[data-toggle="tab"]').on('shown.bs.tab', function(e) {
 			$.fn.dataTable.tables({
 				visible: true,
@@ -727,6 +776,7 @@
 			link_default_protocol: 'https'
 			// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
 		});
+
 		$(document).on('click', '#add_flow', function() {
 			const proc_id = $(this).data('id')
 			const url = siteurl + active_controller + 'add_flow/' + proc_id
@@ -1917,4 +1967,139 @@
 		})
 
 	}
+
+
+
+	var _PDF_DOC,
+		_CANVAS = document.querySelector('#pdf-preview'),
+		_OBJECT_URL;
+
+	function showPDF(pdf_url) {
+
+		PDFJS.getDocument({
+			url: pdf_url
+		}).then(function(pdf_doc) {
+			_PDF_DOC = pdf_doc;
+
+			// Show the first page
+			showPage(1);
+
+			// destroy previous object url
+			URL.revokeObjectURL(_OBJECT_URL);
+		}).catch(function(error) {
+			// trigger Cancel on error
+			$("#cancel-pdf").click();
+
+			// error reason
+			alert(error.message);
+		});;
+	}
+
+	function showPage(page_no) {
+		var _CANVAS = document.querySelector('#pdf-preview');
+		// fetch the page
+		// console.log(page_no);
+		// console.log(_PDF_DOC.getPage(page_no));
+		_PDF_DOC.getPage(page_no).then(function(page) {
+			// set the scale of viewport
+			var scale_required = _CANVAS.width / page.getViewport(1).width;
+
+			// get viewport of the page at required scale
+			var viewport = page.getViewport(scale_required);
+
+			// set canvas height
+			_CANVAS.height = viewport.height;
+
+			var renderContext = {
+				canvasContext: _CANVAS.getContext('2d'),
+				viewport: viewport
+			};
+
+			// render the page contents in the canvas
+			page.render(renderContext).then(function() {
+				$("#pdf-preview").css('display', 'inline-block');
+				$("#pdf-loader").css('display', 'none');
+			});
+		});
+	}
+
+	/* Selected File has changed */
+	$(document).on('change', "#pdf-file", function() {
+		// user selected file
+		console.log($(this));
+		var file = $(this)[0].files[0];
+
+		// allowed MIME types
+		var mime_types = ['application/pdf'];
+
+		// Validate whether PDF
+		if (mime_types.indexOf(file.type) == -1) {
+			alert('Error : Incorrect file type');
+			return;
+		}
+
+		// validate file size
+		if (file.size > 10 * 1024 * 1024) {
+			alert('Error : Exceeded size 10MB');
+			return;
+		}
+
+		// validation is successful
+
+		// hide upload dialog button
+		$("#upload-dialog").css('display', 'none');
+
+		// set name of the file
+		// $("#pdf-name").text(file.name);
+		// $("#pdf-name").css('display', 'inline-block');
+
+		// show cancel and upload buttons now
+		$("#cancel-pdf").removeClass('d-none');
+		$("#pdf-preview").removeClass('d-none');
+		$("#remove-file").removeClass('d-none');
+		// $("#upload-button").css('display', 'inline-block');
+
+		// Show the PDF preview loader
+		$("#pdf-loader").css('display', 'inline-block');
+
+		// object url of PDF 
+		// console.log(file);
+		_OBJECT_URL = URL.createObjectURL(file)
+
+		// send the object url of the pdf to the PDF preview function
+		showPDF(_OBJECT_URL);
+	});
+
+	/* Reset file input */
+	$(document).on('click', "#cancel-pdf,.remove-image", function() {
+		// show upload dialog button
+		$("#upload-dialog").css('display', 'inline-block');
+
+		// reset to no selection
+		$("#pdf-file").val('');
+
+		// hide elements that are not required
+		$("#pdf-name").css('display', 'none');
+		// $("#pdf-preview").css('display', 'none');
+		$("#pdf-preview").addClass('d-none');
+		$("#pdf-loader").css('display', 'none');
+		$("#cancel-pdf").addClass('d-none');
+		$("#upload-button").css('display', 'none');
+	});
+
+	$(document).on('click', "#remove-file", function() {
+		// show upload dialog button
+		$("#upload-dialog").css('display', 'inline-block');
+		$("#remove-document").val('x');
+
+		// reset to no selection
+		$("#pdf-file").val('');
+
+		// hide elements that are not required
+		$("#pdf-name").css('display', 'none');
+		$("#pdf-preview").addClass('d-none');
+		$("#pdf-loader").css('display', 'none');
+		$("#cancel-pdf").addClass('d-none');
+		$("#upload-button").css('display', 'none');
+	});
 </script>

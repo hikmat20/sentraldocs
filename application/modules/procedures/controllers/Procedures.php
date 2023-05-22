@@ -187,9 +187,10 @@ class Procedures extends Admin_Controller
 					return false;
 				}
 
-				($images['image1']) ? $Data['image_flow_1'] = $images['image1'] : '';
-				($images['image2']) ? $Data['image_flow_2'] = $images['image2'] : '';
-				($images['image3']) ? $Data['image_flow_3'] = $images['image3'] : '';
+				($images['image1']) ? $Data['image_flow_1'] = $images['image1'] : null;
+				($images['image2']) ? $Data['image_flow_2'] = $images['image2'] : null;
+				($images['image3']) ? $Data['image_flow_3'] = $images['image3'] : null;
+				($images['flow_file']) ? $Data['flow_file'] = $images['flow_file'] : null;
 			}
 
 			$Data['company_id'] 	= $this->company;
@@ -413,6 +414,31 @@ class Procedures extends Admin_Controller
 		]);
 		$this->template->render('data-flow');
 	}
+
+
+
+
+	public function load_file_flow($id)
+	{
+		$data = [];
+		if ($id) {
+			$data = $this->db->get_where('procedures', ['id' => $id])->row();
+
+			$return = [
+				'status' => 1,
+				'data' => $data
+			];
+		} else {
+			$return = [
+				'status' => 0,
+				'data' => $data
+			];
+		}
+
+		echo json_encode($return);
+	}
+
+
 
 	public function saveFileRecord()
 	{
@@ -711,10 +737,26 @@ class Procedures extends Admin_Controller
 			}
 		}
 
+		if ($_FILES['flow_file']['name']) {
+			$this->upload->initialize($this->set_upload_file_options());
+			$this->upload->do_upload('flow_file');
+			$fileInfo = $this->upload->data();
+			if ($this->upload->display_errors()) {
+				return [
+					'error' => 1,
+					'error_msg' => $this->upload->display_errors(),
+				];
+				return false;
+			}
+		} else {
+			$fileInfo['file_name'] = $_FILES['flow_file']['name'];
+		}
+
 		return array(
-			'image1' => $dataInfo[0]['file_name'],
-			'image2' => $dataInfo[1]['file_name'],
-			'image3' => $dataInfo[2]['file_name'],
+			'image1' 		=> $dataInfo[0]['file_name'],
+			'image2' 		=> $dataInfo[1]['file_name'],
+			'image3' 		=> $dataInfo[2]['file_name'],
+			'flow_file' 	=> $fileInfo['file_name'],
 		);
 	}
 
@@ -724,6 +766,25 @@ class Procedures extends Admin_Controller
 		$config = array();
 		$config['upload_path'] 	 = './directory/FLOW_IMG/' . $this->company . '/';
 		$config['allowed_types'] = 'gif|jpg|jpeg|png';
+		$config['max_size']      = 5120; // 5mb;
+		$config['overwrite']     = TRUE;
+		$config['encrypt_name']  = TRUE;
+
+		return $config;
+	}
+
+	private function set_upload_file_options()
+	{
+		if (!is_dir('./directory/FLOW_FILE/' . $this->company . '/')) {
+			mkdir('./directory/FLOW_FILE/' . $this->company . '/', 0755, TRUE);
+			chmod('./directory/FLOW_FILE/' . $this->company . '/', 0755);  // octal; correct value of mode
+			chown('./directory/FLOW_FILE/' . $this->company . '/', 'www-data');
+		}
+
+		//upload an image options
+		$config = array();
+		$config['upload_path'] 	 = './directory/FLOW_FILE/' . $this->company . '/';
+		$config['allowed_types'] = 'pdf';
 		$config['max_size']      = 5120; // 5mb;
 		$config['overwrite']     = TRUE;
 		$config['encrypt_name']  = TRUE;
@@ -1009,7 +1070,6 @@ class Procedures extends Admin_Controller
 
 		echo json_encode($Return);
 	}
-
 
 	public function loadDataGuide($procedure_id = null)
 	{

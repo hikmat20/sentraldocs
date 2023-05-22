@@ -170,6 +170,21 @@
                       <?php endif; ?>
                     </div>
                   <?php endif; ?>
+
+                  <?php if ($data->flow_file) : ?>
+                    <div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 200px;height:200px;border:1px solid #eaeaea">
+                      <div class="dropzone-desc">
+                        <?php if ($data->flow_file) : ?>
+                          <canvas id="pdf-preview" class="" width="150"></canvas>
+                        <?php endif; ?>
+                      </div>
+                      <?php if ($data->flow_file) : ?>
+                        <div class="middle d-flex justify-content-center align-items-center">
+                          <a target="_blank" href="<?= base_url("directory/FLOW_FILE/$data->company_id/$data->flow_file"); ?>" class="btn btn-sm mr-1 btn-icon btn-default rounded-circle"><i class="fa fa-eye"></i></a>
+                        </div>
+                      <?php endif; ?>
+                    </div>
+                  <?php endif; ?>
                 </div>
               <?php else : ?>
                 <span class="text-center">~ Not available data ~</span>
@@ -304,3 +319,86 @@
     </div>
   </div>
 </div>
+
+<script>
+  $(document).ready(function() {
+    let id = '<?= $data->id; ?>'
+    $.getJSON(siteurl + active_controller + 'load_file_flow/' + id, function(result) {
+      var data = result.data
+      var d = ''
+      const url = siteurl + 'directory/FLOW_FILE/' + data.company_id + '/' + data.flow_file;
+      console.log(url);
+      if (!data.flow_file) {
+        $("#pdf-preview").css('display', 'none');
+      }
+      if (data.flow_file) {
+        fetch(url)
+          .then((res) => res.blob())
+          .then((myBlob) => {
+            // console.log(myBlob);
+            // logs: Blob { size: 1024, type: "image/jpeg" }
+            myBlob.name = data.flow_file;
+            myBlob.lastModified = new Date();
+            // console.log(myBlob instanceof File);
+            // logs: false
+            _OBJECT_URL = URL.createObjectURL(myBlob)
+            // console.log(_OBJECT_URL);
+            showPDF(_OBJECT_URL);
+          });
+      }
+    });
+  })
+
+  var _PDF_DOC,
+    _CANVAS = document.querySelector('#pdf-preview'),
+    _OBJECT_URL;
+
+  function showPDF(pdf_url) {
+
+    PDFJS.getDocument({
+      url: pdf_url
+    }).then(function(pdf_doc) {
+      _PDF_DOC = pdf_doc;
+
+      // Show the first page
+      showPage(1);
+
+      // destroy previous object url
+      URL.revokeObjectURL(_OBJECT_URL);
+    }).catch(function(error) {
+      // trigger Cancel on error
+      $("#cancel-pdf").click();
+
+      // error reason
+      alert(error.message);
+    });;
+  }
+
+  function showPage(page_no) {
+    var _CANVAS = document.querySelector('#pdf-preview');
+    // fetch the page
+    // console.log(page_no);
+    // console.log(_PDF_DOC.getPage(page_no));
+    _PDF_DOC.getPage(page_no).then(function(page) {
+      // set the scale of viewport
+      var scale_required = _CANVAS.width / page.getViewport(1).width;
+
+      // get viewport of the page at required scale
+      var viewport = page.getViewport(scale_required);
+
+      // set canvas height
+      _CANVAS.height = viewport.height;
+
+      var renderContext = {
+        canvasContext: _CANVAS.getContext('2d'),
+        viewport: viewport
+      };
+
+      // render the page contents in the canvas
+      page.render(renderContext).then(function() {
+        $("#pdf-preview").css('display', 'inline-block');
+        $("#pdf-loader").css('display', 'none');
+      });
+    });
+  }
+</script>

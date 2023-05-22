@@ -201,42 +201,65 @@
 										</div>
 										<div id="flowImages" class="collapse in" role="tabpanel" aria-labelledby="sectionFlowImages">
 											<div class="card-body">
-												<div class="mb-3">
-													<h4 class="">Flow Images</h4>
-													<div class="mt-1 mb-2">
-														<div class="row">
-															<div class="col-md-12">
-																<div class="form-group">
-																	<label class="control-label">Upload File</label>
-																	<div class="preview-zone hidden">
-																		<div class="box box-solid">
-																			<div class="box-body d-flex justify-content-start align-items-center">
-																				<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
-																					<div class="dropzone-desc">
-																						<i class="fa fa-upload"></i>
-																						<p>Choose an image file or drag it here.</p>
-																					</div>
-																					<input type="file" name="img_flow[]" data-index="1" class="dropzone dropzone-1">
-																				</div>
-																				<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
-																					<div class="dropzone-desc">
-																						<i class="fa fa-upload"></i>
-																						<p>Choose an image file or drag it here.</p>
-																					</div>
+												<h5 class="mb-4">Upload Images</h5>
+												<div class="mb-4">
+													<div class="preview-zone hidden">
+														<div class="box box-solid">
+															<div class="box-body d-flex justify-content-start align-items-center">
+																<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
+																	<div class="dropzone-desc">
+																		<i class="fa fa-upload"></i>
+																		<p>Choose an image file or drag it here.</p>
+																	</div>
+																	<input type="file" name="img_flow[]" data-index="1" class="dropzone dropzone-1">
+																</div>
+																<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
+																	<div class="dropzone-desc">
+																		<i class="fa fa-upload"></i>
+																		<p>Choose an image file or drag it here.</p>
+																	</div>
 
-																					<input type="file" name="img_flow[]" data-index="2" class="dropzone dropzone-2">
-																				</div>
-																				<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
-																					<div class="dropzone-desc">
-																						<i class="fa fa-upload"></i>
-																						<p>Choose an image file or drag it here.</p>
-																					</div>
-																					<input type="file" name="img_flow[]" data-index="3" class="dropzone dropzone-3">
+																	<input type="file" name="img_flow[]" data-index="2" class="dropzone dropzone-2">
+																</div>
+																<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
+																	<div class="dropzone-desc">
+																		<i class="fa fa-upload"></i>
+																		<p>Choose an image file or drag it here.</p>
+																	</div>
+																	<input type="file" name="img_flow[]" data-index="3" class="dropzone dropzone-3">
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<h5 class="mb-4">Upload File</h5>
+												<div class="mb-4">
+													<div class="preview-zone hidden">
+														<div class="box box-solid">
+															<div class="box-body d-flex justify-content-start align-items-center">
+																<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
+																	<div class="dropzone-desc">
+																		<i class="fa fa-upload"></i>
+																		<p>Choose an pdf file or drag it here.</p>
+																	</div>
+																	<input type="file" id="pdf-file" name="flow_file" accept="application/pdf" data-index="1" class="dropzone dropzone-1">
+																	<canvas id="pdf-preview" class="d-none" width="150"></canvas>
+																</div>
+																<!-- <div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
+																			<div class="dropzone-desc">
+																				<i class="fa fa-upload"></i>
+																				<p>Choose an image file or drag it here.</p>
+																			</div>
+																			<input type="file" id="pdf-file" name="documents" accept="application/pdf" class="dropzone dropzone-1" />
+																			<div class="for-delete">
+																				<div class="middle d-flex justify-content-center align-items-center">
+																					<button type="button" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle"><i class="fa fa-edit"></i></button>
+																					<button type="button" onclick="remove_image(this)" class="btn btn-sm mr-1 btn-icon btn-danger remove-image rounded-circle"><i class="fa fa-trash"></i></button>
 																				</div>
 																			</div>
-																		</div>
-																	</div>
-																</div>
+																			<canvas id="pdf-preview" width="150"></canvas>
+																		</div> -->
+
 															</div>
 														</div>
 													</div>
@@ -861,6 +884,146 @@
 		reset(dropzone);
 	});
 
+
+	/* PDF FILE */
+
+	var _PDF_DOC,
+		_CANVAS = document.querySelector('#pdf-preview'),
+		_OBJECT_URL;
+
+	function showPDF(pdf_url) {
+
+		PDFJS.getDocument({
+			url: pdf_url
+		}).then(function(pdf_doc) {
+			_PDF_DOC = pdf_doc;
+
+			// Show the first page
+			showPage(1);
+
+			// destroy previous object url
+			URL.revokeObjectURL(_OBJECT_URL);
+		}).catch(function(error) {
+			// trigger Cancel on error
+			$("#cancel-pdf").click();
+
+			// error reason
+			alert(error.message);
+		});;
+	}
+
+	function showPage(page_no) {
+		var _CANVAS = document.querySelector('#pdf-preview');
+		// fetch the page
+		console.log(page_no);
+		console.log(_PDF_DOC.getPage(page_no));
+		_PDF_DOC.getPage(page_no).then(function(page) {
+			// set the scale of viewport
+			var scale_required = _CANVAS.width / page.getViewport(1).width;
+
+			// get viewport of the page at required scale
+			var viewport = page.getViewport(scale_required);
+
+			// set canvas height
+			_CANVAS.height = viewport.height;
+
+			var renderContext = {
+				canvasContext: _CANVAS.getContext('2d'),
+				viewport: viewport
+			};
+
+			// render the page contents in the canvas
+			page.render(renderContext).then(function() {
+				$("#pdf-preview").css('display', 'inline-block');
+				$("#pdf-loader").css('display', 'none');
+			});
+		});
+	}
+
+	$(document).on('click', '.change-image', function() {
+		$('#pdf-file').click()
+	})
+
+	/* Selected File has changed */
+	$(document).on('change', "#pdf-file", function() {
+		// user selected file
+		console.log($(this));
+		var file = $(this)[0].files[0];
+
+		// allowed MIME types
+		var mime_types = ['application/pdf'];
+
+		// Validate whether PDF
+		if (mime_types.indexOf(file.type) == -1) {
+			alert('Error : Incorrect file type');
+			return;
+		}
+
+		// validate file size
+		if (file.size > 10 * 1024 * 1024) {
+			alert('Error : Exceeded size 10MB');
+			return;
+		}
+
+		// validation is successful
+
+		// hide upload dialog button
+		$("#upload-dialog").css('display', 'none');
+
+		// set name of the file
+		// $("#pdf-name").text(file.name);
+		// $("#pdf-name").css('display', 'inline-block');
+
+		// show cancel and upload buttons now
+		$("#cancel-pdf").removeClass('d-none');
+		$("#pdf-preview").removeClass('d-none');
+		$("#remove-file").removeClass('d-none');
+		// $("#upload-button").css('display', 'inline-block');
+
+		// Show the PDF preview loader
+		$("#pdf-loader").css('display', 'inline-block');
+
+		// object url of PDF 
+		// console.log(file);
+		_OBJECT_URL = URL.createObjectURL(file)
+
+		// send the object url of the pdf to the PDF preview function
+		showPDF(_OBJECT_URL);
+	});
+
+	/* Reset file input */
+	$(document).on('click', "#cancel-pdf,.remove-image", function() {
+		// show upload dialog button
+		$("#upload-dialog").css('display', 'inline-block');
+
+		// reset to no selection
+		$("#pdf-file").val('');
+
+		// hide elements that are not required
+		$("#pdf-name").css('display', 'none');
+		// $("#pdf-preview").css('display', 'none');
+		$("#pdf-preview").addClass('d-none');
+		$("#pdf-loader").css('display', 'none');
+		$("#cancel-pdf").addClass('d-none');
+		$("#upload-button").css('display', 'none');
+	});
+
+	$(document).on('click', "#remove-file", function() {
+		// show upload dialog button
+		$("#upload-dialog").css('display', 'inline-block');
+		$("#remove-document").val('x');
+
+		// reset to no selection
+		$("#pdf-file").val('');
+
+		// hide elements that are not required
+		$("#pdf-name").css('display', 'none');
+		$("#pdf-preview").addClass('d-none');
+		$("#pdf-loader").css('display', 'none');
+		$("#cancel-pdf").addClass('d-none');
+		$("#upload-button").css('display', 'none');
+	});
+
 	$(document).on('click', '#add_form', function() {
 		const id = $('#procedure_id').val() || null;
 		$('#modelId').modal('show')
@@ -868,6 +1031,7 @@
 		$('#content_modal').load(siteurl + active_controller + 'upload_form/' + id)
 
 	})
+
 	$(document).on('click', '#add_guide', function() {
 		const id = $('#procedure_id').val() || null;
 		$('#modelId').modal('show')
