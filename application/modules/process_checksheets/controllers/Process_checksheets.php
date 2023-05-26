@@ -960,7 +960,22 @@ class Process_checksheets extends Admin_Controller
 			$width 		= '220%';
 			$col_width 	= '20%';
 			$count 		= 12;
-			$name_col 	= 'Month';
+			$name_col 	= [
+				'1' => 'Jan',
+				'2' => 'Feb',
+				'3' => 'Mar',
+				'4' => 'Apr',
+				'5' => 'Mei',
+				'6' => 'Jun',
+				'7' => 'Jul',
+				'8' => 'Agu',
+				'9' => 'Sep',
+				'10' => 'Okt',
+				'11' => 'Nov',
+				'12' => 'Des',
+			];
+
+			$monthOfYear = $this->_weekOfMonth(strtotime(date('Y-m-d')));
 		}
 
 		$notes			= $this->db->get_where('checksheet_notes', ['data_id' => $sheet->id])->result();
