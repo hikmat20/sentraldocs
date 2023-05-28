@@ -227,7 +227,7 @@
 						<?php $relIK = json_decode($dtl->relate_ik_doc); ?>
 						<?php if (is_array($relIK)) : ?>
 							<?php foreach ($relIK as $ik) { ?>
-								<span class="badge bg-success btn btn-danger view-form-2 mb-1" data-id="<?= $ik; ?>"><?= $ArrGuides[$ik]->name; ?></span>
+								<span class="badge bg-danger btn btn-danger view-form-2 mb-1" data-id="<?= $ik; ?>"><?= $ArrGuides[$ik]->name; ?></span>
 							<?php } ?>
 						<?php endif; ?>
 					</td>

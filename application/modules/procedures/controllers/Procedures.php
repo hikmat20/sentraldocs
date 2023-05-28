@@ -133,11 +133,15 @@ class Procedures extends Admin_Controller
 		$Data 				= $this->db->get_where('procedures', ['id' => $id, 'company_id' => $this->company,  'status' => $status])->row();
 		$users 				= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1'])->result();
 		$getForms			= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
+		$getGuides			= $this->db->get_where('dir_guides', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
 		$jabatan 			= $this->db->get('positions')->result();
-		$ArrUsr 			= $ArrJab = $ArrForms = [];
+		$ArrUsr 			= $ArrJab = $ArrForms = $ArrGuides = [];
 
 		foreach ($getForms as $frm) {
 			$ArrForms[$frm->id] = $frm;
+		}
+		foreach ($getGuides as $gui) {
+			$ArrGuides[$gui->id] = $gui;
 		}
 
 		foreach ($users as $usr) {
@@ -150,7 +154,6 @@ class Procedures extends Admin_Controller
 
 		if ($Data) {
 			$Data_detail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id, 'status' => '1'])->result();
-
 			$this->template->set([
 				'title' 		=> 'Procedures',
 				'data' 			=> $Data,
@@ -160,6 +163,7 @@ class Procedures extends Admin_Controller
 				'ArrUsr' 		=> $ArrUsr,
 				'ArrJab' 		=> $ArrJab,
 				'ArrForms' 		=> $ArrForms,
+				'ArrGuides' 	=> $ArrGuides,
 			]);
 			$this->template->render('view');
 		} else {
@@ -1419,9 +1423,10 @@ class Procedures extends Admin_Controller
 		$procedure 			= $this->db->get_where('procedures', ['id' => $id])->row();
 		$flowDetail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id])->result();
 		$getForms			= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
+		$getGuides			= $this->db->get_where('dir_guides', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
 		$users 				= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
 		$jabatan 			= $this->db->get('positions')->result();
-		$ArrUsr 			= $ArrJab = $ArrForms = [];
+		$ArrUsr 			= $ArrJab = $ArrForms = $ArrGuides = [];
 
 		foreach ($getForms as $frm) {
 			$ArrForms[$frm->id] = $frm;
@@ -1434,6 +1439,9 @@ class Procedures extends Admin_Controller
 			$ArrJab[$jab->id] = $jab;
 		}
 
+		foreach ($getGuides as $gui) {
+			$ArrGuides[$gui->id] = $gui;
+		}
 
 		$Data = [
 			'procedure' => $procedure,
@@ -1441,6 +1449,7 @@ class Procedures extends Admin_Controller
 			'ArrUsr' 	=> $ArrUsr,
 			'ArrJab' 	=> $ArrJab,
 			'ArrForms' 	=> $ArrForms,
+			'ArrGuides' 	=> $ArrGuides,
 		];
 
 		$data = $this->load->view('printout', $Data, TRUE);

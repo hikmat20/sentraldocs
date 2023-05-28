@@ -203,16 +203,22 @@
                       <li><?= $ArrForms[$relDoc]->name; ?></li>
                     <?php } ?>
                   </ul>
-                <?php else : ?>
-                  <?= $dtl->relate_doc; ?>
+
+                  <?php $relIk = json_decode($dtl->relate_ik_doc); ?>
+                  <?php if (is_array($relIk)) : ?>
+                    <ul>
+                      <?php foreach ($relIk as $ik) { ?>
+                        <li><?= $ArrGuides[$ik]->name; ?></li>
+                      <?php } ?>
+                    </ul>
+                  <?php endif; ?>
                 <?php endif; ?>
               </td>
             </tr>
           <?php endforeach;
         else : ?>
           <tr>
-            <td colspan=" 4" class="text-center">~ Not available data ~
-            </td>
+            <td colspan=" 4" class="text-center">~ Not available data ~</td>
           </tr>
         <?php endif; ?>
       </tbody>
