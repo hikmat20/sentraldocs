@@ -222,8 +222,13 @@
 							<?php foreach ($relDocs as $relDoc) { ?>
 								<span class="badge bg-success btn btn-success view-form-2 mb-1" data-id="<?= $relDoc; ?>"><?= $ArrForms[$relDoc]->name; ?></span>
 							<?php } ?>
-						<?php else : ?>
-							<?= $dtl->relate_doc; ?>
+						<?php endif; ?>
+
+						<?php $relIK = json_decode($dtl->relate_ik_doc); ?>
+						<?php if (is_array($relIK)) : ?>
+							<?php foreach ($relIK as $ik) { ?>
+								<span class="badge bg-success btn btn-danger view-form-2 mb-1" data-id="<?= $ik; ?>"><?= $ArrGuides[$ik]->name; ?></span>
+							<?php } ?>
 						<?php endif; ?>
 					</td>
 				</tr>

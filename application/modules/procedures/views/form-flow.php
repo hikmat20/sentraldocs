@@ -23,7 +23,8 @@
 	</div>
 	<div class="form-group">
 		<label class="">Dok. Terkait</label>
-		<div class="">
+		<h5 class="">Form</h5>
+		<div class="mb-3">
 			<!-- <textarea rows="5" name="flow[relate_doc]" id="relate_doc" class="form-control" required placeholder="Dokumen terkait" aria-describedby="helpId" /></textarea> -->
 			<select multiple name="flow[relate_doc][]" class="select2 form-control">
 				<?php $relDocs = json_decode($flow->relate_doc); ?>
@@ -34,6 +35,20 @@
 				<?php endif; ?>
 			</select>
 			<small class="text-danger invalid-feedback">Dokumen terkait</small>
+		</div>
+
+		<h5 class="">IK</h5>
+		<div class="mb-3">
+			<!-- <textarea rows="5" name="flow[relate_doc]" id="relate_doc" class="form-control" required placeholder="Dokumen terkait" aria-describedby="helpId" /></textarea> -->
+			<select multiple name="flow[relate_ik_doc][]" class="select2 form-control">
+				<?php $relDocs = json_decode($flow->relate_ik_doc); ?>
+				<?php if ($guides) : ?>
+					<?php foreach ($guides as $guide) : ?>
+						<option value="<?= $guide->id; ?>" <?= ($relDocs) ? (in_array($guide->id, $relDocs) ? 'selected' : '') : ''; ?>><?= $guide->name; ?></option>
+					<?php endforeach; ?>
+				<?php endif; ?>
+			</select>
+			<small class="text-danger invalid-feedback">Dokumen IK terkait</small>
 		</div>
 
 	</div>

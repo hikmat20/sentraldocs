@@ -135,10 +135,11 @@ class Documents_list extends Admin_Controller
 	{
 		$docs 			= $this->db->get_where('view_procedures', ['id' => $id])->row();
 		$detail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id, 'status' => '1'])->result();
-		$forms 		= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'active' => 'Y'])->result();
-		$users 				= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
-		$jabatan 			= $this->db->get('positions')->result();
-		$ArrUsr 			= $ArrJab = $ArrForms = [];
+		$forms 			= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'active' => 'Y'])->result();
+		$guides 		= $this->db->get_where('dir_guides', ['procedure_id' => $id, 'active' => 'Y'])->result();
+		$users 			= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
+		$jabatan 		= $this->db->get('positions')->result();
+		$ArrUsr 		= $ArrJab = $ArrForms = $ArrGuides = [];
 
 		foreach ($users as $usr) {
 			$ArrUsr[$usr->id_user] = $usr;
@@ -150,6 +151,12 @@ class Documents_list extends Admin_Controller
 		foreach ($forms as $form) {
 			$ArrForms[$form->id] = $form;
 		}
+
+		foreach ($guides as $gui) {
+			$ArrGuides[$gui->id] = $gui;
+		}
+
+
 		$this->template->set([
 			'docs' 			=> $docs,
 			'detail' 		=> $detail,
@@ -157,6 +164,7 @@ class Documents_list extends Admin_Controller
 			'ArrUsr' 		=> $ArrUsr,
 			'ArrJab' 		=> $ArrJab,
 			'ArrForms' 		=> $ArrForms,
+			'ArrGuides' 	=> $ArrGuides,
 		]);
 
 		$this->template->render('procedures/view-docs');

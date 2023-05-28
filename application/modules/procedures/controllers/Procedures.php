@@ -98,6 +98,11 @@ class Procedures extends Admin_Controller
 			foreach ($getForms as $frm) {
 				$ArrForms[$frm->id] = $frm;
 			}
+			$ArrGuides = [];
+			foreach ($getGuides as $gui) {
+				$ArrGuides[$gui->id] = $gui;
+			}
+
 			$this->template->set([
 				'title' 		=> 'Edit Procedures',
 				'data' 			=> $Data,
@@ -108,6 +113,7 @@ class Procedures extends Admin_Controller
 				'getRecords' 	=> $getRecords,
 				'jabatan' 		=> $jabatan,
 				'ArrForms' 		=> $ArrForms,
+				'ArrGuides' 	=> $ArrGuides,
 				'sts' 			=> $this->sts,
 			]);
 
@@ -223,14 +229,16 @@ class Procedures extends Admin_Controller
 		if ($Data_flow) {
 			$Data_flow['procedure_id'] = $pro_id;
 			if (isset($Data_flow['id']) && $Data_flow['id']) {
-				$Data_flow['relate_doc'] = isset($Data_flow['relate_doc']) ? json_encode($Data_flow['relate_doc']) : '-';
-				$Data_flow['modified_by'] = $this->auth->user_id();
-				$Data_flow['modified_at'] = date('Y-m-d H:i:s');
+				$Data_flow['relate_doc'] 		= isset($Data_flow['relate_doc']) ? json_encode($Data_flow['relate_doc']) : '-';
+				$Data_flow['relate_ik_doc'] 	= isset($Data_flow['relate_ik_doc']) ? json_encode($Data_flow['relate_ik_doc']) : '-';
+				$Data_flow['modified_by'] 		= $this->auth->user_id();
+				$Data_flow['modified_at'] 		= date('Y-m-d H:i:s');
 				$this->db->update('procedure_details', $Data_flow, ['id' => $Data_flow['id']]);
 			} else {
-				$Data_flow['relate_doc'] = isset($Data_flow['relate_doc']) ? json_encode($Data_flow['relate_doc']) : '-';
-				$Data_flow['created_by'] = $this->auth->user_id();
-				$Data_flow['created_at'] = date('Y-m-d H:i:s');
+				$Data_flow['relate_doc'] 		= isset($Data_flow['relate_doc']) ? json_encode($Data_flow['relate_doc']) : '-';
+				$Data_flow['relate_ik_doc'] 	= isset($Data_flow['relate_ik_doc']) ? json_encode($Data_flow['relate_ik_doc']) : '-';
+				$Data_flow['created_by'] 		= $this->auth->user_id();
+				$Data_flow['created_at'] 		= date('Y-m-d H:i:s');
 				$this->db->insert('procedure_details', $Data_flow);
 			}
 		}
@@ -372,11 +380,15 @@ class Procedures extends Admin_Controller
 
 	public function add_flow($id = null)
 	{
-		$flow = '';
-		$forms 	= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'company_id' => $this->company, 'active' => 'Y'])->result();
+		$flow 		= '';
+		$forms 		= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'company_id' => $this->company, 'active' => 'Y'])->result();
+		$guides 	= $this->db->get_where('dir_guides', ['procedure_id' => $id, 'company_id' => $this->company, 'active' => 'Y'])->result();
+
+
 		$this->template->set([
 			'flow' 	=> $flow,
 			'forms' => $forms,
+			'guides' => $guides,
 		]);
 		$this->template->render('form-flow');
 	}
@@ -384,17 +396,18 @@ class Procedures extends Admin_Controller
 	public function edit_flow($proc_id = null, $id = null)
 	{
 		if ($proc_id && $id) {
-			$flow = $this->db->get_where('procedure_details', ['id' => $id])->row();
-			$forms 	= $this->db->get_where('dir_forms', ['procedure_id' => $proc_id, 'company_id' => $this->company, 'active' => 'Y'])->result();
+			$flow 		= $this->db->get_where('procedure_details', ['id' => $id])->row();
+			$forms 		= $this->db->get_where('dir_forms', ['procedure_id' => $proc_id, 'company_id' => $this->company, 'active' => 'Y'])->result();
+			$guides 	= $this->db->get_where('dir_guides', ['procedure_id' => $proc_id, 'company_id' => $this->company, 'active' => 'Y'])->result();
 		}
 
 		$this->template->set([
 			'flow' 		=> $flow,
-			'forms' 	=> $forms
+			'forms' 	=> $forms,
+			'guides' 	=> $guides
 		]);
 		$this->template->render('form-flow');
 	}
-
 
 	public function loadFlow($id)
 	{
@@ -414,9 +427,6 @@ class Procedures extends Admin_Controller
 		]);
 		$this->template->render('data-flow');
 	}
-
-
-
 
 	public function load_file_flow($id)
 	{

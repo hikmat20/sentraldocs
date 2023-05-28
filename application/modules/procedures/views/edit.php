@@ -375,8 +375,12 @@
 																			<?php foreach ($relDocs as $relDoc) { ?>
 																				<span class="badge bg-success btn btn-success view-form mb-1" data-id="<?= $relDoc; ?>"><?= $ArrForms[$relDoc]->name; ?></span>
 																			<?php } ?>
-																		<?php else : ?>
-																			<?= $dtl->relate_doc; ?>
+																		<?php endif; ?>
+																		<?php $relIk = json_decode($dtl->relate_ik_doc); ?>
+																		<?php if (is_array($relIk)) : ?>
+																			<?php foreach ($relIk as $ik) { ?>
+																				<span class="badge bg-success btn btn-danger view-guide mb-1" data-id="<?= $ik; ?>"><?= $ArrGuides[$ik]->name; ?></span>
+																			<?php } ?>
 																		<?php endif; ?>
 																	</td>
 																	<td class="text-center" style="vertical-align: middle;">
@@ -665,7 +669,7 @@
 
 					<!-- Modal -->
 					<div class="modal fade" id="modelId" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+						<div class="modal-dialog modal-dialog-centered" style="max-width:90%" role="document">
 							<div class="modal-content">
 								<div class="modal-header">
 									<h5 class="modal-title">Modal title</h5>
@@ -678,13 +682,15 @@
 							</div>
 						</div>
 					</div>
+
 			</form>
 		</div>
 	</div>
 </div>
+
 <!-- Modal -->
 <div class="modal fade" id="modalRecord" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+	<div class="modal-dialog modal-dialog-centered" style="max-width:90%" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title">Upload Record</h5>
@@ -893,7 +899,8 @@
 			const id_master = $('#id_master').val();
 			const image = $('#image').val();
 			const parent_id = $('#parent_id').val();
-			console.log(description);
+
+			// console.log(description);
 			if (prepared_by !== undefined && (prepared_by == '' || prepared_by == null)) {
 				Swal.fire({
 					title: "Error Message!",
@@ -904,6 +911,7 @@
 				$('#approvalDocs').addClass('show');
 				return false;
 			}
+
 			if ((reviewer_id == '' && reviewer_id != undefined) || (reviewer_id == null && reviewer_id != undefined)) {
 				Swal.fire({
 					title: "Error Message!",
@@ -914,6 +922,7 @@
 				$('#approvalDocs').addClass('show');
 				return false;
 			}
+
 			if ((approval_id == '' && approval_id != undefined) || (approval_id == null && approval_id != undefined)) {
 				Swal.fire({
 					title: "Error Message!",
@@ -1027,7 +1036,6 @@
 				$('.modal-title').html('View Form')
 				$('#content_modal').load(siteurl + active_controller + 'view_form/' + id)
 				$('#modelId').modal('show')
-				$('.modal-dialog').css('max-width', '')
 			} else {
 				Swal.fire('Warning!!', 'Not available data to process', 'waring', 2000);
 			}
@@ -1046,7 +1054,7 @@
 			const id = $(this).data('id') || null;
 			const procedure_id = $('#procedure_id').val() || null;
 			$('#modalRecord').modal('show')
-			// $('.modal-dialog').css('max-width', '')
+
 			$('.modal-title').text('Edit Form')
 			$('#record-content').load(siteurl + active_controller + 'edit_form/' + id)
 
@@ -1348,7 +1356,6 @@
 				$('.modal-title').html('View IK')
 				$('#content_modal').load(siteurl + active_controller + 'view_guide/' + id)
 				$('#modelId').modal('show')
-				$('.modal-dialog').css('max-width', '')
 			} else {
 				Swal.fire('Warning!!', 'Not available data to process', 'waring', 2000);
 			}
@@ -1367,7 +1374,6 @@
 			const id = $(this).data('id') || null;
 			const procedure_id = $('#procedure_id').val() || null;
 			$('#modalRecord').modal('show')
-			$('.modal-dialog').css('max-width', '')
 			$('.modal-title').text('Edit IK')
 			$('#record-content').load(siteurl + active_controller + 'edit_guide/' + id)
 
@@ -1598,7 +1604,6 @@
 				$('.modal-title').html('View Records')
 				$('#content_modal').load(siteurl + active_controller + 'view_record/' + id)
 				$('#modelId').modal('show')
-				$('.modal-dialog').css('max-width', '')
 			} else {
 				Swal.fire('Warning!!', 'Not available data to process', 'waring', 2000);
 			}
