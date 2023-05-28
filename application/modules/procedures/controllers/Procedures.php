@@ -381,8 +381,8 @@ class Procedures extends Admin_Controller
 	public function add_flow($id = null)
 	{
 		$flow 		= '';
-		$forms 		= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'company_id' => $this->company, 'active' => 'Y'])->result();
-		$guides 	= $this->db->get_where('dir_guides', ['procedure_id' => $id, 'company_id' => $this->company, 'active' => 'Y'])->result();
+		$forms 		= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'company_id' => $this->company, 'active' => 'Y', 'status' => 'DEL'])->result();
+		$guides 	= $this->db->get_where('dir_guides', ['procedure_id' => $id, 'company_id' => $this->company, 'active' => 'Y', 'status' => 'DEL'])->result();
 
 
 		$this->template->set([
