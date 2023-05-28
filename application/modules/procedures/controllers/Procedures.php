@@ -397,8 +397,8 @@ class Procedures extends Admin_Controller
 	{
 		if ($proc_id && $id) {
 			$flow 		= $this->db->get_where('procedure_details', ['id' => $id])->row();
-			$forms 		= $this->db->get_where('dir_forms', ['procedure_id' => $proc_id, 'company_id' => $this->company, 'active' => 'Y'])->result();
-			$guides 	= $this->db->get_where('dir_guides', ['procedure_id' => $proc_id, 'company_id' => $this->company, 'active' => 'Y'])->result();
+			$forms 		= $this->db->get_where('dir_forms', ['procedure_id' => $proc_id, 'company_id' => $this->company, 'active' => 'Y', 'status !=' => 'DEL'])->result();
+			$guides 	= $this->db->get_where('dir_guides', ['procedure_id' => $proc_id, 'company_id' => $this->company, 'active' => 'Y', 'status !=' => 'DEL'])->result();
 		}
 
 		$this->template->set([
