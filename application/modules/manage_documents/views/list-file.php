@@ -10,7 +10,7 @@
 			<?php $n = 0;
 			if ($list_file) :
 				foreach ($list_file as $list) : $n++; ?>
-					<tr class="cursor-pointer h6 py-0 <?= ($list->flag_type == 'FOLDER') ? 'folder' : 'file'; ?>" data-id="<?= $list->id; ?>" data-folder="<?= $main; ?>">
+					<tr class="cursor-pointer h6 py-0 <?= ($list->flag_type == 'FOLDER') ? 'folder' : 'file'; ?>" data-id="<?= $list->id; ?>" data-parent_id="<?= $parent_id; ?>" data-folder="<?= $main; ?>">
 						<td style="vertical-align: middle;" class="text-dark-75 py-2">
 							<div class="dropdown dropdown-inline">
 								<button type="button" class="btn btn-light-default btn-icon btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

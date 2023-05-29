@@ -369,7 +369,7 @@ class Manage_documents extends Admin_Controller
 	{
 		$users 		= $this->db->get_where('users', ['status' => 'ACT', 'id_user !=' => '1'])->result();
 		$jabatan 	= $this->db->get('positions')->result();
-
+		// exit;
 		$this->template->set([
 			'jabatan' 		=> $jabatan,
 			'parent_id' 	=> $parent,

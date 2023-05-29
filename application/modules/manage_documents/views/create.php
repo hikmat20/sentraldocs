@@ -225,14 +225,15 @@
 	});
 
 	$(document).on("dblclick", ".folder", function() {
-		const id = $(this).data('id');
-		const main = $(this).data('folder');
+		let id = $(this).data('id');
+		let main = $(this).data('main');
+
 		if (id) {
 			$('#data-file').load(siteurl + active_controller + 'load_file/' + id + "/" + main)
-			$('#back').data('id', id);
-			$('#add-folder').data('id', id);
-			$('#add-file').attr('data-id', id);
-			$('#refresh').data('id', id);
+			$('a#back').data('id', id);
+			$('a#add-folder').data('id', id);
+			$('a#add-file').data('id', id);
+			$('#refresh').attr('data-id', id);
 		} else {
 			$('#data-file').html(`
 			<div class="card-body border border-1 border-left py-2 overflow-auto h-550px">
@@ -376,8 +377,8 @@
 	});
 
 	$(document).on("click", "#back", function() {
-		const id = $(this).data('id');
-		console.log(id);
+		let id = $(this).data('id');
+
 		if (id != '0') {
 			$.ajax({
 				url: siteurl + active_controller + 'previous',
@@ -387,11 +388,12 @@
 				},
 				dataType: "JSON",
 				success: function(data) {
+					console.log(data);
 					if (data.parent_id != '0') {
 						$('#data-file').load(siteurl + active_controller + 'load_file/' + data.parent_id)
 						$('#back').data('id', data.parent_id);
-						$('#add-folder').data('id', data.parent_id);
-						$('#add-file').data('id', data.parent_id);
+						$('a#add-folder').data('id', data.parent_id);
+						$('a#add-file').data('id', data.parent_id);
 						$('#refresh').data('id', data.parent_id);
 						console.log(data.parent_id);
 					} else {
@@ -666,14 +668,14 @@
 	})
 
 	$(document).on('click', '#add-file', function() {
-		const id = $(this).data('id')
-		const main = $(this).data('main')
+		let id = $(this).data('id')
+		let main = $(this).data('main')
 		upload_file(id, main)
 	})
 
 	$(document).on('click', '#add-folder', function() {
-		const id = $(this).data('id')
-		const main = $(this).data('main')
+		let id = $(this).data('id')
+		let main = $(this).data('main')
 		new_folder(id, main)
 	})
 
@@ -768,7 +770,6 @@
 		if (main) {
 			main = "/" + main
 		}
-
 		$('#upload').modal('show')
 		$('#viewData').load(siteurl + active_controller + 'upload/' + parent_id + main)
 		$('.parent_id').val(parent_id)

@@ -459,9 +459,9 @@ class Documents_list extends Admin_Controller
 
 	public function manual()
 	{
-		$thisData 		= $this->db->get_where('directory', ['id' => '00062c7fd13bd121'])->row();
-		$Data 			= $this->db->get_where('directory', ['parent_id' => '00062c7fd13bd121', 'flag_type' => 'FOLDER', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
-		$DataFile 			= $this->db->get_where('directory', ['parent_id' => '00062c7fd13bd121', 'flag_type' => 'FILE', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
+		$thisData 		= $this->db->get_where('directory', ['description' => 'MANUAL', 'status !=' => 'DEL', 'company_id' => $this->company])->row();
+		$Data 			= $this->db->get_where('directory', ['parent_id' => $thisData->id, 'flag_type' => 'FOLDER', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
+		$DataFile 			= $this->db->get_where('directory', ['parent_id' => $thisData->id, 'flag_type' => 'FILE', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
 
 		$listDataFolder = $this->db->get_where('directory', ['flag_type' => 'FOLDER', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
 		$listDataFile 	= $this->db->get_where('directory', ['flag_type' => 'FILE', 'status' => 'PUB', 'status !=' => 'DEL', 'company_id' => $this->company])->result();
