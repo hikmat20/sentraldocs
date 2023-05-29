@@ -226,7 +226,7 @@
 
 	$(document).on("dblclick", ".folder", function() {
 		let id = $(this).data('id');
-		let main = $(this).data('main');
+		let main = $(this).data('folder');
 
 		if (id) {
 			$('#data-file').load(siteurl + active_controller + 'load_file/' + id + "/" + main)
