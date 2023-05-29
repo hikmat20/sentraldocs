@@ -122,9 +122,10 @@ class Manage_documents extends Admin_Controller
 		}
 	}
 
-	public function new_folder($parent_id)
+	public function new_folder($parent_id, $folder)
 	{
 		$this->template->set('parent_id', $parent_id);
+		$this->template->set('folder', $folder);
 		$this->template->render('form');
 	}
 

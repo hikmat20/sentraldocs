@@ -44,7 +44,7 @@
 									</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link px-2 disabled" id="add-folder" data-id="0" href="javascript:void(0)">
+									<a class="nav-link px-2 disabled" id="add-folder" data-id="0" data-main="0" href="javascript:void(0)">
 										<span class="nav-icon">
 											<i class="fa fa-plus nav-icons"></i>
 										</span>
@@ -195,7 +195,7 @@
 				$('#data-file').load(siteurl + active_controller + 'load_file/' + id + "/" + folder)
 			}
 
-			$('#add-folder').data('id', folder);
+			$('#add-folder').attr('data-id', id);
 			$('a#add-file').attr('data-id', id);
 			$('#refresh').data('id', id);
 
@@ -217,6 +217,7 @@
 				$('#back').children('.nav-name').addClass('text-success')
 				// console.log(id);
 				$('a#add-file').attr('data-main', folder);
+				$('a#add-folder').attr('data-main', folder);
 			}
 		} else {
 			$('#data-file').html('<tr class="text-center"><td colspan="3" class="text-center">Not available data</td></tr>')
@@ -672,8 +673,8 @@
 
 	$(document).on('click', '#add-folder', function() {
 		const id = $(this).data('id')
-		new_folder(id)
-		console.log(id);
+		const main = $(this).data('main')
+		new_folder(id, main)
 	})
 
 	/* FUNCTIONS */
@@ -695,9 +696,13 @@
 		}
 	}
 
-	function new_folder(parent_id) {
+	function new_folder(parent_id, main) {
+		if (main) {
+			main = "/" + main
+		}
 		$('#new-folder').modal('show')
-		$('#form-data').load(siteurl + active_controller + 'new_folder/' + parent_id)
+		$('#form-data').load(siteurl + active_controller + 'new_folder/' + parent_id + main)
+		$('.parent_id').val(parent_id)
 	}
 
 	function review_process(id, parent_id) {
