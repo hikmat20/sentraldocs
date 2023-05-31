@@ -18,6 +18,7 @@ class Guides extends Admin_Controller
 
 	public function index()
 	{
+
 		if (!isset($_GET['d']) || $_GET['d'] == '') {
 			redirect('guides/?d=0');
 		}
@@ -26,7 +27,12 @@ class Guides extends Admin_Controller
 		$selected 				= $details = $breadcumb = $sub = $methode = '';
 		$details_data 			= 0;
 		$dirs 	  				= $this->db->get_where('guides', ['status' => '1', 'company_id' => $this->company])->result();
-		$references 	 = $this->db->get_where('view_standards', ['status' => 'PUB'])->result();
+		$references 	 		= $this->db->get_where('view_standards', ['status' => 'PUB'])->result();
+
+		if ((isset($_GET['d']) && ($_GET['d'])) && (isset($_GET['sub']) && ($_GET['sub'])) && (isset($_GET['edit']) && ($_GET['edit']))) {
+			$id = $_GET['edit'];
+			redirect("guides/edit_file/$id");
+		}
 
 		if (isset($_GET['d']) && ($_GET['d'])) {
 			$selected 			= $_GET['d'];
@@ -34,6 +40,8 @@ class Guides extends Admin_Controller
 			$guides				= $this->db->get_where('guides', ['id' => $selected, 'company_id' => $this->company, 'status' => '1'])->row();
 			$breadcumb 			= [($guides) ? $guides->name : ''];
 		}
+
+
 
 		if ((isset($_GET['d']) && ($_GET['d'])) && (isset($_GET['sub']) && ($_GET['sub']))) {
 			$selected 			= $_GET['d'];
@@ -43,10 +51,14 @@ class Guides extends Admin_Controller
 			$breadcumb 			= ($details) ? ["<a href='" . base_url($this->uri->segment(1) . '/?d=' . $selected) . "'>$details->guide_name</a>", $details->guide_detail_name] : '';
 			$methode 			= ['INS' => 'Insitu', 'LAB' => 'Inlab'];
 		}
+
+
+
 		$ArrRef = [];
 		foreach ($references as $ref) {
 			$ArrRef[$ref->id] = $ref->alias;
 		}
+
 		$this->template->set([
 			'data' 				=> $dirs,
 			'details' 			=> $details,
@@ -281,6 +293,11 @@ class Guides extends Admin_Controller
 
 	/* UPLOAD FILE */
 
+	public function upload()
+	{
+		$this->template->render('form-upload');
+	}
+
 	public function upload_file()
 	{
 		$guide_detail_id = $this->input->get('dtl');
@@ -314,100 +331,63 @@ class Guides extends Admin_Controller
 	public function upload_document()
 	{
 		$data 					= $this->input->post();
-		if (isset($data['publish_date']) && $data['revision_date'])
-			$data['publish_date'] 	= date_format(date_create(str_replace("/", "-", $data['publish_date'])), 'Y-m-d');
-
-		if (isset($data['revision_date']) && $data['revision_date'])
-			$data['revision_date'] 	= date_format(date_create(str_replace("/", "-", $data['revision_date'])), 'Y-m-d');
-
+		$data['company_id']		= $this->company;
 		if ($data) {
 			try {
-				$id							= isset($data['id']) ? $data['id'] : '';
-				$data['company_id']			= $this->company;
-				$old_file 					= isset($data['old_file']) ? $data['old_file'] : null;
-				$old_video 					= isset($data['old_video']) ? $data['old_video'] : null;
-				unset($data['old_file']);
-				unset($data['old_video']);
+				if (isset($data['publish_date']) && $data['revision_date']) $data['publish_date'] 	= date_format(date_create(str_replace("/", "-", $data['publish_date'])), 'Y-m-d');
+				if (isset($data['revision_date']) && $data['revision_date']) $data['revision_date'] 	= date_format(date_create(str_replace("/", "-", $data['revision_date'])), 'Y-m-d');
 
+				$id = isset($data['id']) ? $data['id'] : '';
 				if (!$data['number']) {
 					$data['number'] = $this->getNumber($data['group_id']);
 				}
 
-				$DIR_COMP = $this->company;
-				if ($_FILES['documents']['name']) {
-					if (!is_dir('./directory/MASTER_GUIDES/' . $DIR_COMP)) {
-						mkdir('./directory/MASTER_GUIDES/' . $DIR_COMP, 0755, TRUE);
-						chmod("./directory/MASTER_GUIDES/" . $DIR_COMP, 0755);  // octal; correct value of mode
-						chown("./directory/MASTER_GUIDES/" . $DIR_COMP, 'www-data');
-					}
-					// $new_name 					= $this->fixForUri($data['description']);
-					$config['upload_path'] 		= "./directory/MASTER_GUIDES/$DIR_COMP"; //path folder
-					$config['allowed_types'] 	= 'pdf|xlsx|docx'; //type yang dapat diakses bisa anda sesuaikan
-					$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
-					// $config['file_name'] 		= $new_name;
+				// $old_file 					= isset($data['old_file']) ? $data['old_file'] : null;
+				// $old_video 					= isset($data['old_video']) ? $data['old_video'] : null;
 
-					$this->upload->initialize($config);
-					if ($this->upload->do_upload('documents')) {
-						$file = $this->upload->data();
-						$data['document']		= $file['file_name'];
+				// unset($data['old_file']);
+				// unset($data['old_video']);
 
-						if ($old_file != null) {
-							if (file_exists("./directory/MASTER_GUIDES/" . $DIR_COMP . $old_file)) {
-								unlink("./directory/MASTER_GUIDES/" . $DIR_COMP . $old_file);
-							}
-						}
-					} else {
-						$error_msg = $this->upload->display_errors();
-						$Return = [
-							'status' => 0,
-							'msg'	 => $error_msg
-						];
-						echo json_encode($Return);
-						return false;
-					};
-				}
+				// if ($_FILES['video']['name']) {
+				// 	if (!is_dir('./directory/MASTER_GUIDES/VIDEO/' . $DIR_COMP)) {
+				// 		mkdir('./directory/MASTER_GUIDES/VIDEO/' . $DIR_COMP, 0755, TRUE);
+				// 		chmod("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP, 0755);  // octal; correct value of mode
+				// 		chown("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP, 'www-data');
+				// 	}
+				// 	// $new_name 					= $this->fixForUri($data['description']);
+				// 	$config['upload_path'] 		= "./directory/MASTER_GUIDES/VIDEO/$DIR_COMP"; //path folder
+				// 	$config['allowed_types'] 	= 'mp4'; //type yang dapat diakses bisa anda sesuaikan
+				// 	$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
+				// 	// $config['file_name'] 		= $new_name;
 
-				if ($_FILES['video']['name']) {
-					if (!is_dir('./directory/MASTER_GUIDES/VIDEO/' . $DIR_COMP)) {
-						mkdir('./directory/MASTER_GUIDES/VIDEO/' . $DIR_COMP, 0755, TRUE);
-						chmod("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP, 0755);  // octal; correct value of mode
-						chown("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP, 'www-data');
-					}
-					// $new_name 					= $this->fixForUri($data['description']);
-					$config['upload_path'] 		= "./directory/MASTER_GUIDES/VIDEO/$DIR_COMP"; //path folder
-					$config['allowed_types'] 	= 'mp4'; //type yang dapat diakses bisa anda sesuaikan
-					$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
-					// $config['file_name'] 		= $new_name;
+				// 	$this->upload->initialize($config);
+				// 	if ($this->upload->do_upload('video')) {
+				// 		$file = $this->upload->data();
+				// 		$data['video']		= $file['file_name'];
 
-					$this->upload->initialize($config);
-					if ($this->upload->do_upload('video')) {
-						$file = $this->upload->data();
-						$data['video']		= $file['file_name'];
-
-						if ($old_file != null) {
-							if (file_exists("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP . $old_file)) {
-								unlink("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP . $old_file);
-							}
-						}
-					} else {
-						$error_msg = $this->upload->display_errors();
-						$Return = [
-							'status' => 0,
-							'msg'	 => $error_msg
-						];
-						echo json_encode($Return);
-						return false;
-					};
-				}
+				// 		if ($old_file != null) {
+				// 			if (file_exists("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP . $old_file)) {
+				// 				unlink("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP . $old_file);
+				// 			}
+				// 		}
+				// 	} else {
+				// 		$error_msg = $this->upload->display_errors();
+				// 		$Return = [
+				// 			'status' => 0,
+				// 			'msg'	 => $error_msg
+				// 		];
+				// 		echo json_encode($Return);
+				// 		return false;
+				// 	};
+				// }
 
 				$this->db->trans_begin();
 				$check = $this->db->get_where('guide_detail_data', ['id' => $id])->num_rows();
 
-
 				$data['range_measure']	= json_encode($data['range_measure']);
 				$data['methode']		= json_encode($data['methode']);
 				$data['reference']		= json_encode($data['reference']);
-
+				unset($data['documents']);
 				if (intval($check) == '0') {
 					$data['created_by']		= $this->auth->user_id();
 					$data['created_at']		= date('Y-m-d H:i:s');
@@ -415,22 +395,23 @@ class Guides extends Admin_Controller
 				} else {
 					$data['modified_by']	= $this->auth->user_id();
 					$data['modified_at']	= date('Y-m-d H:i:s');
-					if (isset($data['remove-document']) && $data['remove-document'] == 'x' && !$_FILES['documents']['name']) {
-						if (file_exists("./directory/MASTER_GUIDES/" . $DIR_COMP . $old_file)) {
-							unlink("./directory/MASTER_GUIDES/" . $DIR_COMP . $old_file);
-						}
-						$data['document']			= null;
-					}
 
-					if (isset($data['remove-video']) && $data['remove-video'] == 'x' && !$_FILES['video']['name']) {
-						if (file_exists("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP . $old_file)) {
-							unlink("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP . $old_file);
-						}
-						$data['video']			= null;
-					}
+					// if (isset($data['remove-document']) && $data['remove-document'] == 'x' && !$_FILES['documents']['name']) {
+					// 	if (file_exists("./directory/MASTER_GUIDES/" . $DIR_COMP . $old_file)) {
+					// 		unlink("./directory/MASTER_GUIDES/" . $DIR_COMP . $old_file);
+					// 	}
+					// 	$data['document']			= null;
+					// }
 
-					unset($data['remove-document']);
-					unset($data['remove-video']);
+					// if (isset($data['remove-video']) && $data['remove-video'] == 'x' && !$_FILES['video']['name']) {
+					// 	if (file_exists("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP . $old_video)) {
+					// 		unlink("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP . $old_video);
+					// 	}
+					// 	$data['video']			= null;
+					// }
+
+					// unset($data['remove-document']);
+					// unset($data['remove-video']);
 					$this->db->update('guide_detail_data', $data, ['id' => $id]);
 				}
 
@@ -441,6 +422,7 @@ class Guides extends Admin_Controller
 						'msg'	 => 'Failed upload document file. Please try again later.!'
 					];
 				} else {
+					$this->_uploadFiles($id);
 					$this->db->trans_commit();
 					$Return = [
 						'status' => 1,
@@ -467,6 +449,83 @@ class Guides extends Admin_Controller
 		}
 	}
 
+	private function _getIDDoc($company)
+	{
+		$count 	= 1;
+		$y 		= date('y');
+		$m 		= date('m');
+		$max 	= $this->db->select('MAX(RIGHT(id,4)) as id')->get_where('guide_documents', ['SUBSTR(id,4,1)' => $company, 'SUBSTR(id,7,2)' => $y, 'SUBSTR(id,9,2)' => $m])->row();
+
+		if ($max->id > 0) {
+			$count = $max->id + 1;
+		}
+		$companyCode 	= sprintf('%02d', $company);
+		$counter 		= sprintf('%04d', $count);
+		return "DOC$companyCode-$y$m-$counter";
+	}
+
+	private function _uploadFiles($id)
+	{
+		$post 				= $this->input->post();
+
+		$company 			=  $this->company;
+		$data['id']			= $this->_getIDDoc($company); // DOC01-2305-0001;
+		$data['guide_detail_data_id'] = $id;
+		$data['name'] 		= $post['documents']['ik_name'];
+		$data['ext'] 		= 'pdf';
+		$data['file_type'] 	= '1';
+		$data['created_by'] = $this->auth->user_id();
+		$data['created_at'] = date('Y-m-d H:i:s');
+
+		if ($_FILES['ik_file']['name']) {
+			$DIR_COMP = $this->company;
+			if (!is_dir("./directory/MASTER_GUIDES/$DIR_COMP/IK")) {
+				mkdir("./directory/MASTER_GUIDES/$DIR_COMP/IK", 0755, TRUE);
+				chmod("./directory/MASTER_GUIDES/$DIR_COMP/IK", 0755);  // octal; correct value of mode
+				chown("./directory/MASTER_GUIDES/$DIR_COMP/IK", 'www-data');
+			}
+
+			$config['upload_path'] 		= "./directory/MASTER_GUIDES/$DIR_COMP/IK"; //path folder
+			$config['allowed_types'] 	= 'pdf'; //type yang dapat diakses bisa anda sesuaikan
+			$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
+			$this->upload->initialize($config);
+			$this->upload->do_upload('ik_file');
+			$file 			= $this->upload->data();
+			$data['file']	= $file['file_name'];
+
+			if ($this->upload->display_errors()) {
+				$error_msg = $this->upload->display_errors();
+				$this->db->trans_rollback();
+				$Return = [
+					'status' => 0,
+					'msg'	 => $error_msg
+				];
+
+				echo json_encode($Return);
+				return false;
+			} else {
+				$this->db->insert('guide_documents', $data);
+				$error = $this->db->error();
+				echo '<pre>';
+				print_r($this->db->trans_status());
+				print_r($error);
+				echo '</pre>';
+				exit;
+				if ($this->db->trans_status() === FALSE) {
+					$this->db->trans_rollback();
+					$Return = [
+						'status' => 0,
+						'msg'	 => 'Failed upload document file. Please try again later.!'
+					];
+					if (file_exists("./directory/MASTER_GUIDES/VIDEO/$DIR_COMP/IK/" . $data['file'])) {
+						unlink("./directory/MASTER_GUIDES/VIDEO/$DIR_COMP/IK/" . $data['file']);
+					}
+					echo json_encode($Return);
+					return false;
+				}
+			}
+		}
+	}
 
 	public function edit_file($id)
 	{

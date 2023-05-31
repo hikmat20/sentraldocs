@@ -80,14 +80,12 @@ class Cross_reference extends Admin_Controller
 			$ArrStd[$dtstd->requirement_id] = $dtstd;
 		}
 
-		$Data_detail 	= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result();
 		$procedure 		= $this->db->get_where('procedures', ['company_id' => $this->company, 'status !=' => 'DEL'])->result();
 
 		$this->template->set([
 			'Data' 			=> $Data,
 			'ArrData' 		=> $ArrData,
 			'ArrStd' 		=> $ArrStd,
-			'Data_detail' 	=> $Data_detail,
 			'procedure' 	=> $procedure,
 		]);
 
@@ -420,6 +418,23 @@ class Cross_reference extends Admin_Controller
 			$ArrGuides[$gui->id] = $gui;
 		}
 
+		$this->db->select('*')->from('view_cross_reference_details');
+		$this->db->where("find_in_set($id, procedure_id)");
+		$this->db->where("company_id", $this->company);
+		$Data = $this->db->get()->result();
+
+		$ArrData = [];
+		foreach ($Data as $dt) {
+			$ArrData['id'][$dt->requirement_id] = $dt->requirement_id;
+			$ArrData['standards'][$dt->requirement_id][] = $dt;
+		}
+		$ArrStd = [];
+		foreach ($Data as $dtstd) {
+			$ArrStd[$dtstd->requirement_id] = $dtstd;
+		}
+
+		$allProcedure 		= $this->db->get_where('procedures', ['company_id' => $this->company, 'status !=' => 'DEL'])->result();
+
 		$Data = [
 			'procedure' => $procedure,
 			'detail' 	=> $flowDetail,
@@ -427,10 +442,16 @@ class Cross_reference extends Admin_Controller
 			'ArrJab' 	=> $ArrJab,
 			'ArrForms' 	=> $ArrForms,
 			'ArrGuides' 	=> $ArrGuides,
+
+			'Data' 			=> $Data,
+			'ArrData' 		=> $ArrData,
+			'ArrStd' 		=> $ArrStd,
+			'allProcedure' 	=> $allProcedure,
 		];
 
 		$data = $this->load->view('printout_procedure', $Data, TRUE);
 		$mpdf->WriteHTML($data);
-		$mpdf->Output(trim($procedure->name) . ".pdf", 'D');
+		$mpdf->Output();
+		// $mpdf->Output(trim($procedure->name) . ".pdf", 'D');
 	}
 }
