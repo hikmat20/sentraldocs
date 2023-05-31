@@ -261,7 +261,6 @@ class Procedures extends Admin_Controller
 				'id'			=> $pro_id,
 			);
 		}
-
 		echo json_encode($Return);
 	}
 
@@ -388,7 +387,6 @@ class Procedures extends Admin_Controller
 		$forms 		= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'company_id' => $this->company, 'active' => 'Y', 'status !=' => 'DEL'])->result();
 		$guides 	= $this->db->get_where('dir_guides', ['procedure_id' => $id, 'company_id' => $this->company, 'active' => 'Y', 'status !=' => 'DEL'])->result();
 
-
 		$this->template->set([
 			'flow' 	=> $flow,
 			'forms' => $forms,
@@ -453,7 +451,6 @@ class Procedures extends Admin_Controller
 	}
 
 
-
 	public function saveFileRecord()
 	{
 		$data = $this->input->post('forms');
@@ -469,7 +466,6 @@ class Procedures extends Admin_Controller
 			$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
 			// $config['file_name'] 		= $new_name;
 			$id 						= (!$data['id']) ? uniqid(date('m')) : $data['id'];
-
 
 			$this->upload->initialize($config);
 			if ($this->upload->do_upload('forms_image')) :
@@ -909,7 +905,7 @@ class Procedures extends Admin_Controller
 					chmod("./directory/FORMS/$this->company/", 0755);  // octal; correct value of mode
 					chown("./directory/FORMS/$this->company/", 'www-data');
 				}
-				$config['upload_path'] 		= "./directory/FORMS"; //path folder
+				$config['upload_path'] 		= "./directory/FORMS/$this->company"; //path folder
 				$config['allowed_types'] 	= 'pdf'; //type yang dapat diakses bisa anda sesuaikan
 				$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
 				// $config['file_name'] 		= $new_name;

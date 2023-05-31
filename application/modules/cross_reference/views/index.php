@@ -46,7 +46,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="modalForm" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modalForm" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg modal-dialog-centered">
 		<div class="modal-content">
 			<form class="form-horiontal" id="form-input">
@@ -56,8 +56,7 @@
 						<div class="fa fa-times"></div>
 					</span>
 				</div>
-				<div class="modal-body">
-				</div>
+				<div class="modal-body"></div>
 				<div class="modal-footer">
 					<!-- <button type="submit" class="btn btn-primary" id="save"><i class="fa fa-save"></i>Save</button> -->
 					<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>

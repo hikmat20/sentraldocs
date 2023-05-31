@@ -165,9 +165,22 @@ class Cross_reference extends Admin_Controller
 		$other_docs 	= array_combine(array_column($DetailCross, 'chapter_id'), array_column($DetailCross, 'other_docs'));
 
 		$procedures 	= $this->db->get_where('procedures', ['company_id' => $this->company, 'status !=' => 'DEL'])->result();
+		$status = [
+			'PUB' => 'badge-success',
+			'DFT' => 'badge-secondary',
+			'APV' => 'badge-info',
+			'REV' => 'badge-warning',
+			'COR' => 'badge-danger',
+			'DEL' => 'badge-light',
+			'RVI' => 'badge-info',
+			'HLD' => 'badge-default',
+		];
+
 		$list_procedure = [];
+		$ArrProcedures = [];
 		foreach ($procedures as $pro) {
-			$list_procedure[$pro->id] = "<span class='badge badge-success m-1'>" . $pro->name . "</span>";
+			$list_procedure[$pro->id] = "<span class='badge " . $status[$pro->status] . " m-1'>" . $pro->name . "</span>";
+			$ArrProcedures[$pro->id] = $pro->status;
 		}
 
 		$this->template->set([
@@ -175,7 +188,8 @@ class Cross_reference extends Admin_Controller
 			'Detail' 			=> $Detail,
 			'list_procedure' 	=> $list_procedure,
 			'other_docs' 		=> $other_docs,
-			'Procedure' 			=> $Procedure,
+			'Procedure' 		=> $Procedure,
+			'ArrProcedures' 	=> $ArrProcedures,
 		]);
 
 		$this->template->render('view_pasal_to_process');
@@ -375,5 +389,48 @@ class Cross_reference extends Admin_Controller
 		$data = $this->template->load_view('printout_bk', $Data, TRUE);
 		$mpdf->WriteHTML($data);
 		$mpdf->Output();
+	}
+
+
+
+	/* PRINTOUT */
+	public function download($id = null)
+	{
+		$mpdf 				= new Mpdf();
+		$procedure 			= $this->db->get_where('procedures', ['id' => $id])->row();
+		$flowDetail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id])->result();
+		$getForms			= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
+		$getGuides			= $this->db->get_where('dir_guides', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
+		$users 				= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
+		$jabatan 			= $this->db->get('positions')->result();
+		$ArrUsr 			= $ArrJab = $ArrForms = $ArrGuides = [];
+
+		foreach ($getForms as $frm) {
+			$ArrForms[$frm->id] = $frm;
+		}
+		foreach ($users as $usr) {
+			$ArrUsr[$usr->id_user] = $usr;
+		}
+
+		foreach ($jabatan as $jab) {
+			$ArrJab[$jab->id] = $jab;
+		}
+
+		foreach ($getGuides as $gui) {
+			$ArrGuides[$gui->id] = $gui;
+		}
+
+		$Data = [
+			'procedure' => $procedure,
+			'detail' 	=> $flowDetail,
+			'ArrUsr' 	=> $ArrUsr,
+			'ArrJab' 	=> $ArrJab,
+			'ArrForms' 	=> $ArrForms,
+			'ArrGuides' 	=> $ArrGuides,
+		];
+
+		$data = $this->load->view('printout_procedure', $Data, TRUE);
+		$mpdf->WriteHTML($data);
+		$mpdf->Output(trim($procedure->name) . ".pdf", 'D');
 	}
 }
