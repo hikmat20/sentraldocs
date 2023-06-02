@@ -7,6 +7,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Procedure</title>
   <style>
+    *,
+    body {
+      /* font-family: Tahoma, Helvetica, sans-serif !important; */
+    }
+
     table.table-data {
       width: 100%;
     }
@@ -79,47 +84,82 @@
 <body>
   <div class="">
     <!-- HEADER -->
-    <table class="">
+    <h1 class="text-center"><?= $procedure->name; ?></h1>
+    <h3><strong>TUJUAN</strong></h3>
+    <table>
       <tr>
-        <th class="table-dark text-center">
-          <h1><?= $procedure->name; ?></h1>
-        </th>
-      </tr>
-      <tr>
-        <td class="py-6">
-          <h2 class="p-2"><strong><u>TUJUAN</u></strong></h2>
+        <td>
           <div class="">
-            <?= $procedure->object; ?>
+            <?= ($procedure->object); ?>
           </div>
         </td>
       </tr>
+    </table>
+    <br>
+
+    <h3><strong>RUANG LINGKUP</strong></h3>
+    <table class="">
       <tr>
-        <td class="py-6">
-          <h2 class="p-2"><strong><u>RUANG LINGKUP</u></strong></h2>
+        <td>
           <div class="">
             <?= $procedure->scope; ?>
           </div>
         </td>
       </tr>
+    </table>
+    <br>
+
+    <h3><strong>DEFINISI</strong></h3>
+    <table>
       <tr>
-        <td class="py-6">
-          <h2 class="p-2"><strong><u>DEFINISI</u></strong></h2>
+        <td>
           <div class="">
             <?= $procedure->define; ?>
           </div>
         </td>
       </tr>
+    </table>
+    <br>
+
+    <h3><strong>PERFORMA INDIKATOR</strong></h3>
+    <table>
       <tr>
-        <td class="py-6">
-          <h2 class="p-2"><strong><u>PERFORMA INDIKATOR</u></strong></h2>
+        <td>
           <div class="">
             <?= $procedure->performance; ?>
           </div>
         </td>
       </tr>
     </table>
-
     <br>
+
+    <h3>REFERENSI</h3>
+    <table>
+      <tbody>
+        <tr>
+          <td>
+            <?php if ($ArrStd) : ?>
+              <?php foreach ($ArrStd as $std) : ?>
+                <h3><?= $std->name; ?></h3>
+                <ul>
+                  <?php if ($ArrData['standards'][$std->requirement_id]) : ?>
+                    <?php $n = 0;
+                    foreach ($ArrData['standards'][$std->requirement_id] as $dtStd) : $n++; ?>
+                      <li><?= $dtStd->chapter; ?></li>
+                  <?php endforeach;
+                  endif; ?>
+                </ul>
+                <br>
+              <?php endforeach; ?>
+            <?php else : ?>
+              <div class="text-center">~ Not available data ~</div>
+            <?php endif; ?>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+
     <h3>FLOW PROCEDURE</h3>
     <table>
       <tbody>

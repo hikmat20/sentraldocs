@@ -389,8 +389,6 @@ class Cross_reference extends Admin_Controller
 		$mpdf->Output();
 	}
 
-
-
 	/* PRINTOUT */
 	public function download($id = null)
 	{

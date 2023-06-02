@@ -158,7 +158,7 @@
 									<tr class="text-center">
 										<th class="p-2" width="40">No.</th>
 										<th class="p-2 text-left">Nama</th>
-										<th class="p-2" width="100">Status</th>
+										<th class="p-2" width="150">Status</th>
 										<th class="p-2" width="100">Action</th>
 									</tr>
 								</thead>
@@ -173,8 +173,10 @@
 												</td>
 												<td class="p-2"><?= $status[$dt->status]; ?></td>
 												<td class="p-2">
-													<button type="button" class="btn btn-xs btn-icon btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
-													<!-- <a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-xs btn-icon btn-warning" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Edit Data"><i class="fa fa-edit"></i></a> -->
+													<button type="button" class="btn btn-xs btn-icon btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
+													<?php if ($dt->approval_id == $this->auth->user_id()) : ?>
+														<!-- <a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-xs btn-icon btn-warning" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Edit Data"><i class="fa fa-edit"></i></a> -->
+													<?php endif; ?>
 													<!-- <button type="button" class="btn btn-xs btn-icon btn-danger delete" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Delete Data"><i class="fa fa-trash"></i></button> -->
 												</td>
 											</tr>
