@@ -13,7 +13,7 @@
 	}
 </style>
 
-<form id="form-upload">
+<form id="form-upload" enctype="multipart/form-data">
 	<div class="content d-flex flex-column flex-column-fluid p-0">
 		<div class="d-flex flex-column-fluid justify-content-between align-items-top">
 			<div class="container mt-10">
@@ -167,17 +167,20 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td class="text-center">1</td>
-											<td>
-												<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/' . $data->document); ?>#toolbar=0&navpanes=0">IK File</a>
-											</td>
-											<td class="text-center">2023-03-20 20:20:10</td>
-											<td class="text-center">
-												<button type="button" class="btn btn-xs btn-warning edit-ik btn-icon"><i class="fa fa-edit"></i></button>
-												<button type="button" class="btn btn-xs btn-danger delete-ik btn-icon"><i class="fa fa-trash"></i></button>
-											</td>
-										</tr>
+										<?php if ($DocIK) $n = 0;
+										foreach ($DocIK as $ik) : $n++; ?>
+											<tr>
+												<td class="text-center"><?= $n; ?></td>
+												<td>
+													<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/IK/' . $ik->file); ?>#toolbar=0&navpanes=0"><?= $ik->name; ?></a>
+												</td>
+												<td class="text-center"><?= $ik->created_at; ?></td>
+												<td class="text-center">
+													<button type="button" class="btn btn-xs btn-warning edit-ik btn-icon" data-id="<?= $ik->file; ?>"><i class="fa fa-edit"></i></button>
+													<button type="button" class="btn btn-xs btn-danger delete-ik btn-icon" data-id="<?= $ik->file; ?>"><i class="fa fa-trash"></i></button>
+												</td>
+											</tr>
+										<?php endforeach; ?>
 									</tbody>
 								</table>
 							</div>
@@ -193,17 +196,20 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td class="text-center">1</td>
-											<td>
-												<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/' . $data->document); ?>#toolbar=0&navpanes=0">IK File</a>
-											</td>
-											<td class="text-center">2023-03-20 20:20:10</td>
-											<td class="text-center">
-												<button type="button" class="btn btn-xs btn-warning edit-ik btn-icon"><i class="fa fa-edit"></i></button>
-												<button type="button" class="btn btn-xs btn-danger delete-ik btn-icon"><i class="fa fa-trash"></i></button>
-											</td>
-										</tr>
+										<?php if ($DocCMC) $n = 0;
+										foreach ($DocCMC as $cmc) : $n++; ?>
+											<tr>
+												<td class="text-center"><?= $n; ?></td>
+												<td>
+													<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/CMC/' . $cmc->file); ?>#toolbar=0&navpanes=0"><?= $cmc->name; ?></a>
+												</td>
+												<td class="text-center"><?= $cmc->created_at; ?></td>
+												<td class="text-center">
+													<button type="button" class="btn btn-xs btn-warning edit-cmc btn-icon" data-id="<?= $cmc->file; ?>"><i class="fa fa-edit"></i></button>
+													<button type="button" class="btn btn-xs btn-danger delete-cmc btn-icon" data-id="<?= $cmc->file; ?>"><i class="fa fa-trash"></i></button>
+												</td>
+											</tr>
+										<?php endforeach; ?>
 									</tbody>
 								</table>
 							</div>
@@ -219,17 +225,20 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td class="text-center">1</td>
-											<td>
-												<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/' . $data->document); ?>#toolbar=0&navpanes=0">IK File</a>
-											</td>
-											<td class="text-center">2023-03-20 20:20:10</td>
-											<td class="text-center">
-												<button type="button" class="btn btn-xs btn-warning edit-ik btn-icon"><i class="fa fa-edit"></i></button>
-												<button type="button" class="btn btn-xs btn-danger delete-ik btn-icon"><i class="fa fa-trash"></i></button>
-											</td>
-										</tr>
+										<?php if ($DocTEMP) $n = 0;
+										foreach ($DocTEMP as $temp) : $n++; ?>
+											<tr>
+												<td class="text-center"><?= $n; ?></td>
+												<td>
+													<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/TEMPLATE/' . $temp->file); ?>#toolbar=0&navpanes=0"><?= $temp->name; ?></a>
+												</td>
+												<td class="text-center"><?= $temp->created_at; ?></td>
+												<td class="text-center">
+													<button type="button" class="btn btn-xs btn-warning edit-temp btn-icon" data-id="<?= $temp->file; ?>"><i class="fa fa-edit"></i></button>
+													<button type="button" class="btn btn-xs btn-danger delete-temp btn-icon" data-id="<?= $temp->file; ?>"><i class="fa fa-trash"></i></button>
+												</td>
+											</tr>
+										<?php endforeach; ?>
 									</tbody>
 								</table>
 							</div>
@@ -245,17 +254,20 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td class="text-center">1</td>
-											<td>
-												<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/' . $data->document); ?>#toolbar=0&navpanes=0">IK File</a>
-											</td>
-											<td class="text-center">2023-03-20 20:20:10</td>
-											<td class="text-center">
-												<button type="button" class="btn btn-xs btn-warning edit-ik btn-icon"><i class="fa fa-edit"></i></button>
-												<button type="button" class="btn btn-xs btn-danger delete-ik btn-icon"><i class="fa fa-trash"></i></button>
-											</td>
-										</tr>
+										<?php if ($DocUBLK) $n = 0;
+										foreach ($DocUBLK as $ublk) : $n++; ?>
+											<tr>
+												<td class="text-center"><?= $n; ?></td>
+												<td>
+													<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/UBLK/' . $ublk->file); ?>#toolbar=0&navpanes=0"><?= $ublk->name; ?></a>
+												</td>
+												<td class="text-center"><?= $ublk->created_at; ?></td>
+												<td class="text-center">
+													<button type="button" class="btn btn-xs btn-warning edit-ublk btn-icon" data-id="<?= $ublk->file; ?>"><i class="fa fa-edit"></i></button>
+													<button type="button" class="btn btn-xs btn-danger delete-ublk btn-icon" data-id="<?= $ublk->file; ?>"><i class="fa fa-trash"></i></button>
+												</td>
+											</tr>
+										<?php endforeach; ?>
 									</tbody>
 								</table>
 							</div>
@@ -271,17 +283,20 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td class="text-center">1</td>
-											<td>
-												<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/' . $data->document); ?>#toolbar=0&navpanes=0">IK File</a>
-											</td>
-											<td class="text-center">2023-03-20 20:20:10</td>
-											<td class="text-center">
-												<button type="button" class="btn btn-xs btn-warning edit-ik btn-icon"><i class="fa fa-edit"></i></button>
-												<button type="button" class="btn btn-xs btn-danger delete-ik btn-icon"><i class="fa fa-trash"></i></button>
-											</td>
-										</tr>
+										<?php if ($DocSERT) $n = 0;
+										foreach ($DocSERT as $sert) : $n++; ?>
+											<tr>
+												<td class="text-center"><?= $n; ?></td>
+												<td>
+													<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/FORMAT_SERTIFIKAT/' . $sert->file); ?>#toolbar=0&navpanes=0"><?= $sert->name; ?></a>
+												</td>
+												<td class="text-center"><?= $sert->created_at; ?></td>
+												<td class="text-center">
+													<button type="button" class="btn btn-xs btn-warning edit-sert btn-icon" data-id="<?= $sert->file; ?>"><i class="fa fa-edit"></i></button>
+													<button type="button" class="btn btn-xs btn-danger delete-sert btn-icon" data-id="<?= $sert->file; ?>"><i class="fa fa-trash"></i></button>
+												</td>
+											</tr>
+										<?php endforeach; ?>
 									</tbody>
 								</table>
 							</div>
@@ -297,17 +312,20 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td class="text-center">1</td>
-											<td>
-												<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/' . $data->document); ?>#toolbar=0&navpanes=0">IK File</a>
-											</td>
-											<td class="text-center">2023-03-20 20:20:10</td>
-											<td class="text-center">
-												<button type="button" class="btn btn-xs btn-warning edit-ik btn-icon"><i class="fa fa-edit"></i></button>
-												<button type="button" class="btn btn-xs btn-danger delete-ik btn-icon"><i class="fa fa-trash"></i></button>
-											</td>
-										</tr>
+										<?php if ($DocDRIFT) $n = 0;
+										foreach ($DocDRIFT as $drift) : $n++; ?>
+											<tr>
+												<td class="text-center"><?= $n; ?></td>
+												<td>
+													<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/ANALISA_DRIFT/' . $drift->file); ?>#toolbar=0&navpanes=0"><?= $drift->name; ?></a>
+												</td>
+												<td class="text-center"><?= $drift->created_at; ?></td>
+												<td class="text-center">
+													<button type="button" class="btn btn-xs btn-warning edit-drift btn-icon" data-id="<?= $drift->file; ?>"><i class="fa fa-edit"></i></button>
+													<button type="button" class="btn btn-xs btn-danger delete-drift btn-icon" data-id="<?= $drift->file; ?>"><i class="fa fa-trash"></i></button>
+												</td>
+											</tr>
+										<?php endforeach; ?>
 									</tbody>
 								</table>
 							</div>
@@ -323,17 +341,20 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td class="text-center">1</td>
-											<td>
-												<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/' . $data->document); ?>#toolbar=0&navpanes=0">IK File</a>
-											</td>
-											<td class="text-center">2023-03-20 20:20:10</td>
-											<td class="text-center">
-												<button type="button" class="btn btn-xs btn-warning edit-ik btn-icon"><i class="fa fa-edit"></i></button>
-												<button type="button" class="btn btn-xs btn-danger delete-ik btn-icon"><i class="fa fa-trash"></i></button>
-											</td>
-										</tr>
+										<?php if ($DocSERTCAL) $n = 0;
+										foreach ($DocSERTCAL as $sertcal) : $n++; ?>
+											<tr>
+												<td class="text-center"><?= $n; ?></td>
+												<td>
+													<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/SERTIFIKAT_KALIBRATOR/' . $sertcal->file); ?>#toolbar=0&navpanes=0"><?= $sertcal->name; ?></a>
+												</td>
+												<td class="text-center"><?= $sertcal->created_at; ?></td>
+												<td class="text-center">
+													<button type="button" class="btn btn-xs btn-warning edit-sertcal btn-icon" data-id="<?= $sertcal->file; ?>"><i class="fa fa-edit"></i></button>
+													<button type="button" class="btn btn-xs btn-danger delete-sertcal btn-icon" data-id="<?= $sertcal->file; ?>"><i class="fa fa-trash"></i></button>
+												</td>
+											</tr>
+										<?php endforeach; ?>
 									</tbody>
 								</table>
 							</div>
@@ -349,43 +370,64 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td class="text-center">1</td>
-											<td>
-												<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/' . $data->document); ?>#toolbar=0&navpanes=0">IK File</a>
-											</td>
-											<td class="text-center">2023-03-20 20:20:10</td>
-											<td class="text-center">
-												<button type="button" class="btn btn-xs btn-warning edit-ik btn-icon"><i class="fa fa-edit"></i></button>
-												<button type="button" class="btn btn-xs btn-danger delete-ik btn-icon"><i class="fa fa-trash"></i></button>
-											</td>
-										</tr>
+										<?php if ($DocCEK) $n = 0;
+										foreach ($DocCEK as $cek) : $n++; ?>
+											<tr>
+												<td class="text-center"><?= $n; ?></td>
+												<td>
+													<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/CEK_ANTARA/' . $cek->file); ?>#toolbar=0&navpanes=0"><?= $cek->name; ?></a>
+												</td>
+												<td class="text-center"><?= $cek->created_at; ?></td>
+												<td class="text-center">
+													<button type="button" class="btn btn-xs btn-warning edit-cek btn-icon" data-id="<?= $cek->file; ?>"><i class="fa fa-edit"></i></button>
+													<button type="button" class="btn btn-xs btn-danger delete-cek btn-icon" data-id="<?= $cek->file; ?>"><i class="fa fa-trash"></i></button>
+												</td>
+											</tr>
+										<?php endforeach; ?>
 									</tbody>
 								</table>
 							</div>
 
 							<div class="tab-pane" id="Video" role="tabpanel" aria-labelledby="Video-tab">
-								<label class="col-form-label"> Upload Video</label>
-								<div class="">
-									<button type="button" id="upload-video" class="btn btn-sm mb-3 btn-danger <?= ($data->video) ? 'd-none' : 'd-inline'; ?>"><i class="fa fa-video"></i>Upload Video</button>
-									<input type="file" id="video-file" name="video" accept="video/mp4" class="d-none" />
-									<video id="video-preview" width="290" class="<?= ($data->video) ? '' : 'd-none'; ?>" controls controlsList="nodownload" oncontextmenu="return false" height="180">
-										Your browser does not support the video tag.
-										<?php if ($data->video) : ?>
-											<source src="<?= base_url('directory/MASTER_GUIDES/VIDEO/' . $data->company_id . '/') . $data->video; ?>" type="video/mp4">
-										<?php endif; ?>
-									</video>
-									<div class="for-delete text-center">
-										<!-- <input class="remove-video" name="remove-video" type="hidden"> -->
-										<!-- <input type="hidden" name="oldFile[video]" id="<?= ($data->video) ?: ''; ?>"> -->
-									</div>
-								</div>
-								<button type="button" id="remove-video" class="btn btn-sm btn-icon mb-3 btn-light-danger <?= ($data->video) ? '' : 'd-none'; ?>"><i class="fa fa-times"></i></button>
+								<table class="table table-striped table-hover table-sm">
+									<thead>
+										<tr class="bg-success text-white">
+											<th width="50" class="text-center p-2">No</th>
+											<th width="180" class="p-2 text-center">Video</th>
+											<th class="p-2">Name File</th>
+											<th width="150" class="text-center p-2">Last Update</th>
+											<th width="100" class="text-center p-2">Opsi</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php if ($DocVID) $n = 0;
+										foreach ($DocVID as $vid) : $n++; ?>
+											<tr>
+												<td class="text-center"><?= $n; ?></td>
+												<td class="text-center cursor-pointer view_video" data-id="<?= $vid->id; ?>">
+													<video controlsList="nodownload" oncontextmenu="return false" height="80">
+														<source src="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/VIDEO/' . $vid->file); ?>#t=5" type="video/mp4" />
+													</video>
+												</td>
+												<td><a href="javascript:void(0)" data-id="<?= $vid->id; ?>" class="text-dark view_video">
+														<h4><?= $vid->name; ?></h4>
+													</a>
+												</td>
+												<td class="text-center"><?= $vid->created_at; ?></td>
+												<td class="text-center">
+													<button type="button" class="btn btn-xs btn-warning edit-vid btn-icon" data-id="<?= $vid->file; ?>"><i class="fa fa-edit"></i></button>
+													<button type="button" class="btn btn-xs btn-danger delete-vid btn-icon" data-id="<?= $vid->file; ?>"><i class="fa fa-trash"></i></button>
+												</td>
+											</tr>
+										<?php endforeach; ?>
+									</tbody>
+								</table>
 							</div>
 						</div>
 
 						<div class="text-center">
 							<button type="button" class="btn btn-success btn-lg px-5 save-files"><i class="fa fa-save"></i>Save</button>
+							<a href="<?= base_url($this->uri->segment(1) . '?d=' . $detail->guide_id . '&sub=' . $detail->id); ?>" class="btn btn-danger btn-lg px-5"><i class="fa fa-reply"></i>Back</a>
 						</div>
 					</div>
 				</div>
@@ -436,11 +478,13 @@
 					</ul>
 
 					<!-- Tab panes -->
+
 					<div class="tab-content mt-3 border rounded p-4 mb-3" id="myTabContent">
+
 						<div class="tab-pane fade show active" id="tab1Id" role="tabpanel">
 							<div class="form-group mb-3">
 								<label for="form-label">Document Name <span class="text-danger">*</span></label>
-								<input type="text" name="documents[ik_name]" placeholder="Document Name" class="form-control">
+								<input type="text" id="ik-name" name="documents[ik_name]" placeholder="Document Name" class="form-control">
 							</div>
 							<div class="form-group mb-0">
 								<label class="col-form-label">Upload Document <span class="text-danger">*</span></label>
@@ -450,11 +494,11 @@
 											<i class="fa fa-upload"></i>
 											<p>Choose an PDF file or drag it here.</p>
 										</div>
-										<input type="file" id="ik-file" name="ik_file" accept="application/pdf" class="dropzone dropzone-1" />
+										<input type="file" id="ik-file" data-doc="ik" name="ik_file" accept="application/pdf" class="dropzone dropzone-1 drop-file" />
 										<div class="for-delete-ik d-none">
 											<div class="middle d-flex justify-content-center align-items-center">
-												<button type="button" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle"><i class="fa fa-edit"></i></button>
-												<button type="button" onclick="remove_file_ik(this)" class="btn btn-sm mr-1 btn-icon btn-danger remove-image rounded-circle"><i class="fa fa-trash"></i></button>
+												<button type="button" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle" data-doc="ik"><i class="fa fa-edit"></i></button>
+												<button type="button" class="btn btn-sm mr-1 btn-icon btn-danger rounded-circle" data-doc="ik"><i class="fa fa-trash"></i></button>
 											</div>
 										</div>
 										<canvas id="ik-preview" class="d-none" width="150"></canvas>
@@ -464,25 +508,237 @@
 								</div>
 							</div>
 						</div>
-						<div class="tab-pane fade" id="tab2Id" role="tabpanel">2</div>
-						<div class="tab-pane fade" id="tab3Id" role="tabpanel">Template</div>
-						<div class="tab-pane fade" id="tab4Id" role="tabpanel">UBLK</div>
-						<div class="tab-pane fade" id="tab5Id" role="tabpanel">Format Sertifikat</div>
-						<div class="tab-pane fade" id="tab6Id" role="tabpanel">Analisa Drift</div>
-						<div class="tab-pane fade" id="tab7Id" role="tabpanel">Sertifikat Calibrator</div>
-						<div class="tab-pane fade" id="tab8Id" role="tabpanel">Cek Antara</div>
-						<div class="tab-pane fade" id="tab9Id" role="tabpanel">Video</div>
+
+						<div class="tab-pane fade" id="tab2Id" role="tabpanel">
+							<div class="form-group mb-3">
+								<label for="form-label">Document Name <span class="text-danger">*</span></label>
+								<input type="text" id="cmc-name" name="documents[cmc_name]" placeholder="Document Name" class="form-control">
+							</div>
+							<div class="form-group mb-0">
+								<label class="col-form-label">Upload Document <span class="text-danger">*</span></label>
+								<div class="">
+									<div class="dropzone-wrapper mr-2 d-flex justify-content-center align-items-center" style="height: 250px;">
+										<div class="dropzone-desc dropzone-desc-cmc">
+											<i class="fa fa-upload"></i>
+											<p>Choose an PDF file or drag it here.</p>
+										</div>
+										<input type="file" id="cmc-file" name="cmc_file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" data-doc="cmc" class="dropzone dropzone-1 drop-file" />
+										<div class="for-delete-cmc d-none">
+											<div class="middle d-flex justify-content-center align-items-center">
+												<button type="button" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle" data-doc="cmc"><i class="fa fa-edit"></i></button>
+												<button type="button" class="btn btn-sm mr-1 btn-icon btn-danger remove-file rounded-circle" data-doc="cmc"><i class="fa fa-trash"></i></button>
+											</div>
+										</div>
+										<canvas id="cmc-preview" class="d-none" width="150"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane fade" id="tab3Id" role="tabpanel">
+							<div class="form-group mb-3">
+								<label for="form-label">Document Name <span class="text-danger">*</span></label>
+								<input type="text" id="temp-name" name="documents[temp_name]" placeholder="Document Name" class="form-control">
+							</div>
+							<div class="form-group mb-0">
+								<label class="col-form-label">Upload Document <span class="text-danger">*</span></label>
+								<div class="">
+									<div class="dropzone-wrapper mr-2 d-flex justify-content-center align-items-center" style="height: 250px;">
+										<div class="dropzone-desc dropzone-desc-temp">
+											<i class="fa fa-upload"></i>
+											<p>Choose an PDF file or drag it here.</p>
+										</div>
+										<input type="file" id="temp-file" name="temp_file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" data-doc="temp" class="dropzone dropzone-1 drop-file" />
+										<div class="for-delete-temp d-none">
+											<div class="middle d-flex justify-content-center align-items-center">
+												<button type="button" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle" data-doc="temp"><i class="fa fa-edit"></i></button>
+												<button type="button" class="btn btn-sm mr-1 btn-icon btn-danger remove-file rounded-circle" data-doc="temp"><i class="fa fa-trash"></i></button>
+											</div>
+										</div>
+										<canvas id="temp-preview" class="d-none" width="150"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane fade" id="tab4Id" role="tabpanel">
+							<div class="form-group mb-3">
+								<label for="form-label">Document Name <span class="text-danger">*</span></label>
+								<input type="text" id="ublk-name" name="documents[ublk_name]" placeholder="Document Name" class="form-control">
+							</div>
+							<div class="form-group mb-0">
+								<label class="col-form-label">Upload Document <span class="text-danger">*</span></label>
+								<div class="">
+									<div class="dropzone-wrapper mr-2 d-flex justify-content-center align-items-center" style="height: 250px;">
+										<div class="dropzone-desc dropzone-desc-ublk">
+											<i class="fa fa-upload"></i>
+											<p>Choose an PDF file or drag it here.</p>
+										</div>
+										<input type="file" id="ublk-file" name="ublk_file" accept="application/pdf" data-doc="ublk" class="dropzone dropzone-1 drop-file" />
+										<div class="for-delete-ublk d-none">
+											<div class="middle d-flex justify-content-center align-items-center">
+												<button type="button" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle" data-doc="ublk"><i class="fa fa-edit"></i></button>
+												<button type="button" class="btn btn-sm mr-1 btn-icon btn-danger remove-file rounded-circle" data-doc="ublk"><i class="fa fa-trash"></i></button>
+											</div>
+										</div>
+										<canvas id="ublk-preview" class="d-none" width="150"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="tab-pane fade" id="tab5Id" role="tabpanel">
+							<div class="form-group mb-3">
+								<label for="form-label">Document Name <span class="text-danger">*</span></label>
+								<input type="text" id="sert-name" name="documents[sert_name]" placeholder="Document Name" class="form-control">
+							</div>
+							<div class="form-group mb-0">
+								<label class="col-form-label">Upload Document <span class="text-danger">*</span></label>
+								<div class="">
+									<div class="dropzone-wrapper mr-2 d-flex justify-content-center align-items-center" style="height: 250px;">
+										<div class="dropzone-desc dropzone-desc-sert">
+											<i class="fa fa-upload"></i>
+											<p>Choose an PDF file or drag it here.</p>
+										</div>
+										<input type="file" id="sert-file" name="sert_file" accept="application/pdf" data-doc="sert" class="dropzone dropzone-1 drop-file" />
+										<div class="for-delete-sert d-none">
+											<div class="middle d-flex justify-content-center align-items-center">
+												<button type="button" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle" data-doc="sert"><i class="fa fa-edit"></i></button>
+												<button type="button" class="btn btn-sm mr-1 btn-icon btn-danger remove-file rounded-circle" data-doc="sert"><i class="fa fa-trash"></i></button>
+											</div>
+										</div>
+										<canvas id="sert-preview" class="d-none" width="150"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="tab6Id" role="tabpanel">
+							<div class="form-group mb-3">
+								<label for="form-label">Document Name <span class="text-danger">*</span></label>
+								<input type="text" id="drift-name" name="documents[drift_name]" placeholder="Document Name" class="form-control">
+							</div>
+							<div class="form-group mb-0">
+								<label class="col-form-label">Upload Document <span class="text-danger">*</span></label>
+								<div class="">
+									<div class="dropzone-wrapper mr-2 d-flex justify-content-center align-items-center" style="height: 250px;">
+										<div class="dropzone-desc dropzone-desc-drift">
+											<i class="fa fa-upload"></i>
+											<p>Choose an PDF file or drag it here.</p>
+										</div>
+										<input type="file" id="drift-file" name="drift_file" accept="application/pdf" data-doc="drift" class="dropzone dropzone-1 drop-file" />
+										<div class="for-delete-drift d-none">
+											<div class="middle d-flex justify-content-center align-items-center">
+												<button type="button" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle" data-doc="drift"><i class="fa fa-edit"></i></button>
+												<button type="button" class="btn btn-sm mr-1 btn-icon btn-danger remove-file rounded-circle" data-doc="drift"><i class="fa fa-trash"></i></button>
+											</div>
+										</div>
+										<canvas id="drift-preview" class="d-none" width="150"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="tab7Id" role="tabpanel">
+							<div class="form-group mb-3">
+								<label for="form-label">Document Name <span class="text-danger">*</span></label>
+								<input type="text" id="sertcal-name" name="documents[sertcal_name]" placeholder="Document Name" class="form-control">
+							</div>
+							<div class="form-group mb-0">
+								<label class="col-form-label">Upload Document <span class="text-danger">*</span></label>
+								<div class="">
+									<div class="dropzone-wrapper mr-2 d-flex justify-content-center align-items-center" style="height: 250px;">
+										<div class="dropzone-desc dropzone-desc-sertcal">
+											<i class="fa fa-upload"></i>
+											<p>Choose an PDF file or drag it here.</p>
+										</div>
+										<input type="file" id="sertcal-file" name="sertcal_file" accept="application/pdf" data-doc="sertcal" class="dropzone dropzone-1 drop-file" />
+										<div class="for-delete-sertcal d-none">
+											<div class="middle d-flex justify-content-center align-items-center">
+												<button type="button" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle" data-doc="sertcal"><i class="fa fa-edit"></i></button>
+												<button type="button" class="btn btn-sm mr-1 btn-icon btn-danger remove-file rounded-circle" data-doc="sertcal"><i class="fa fa-trash"></i></button>
+											</div>
+										</div>
+										<canvas id="sertcal-preview" class="d-none" width="150"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="tab8Id" role="tabpanel">
+							<div class="form-group mb-3">
+								<label for="form-label">Document Name <span class="text-danger">*</span></label>
+								<input type="text" id="cek-name" name="documents[cek_name]" placeholder="Document Name" class="form-control">
+							</div>
+							<div class="form-group mb-0">
+								<label class="col-form-label">Upload Document <span class="text-danger">*</span></label>
+								<div class="">
+									<div class="dropzone-wrapper mr-2 d-flex justify-content-center align-items-center" style="height: 250px;">
+										<div class="dropzone-desc dropzone-desc-cek">
+											<i class="fa fa-upload"></i>
+											<p>Choose an PDF file or drag it here.</p>
+										</div>
+										<input type="file" id="cek-file" name="cek_file" accept="application/pdf" data-doc="cek" class="dropzone dropzone-1 drop-file" />
+										<div class="for-delete-cek d-none">
+											<div class="middle d-flex justify-content-center align-items-center">
+												<button type="button" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle" data-doc="cek"><i class="fa fa-edit"></i></button>
+												<button type="button" class="btn btn-sm mr-1 btn-icon btn-danger remove-file rounded-circle" data-doc="cek"><i class="fa fa-trash"></i></button>
+											</div>
+										</div>
+										<canvas id="cek-preview" class="d-none" width="150"></canvas>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="tab9Id" role="tabpanel">
+							<div class="form-group mb-3">
+								<label for="form-label">Video Name <span class="text-danger">*</span></label>
+								<input type="text" id="video-name" name="documents[video_name]" placeholder="Video Name" class="form-control">
+							</div>
+							<div class="form-group mb-0">
+								<label class="col-form-label">Upload Video <span class="text-danger">*</span></label>
+								<div class="">
+									<div class="dropzone-wrapper mr-2 d-flex justify-content-center align-items-center" style="height: 250px;">
+										<div class="dropzone-desc dropzone-desc-video">
+											<i class="fa fa-upload"></i>
+											<p>Choose an Video file or drag it here.</p>
+										</div>
+										<input type="file" id="video-file" name="video_file" accept="video/mp4" class="dropzone dropzone-1 drop-video" />
+										<!-- <input class="remove-video" name="remove-video" type="hidden"> -->
+										<video id="video-preview" width="290" class="d-none" controlsList="nodownload" oncontextmenu="return false" height="180">
+										</video>
+										<div class="for-delete-video d-none">
+											<div class="middle d-flex justify-content-center align-items-center">
+												<!-- <button type="button" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle"><i class="fa fa-edit"></i></button> -->
+												<button type="button" class="btn btn-sm mr-1 btn-icon btn-danger rounded-circle" id="remove-video"><i class="fa fa-trash"></i></button>
+												<!-- <button type="button" class="btn btn-sm btn-icon mb-3 btn-light-danger <?= ($data->video) ? '' : 'd-none'; ?>"><i class="fa fa-times"></i></button> -->
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-				</div>
-				<div class="modal-footer py-2">
-					<button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+					<div class="modal-footer py-2">
+						<button type="button" class="btn btn-primary w-100px" data-dismiss="modal">OK</button>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
 </form>
 
+<!-- Modal -->
+<div class="modal fade" id="modelVideo" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true" style="background-color: rgba(0,0,0,0.9);">
+	<div class="modal-dialog align-items-center modal-xl justify-content-center" role="document">
+		<div class="modal-content bg-transparent">
+			<div class="modal-header bg-transparent py-2 px-0">
+				<span>&nbsp;</span>
+				<button type="button" onclick="$('.modal-video').html('')" class="btn btn-icon btn-xs" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true"><i class="fa fa-times text-white" aria-hidden="true"></i></span>
+				</button>
+			</div>
+			<div class="modal-video"></div>
+		</div>
+	</div>
+</div>
 <script>
 	$(document).ready(function() {
 		$('.select2').select2({
@@ -497,7 +753,6 @@
 		})
 
 	})
-
 
 	$(document).on('click', '#add-range', function() {
 		const element = `
@@ -523,7 +778,6 @@
 		const publish_date = $('#publish_date').val()
 		const revision_date = $('#revision_date').val()
 		const revision_number = $('#revision_number').val()
-		// const document = $('#pdf-file').val()
 		const btn = $(this)
 
 		$('select#group_id').next().find('span.selection .select2-selection.select2-selection--single').removeClass('is-invalid')
@@ -533,7 +787,6 @@
 		}
 
 		$('#name').removeClass('is-invalid')
-
 		if (!name) {
 			$('#name').addClass('is-invalid')
 			return false;
@@ -571,14 +824,104 @@
 			return false;
 		}
 
-		// if (!document) {
-		// 	$('#pdf-file').addClass('is-invalid')
-		// 	Swal.fire('Warning!', "File or Document can't be empty. Please upload document first.", 'warning', 3000)
-		// 	return false;
-		// }
+		/* IK */
+		const ik_doc = $('#ik-file').val()
+		const ik_name = $('#ik-name').val()
 
-		// $('#name-file').removeClass('is-invalid')
+		$('#ik-name').removeClass('is-invalid')
+		if (ik_doc && !ik_name) {
+			$('#ik-name').addClass('is-invalid')
+			Swal.fire('Warning!', "Document Name IK can't be empty.", 'warning', 3000)
+			return false;
+		}
 
+		/* CMC */
+		const cmc_doc = $('#cmc-file').val()
+		const cmc_name = $('#cmc-name').val()
+
+		$('#cmc-name').removeClass('is-invalid')
+		if (cmc_doc && !cmc_name) {
+			$('#cmc-name').addClass('is-invalid')
+			Swal.fire('Warning!', "Document Name CMC can't be empty.", 'warning', 3000)
+			return false;
+		}
+
+		/* Template */
+		const temp_doc = $('#temp-file').val()
+		const temp_name = $('#temp-name').val()
+
+		$('#temp-name').removeClass('is-invalid')
+		if (temp_doc && !temp_name) {
+			$('#temp-name').addClass('is-invalid')
+			Swal.fire('Warning!', "Document Name Template can't be empty.", 'warning', 3000)
+			return false;
+		}
+
+		/* UBLK */
+		const ublk_doc = $('#ublk-file').val()
+		const ublk_name = $('#ublk-name').val()
+
+		$('#ublk-name').removeClass('is-invalid')
+		if (ublk_doc && !ublk_name) {
+			$('#ublk-name').addClass('is-invalid')
+			Swal.fire('Warning!', "Document Name UBLK can't be empty.", 'warning', 3000)
+			return false;
+		}
+
+		/* SERTIFIKAT */
+		const sert_doc = $('#sert-file').val()
+		const sert_name = $('#sert-name').val()
+
+		$('#sert-name').removeClass('is-invalid')
+		if (sert_doc && !sert_name) {
+			$('#sert-name').addClass('is-invalid')
+			Swal.fire('Warning!', "Document Name Format Sertifikat can't be empty.", 'warning', 3000)
+			return false;
+		}
+
+		/* Analisa Drift */
+		const drift_doc = $('#drift-file').val()
+		const drift_name = $('#drift-name').val()
+
+		$('#drift-name').removeClass('is-invalid')
+		if (drift_doc && !drift_name) {
+			$('#drift-name').addClass('is-invalid')
+			Swal.fire('Warning!', "Document Name Analisa Drift can't be empty.", 'warning', 3000)
+			return false;
+		}
+
+		/* Sertifikat Kalibrator */
+		const sertcal_doc = $('#sertcal-file').val()
+		const sertcal_name = $('#sertcal-name').val()
+
+		$('#sertcal-name').removeClass('is-invalid')
+		if (sertcal_doc && !sertcal_name) {
+			$('#drift-name').addClass('is-invalid')
+			Swal.fire('Warning!', "Document Name Sertifikat Kalibrator can't be empty.", 'warning', 3000)
+			return false;
+		}
+
+		/* Cek Antara */
+		const cek_doc = $('#cek-file').val()
+		const cek_name = $('#cek-name').val()
+
+		$('#cek-name').removeClass('is-invalid')
+		if (cek_doc && !cek_name) {
+			$('#drift-name').addClass('is-invalid')
+			Swal.fire('Warning!', "Document Name Cek Antara can't be empty.", 'warning', 3000)
+			return false;
+		}
+
+		/* VIDEO */
+		const video_file = $('#video-file').val()
+		const video_name = $('#video-name').val()
+
+		$('#video-name').removeClass('is-invalid')
+		if (video_file && !video_name) {
+			$('#video-name').addClass('is-invalid')
+			Swal.fire('Warning!', "Video Name can't be empty.", 'warning', 3000)
+			return false;
+		}
 
 		const formdata = new FormData($('#form-upload')[0])
 		$.ajax({
@@ -613,89 +956,26 @@
 
 	$(document).on('click', '.add-file', function() {
 		$('#modelId').modal('show')
-		// $('#modelId .modal-body').load(siteurl + active_controller + 'upload')
+	})
+
+	$(document).on('click', '.view_video', function() {
+		let id = $(this).data('id')
+		$('#modelVideo .modal-video').load(siteurl + active_controller + 'view_video/' + id)
+		$('#modelVideo').modal('show')
 	})
 
 	/* DROPZONE */
-
 	var _PDF_DOC,
-		_CANVAS = document.querySelector('#ik-preview'),
 		_OBJECT_URL;
-
-	function remove_file_ik(e) {
-		$("#remove-document").val('x');
-		$("#ik-preview").addClass('d-none');
-		$(".for-delete-ik").addClass('d-none');
-		$('.dropzone-desc-ik').removeClass('d-none')
-
-		// reset to no selection
-		$("#ik-file").val('');
-	}
-
-	function showPDF(pdf_url) {
-
-		PDFJS.getDocument({
-			url: pdf_url
-		}).then(function(pdf_doc) {
-			_PDF_DOC = pdf_doc;
-
-			// Show the first page
-			showPage(1);
-
-			// destroy previous object url
-			URL.revokeObjectURL(_OBJECT_URL);
-		}).catch(function(error) {
-			// trigger Cancel on error
-			$("#cancel-pdf").click();
-
-			// error reason
-			alert(error.message);
-		});;
-	}
-
-	function showPage(page_no) {
-		var _CANVAS = document.querySelector('#ik-preview');
-		// fetch the page
-		// console.log(page_no);
-		console.log(_PDF_DOC.getPage(page_no));
-		_PDF_DOC.getPage(page_no).then(function(page) {
-			// set the scale of viewport
-			var scale_required = _CANVAS.width / page.getViewport(1).width;
-
-			// get viewport of the page at required scale
-			var viewport = page.getViewport(scale_required);
-
-			// set canvas height
-			_CANVAS.height = viewport.height;
-
-			var renderContext = {
-				canvasContext: _CANVAS.getContext('2d'),
-				viewport: viewport
-			};
-
-			// render the page contents in the canvas
-			page.render(renderContext).then(function() {
-				$("#ik-preview").removeClass('d-none');
-				$(".for-delete-ik").removeClass('d-none');
-				$('.dropzone-desc-ik').addClass('d-none')
-				// $("#pdf-loader").css('display', 'none');
-			});
-		});
-	}
-
-	$(document).on('click', '.change-image', function() {
-		$('#ik-file').click()
-	})
-
 	/* Selected File has changed */
-	$(document).on('change', "#ik-file", function() {
+	$(document).on('change', ".drop-file", function() {
 
 		// user selected file
 		var file = $(this)[0].files[0];
-
+		var doc = $(this).data('doc')
 		// allowed MIME types
-		var mime_types = ['application/pdf'];
 
+		var mime_types = ['application/pdf', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
 		// Validate whether PDF
 		if (mime_types.indexOf(file.type) == -1) {
 			alert('Error : Incorrect file type');
@@ -730,54 +1010,65 @@
 		_OBJECT_URL = URL.createObjectURL(file)
 
 		// send the object url of the pdf to the PDF preview function
-		showPDF(_OBJECT_URL);
+		if (file.type == 'application/pdf') {
+			showPDF(_OBJECT_URL, doc);
+		} else {
+			drawImage(doc);
+		}
 	});
 
-	/* Reset file input */
-	$(document).on('click', "#cancel-pdf,.remove-image", function() {
-		// show upload dialog button
-		$("#upload-dialog").css('display', 'inline-block');
-
-		// reset to no selection
-		$("#pdf-file").val('');
-
-		// hide elements that are not required
-		$("#pdf-name").css('display', 'none');
-		$("#pdf-preview").css('display', 'none');
-		$("#pdf-loader").css('display', 'none');
-		$("#cancel-pdf").addClass('d-none');
-		$("#upload-button").css('display', 'none');
-	});
-
-	$(document).on('click', "#remove-file", function() {
-		// show upload dialog button
-		$("#upload-dialog").css('display', 'inline-block');
-		$("#remove-document").val('x');
-
-		// reset to no selection
-		$("#pdf-file").val('');
-
-		// hide elements that are not required
-		$("#pdf-name").css('display', 'none');
-		$("#pdf-preview").css('display', 'none');
-		$("#pdf-loader").css('display', 'none');
-		$("#cancel-pdf").addClass('d-none');
-		$("#upload-button").css('display', 'none');
-	});
-
-	/* Upload file to server */
-	$(document).on('click', "#upload-button", function() {
-		// AJAX request to server
-		alert('This will upload file to server');
-	});
-
-
-	/* UPLOAD VIDEO */
-	$(document).on('click', '#upload-video', function() {
-		$('#video-file').click();
+	$(document).on('click', '.change-image', function() {
+		let doc = $(this).data('doc')
+		$('#' + doc + '-file').click()
 	})
 
-	$(document).on('change', '#video-file', function() {
+	/* Reset file input */
+	$(document).on('click', "#cancel-pdf,.remove-file", function() {
+		let doc = $(this).data('doc')
+		// $("#remove-document").val('x');
+		$("#" + doc + "-preview").addClass('d-none');
+		$(".for-delete-" + doc).addClass('d-none');
+		$('.dropzone-desc-' + doc).removeClass('d-none')
+
+		// reset to no selection
+		$("#" + doc + "-file").val('');
+
+		// show upload dialog button
+		// $("#upload-dialog").css('display', 'inline-block');
+
+		// reset to no selection
+		// $("#pdf-file").val('');
+
+		// hide elements that are not required
+		// $("#pdf-name").css('display', 'none');
+		// $("#pdf-preview").css('display', 'none');
+		// $("#pdf-loader").css('display', 'none');
+		// $("#cancel-pdf").addClass('d-none');
+		// $("#upload-button").css('display', 'none');
+	});
+
+	// $(document).on('click', "#remove-file", function() {
+	// 	// show upload dialog button
+	// 	$("#upload-dialog").css('display', 'inline-block');
+	// 	$("#remove-document").val('x');
+
+	// 	// reset to no selection
+	// 	$("#pdf-file").val('');
+
+	// 	// hide elements that are not required
+	// 	$("#pdf-name").css('display', 'none');
+	// 	$("#pdf-preview").css('display', 'none');
+	// 	$("#pdf-loader").css('display', 'none');
+	// 	$("#cancel-pdf").addClass('d-none');
+	// 	$("#upload-button").css('display', 'none');
+	// });
+
+	/* UPLOAD VIDEO */
+	// $(document).on('click', '.drop-video', function() {
+	// 	$('#video-file').click();
+	// })
+
+	$(document).on('change', '.drop-video', function() {
 		let file = $(this)[0].files[0];
 
 		// allowed MIME types
@@ -796,20 +1087,104 @@
 		}
 
 		let blobURL = URL.createObjectURL(file);
-		console.log(blobURL);
 		$("#video-preview").attr('src', blobURL).removeClass('d-none');
-		$('#remove-video').removeClass('d-none')
+		$('.for-delete-video').removeClass('d-none');
+		$('.dropzone-desc-video').addClass('d-none')
 	})
 
 	$(document).on('click', '#remove-video', function() {
-		$('#remove-video').addClass('d-none')
+		$('.for-delete-video').addClass('d-none');
 		$("#video-preview").attr('src', '').addClass('d-none');
 		$("#video-file").val('');
+		$('.dropzone-desc-video').removeClass('d-none')
 	})
 
-	function remove_video(e) {
-		$(".remove-video").val('x');
-		// reset to no selection
-		$("#video-file").val('');
+	function showPDF(pdf_url, doc) {
+		PDFJS.getDocument({
+			url: pdf_url
+		}).then(function(pdf_doc) {
+			_PDF_DOC = pdf_doc;
+
+			// Show the first page
+			showPage(1, doc);
+
+			// destroy previous object url
+			URL.revokeObjectURL(_OBJECT_URL);
+		}).catch(function(error) {
+			// trigger Cancel on error
+			// $("#cancel-pdf").click();
+
+			// error reason
+			alert(error.message);
+		});;
+	}
+
+	function showPage(page_no, doc) {
+		var _CANVAS = document.querySelector('#' + doc + '-preview')
+		// fetch the page
+		// console.log(page_no);
+		// console.log(_PDF_DOC.getPage(page_no));
+		_PDF_DOC.getPage(page_no).then(function(page) {
+			// set the scale of viewport
+			var scale_required = _CANVAS.width / page.getViewport(1).width;
+
+			// get viewport of the page at required scale
+			var viewport = page.getViewport(scale_required);
+
+			// set canvas height
+			_CANVAS.height = viewport.height;
+
+			var renderContext = {
+				canvasContext: _CANVAS.getContext('2d'),
+				viewport: viewport
+			};
+
+			// render the page contents in the canvas
+			page.render(renderContext).then(function() {
+				$('#' + doc + '-preview').removeClass('d-none');
+				$('.for-delete-' + doc).removeClass('d-none');
+				$('.dropzone-desc-' + doc + '').addClass('d-none')
+				// $("#pdf-loader").css('display', 'none');
+			});
+		});
+	}
+
+	function showImage(file, doc) {
+		var _CANVAS = document.querySelector('#' + doc + '-preview')
+		// _CANVAS.src = src;
+		// preview.style.display = "block";
+
+
+		var scale_required = _CANVAS.width / file.getViewport(1).width;
+
+		// get viewport of the page at required scale
+		var viewport = file.getViewport(scale_required);
+
+		// set canvas height
+		_CANVAS.height = viewport.height;
+
+		var renderContext = {
+			canvasContext: _CANVAS.getContext('2d'),
+			viewport: viewport
+		};
+
+		// render the page contents in the canvas
+		file.render(renderContext).then(function() {
+			$('#' + doc + '-preview').removeClass('d-none');
+			$('.for-delete-' + doc).removeClass('d-none');
+			$('.dropzone-desc-' + doc + '').addClass('d-none')
+		});
+	}
+
+	function drawImage(doc) {
+		var _CANVAS = $('#' + doc + '-preview')[0].getContext("2d"),
+			img = new Image();
+		img.onload = function() {
+			_CANVAS.drawImage(img, -30, 0, 220, 150);
+			$('#' + doc + '-preview').removeClass('d-none');
+			$('.for-delete-' + doc).removeClass('d-none');
+			$('.dropzone-desc-' + doc + '').addClass('d-none')
+		};
+		img.src = siteurl + "assets/images/excel.png";
 	}
 </script>

@@ -449,79 +449,86 @@ class Guides extends Admin_Controller
 		}
 	}
 
-	private function _getIDDoc($company)
+	private function _getIDDoc($company, $doc)
 	{
+		$company 	= sprintf('%02d', $company);
 		$count 	= 1;
 		$y 		= date('y');
 		$m 		= date('m');
-		$max 	= $this->db->select('MAX(RIGHT(id,4)) as id')->get_where('guide_documents', ['SUBSTR(id,4,1)' => $company, 'SUBSTR(id,7,2)' => $y, 'SUBSTR(id,9,2)' => $m])->row();
+		$max 	= $this->db->select('MAX(RIGHT(id,4)) as id')->get_where('guide_documents', ['SUBSTR(id,4,2)' => $company, 'SUBSTR(id,7,1)' => $doc, 'SUBSTR(id,8,2)' => $y, 'SUBSTR(id,10,2)' => $m])->row();
 
 		if ($max->id > 0) {
 			$count = $max->id + 1;
 		}
-		$companyCode 	= sprintf('%02d', $company);
 		$counter 		= sprintf('%04d', $count);
-		return "DOC$companyCode-$y$m-$counter";
+		return "DOC$company-$doc$y$m-$counter";
 	}
 
 	private function _uploadFiles($id)
 	{
-		$post 				= $this->input->post();
+		$this->_DocsUploads('ik_file', 'ik_name', 'IK', 1, $id);
+		$this->_DocsUploads('cmc_file', 'cmc_name', 'CMC', 2, $id);
+		$this->_DocsUploads('temp_file', 'temp_name', 'TEMPLATE', 3, $id);
+		$this->_DocsUploads('ublk_file', 'ublk_name', 'UBLK', 4, $id);
+		$this->_DocsUploads('sert_file', 'sert_name', 'FORMAT_SERTIFIKAT', 5, $id);
+		$this->_DocsUploads('drift_file', 'drift_name', 'ANALISA_DRIFT', 6, $id);
+		$this->_DocsUploads('sertcal_file', 'sertcal_name', 'SERTIFIKAT_KALIBRATOR', 7, $id);
+		$this->_DocsUploads('cek_file', 'cek_name', 'CEK_ANTARA', 8, $id);
+		$this->_DocsUploads('video_file', 'video_name', 'VIDEO', 9, $id);
+	}
 
-		$company 			=  $this->company;
-		$data['id']			= $this->_getIDDoc($company); // DOC01-2305-0001;
-		$data['guide_detail_data_id'] = $id;
-		$data['name'] 		= $post['documents']['ik_name'];
-		$data['ext'] 		= 'pdf';
-		$data['file_type'] 	= '1';
-		$data['created_by'] = $this->auth->user_id();
-		$data['created_at'] = date('Y-m-d H:i:s');
+	private function _DocsUploads($FILE, $NAME, $DIR, $CODE, $id)
+	{
+		$post 	= $this->input->post();
+		if (isset($FILE)) {
+			if ($_FILES[$FILE]['name']) {
+				$data['id']			= $this->_getIDDoc($this->company, $CODE); // DOC01-12305-0001;
+				$data['guide_detail_data_id'] = $id;
+				$data['name'] 		= $post['documents'][$NAME];
+				$data['ext'] 		= end((explode(".", $_FILES[$FILE]['name'])));
+				$data['file_type'] 	= $CODE;
+				$data['created_by'] = $this->auth->user_id();
+				$data['created_at'] = date('Y-m-d H:i:s');
+				$DIR_COMP = $this->company;
+				if (!is_dir("./directory/MASTER_GUIDES/$DIR_COMP/$DIR")) {
+					mkdir("./directory/MASTER_GUIDES/$DIR_COMP/$DIR", 0755, TRUE);
+					chmod("./directory/MASTER_GUIDES/$DIR_COMP/$DIR", 0755);  // octal; correct value of mode
+					chown("./directory/MASTER_GUIDES/$DIR_COMP/$DIR", 'www-data');
+				}
 
-		if ($_FILES['ik_file']['name']) {
-			$DIR_COMP = $this->company;
-			if (!is_dir("./directory/MASTER_GUIDES/$DIR_COMP/IK")) {
-				mkdir("./directory/MASTER_GUIDES/$DIR_COMP/IK", 0755, TRUE);
-				chmod("./directory/MASTER_GUIDES/$DIR_COMP/IK", 0755);  // octal; correct value of mode
-				chown("./directory/MASTER_GUIDES/$DIR_COMP/IK", 'www-data');
-			}
+				$config['upload_path'] 		= "./directory/MASTER_GUIDES/$DIR_COMP/$DIR"; //path folder
+				$config['allowed_types'] 	= 'pdf|xlsx|xls|mp4'; //type yang dapat diakses bisa anda sesuaikan
+				$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
+				$this->upload->initialize($config);
+				$this->upload->do_upload($FILE);
+				$file 			= $this->upload->data();
+				$data['file']	= $file['file_name'];
 
-			$config['upload_path'] 		= "./directory/MASTER_GUIDES/$DIR_COMP/IK"; //path folder
-			$config['allowed_types'] 	= 'pdf'; //type yang dapat diakses bisa anda sesuaikan
-			$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
-			$this->upload->initialize($config);
-			$this->upload->do_upload('ik_file');
-			$file 			= $this->upload->data();
-			$data['file']	= $file['file_name'];
-
-			if ($this->upload->display_errors()) {
-				$error_msg = $this->upload->display_errors();
-				$this->db->trans_rollback();
-				$Return = [
-					'status' => 0,
-					'msg'	 => $error_msg
-				];
-
-				echo json_encode($Return);
-				return false;
-			} else {
-				$this->db->insert('guide_documents', $data);
-				$error = $this->db->error();
-				echo '<pre>';
-				print_r($this->db->trans_status());
-				print_r($error);
-				echo '</pre>';
-				exit;
-				if ($this->db->trans_status() === FALSE) {
+				if ($this->upload->display_errors()) {
+					$error_msg = $this->upload->display_errors();
 					$this->db->trans_rollback();
 					$Return = [
 						'status' => 0,
-						'msg'	 => 'Failed upload document file. Please try again later.!'
+						'msg'	 => $error_msg
 					];
-					if (file_exists("./directory/MASTER_GUIDES/VIDEO/$DIR_COMP/IK/" . $data['file'])) {
-						unlink("./directory/MASTER_GUIDES/VIDEO/$DIR_COMP/IK/" . $data['file']);
-					}
 					echo json_encode($Return);
 					return false;
+				} else {
+					$this->db->insert('guide_documents', $data);
+					$error = $this->db->error();
+					if ($this->db->trans_status() === FALSE) {
+						$this->db->trans_rollback();
+						$Return = [
+							'status' => 0,
+							'msg'	 => 'Failed upload document file. Please try again later.!' . $error['message']
+						];
+
+						if (file_exists("./directory/MASTER_GUIDES/$DIR_COMP/$DIR/" . $data['file'])) {
+							unlink("./directory/MASTER_GUIDES/$DIR_COMP/$DIR/" . $data['file']);
+						}
+						echo json_encode($Return);
+						return false;
+					}
 				}
 			}
 		}
@@ -529,18 +536,39 @@ class Guides extends Admin_Controller
 
 	public function edit_file($id)
 	{
-
 		$data = [];
 		if ($id) {
-			$data 					= $this->db->get_where('guide_detail_data', ['id' => $id])->row();
-			$group_tools 	 		= $this->db->get_where('tool_scopes')->result();
-			$references 	 		= $this->db->get_where('view_standards', ['status' => 'PUB'])->result();
+			$data 			= $this->db->get_where('guide_detail_data', ['id' => $id])->row();
+			$group_tools 	= $this->db->get_where('tool_scopes')->result();
+			$references 	= $this->db->get_where('view_standards', ['status' => 'PUB'])->result();
+			$detail 		= $this->db->get_where('guide_details', ['id' => $data->guide_detail_id])->row();
+
+			$DocIK 			= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '1', 'status' => '1'])->result();
+			$DocCMC 		= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '2', 'status' => '1'])->result();
+			$DocTEMP 		= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '3', 'status' => '1'])->result();
+			$DocUBLK 		= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '4', 'status' => '1'])->result();
+			$DocSERT 		= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '5', 'status' => '1'])->result();
+			$DocDRIFT 		= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '6', 'status' => '1'])->result();
+			$DocSERTCAL 	= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '7', 'status' => '1'])->result();
+			$DocCEK 		= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '8', 'status' => '1'])->result();
+			$DocVID 		= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '9', 'status' => '1'])->result();
 
 			$this->template->set([
 				'data' 				=> $data,
 				'group_tools' 		=> $group_tools,
-				'references' 		=> $references
+				'references' 		=> $references,
+				'detail' 			=> $detail,
+				'DocIK' 			=> $DocIK,
+				'DocCMC' 			=> $DocCMC,
+				'DocTEMP' 			=> $DocTEMP,
+				'DocUBLK' 			=> $DocUBLK,
+				'DocSERT' 			=> $DocSERT,
+				'DocDRIFT' 			=> $DocDRIFT,
+				'DocSERTCAL' 		=> $DocSERTCAL,
+				'DocCEK' 			=> $DocCEK,
+				'DocVID' 			=> $DocVID,
 			]);
+
 			$this->template->render('edit');
 		} else {
 			echo "Data not found";
@@ -587,6 +615,20 @@ class Guides extends Admin_Controller
 		]);
 
 		$this->template->render('view-file');
+	}
+
+	public function view_video($id)
+	{
+		if ($id) {
+			$data = $this->db->get_where('guide_documents', ['id' => $id])->row();
+			if ($data) {
+				echo '
+				<video controls controlsList="nodownload" class="w-100" oncontextmenu="return false" style="max-width:100%">
+					<source src="' . base_url('/directory/MASTER_GUIDES/' . $this->company . '/VIDEO/' . $data->file) . '#t=5' . '" type="video/mp4" />
+				</video>
+				';
+			}
+		}
 	}
 
 	public function delete_document()
