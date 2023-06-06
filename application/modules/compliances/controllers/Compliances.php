@@ -69,12 +69,12 @@ class Compliances extends Admin_Controller
 
     public function index()
     {
-        $reference = $this->db->get_where('view_references', ['company_id' => $this->company, 'status' => 'OPN'])->row();
         $ArrUsers = [];
         $regulations = '';
         $reference = '';
         $reviews = '';
         $summary = '';
+        $reference = $this->db->get_where('view_references', ['company_id' => $this->company, 'status' => 'OPN'])->row();
 
         if ($reference) {
             $regulations = $this->db->get_where('view_ref_regulations', ['reference_id' => $reference->id])->result();
