@@ -298,19 +298,24 @@ class Guides extends Admin_Controller
 		$this->template->render('form-upload');
 	}
 
-	public function upload_file()
+	public function new_file($guide_detail_id)
 	{
-		$guide_detail_id = $this->input->get('dtl');
-		$group_tools 	 = $this->db->get_where('tool_scopes')->result();
-		$references 	 = $this->db->get_where('view_standards', ['status' => 'PUB'])->result();
+		if ($guide_detail_id) {
+			// $guide_detail_id = $this->input->post('dtl');
+			$group_tools 	 = $this->db->get_where('tool_scopes')->result();
+			$references 	 = $this->db->get_where('view_standards', ['status' => 'PUB'])->result();
+			$detail 		 = $this->db->get_where('guide_details', ['id' => $guide_detail_id])->row();
+			$this->template->set([
+				'guide_detail_id' 	=> $guide_detail_id,
+				'group_tools' 		=> $group_tools,
+				'references' 		=> $references,
+				'detail' 			=> $detail
+			]);
 
-		$this->template->set([
-			'guide_detail_id' 	=> $guide_detail_id,
-			'group_tools' 		=> $group_tools,
-			'references' 		=> $references
-		]);
-
-		$this->template->render('form');
+			$this->template->render('form');
+		} else {
+			echo "<h1>404 | Not Found!</h1>";
+		}
 	}
 
 	private function getNumber($group_id)
@@ -332,54 +337,16 @@ class Guides extends Admin_Controller
 	{
 		$data 					= $this->input->post();
 		$data['company_id']		= $this->company;
+
 		if ($data) {
 			try {
-				if (isset($data['publish_date']) && $data['revision_date']) $data['publish_date'] 	= date_format(date_create(str_replace("/", "-", $data['publish_date'])), 'Y-m-d');
-				if (isset($data['revision_date']) && $data['revision_date']) $data['revision_date'] 	= date_format(date_create(str_replace("/", "-", $data['revision_date'])), 'Y-m-d');
+				$data['publish_date'] = (isset($data['publish_date']) && $data['publish_date']) ? date_format(date_create(str_replace("/", "-", $data['publish_date'])), 'Y-m-d') : null;
+				$data['revision_date'] = (isset($data['revision_date']) && $data['revision_date']) ? date_format(date_create(str_replace("/", "-", $data['revision_date'])), 'Y-m-d') : null;
 
 				$id = isset($data['id']) ? $data['id'] : '';
 				if (!$data['number']) {
 					$data['number'] = $this->getNumber($data['group_id']);
 				}
-
-				// $old_file 					= isset($data['old_file']) ? $data['old_file'] : null;
-				// $old_video 					= isset($data['old_video']) ? $data['old_video'] : null;
-
-				// unset($data['old_file']);
-				// unset($data['old_video']);
-
-				// if ($_FILES['video']['name']) {
-				// 	if (!is_dir('./directory/MASTER_GUIDES/VIDEO/' . $DIR_COMP)) {
-				// 		mkdir('./directory/MASTER_GUIDES/VIDEO/' . $DIR_COMP, 0755, TRUE);
-				// 		chmod("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP, 0755);  // octal; correct value of mode
-				// 		chown("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP, 'www-data');
-				// 	}
-				// 	// $new_name 					= $this->fixForUri($data['description']);
-				// 	$config['upload_path'] 		= "./directory/MASTER_GUIDES/VIDEO/$DIR_COMP"; //path folder
-				// 	$config['allowed_types'] 	= 'mp4'; //type yang dapat diakses bisa anda sesuaikan
-				// 	$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
-				// 	// $config['file_name'] 		= $new_name;
-
-				// 	$this->upload->initialize($config);
-				// 	if ($this->upload->do_upload('video')) {
-				// 		$file = $this->upload->data();
-				// 		$data['video']		= $file['file_name'];
-
-				// 		if ($old_file != null) {
-				// 			if (file_exists("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP . $old_file)) {
-				// 				unlink("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP . $old_file);
-				// 			}
-				// 		}
-				// 	} else {
-				// 		$error_msg = $this->upload->display_errors();
-				// 		$Return = [
-				// 			'status' => 0,
-				// 			'msg'	 => $error_msg
-				// 		];
-				// 		echo json_encode($Return);
-				// 		return false;
-				// 	};
-				// }
 
 				$this->db->trans_begin();
 				$check = $this->db->get_where('guide_detail_data', ['id' => $id])->num_rows();
@@ -392,26 +359,11 @@ class Guides extends Admin_Controller
 					$data['created_by']		= $this->auth->user_id();
 					$data['created_at']		= date('Y-m-d H:i:s');
 					$this->db->insert('guide_detail_data', $data);
+					$newid = $this->db->order_by('id', 'desc')->get_where('guide_detail_data')->row()->id;
 				} else {
 					$data['modified_by']	= $this->auth->user_id();
 					$data['modified_at']	= date('Y-m-d H:i:s');
-
-					// if (isset($data['remove-document']) && $data['remove-document'] == 'x' && !$_FILES['documents']['name']) {
-					// 	if (file_exists("./directory/MASTER_GUIDES/" . $DIR_COMP . $old_file)) {
-					// 		unlink("./directory/MASTER_GUIDES/" . $DIR_COMP . $old_file);
-					// 	}
-					// 	$data['document']			= null;
-					// }
-
-					// if (isset($data['remove-video']) && $data['remove-video'] == 'x' && !$_FILES['video']['name']) {
-					// 	if (file_exists("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP . $old_video)) {
-					// 		unlink("./directory/MASTER_GUIDES/VIDEO/" . $DIR_COMP . $old_video);
-					// 	}
-					// 	$data['video']			= null;
-					// }
-
-					// unset($data['remove-document']);
-					// unset($data['remove-video']);
+					$newid = $id;
 					$this->db->update('guide_detail_data', $data, ['id' => $id]);
 				}
 
@@ -422,11 +374,12 @@ class Guides extends Admin_Controller
 						'msg'	 => 'Failed upload document file. Please try again later.!'
 					];
 				} else {
-					$this->_uploadFiles($id);
+					$this->_uploadFiles($newid);
 					$this->db->trans_commit();
 					$Return = [
 						'status' => 1,
-						'msg'	 => 'Success upload document file...'
+						'msg'	 => 'Success upload document file...',
+						'id'	 => $newid
 					];
 				}
 				echo json_encode($Return);

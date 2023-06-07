@@ -92,7 +92,7 @@
 								<div class="row mb-3">
 									<label class="col-4 col-form-label">Rentang Ungkur <span class="text-danger">*</span></label>
 									<div class="col-8">
-										<div class="list-range mb-2">
+										<div class="list-range mb-2 overflow-auto max-h-150px p-1 border rounded">
 											<?php if ($data->range_measure) : ?>
 												<?php foreach (json_decode($data->range_measure) as $k => $rm) : ?>
 													<?php if ($k == 0) : ?>
@@ -1046,27 +1046,6 @@
 		// $("#cancel-pdf").addClass('d-none');
 		// $("#upload-button").css('display', 'none');
 	});
-
-	// $(document).on('click', "#remove-file", function() {
-	// 	// show upload dialog button
-	// 	$("#upload-dialog").css('display', 'inline-block');
-	// 	$("#remove-document").val('x');
-
-	// 	// reset to no selection
-	// 	$("#pdf-file").val('');
-
-	// 	// hide elements that are not required
-	// 	$("#pdf-name").css('display', 'none');
-	// 	$("#pdf-preview").css('display', 'none');
-	// 	$("#pdf-loader").css('display', 'none');
-	// 	$("#cancel-pdf").addClass('d-none');
-	// 	$("#upload-button").css('display', 'none');
-	// });
-
-	/* UPLOAD VIDEO */
-	// $(document).on('click', '.drop-video', function() {
-	// 	$('#video-file').click();
-	// })
 
 	$(document).on('change', '.drop-video', function() {
 		let file = $(this)[0].files[0];

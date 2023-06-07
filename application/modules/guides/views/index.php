@@ -198,7 +198,7 @@
 								<?php else : ?>
 									<div class="d-flex justify-content-between align-items-center">
 										<div class="tools pr-3">
-											<button type="button" class="btn btn-outline-primary btn-sm upload-file" data-guide_detail_id="<?= $sub; ?>" data-cat="MAT" title="Upload New File"><i class="fa fa-upload"></i> Upload File</button>
+											<a href="<?= base_url($this->uri->segment(1) . '/new_file/' . $sub); ?>" class="btn btn-outline-primary btn-sm new-file" data-guide_detail_id="<?= $sub; ?>" data-cat="MAT" title="Upload New File"><i class="fa fa-upload"></i> New File</a>
 										</div>
 									</div>
 									<hr class="my-1">
@@ -578,18 +578,18 @@
 	})
 
 	/* UPLOAD FILES */
-	$(document).on('click', '.upload-file', function() {
-		const guide_detail_id = $(this).data('guide_detail_id')
-		$('#modalId .modal-title').text('Upload Files')
-		$('#modalId').modal('show')
-		$('#modalId .modal-dialog').addClass('modal-xl')
-		$('#modalId .modal-body').load(siteurl + active_controller + 'upload_file/?dtl=' + guide_detail_id)
-		$('.save,.save-sub-folder,.update-files')
-			.removeClass('save-sub-folder')
-			.removeClass('update-files')
-			.removeClass('save')
-			.addClass('save-files').html('<i class="fa fa-save"></i> Save')
-	})
+	// $(document).on('click', '.new-file', function() {
+	// 	const guide_detail_id = $(this).data('guide_detail_id')
+	// 	$('#modalId .modal-title').text('Upload Files')
+	// 	$('#modalId').modal('show')
+	// 	$('#modalId .modal-dialog').addClass('modal-xl')
+	// 	$('#modalId .modal-body').load(siteurl + active_controller + 'upload_file/?dtl=' + guide_detail_id)
+	// 	$('.save,.save-sub-folder,.update-files')
+	// 		.removeClass('save-sub-folder')
+	// 		.removeClass('update-files')
+	// 		.removeClass('save')
+	// 		.addClass('save-files').html('<i class="fa fa-save"></i> Save')
+	// })
 
 	$(document).on('click', '.edit-file', function() {
 		const id = $(this).data('id')
@@ -781,7 +781,6 @@
 	})
 
 	/* MUlTI */
-
 
 
 
