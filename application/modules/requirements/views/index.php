@@ -98,7 +98,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="staticBackdropLabel">View Standard</h5>
-				<span class="close" data-dismiss="modal" aria-label="Close"></span>
+				<span class="btn btn-icon btn-xs btn-light" data-dismiss="modal" aria-label="Close"><i class="fa fa-times text-secondary" aria-hidden="true"></i></span>
 			</div>
 			<div class="modal-body">
 			</div>
