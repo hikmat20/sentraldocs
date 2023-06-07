@@ -94,7 +94,7 @@
 </div>
 <!-- Modal -->
 <div class="modal fade" id="modalView" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" style="height: 100%; max-width:97%;">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="staticBackdropLabel">View Standard</h5>

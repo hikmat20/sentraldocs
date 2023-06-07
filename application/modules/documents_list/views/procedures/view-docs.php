@@ -126,7 +126,7 @@
 							<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 200px;height:200px;border:1px solid #eaeaea">
 								<div class="dropzone-desc">
 									<?php if ($docs->image_flow_1) : ?>
-										<img src="<?= base_url("image_flow/$docs->image_flow_1"); ?>" alt="image_flow_1" class="img-fluid">
+										<img src="<?= base_url("directory/FLOW_IMG/$docs->company_id/$docs->image_flow_1"); ?>" alt="image_flow_1" class="img-fluid">
 									<?php endif; ?>
 								</div>
 								<?php if ($docs->image_flow_1) : ?>
@@ -141,7 +141,7 @@
 							<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 200px;height:200px;border:1px solid #eaeaea">
 								<div class="dropzone-desc">
 									<?php if ($docs->image_flow_2) : ?>
-										<img src="<?= base_url("image_flow/$docs->image_flow_2"); ?>" alt="image_flow_2" class="img-fluid">
+										<img src="<?= base_url("directory/FLOW_IMG/$docs->company_id/$docs->image_flow_2"); ?>" alt="image_flow_2" class="img-fluid">
 									<?php endif; ?>
 								</div>
 								<?php if ($docs->image_flow_2) : ?>
@@ -156,7 +156,7 @@
 							<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 200px;height:200px;border:1px solid #eaeaea">
 								<div class="dropzone-desc">
 									<?php if ($docs->image_flow_3) : ?>
-										<img src="<?= base_url("image_flow/$docs->image_flow_3"); ?>" alt="image_flow_3" class="img-fluid">
+										<img src="<?= base_url("directory/FLOW_IMG/$docs->company_id/$docs->image_flow_3"); ?>" alt="image_flow_3" class="img-fluid">
 									<?php endif; ?>
 								</div>
 								<?php if ($docs->image_flow_3) : ?>
