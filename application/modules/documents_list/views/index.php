@@ -242,12 +242,12 @@
 
 	<!-- Modal -->
 	<div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document" style="max-width:90%">
-			<div class="modal-content" data-scroll="true" data-height="700">
-				<div class="modal-header">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document" style="height:100%;max-width:97%">
+			<div class="modal-content" data-scroll="true" data-height="100" style="min-height:100%">
+				<div class=" modal-header">
 					<h5 class="modal-title">View Document</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
+					<button type="button" class="btn btn-sm btn-icon btn-light" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true"><i class="fa fa-times text-secondary" aria-hidden="true"></i></span>
 					</button>
 				</div>
 				<div class="modal-body pt-1" id="data-file">

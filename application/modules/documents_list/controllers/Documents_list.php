@@ -269,7 +269,6 @@ class Documents_list extends Admin_Controller
 
 
 
-
 	/* PEMENUHAN */
 
 	public function compliances()
@@ -549,5 +548,75 @@ class Documents_list extends Admin_Controller
 		$this->template->set('ArrDataLink', $ArrDataLink);
 
 		$this->template->render('manual/index');
+	}
+
+
+	/* CROSS REFERENCE */
+
+	public function cross()
+	{
+		$data		= $this->db->get_where('view_cross_references', ['company_id' => $this->company])->result();
+		$this->template->set('data', $data);
+		$this->template->set('company_id', $this->company);
+		$this->template->render('cross/index');
+	}
+
+	public function cross_pasal_proses($id = '')
+	{
+		$Data 			= $this->db->get_where('view_cross_references', ['company_id' => $this->company, 'id' => $id])->row();
+		$Detail 		= $this->db->get_where('requirement_details', ['requirement_id' => $Data->standard_id])->result();
+		$DetailCross	= $this->db->get_where('view_cross_reference_details', ['reference_id' => $id])->result_array();
+		$Procedure		= array_combine(array_column($DetailCross, 'chapter_id'), array_column($DetailCross, 'procedure_id'));
+		$other_docs 	= array_combine(array_column($DetailCross, 'chapter_id'), array_column($DetailCross, 'other_docs'));
+
+		$procedures 	= $this->db->get_where('procedures', ['company_id' => $this->company, 'status !=' => 'DEL'])->result();
+		$list_procedure = [];
+		foreach ($procedures as $pro) {
+			$list_procedure[$pro->id] = $pro->name;
+		}
+
+		$this->template->set([
+			'Data' 				=> $Data,
+			'Detail' 			=> $Detail,
+			'list_procedure' 	=> $list_procedure,
+			'other_docs' 		=> $other_docs,
+			'Procedure' 		=> $Procedure,
+		]);
+
+
+		$this->template->render('cross/view');
+	}
+
+	public function cross_process_pasal($id = '')
+	{
+		$requirement = $this->db->get_where('requirements', ['company_id' => $this->company, 'id' => $id])->row();
+		$procedures 		= $this->db->get_where('procedures', ['company_id' => $this->company, 'status !=' => 'DEL'])->result();
+		$Data = [];
+		foreach ($procedures as $pr) {
+			$this->db->select('chapter,procedure_id')->from('view_cross_reference_details');
+			$this->db->where("find_in_set($pr->id, procedure_id)");
+			$this->db->where("company_id", $this->company);
+			$Data[$pr->id] = $this->db->get()->result();
+		}
+
+		// $ArrData = [];
+		// foreach ($Data as $dt) {
+		// 	$ArrData['id'][$dt->requirement_id] = $dt->requirement_id;
+		// 	$ArrData['standards'][$dt->requirement_id][] = $dt;
+		// }
+
+		// $ArrStd = [];
+		// foreach ($Data as $dtstd) {
+		// 	$ArrStd[$dtstd->requirement_id] = $dtstd;
+		// }
+
+		$this->template->set([
+			'Data' 			=> $Data,
+			'requirement' 	=> $requirement,
+			// 'ArrStd' 		=> $ArrStd,
+			'procedures' 	=> $procedures,
+		]);
+
+		$this->template->render('cross/process_to_pasal');
 	}
 }
