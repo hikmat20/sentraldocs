@@ -5,17 +5,6 @@
 				<a href="<?= base_url('dashboard'); ?>">
 					<h4 class="text-dark font-weight-bold my-1 mr-2"><i class="fa fa-home"></i></h4>
 				</a>
-				<!-- <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
-					<?php if (isset($Breadcumb)) : foreach ($Breadcumb as $bc) : ?>
-							<li class="breadcrumb-item text-muted">
-								<a href="" class="text-muted"><?= $bc->name; ?></a>
-							</li>
-					<?php endforeach;
-					endif; ?>
-					<li class="breadcrumb-item text-muted">
-						<a href="" class="text-muted"><?= $thisData->name; ?></a>
-					</li>
-				</ul> -->
 			</div>
 			<h1 class="text-white fa-3x">CROSS REFERENCE</h1>
 			<div class="row mb-10">
@@ -25,6 +14,9 @@
 			</div>
 			<div class="card shadow card-custom">
 				<div class="card-body">
+					<div class="d-flex justify-content-end">
+						<button type="button" class="btn btn-success mb-3 all-cross"><i class="fa fa-file-alt" aria-hidden="true"></i> All Cross Reference</button>
+					</div>
 					<table id="example1" class="table table-bordered table-hover table-sm datatable">
 						<thead class="text-center">
 							<tr class="text-center">
@@ -115,6 +107,26 @@
 				success: function(result) {
 					if (result) {
 						$('.modal-title').text('Cross Reference Process to Pasal')
+						$('.modal-body').html(result);
+						$('#modalForm').modal('show')
+						$('.modal-dialog').css("max-width", "90%")
+					} else {
+						Swal.fire('Warning', 'Data not valid. Please try again!', 'warning', 3000)
+					}
+				},
+				error: function() {
+					Swal.fire('Error!', 'Server timeout. Please try again!', 'error', 5000)
+				}
+			})
+		})
+
+		$(document).on('click', '.all-cross', function() {
+			$.ajax({
+				url: siteurl + active_controller + 'all_cross',
+				type: 'GET',
+				success: function(result) {
+					if (result) {
+						$('.modal-title').text('Cross Reference All ISO')
 						$('.modal-body').html(result);
 						$('#modalForm').modal('show')
 						$('.modal-dialog').css("max-width", "90%")

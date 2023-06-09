@@ -619,4 +619,42 @@ class Documents_list extends Admin_Controller
 
 		$this->template->render('cross/process_to_pasal');
 	}
+
+
+	public function all_cross()
+	{
+		$requirement  = $this->db->get_where('requirements', ['company_id' => $this->company, 'status' => '1'])->result();
+		$procedures   = $this->db->get_where('procedures', ['company_id' => $this->company, 'status !=' => 'DEL'])->result();
+		echo '<pre>';
+		print_r($requirement);
+		echo '</pre>';
+		exit;
+		$Data = [];
+		foreach ($procedures as $pr) {
+			$this->db->select('chapter,procedure_id')->from('view_cross_reference_details');
+			$this->db->where("find_in_set($pr->id, procedure_id)");
+			$this->db->where("company_id", $this->company);
+			$Data[$pr->id] = $this->db->get()->result();
+		}
+
+		// $ArrData = [];
+		// foreach ($Data as $dt) {
+		// 	$ArrData['id'][$dt->requirement_id] = $dt->requirement_id;
+		// 	$ArrData['standards'][$dt->requirement_id][] = $dt;
+		// }
+
+		// $ArrStd = [];
+		// foreach ($Data as $dtstd) {
+		// 	$ArrStd[$dtstd->requirement_id] = $dtstd;
+		// }
+
+		$this->template->set([
+			'Data' 			=> $Data,
+			'requirement' 	=> $requirement,
+			// 'ArrStd' 		=> $ArrStd,
+			'procedures' 	=> $procedures,
+		]);
+
+		$this->template->render('cross/all-cross');
+	}
 }

@@ -20,7 +20,7 @@
   <link href="<?= base_url(); ?>themes/dashboard/assets/plugins/custom/monthpicker/MonthPicker.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <script src="<?= base_url('assets/plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
-  <link href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+  <link href="<?= base_url(); ?>themes\dashboard\assets\plugins\custom\jquery-ui\jquery-ui.min.css" rel="stylesheet" type="text/css" />
 
   <script src="<?= base_url('themes/dashboard/assets/plugins/custom/pdf/pdf.js'); ?>"></script>
   <script src="<?= base_url('themes/dashboard/assets/plugins/custom/pdf/pdf.worker.js'); ?>"></script>
