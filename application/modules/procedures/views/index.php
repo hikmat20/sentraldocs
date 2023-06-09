@@ -339,7 +339,7 @@
 </div>
 
 <div class="modal fade" id="modelId" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+	<div class="modal-dialog modal-dialog-centered modal-xl" role="document" style="max-width:90%">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h6 class="modal-title">Modal title</h6>
@@ -793,6 +793,17 @@
 				$('#content_modal').load(siteurl + active_controller + 'view_form/' + id)
 				$('#modelId').modal('show')
 				$('.modal-dialog').css('max-width', '')
+			} else {
+				Swal.fire('Warning!!', 'Not available data to process', 'waring', 2000);
+			}
+		})
+
+		$(document).on('click', '.view-guide', function() {
+			const id = $(this).data('id')
+			if (id) {
+				$('.modal-title').html('View IK')
+				$('#content_modal').load(siteurl + active_controller + 'view_guide/' + id)
+				$('#modelId').modal('show')
 			} else {
 				Swal.fire('Warning!!', 'Not available data to process', 'waring', 2000);
 			}

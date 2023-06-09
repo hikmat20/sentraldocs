@@ -3,7 +3,6 @@
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 
 <head>
-
   <meta charset="utf-8" />
   <title><?= isset($idt->nm_perusahaan) ? $idt->nm_perusahaan : 'not-set'; ?><?= isset($template['title']) ? ' | ' . $template['title'] : ''; ?></title>
   <meta name="description" content="Updates and statistics" />

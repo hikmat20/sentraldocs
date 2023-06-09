@@ -264,6 +264,7 @@
 		</div>
 	</div>
 </div>
+
 <div class="modal fade" id="modalViewForm" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
 	<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
 		<div class="modal-content" data-scroll="true" data-height="700">
@@ -278,6 +279,25 @@
 			</div>
 			<div class="modal-footer py-2">
 				<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="modelId2" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document" style="max-width:90%">
+		<div class="modal-content" data-scroll="true" data-height="700">
+			<div class="modal-header">
+				<h5 class="modal-title">View Document</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body pt-1">
+				File not found
+			</div>
+			<div class="modal-footer py-2">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 			</div>
 		</div>
 	</div>
@@ -424,24 +444,43 @@
 		})
 	})
 
-	$(document).ready(function() {
-		$(document).on('click', '.view-form', function() {
-			const id = $(this).data('id') || ''
-			if (id) {
-				$('#modelId').modal('show')
-				$('#data-file').load(siteurl + active_controller + 'view_form/' + id)
-			}
-		})
+	$(document).on('click', '.view-form', function() {
+		const id = $(this).data('id') || ''
+		if (id) {
+			$('#modelId').modal('show')
+			$('#data-file').load(siteurl + active_controller + 'view_form/' + id)
+		}
 	})
 
-	$(document).ready(function() {
-		$(document).on('click', '.view-guide', function() {
-			const id = $(this).data('id') || ''
-			if (id) {
-				$('#modalViewForm').modal('show')
-				$('#modalViewForm').find('#data-file').load(siteurl + active_controller + 'view_guide/' + id)
-			}
-		})
+	$(document).on('click', '.view-guide', function() {
+		const id = $(this).data('id') || ''
+		if (id) {
+			$('#modalViewForm').modal('show')
+			$('#modalViewForm').find('#data-file').load(siteurl + active_controller + 'view_guide/' + id)
+		}
+	})
+
+
+	$(document).on('click', '.view-guide-2', function() {
+		const id = $(this).data('id')
+		if (id) {
+			$('#modelId2 .modal-title').html('View IK')
+			$('#modelId2 .modal-body').load(siteurl + active_controller + 'view_guide/' + id)
+			$('#modelId2').modal('show')
+		} else {
+			Swal.fire('Warning!!', 'Not available data to process', 'waring', 2000);
+		}
+	})
+
+	$(document).on('click', '.view-form-2', function() {
+		const id = $(this).data('id')
+		if (id) {
+			$('#modelId2 .modal-title').html('View Form')
+			$('#modelId2 .modal-body').load(siteurl + active_controller + 'view_form/' + id)
+			$('#modelId2').modal('show')
+		} else {
+			Swal.fire('Warning!!', 'Not available data to process', 'waring', 2000);
+		}
 	})
 
 	$(document).on('click', '#home', function() {

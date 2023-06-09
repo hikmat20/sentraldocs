@@ -129,7 +129,6 @@ class Cross_reference extends Admin_Controller
 		foreach ($procedures as $pro) {
 			$list_procedure[$pro['id']] = "<span class='badge badge-success m-1'>" . $pro['name'] . "</span>";
 		}
-
 		$this->template->set([
 			'DataStd' 			=> $DataStd,
 			'Data' 				=> $crossData,

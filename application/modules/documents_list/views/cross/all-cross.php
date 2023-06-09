@@ -6,7 +6,7 @@
 </style>
 
 <?php if ($requirement) foreach ($requirement as $req) : ?>
-    <h3>Standard : <?= $req->name; ?></h3>
+    <h1 class="font-weight-bolder">Standard : <?= $req->name; ?></h1>
     <table class="table table-bordered table-sm">
         <thead class="table-light">
             <tr>
@@ -16,17 +16,17 @@
             </tr>
         </thead>
         <tbody>
-            <?php if ($procedures) : ?>
+            <?php if ($Data[$req->standard_id]) : ?>
                 <?php $n = 0;
-                foreach ($procedures as $pro) : $n++; ?>
+                foreach ($Data[$req->standard_id] as $k => $pro) : $n++; ?>
                     <tr>
                         <td class="tex-center"><?= $n; ?></td>
                         <td>
-                            <h5><?= $pro->name; ?></h5>
+                            <h5><?= $ArrPro[$k]; ?></h5>
                         </td>
                         <td>
                             <ul class="pl-6">
-                                <?php if ($Data[$pro->id]) foreach ($Data[$pro->id] as $pas) : ?>
+                                <?php if ($pro) foreach ($pro as $pas) : ?>
                                     <li class="mb-0"><?= $pas->chapter; ?></li>
                                 <?php endforeach; ?>
                             </ul>
@@ -36,5 +36,6 @@
             endif; ?>
         </tbody>
     </table>
+    <br>
     <br>
 <?php endforeach; ?>

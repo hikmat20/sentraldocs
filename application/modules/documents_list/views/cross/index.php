@@ -121,9 +121,10 @@
 		})
 
 		$(document).on('click', '.all-cross', function() {
+			alert('all-cross')
 			$.ajax({
-				url: siteurl + active_controller + 'all_cross',
-				type: 'GET',
+				url: siteurl + active_controller + 'cross/all_cross',
+				type: 'POST',
 				success: function(result) {
 					if (result) {
 						$('.modal-title').text('Cross Reference All ISO')

@@ -83,7 +83,7 @@ $route['list/manual/(:any)'] = 'documents_list/find_manual/$1';
 
 /* CROSS REFERENCE */
 $route['list/cross'] = 'documents_list/cross';
-$route['list/cross/(:any)'] = 'documents_list/find_cross/$1';
+$route['list/cross/(:any)'] = 'documents_list/$1';
 
 /* List Documents */
 $route['list/(:any)/(:any)'] = 'documents_list/$1/$2';
