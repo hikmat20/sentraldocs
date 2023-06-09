@@ -30,7 +30,7 @@
 							<tr class="text-center">
 								<th class="p-2" width="40">No.</th>
 								<th class="p-2 text-left">Nama</th>
-								<th class="p-2" width="100">Action</th>
+								<th class="p-2" width="25%">Action</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -41,8 +41,8 @@
 										<td class="p-2"><?= $n; ?></td>
 										<td class="p-2 text-left"><?= $dt->name; ?></td>
 										<td class="p-2">
-											<button type="button" class="btn btn-xs btn-icon btn-primary proses_pasal" data-id="<?= $dt->standard_id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
-											<button type="button" class="btn btn-xs btn-icon btn-info pasal_proses" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
+											<button type="button" class="btn btn-primary proses_pasal" data-id="<?= $dt->standard_id; ?>" data-toggle="tooltip" title="View Data">Proses to Pasal</button>
+											<button type="button" class="btn btn-info pasal_proses" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View Data">Pasal to Proses</button>
 										</td>
 									</tr>
 							<?php endforeach;
