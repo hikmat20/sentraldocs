@@ -42,7 +42,7 @@
 										<td class="p-2 text-left"><?= $dt->name; ?></td>
 										<td class="p-2">
 											<button type="button" class="btn btn-xs btn-icon btn-primary proses_pasal" data-id="<?= $dt->standard_id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
-											<button type="button" class="btn btn-xs btn-icon btn-info pasal_proses" data-id="<?= $dt->standard_id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
+											<button type="button" class="btn btn-xs btn-icon btn-info pasal_proses" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
 										</td>
 									</tr>
 							<?php endforeach;
