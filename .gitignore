@@ -1,3 +1,13 @@
-application/config/development/
+*/config/development
+*/logs/log-*.php
+!*/logs/index.html
+*/cache/*
+!system/cache/*
+!*/cache/index.html
+!*/cache/.htaccess
+
 application/logs/*
-directory/*
+!application/logs/index.html
+!application/logs/.htaccess
+/vendor/
+/directory/
