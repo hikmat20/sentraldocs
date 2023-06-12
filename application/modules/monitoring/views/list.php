@@ -46,6 +46,7 @@
                     <?= $sts[$list->status] ?>
                   </td>
                   <td class="text-center">
+                        <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-primary btn-icon view-data btn-xs shadow-sm"><i class="fa fa-eye"></i></button>
                     <?php if (isset($ArrPosts)) : ?>
                       <?php if ($list->status == 'REV') : ?>
                         <?php if (in_array($list->reviewer_id, $ArrPosts)) : ?>
@@ -70,7 +71,6 @@
                       <?php elseif ($list->status == 'PUB') : ?>
                         <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-success btn-icon view btn-xs shadow-sm"><i class="fa fa-eye"></i></button>
                       <?php else : ?>
-                        <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-primary btn-icon view-data btn-xs shadow-sm"><i class="fa fa-eye"></i></button>
                       <?php endif; ?>
                     <?php endif; ?>
                   </td>
