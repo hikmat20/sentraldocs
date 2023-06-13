@@ -1278,16 +1278,16 @@
 				return false;
 			}
 
-			if ((distribute_id == '' && distribute_id != undefined) || (distribute_id == null && distribute_id != undefined)) {
-				$('#distribute_id').addClass('is-invalid')
-				Swal.fire({
-					title: "Error Message!",
-					text: 'Empty distribusi, please input distribusi first.....',
-					icon: "warning"
-				});
+			// if ((distribute_id == '' && distribute_id != undefined) || (distribute_id == null && distribute_id != undefined)) {
+			// 	$('#distribute_id').addClass('is-invalid')
+			// 	Swal.fire({
+			// 		title: "Error Message!",
+			// 		text: 'Empty distribusi, please input distribusi first.....',
+			// 		icon: "warning"
+			// 	});
 
-				return false;
-			}
+			// 	return false;
+			// }
 
 			if (image !== undefined && (image == '' || image == null)) {
 				$('#image').addClass('is-invalid')
@@ -1528,16 +1528,16 @@
 				return false;
 			}
 
-			if ((distribute_id == '' && distribute_id != undefined) || (distribute_id == null && distribute_id != undefined)) {
-				$('#distribute_id').addClass('is-invalid')
-				Swal.fire({
-					title: "Error Message!",
-					text: 'Empty distribusi, please input distribusi first.....',
-					icon: "warning"
-				});
+			// if ((distribute_id == '' && distribute_id != undefined) || (distribute_id == null && distribute_id != undefined)) {
+			// 	$('#distribute_id').addClass('is-invalid')
+			// 	Swal.fire({
+			// 		title: "Error Message!",
+			// 		text: 'Empty distribusi, please input distribusi first.....',
+			// 		icon: "warning"
+			// 	});
 
-				return false;
-			}
+			// 	return false;
+			// }
 
 			if (image !== undefined && (image == '' || image == null)) {
 				$('#image').addClass('is-invalid')
