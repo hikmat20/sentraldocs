@@ -117,14 +117,14 @@
         <thead>
           <tr class="table-secondary">
             <th>
-              <h3>FLOW IMAGE</h3>
+              <h3>FLOW IMAGE & FILE</h3>
             </th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>
-              <?php if ($data->image_flow_1 || $data->image_flow_2 || $data->image_flow_3) : ?>
+              <?php if ($data->image_flow_1 || $data->image_flow_2 || $data->image_flow_3 || $data->flow_file) : ?>
                 <div class="d-flex justify-content-start align-items-center">
                   <?php if ($data->image_flow_1) : ?>
                     <div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 200px;height:200px;border:1px solid #eaeaea">
