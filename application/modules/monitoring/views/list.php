@@ -44,6 +44,8 @@
                       <?= $ArrPosition[$list->reviewer_id]; ?>
                     <?php elseif ($list->status == 'APV') : ?>
                       <?= $ArrPosition[$list->approval_id]; ?>
+                    <?php elseif ($list->status == 'RVI' || $list->status == 'COR') : ?>
+                      <?= $ArrUsers[$list->prepared_by]->full_name;; ?>
                     <?php endif; ?>
                   </td>
                   <!-- <td class="text-center" style="vertical-align: middle;"><?= $list->created_at; ?></td> -->
