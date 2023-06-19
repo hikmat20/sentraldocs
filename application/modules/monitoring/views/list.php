@@ -39,14 +39,20 @@
                       <span class="h5 mb-0 pt-2"><?= $list->name; ?></span>
                     </div>
                   </td>
-                  <td class="text-center" style="vertical-align: middle;"><?= $list->reviewer_name; ?></td>
+                  <td class="text-center" style="vertical-align: middle;">
+                    <?php if ($list->status == 'REV') : ?>
+                      <?= $ArrPosition[$list->reviewer_id]; ?>
+                    <?php elseif ($list->status == 'APV') : ?>
+                      <?= $ArrPosition[$list->approval_id]; ?>
+                    <?php endif; ?>
+                  </td>
                   <!-- <td class="text-center" style="vertical-align: middle;"><?= $list->created_at; ?></td> -->
                   <!-- <td class="text-center" style="vertical-align: middle;" class="mt-1"><?= $ArrUsers[$list->created_by]->full_name; ?></td> -->
                   <td class="text-center" style="vertical-align: middle;" class="mt-1">
                     <?= $sts[$list->status] ?>
                   </td>
                   <td class="text-center">
-                        <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-primary btn-icon view-data btn-xs shadow-sm"><i class="fa fa-eye"></i></button>
+                    <button type="button" data-id="<?= $list->id; ?>" data-type="procedures" class="btn btn-primary btn-icon view-data btn-xs shadow-sm"><i class="fa fa-eye"></i></button>
                     <?php if (isset($ArrPosts)) : ?>
                       <?php if ($list->status == 'REV') : ?>
                         <?php if (in_array($list->reviewer_id, $ArrPosts)) : ?>

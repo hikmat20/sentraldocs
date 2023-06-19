@@ -150,6 +150,8 @@ class Monitoring extends Admin_Controller
 		$procedures 	= $this->db->get_where('view_procedures', ['company_id' => $this->company, 'status' => 'REV'])->result();
 		$ArrPosts 		= $this->ArrPosts;
 		$users = $this->db->get_where('users')->result();
+		$positions = $this->db->get_where('positions', ['company_id' => $this->company])->result_array();
+		$ArrPosition = array_combine(array_column($positions, 'id'), array_column($positions, 'name'));
 
 		$ArrUsers = [];
 		foreach ($users as $user) {
@@ -162,6 +164,7 @@ class Monitoring extends Admin_Controller
 			'sts'			=> $this->sts,
 			'ArrUsers'		=> $ArrUsers,
 			'ArrPosts'		=> $ArrPosts,
+			'ArrPosition'		=> $ArrPosition,
 		]);
 
 		$this->template->render('list');
@@ -215,7 +218,9 @@ class Monitoring extends Admin_Controller
 	{
 		/* CORRECTION */
 		$procedures 	= $this->db->get_where('view_procedures', ['company_id' => $this->company, 'status' => 'COR'])->result();
-		$users = $this->db->get_where('users')->result();
+		$users 			= $this->db->get_where('users')->result();
+		$positions 		= $this->db->get_where('positions', ['company_id' => $this->company])->result_array();
+		$ArrPosition 	= array_combine(array_column($positions, 'id'), array_column($positions, 'name'));
 
 		$ArrUsers = [];
 		foreach ($users as $user) {
@@ -227,6 +232,7 @@ class Monitoring extends Admin_Controller
 			'procedures' 	=> $procedures,
 			'sts'			=> $this->sts,
 			'ArrUsers'		=> $ArrUsers,
+			'ArrPosition'	=> $ArrPosition,
 			'ArrPosts'		=> $this->ArrPosts,
 		]);
 		$this->template->render('list');
@@ -291,6 +297,9 @@ class Monitoring extends Admin_Controller
 		/* APPROVAL */
 		$procedures 	= $this->db->get_where('view_procedures', ['company_id' => $this->company, 'status' => 'APV'])->result();
 		$users = $this->db->get_where('users')->result();
+		$positions = $this->db->get_where('positions', ['company_id' => $this->company])->result_array();
+		$ArrPosition = array_combine(array_column($positions, 'id'), array_column($positions, 'name'));
+		// $authority = $ArrPosition[$procedures->approval_id];
 
 		$ArrUsers = [];
 		foreach ($users as $user) {
@@ -303,6 +312,7 @@ class Monitoring extends Admin_Controller
 			'sts'			=> $this->sts,
 			'ArrUsers'		=> $ArrUsers,
 			'ArrPosts'		=> $this->ArrPosts,
+			'ArrPosition'	=> $ArrPosition,
 		]);
 		$this->template->render('list');
 	}
@@ -469,6 +479,8 @@ class Monitoring extends Admin_Controller
 			'company_id' => $this->company, 'status' => 'RVI'
 		])->result();
 		$users = $this->db->get_where('users')->result();
+		$positions 		= $this->db->get_where('positions', ['company_id' => $this->company])->result_array();
+		$ArrPosition 	= array_combine(array_column($positions, 'id'), array_column($positions, 'name'));
 
 		$ArrUsers = [];
 		foreach ($users as $user) {
@@ -480,6 +492,7 @@ class Monitoring extends Admin_Controller
 			'procedures' 	=> $procedures,
 			'sts'			=> $this->sts,
 			'ArrUsers'		=> $ArrUsers,
+			'ArrPosition'	=> $ArrPosition,
 			'ArrPosts'		=> $this->ArrPosts,
 		]);
 		$this->template->render('list');
