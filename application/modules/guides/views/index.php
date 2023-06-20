@@ -202,7 +202,7 @@
 										</div>
 									</div>
 									<hr class="my-1">
-									<table class="table py-0 table-sm table-hover datatable">
+									<table class="table py-0 table-sm nowrap table-hover datatable">
 										<thead>
 											<tr>
 												<th class="py-2" width="100">Kelompok</th>
@@ -320,7 +320,6 @@
 			lengthChange: true,
 			paging: true,
 			info: false,
-			stateSave: false,
 			pageLength: 20,
 			columnDefs: [{
 				width: 150,
