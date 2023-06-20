@@ -302,21 +302,6 @@
 </style>
 <script>
 	$(document).ready(function() {
-		$('a[data-toggle="pill"]').on('shown.bs.tab', function(e) {
-			$.fn.dataTable.tables({
-				visible: true,
-				api: true,
-				searching: false,
-				lengthChange: false,
-				paging: true,
-				info: false,
-				stateSave: true,
-				fixedHeader: true,
-				pageLength: 10,
-				scrollCollapse: true
-			}).columns.adjust();
-		});
-
 		oTable = $('.datatable').DataTable({
 			dom: 'Pfrtip',
 			searchPanes: {
