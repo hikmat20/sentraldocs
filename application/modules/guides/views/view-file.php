@@ -35,13 +35,6 @@
 						<?php endif; ?>
 					</td>
 				</tr>
-				<tr>
-					<td>Rentang Ukur</td>
-					<td>:</td>
-					<td><?php foreach (json_decode($data->range_measure) as $rm) : ?>
-							<?= "<p class='mb-2'>" . $rm . "</p>"; ?>
-						<?php endforeach; ?></td>
-				</tr>
 			</tbody>
 		</table>
 	</div>
@@ -63,6 +56,24 @@
 					<td>:</td>
 					<td><?= $data->revision_number; ?></td>
 				</tr>
+			</tbody>
+		</table>
+		<table class="table table-sm">
+			<thead class="table-light">
+				<tr>
+					<th class="p-0 text-center">Rentang Ukur</th>
+					<th class="p-0 text-center">Ketidakpastian</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php if ($ArrCombine) : ?>
+					<?php foreach ($ArrCombine as $k => $rm) : reset($ArrCombine) ?>
+						<tr>
+							<td class="text-center"><?= $k; ?></td>
+							<td class="text-center"><?= $rm; ?></td>
+						</tr>
+				<?php endforeach;
+				endif; ?>
 			</tbody>
 		</table>
 	</div>

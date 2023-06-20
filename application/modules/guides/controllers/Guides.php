@@ -352,6 +352,7 @@ class Guides extends Admin_Controller
 				$check = $this->db->get_where('guide_detail_data', ['id' => $id])->num_rows();
 
 				$data['range_measure']	= json_encode($data['range_measure']);
+				$data['uncertainty']	= json_encode($data['uncertainty']);
 				$data['methode']		= json_encode($data['methode']);
 				$data['reference']		= json_encode($data['reference']);
 				unset($data['documents']);
@@ -506,6 +507,14 @@ class Guides extends Admin_Controller
 			$DocCEK 		= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '8', 'status' => '1'])->result();
 			$DocVID 		= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '9', 'status' => '1'])->result();
 
+			$ArrRange = (json_decode($data->range_measure));
+			$ArrUncert = (json_decode($data->uncertainty));
+
+			// echo '<pre>';
+			// print_r(array_combine($ArrRange, $ArrUncert));
+			// echo '</pre>';
+			// exit;
+			$ArrCombine = array_combine($ArrRange, $ArrUncert);
 			$this->template->set([
 				'data' 				=> $data,
 				'group_tools' 		=> $group_tools,
@@ -520,6 +529,7 @@ class Guides extends Admin_Controller
 				'DocSERTCAL' 		=> $DocSERTCAL,
 				'DocCEK' 			=> $DocCEK,
 				'DocVID' 			=> $DocVID,
+				'ArrCombine' 			=> $ArrCombine,
 			]);
 
 			$this->template->render('edit');
@@ -558,6 +568,9 @@ class Guides extends Admin_Controller
 		foreach ($standards as $std) {
 			$ArrStd[$std->id] = $std->alias;
 		}
+		$ArrRange = (json_decode($data->range_measure));
+		$ArrUncert = (json_decode($data->uncertainty));
+		$ArrCombine = array_combine($ArrRange, $ArrUncert);
 
 		// $file 			= $this->db->get_where('guide_detail_data', ['id' => $id])->row();
 		$this->template->set([
@@ -565,6 +578,7 @@ class Guides extends Admin_Controller
 			'file'		=> $file,
 			'ArrStd'	=> $ArrStd,
 			'methode'	=> $methode,
+			'ArrCombine' => $ArrCombine,
 		]);
 
 		$this->template->render('view-file');

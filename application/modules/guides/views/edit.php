@@ -90,33 +90,38 @@
 									</div>
 								</div>
 								<div class="row mb-3">
-									<label class="col-4 col-form-label">Rentang Ungkur <span class="text-danger">*</span></label>
-									<div class="col-8">
-										<div class="list-range mb-2 overflow-auto max-h-150px p-1 border rounded">
-											<?php if ($data->range_measure) : ?>
-												<?php foreach (json_decode($data->range_measure) as $k => $rm) : ?>
-													<?php if ($k == 0) : ?>
-														<input type="text" name="range_measure[]" value="<?= $rm; ?>" placeholder="0mm - 0mm" class="form-control mb-2">
+									<table id="list-range" class="table table-bordered table-sm table-condensed">
+										<thead class="table-light">
+											<tr>
+												<th class="text-center py-1">Rentang Ukur <span class="text-danger">*</span></th>
+												<th class="text-center py-1">Ketidakpastian</th>
+												<th class="text-center py-1">Opsi</th>
+											</tr>
+										</thead>
+										<tbody>
+											<?php if ($ArrCombine) : ?>
+												<?php foreach ($ArrCombine as $k => $rm) : reset($ArrCombine) ?>
+													<?php if (array_values(array_slice($ArrCombine, 0, 1))[0] == $rm) : ?>
+														<tr>
+															<td><input type="text" name="range_measure[]" value="<?= $k; ?>" placeholder="0mm - 0mm" class="form-control border-0 mb-0 p-1"></td>
+															<td><input type="text" name="uncertainty[]" value="<?= $rm; ?>" placeholder="0mm" class="form-control border-0 mb-0 p-1"></td>
+															<td></td>
+														</tr>
 													<?php else : ?>
-														<div class="input-group mb-2">
-															<input type="text" name="range_measure[]" value="<?= $rm; ?>" id="range_measure" placeholder="0mm - 0mm" class="form-control">
-															<span class="input-group-append">
-																<button type="button" class="btn btn-sm btn-light-danger remove-range-list"><i class="fa fa-times fa-sm"></i></button>
-															</span>
-														</div>
+														<tr>
+															<td><input type="text" name="range_measure[]" value="<?= $k; ?>" placeholder="0mm - 0mm" class="form-control border-0 mb-0 p-1"></td>
+															<td><input type="text" name="uncertainty[]" value="<?= $rm; ?>" placeholder="0mm" class="form-control border-0 mb-0 p-1"></td>
+															<td class="text-center"><button type="button" class="btn btn-icon btn-sm btn-light-danger remove-range-list"><i class="fa fa-times fa-sm"></i></button></td>
+														</tr>
 													<?php endif; ?>
 											<?php endforeach;
 											endif; ?>
-										</div>
-										<button type="button" id="add-range" class="btn btn-info btn-sm px-2 py-1"><i class="fa fa-plus fa-sm"></i> Add Range</button>
-									</div>
+										</tbody>
+									</table>
+									<button type="button" id="add-range" class="btn btn-info btn-sm px-2 py-1"><i class="fa fa-plus fa-sm"></i> Add Range</button>
 								</div>
 							</div>
 						</div>
-
-						<!-- <div class="text-center pb-5">
-							<button type="button" class="btn btn-success px-5 save-files"><i class="fas fa-save"></i> Save</button>
-						</div> -->
 
 						<div class="d-flex justify-content-between align-items-center mb-2">
 							<h5>Documents</h5>
@@ -739,6 +744,17 @@
 		</div>
 	</div>
 </div>
+<style>
+	span.selection span.select2-selection.select2-selection--single.is-invalid,
+	span.selection span.select2-selection.select2-selection--multiple.is-invalid {
+		border-color: #f64e60;
+		padding-right: calc(1.5em + 1.3rem);
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23F64E60' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23F64E60' stroke='none'/%3e%3c/svg%3e");
+		background-repeat: no-repeat;
+		background-position: right calc(0.375em + 0.325rem) center;
+		background-size: calc(0.75em + 0.65rem) calc(0.75em + 0.65rem);
+	}
+</style>
 <script>
 	$(document).ready(function() {
 		$('.select2').select2({
@@ -756,44 +772,47 @@
 
 	$(document).on('click', '#add-range', function() {
 		const element = `
-		<div class="input-group mb-2">
-			<input type="text" name="range_measure[]" id="range_measure" placeholder="0mm - 0mm" class="form-control">
-			<span class="input-group-append">
-				<button type="button" class="btn btn-sm btn-light-danger remove-range-list"><i class="fa fa-times fa-sm"></i></button>
-			</span>
-		</div>`;
-		$('.list-range').append(element);
+		<tr>
+			<td>
+				<input type="text" name="range_measure[]" placeholder="0mm - 0mm" class="form-control border-0 mb-0 p-1">
+			</td>
+			<td>
+				<input type="text" name="uncertainty[]" placeholder="0mm" class="form-control border-0 mb-0 p-1">
+			</td>
+			<td class="text-center"><button type="button" class="btn btn-sm btn-light-danger btn-icon remove-range-list"><i class="fa fa-times fa-sm"></i></button></td>
+		</tr>
+		`;
+		$('table#list-range tbody').append(element);
 	})
 
 	$(document).on('click', '.remove-range-list', function() {
-		$(this).parents('div.input-group').remove();
+		$(this).parents('tr').remove();
 	})
 
 	$(document).on('click', '.save-files', function() {
-		const name = $('#name').val()
-		const group_id = $('#group_id').val()
-		const methode = $('#methode').val()
-		const reference = $('#reference').val()
-		const range_measure = $('input[name="range_measure[]"]');
-		const publish_date = $('#publish_date').val()
-		const revision_date = $('#revision_date').val()
-		const revision_number = $('#revision_number').val()
-		const btn = $(this)
+		let name = $('#name').val()
+		let group_id = $('#group_id').val()
+		let methode = $('#methode').val()
+		let reference = $('#reference').val()
+		let range_measure = $('input[name="range_measure[]"]');
+		let publish_date = $('#publish_date').val()
+		let revision_date = $('#revision_date').val()
+		let revision_number = $('#revision_number').val()
+		let btn = $(this)
+		let c = 0;
 
 		$('select#group_id').next().find('span.selection .select2-selection.select2-selection--single').removeClass('is-invalid')
 		if (!group_id) {
 			$('select#group_id').next().find('span.selection .select2-selection.select2-selection--single').addClass('is-invalid')
-			return false;
+			c++
 		}
 
 		$('#name').removeClass('is-invalid')
 		if (!name) {
 			$('#name').addClass('is-invalid')
-			return false;
+			c++
 		}
 
-		// $('#range_maesure').removeClass('is-invalid')
-		let c = 0;
 		range_measure.each(function() {
 			$(this).removeClass('is-invalid')
 			if ($(this).val().length == 0) {
@@ -802,27 +821,26 @@
 			}
 		})
 
-		if (c > 0) {
-			return false;
-		}
 
 		$('#publish_date').removeClass('is-invalid')
 		if (!publish_date) {
 			$('#publish_date').addClass('is-invalid')
-			return false;
+			c++;
 		}
 
 		$('select#methode').next().find('span.selection .select2-selection.select2-selection--multiple').removeClass('is-invalid')
-		if (!methode) {
+		if (methode == '') {
 			$('select#methode').next().find('span.selection .select2-selection.select2-selection--multiple').addClass('is-invalid')
-			return false;
+			c++;
 		}
 
 		$('select#reference').next().find('span.selection .select2-selection.select2-selection--multiple').removeClass('is-invalid')
-		if (!reference) {
+		if (reference == '') {
 			$('select#reference').next().find('span.selection .select2-selection.select2-selection--multiple').addClass('is-invalid')
-			return false;
+			c++;
 		}
+
+
 
 		/* IK */
 		const ik_doc = $('#ik-file').val()
@@ -832,7 +850,7 @@
 		if (ik_doc && !ik_name) {
 			$('#ik-name').addClass('is-invalid')
 			Swal.fire('Warning!', "Document Name IK can't be empty.", 'warning', 3000)
-			return false;
+			c++;
 		}
 
 		/* CMC */
@@ -843,7 +861,7 @@
 		if (cmc_doc && !cmc_name) {
 			$('#cmc-name').addClass('is-invalid')
 			Swal.fire('Warning!', "Document Name CMC can't be empty.", 'warning', 3000)
-			return false;
+			c++;
 		}
 
 		/* Template */
@@ -854,7 +872,7 @@
 		if (temp_doc && !temp_name) {
 			$('#temp-name').addClass('is-invalid')
 			Swal.fire('Warning!', "Document Name Template can't be empty.", 'warning', 3000)
-			return false;
+			c++;
 		}
 
 		/* UBLK */
@@ -865,7 +883,7 @@
 		if (ublk_doc && !ublk_name) {
 			$('#ublk-name').addClass('is-invalid')
 			Swal.fire('Warning!', "Document Name UBLK can't be empty.", 'warning', 3000)
-			return false;
+			c++;
 		}
 
 		/* SERTIFIKAT */
@@ -876,7 +894,7 @@
 		if (sert_doc && !sert_name) {
 			$('#sert-name').addClass('is-invalid')
 			Swal.fire('Warning!', "Document Name Format Sertifikat can't be empty.", 'warning', 3000)
-			return false;
+			c++;
 		}
 
 		/* Analisa Drift */
@@ -887,7 +905,7 @@
 		if (drift_doc && !drift_name) {
 			$('#drift-name').addClass('is-invalid')
 			Swal.fire('Warning!', "Document Name Analisa Drift can't be empty.", 'warning', 3000)
-			return false;
+			c++;
 		}
 
 		/* Sertifikat Kalibrator */
@@ -898,7 +916,7 @@
 		if (sertcal_doc && !sertcal_name) {
 			$('#drift-name').addClass('is-invalid')
 			Swal.fire('Warning!', "Document Name Sertifikat Kalibrator can't be empty.", 'warning', 3000)
-			return false;
+			c++;
 		}
 
 		/* Cek Antara */
@@ -909,7 +927,7 @@
 		if (cek_doc && !cek_name) {
 			$('#drift-name').addClass('is-invalid')
 			Swal.fire('Warning!', "Document Name Cek Antara can't be empty.", 'warning', 3000)
-			return false;
+			c++;
 		}
 
 		/* VIDEO */
@@ -920,6 +938,9 @@
 		if (video_file && !video_name) {
 			$('#video-name').addClass('is-invalid')
 			Swal.fire('Warning!', "Video Name can't be empty.", 'warning', 3000)
+			c++;
+		}
+		if (c > 0) {
 			return false;
 		}
 

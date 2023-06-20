@@ -74,47 +74,24 @@
 									</div>
 								</div>
 								<div class="row mb-3">
-									<label class="col-4 col-form-label">Rentang Ungkur <span class="text-danger">*</span></label>
-									<div class="col-8">
-										<div class="list-range mb-2 overflow-auto max-h-150px p-1 border rounded">
-											<input type="text" name="range_measure[]" id="range_measure" placeholder="0mm - 0mm" class="form-control mb-2">
-										</div>
-										<button type="button" id="add-range" class="btn btn-info p-1 btn-sm"><i class="fa fa-plus fa-sm"></i> Add Range</button>
-									</div>
+									<table id="list-range" class="table table-bordered table-sm table-condensed">
+										<thead class="table-light">
+											<tr>
+												<th class="text-center py-1">Rentang Ukur <span class="text-danger">*</span></th>
+												<th class="text-center py-1">Ketidakpastian</th>
+												<th class="text-center py-1">Opsi</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td><input type="text" name="range_measure[]" placeholder="0mm - 0mm" class="form-control border-0 mb-0 p-1"></td>
+												<td><input type="text" name="uncertainty[]" placeholder="0mm" class="form-control border-0 mb-0 p-1"></td>
+												<td></td>
+											</tr>
+										</tbody>
+									</table>
+									<button type="button" id="add-range" class="btn btn-info btn-sm px-2 py-1"><i class="fa fa-plus fa-sm"></i> Add Range</button>
 								</div>
-								<!-- 
-									<div class="row mb-3">
-										<label class="col-4 col-form-label">Upload Document <span class="text-danger">*</span></label>
-										<div class="col-8">
-											<div class="dropzone-wrapper mr-2 d-flex align-items-center" style="width: 150px;">
-												<div class="dropzone-desc">
-													<i class="fa fa-upload"></i>
-													<p>Choose an image file or drag it here.</p>
-												</div>
-												<input type="file" id="pdf-file" name="documents" accept="application/pdf" class="dropzone dropzone-1" />
-												<div class="for-delete">
-													<div class="middle d-flex justify-content-center align-items-center">
-														<button type="button" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle"><i class="fa fa-edit"></i></button>
-														<button type="button" onclick="remove_image(this)" class="btn btn-sm mr-1 btn-icon btn-danger remove-image rounded-circle"><i class="fa fa-trash"></i></button>
-													</div>
-												</div>
-												<canvas id="pdf-preview" width="150"></canvas>
-											</div>
-										</div>
-									</div>
-									<div class="row mb-3">
-										<label class="col-4 col-form-label"> Upload Video</label>
-										<div class="col-8 px-0">
-											<button type="button" id="upload-video" class="btn btn-sm mb-3 btn-danger d-block"><i class="fa fa-video"></i>Upload Video</button>
-											<input type="file" id="video-file" name="video" accept="video/mp4" class="d-none" />
-											<video id="video-preview" width="290" height="180" class="d-none">
-												Your browser does not support the video tag.
-											</video>
-											<div class="for-delete text-center">
-												<button type="button" id="remove-video" class="btn btn-xs btn-icon btn-light-danger rounded-circle d-none"><i class="fa fa-times"></i></button>
-											</div>
-										</div>
-									</div> -->
 							</div>
 						</div>
 
@@ -584,7 +561,17 @@
 	</div>
 
 </form>
-
+<style>
+	span.selection span.select2-selection.select2-selection--single.is-invalid,
+	span.selection span.select2-selection.select2-selection--multiple.is-invalid {
+		border-color: #f64e60;
+		padding-right: calc(1.5em + 1.3rem);
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23F64E60' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23F64E60' stroke='none'/%3e%3c/svg%3e");
+		background-repeat: no-repeat;
+		background-position: right calc(0.375em + 0.325rem) center;
+		background-size: calc(0.75em + 0.65rem) calc(0.75em + 0.65rem);
+	}
+</style>
 <script>
 	$(document).ready(function() {
 		$('.select2').select2({
@@ -603,13 +590,17 @@
 
 	$(document).on('click', '#add-range', function() {
 		const element = `
-		<div class="input-group mb-2">
-			<input type="text" name="range_measure[]" id="range_measure" placeholder="0mm - 0mm" class="form-control">
-			<span class="input-group-append">
-				<button type="button" class="btn btn-sm btn-light-danger remove-range-list"><i class="fa fa-times fa-sm"></i></button>
-			</span>
-		</div>`;
-		$('.list-range').append(element);
+		<tr>
+			<td>
+				<input type="text" name="range_measure[]" placeholder="0mm - 0mm" class="form-control border-0 mb-0 p-1">
+			</td>
+			<td>
+				<input type="text" name="uncertainty[]" placeholder="0mm" class="form-control border-0 mb-0 p-1">
+			</td>
+			<td class="text-center"><button type="button" class="btn btn-sm btn-light-danger btn-icon remove-range-list"><i class="fa fa-times fa-sm"></i></button></td>
+		</tr>
+		`;
+		$('table#list-range tbody').append(element);
 	})
 
 	$(document).on('click', '.remove-range-list', function() {
@@ -622,30 +613,29 @@
 	})
 
 	$(document).on('click', '.save-files', function() {
-		const name = $('#name').val()
-		const group_id = $('#group_id').val()
-		const methode = $('#methode').val()
-		const reference = $('#reference').val()
-		const range_measure = $('input[name="range_measure[]"]');
-		const publish_date = $('#publish_date').val()
-		const revision_date = $('#revision_date').val()
-		const revision_number = $('#revision_number').val()
-		const btn = $(this)
+		let name = $('#name').val()
+		let group_id = $('#group_id').val()
+		let methode = $('#methode').val()
+		let reference = $('#reference').val()
+		let range_measure = $('input[name="range_measure[]"]');
+		let publish_date = $('#publish_date').val()
+		let revision_date = $('#revision_date').val()
+		let revision_number = $('#revision_number').val()
+		let btn = $(this)
+		let c = 0;
 
 		$('select#group_id').next().find('span.selection .select2-selection.select2-selection--single').removeClass('is-invalid')
 		if (!group_id) {
 			$('select#group_id').next().find('span.selection .select2-selection.select2-selection--single').addClass('is-invalid')
-			return false;
+			c++
 		}
 
 		$('#name').removeClass('is-invalid')
 		if (!name) {
 			$('#name').addClass('is-invalid')
-			return false;
+			c++
 		}
 
-		// $('#range_maesure').removeClass('is-invalid')
-		let c = 0;
 		range_measure.each(function() {
 			$(this).removeClass('is-invalid')
 			if ($(this).val().length == 0) {
@@ -654,27 +644,26 @@
 			}
 		})
 
-		if (c > 0) {
-			return false;
-		}
 
 		$('#publish_date').removeClass('is-invalid')
 		if (!publish_date) {
 			$('#publish_date').addClass('is-invalid')
-			return false;
+			c++;
 		}
 
 		$('select#methode').next().find('span.selection .select2-selection.select2-selection--multiple').removeClass('is-invalid')
-		if (!methode) {
+		if (methode == '') {
 			$('select#methode').next().find('span.selection .select2-selection.select2-selection--multiple').addClass('is-invalid')
-			return false;
+			c++;
 		}
 
 		$('select#reference').next().find('span.selection .select2-selection.select2-selection--multiple').removeClass('is-invalid')
-		if (!reference) {
+		if (reference == '') {
 			$('select#reference').next().find('span.selection .select2-selection.select2-selection--multiple').addClass('is-invalid')
-			return false;
+			c++;
 		}
+
+
 
 		/* IK */
 		const ik_doc = $('#ik-file').val()
@@ -684,7 +673,7 @@
 		if (ik_doc && !ik_name) {
 			$('#ik-name').addClass('is-invalid')
 			Swal.fire('Warning!', "Document Name IK can't be empty.", 'warning', 3000)
-			return false;
+			c++;
 		}
 
 		/* CMC */
@@ -695,7 +684,7 @@
 		if (cmc_doc && !cmc_name) {
 			$('#cmc-name').addClass('is-invalid')
 			Swal.fire('Warning!', "Document Name CMC can't be empty.", 'warning', 3000)
-			return false;
+			c++;
 		}
 
 		/* Template */
@@ -706,7 +695,7 @@
 		if (temp_doc && !temp_name) {
 			$('#temp-name').addClass('is-invalid')
 			Swal.fire('Warning!', "Document Name Template can't be empty.", 'warning', 3000)
-			return false;
+			c++;
 		}
 
 		/* UBLK */
@@ -717,7 +706,7 @@
 		if (ublk_doc && !ublk_name) {
 			$('#ublk-name').addClass('is-invalid')
 			Swal.fire('Warning!', "Document Name UBLK can't be empty.", 'warning', 3000)
-			return false;
+			c++;
 		}
 
 		/* SERTIFIKAT */
@@ -728,7 +717,7 @@
 		if (sert_doc && !sert_name) {
 			$('#sert-name').addClass('is-invalid')
 			Swal.fire('Warning!', "Document Name Format Sertifikat can't be empty.", 'warning', 3000)
-			return false;
+			c++;
 		}
 
 		/* Analisa Drift */
@@ -739,7 +728,7 @@
 		if (drift_doc && !drift_name) {
 			$('#drift-name').addClass('is-invalid')
 			Swal.fire('Warning!', "Document Name Analisa Drift can't be empty.", 'warning', 3000)
-			return false;
+			c++;
 		}
 
 		/* Sertifikat Kalibrator */
@@ -750,7 +739,7 @@
 		if (sertcal_doc && !sertcal_name) {
 			$('#drift-name').addClass('is-invalid')
 			Swal.fire('Warning!', "Document Name Sertifikat Kalibrator can't be empty.", 'warning', 3000)
-			return false;
+			c++;
 		}
 
 		/* Cek Antara */
@@ -761,7 +750,7 @@
 		if (cek_doc && !cek_name) {
 			$('#drift-name').addClass('is-invalid')
 			Swal.fire('Warning!', "Document Name Cek Antara can't be empty.", 'warning', 3000)
-			return false;
+			c++;
 		}
 
 		/* VIDEO */
@@ -772,9 +761,11 @@
 		if (video_file && !video_name) {
 			$('#video-name').addClass('is-invalid')
 			Swal.fire('Warning!', "Video Name can't be empty.", 'warning', 3000)
+			c++;
+		}
+		if (c > 0) {
 			return false;
 		}
-
 		const formdata = new FormData($('#form-upload')[0])
 		$.ajax({
 			url: siteurl + active_controller + 'upload_document',
@@ -793,7 +784,7 @@
 			success: function(result) {
 				if (result.status == 1) {
 					Swal.fire("Success!", result.msg, "success", 3000).then(function() {
-						window.open(siteurl + active_controller + '/edit_file/' + result.id)
+						window.open(siteurl + active_controller + '/edit_file/' + result.id, '_self')
 					})
 				} else {
 					Swal.fire("Warning!", result.msg, "warning", 3000)

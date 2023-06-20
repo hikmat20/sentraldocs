@@ -95,7 +95,7 @@
 
 <div class="content d-flex flex-column flex-column-fluid p-0">
 	<div class="d-flex flex-column-fluid justify-content-between align-items-top">
-		<div class="container mt-10">
+		<div class="container-fluid mt-10">
 			<h1 class="text-white mb-5"><i class="fa fa-folder-open h1"></i> <?= $title; ?></h1>
 			<div class="card">
 				<div class="row">
@@ -207,8 +207,9 @@
 											<tr>
 												<th class="py-2" width="100">Kelompok</th>
 												<th class="py-2">Jenis Alat</th>
-												<th class="py-2" width="150">Rentang Ukur</th>
-												<th class="py-2">Dokumen Standar</th>
+												<th class="py-2">Rentang Ukur</th>
+												<th class="py-2">Ketidakpastian</th>
+												<th class="py-2" width="150">Dokumen Standar</th>
 												<th class="py-2 text-center" width="100">Opsi</th>
 											</tr>
 										</thead>
@@ -218,9 +219,16 @@
 														<td style="vertical-align: top;"><?= $dtDtl->group_name; ?></td>
 														<td style="vertical-align: top;"><?= $dtDtl->guide_detail_data_name; ?></td>
 														<td style="vertical-align: top;">
-															<ul style="list-style-type: none;" class="px-0">
+															<ul style="list-style-type:disc ;" class="px-0">
 																<?php foreach (json_decode($dtDtl->range_measure) as $range) : ?>
 																	<li class="px-0"><?= $range; ?></li>
+																<?php endforeach; ?>
+															</ul>
+														</td>
+														<td style="vertical-align: top;">
+															<ul style="list-style-type:disc ;" class="px-0">
+																<?php if (isset($dtDtl->uncertainty)) foreach (json_decode($dtDtl->uncertainty) as $uc) : ?>
+																	<li class="px-0"><?= $uc; ?></li>
 																<?php endforeach; ?>
 															</ul>
 														</td>
