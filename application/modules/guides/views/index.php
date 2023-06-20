@@ -337,6 +337,10 @@
 			info: false,
 			stateSave: false,
 			pageLength: 20,
+			columnDefs: [{
+				width: 150,
+				targets: 4
+			}],
 			// scrollCollapse: true
 		})
 
