@@ -9,6 +9,7 @@
 					<form id="form-checksheet">
 						<input type="hidden" name="id" value="<?= $data->id; ?>">
 						<input type="hidden" name="dir" value="<?= $dataDir->id; ?>">
+						<input type="hidden" name="number" value="<?= isset($data->number) ? $data->number : ''; ?>">
 						<div class="row mb-3">
 							<label for="" class="col-md-2 control-label">Directory</label>
 							<div class="col-md-4">:
@@ -24,7 +25,7 @@
 						<div class="row mb-3">
 							<label for="" class="col-md-2 control-label">Checksheet File</label>
 							<div class="col-md-4">:
-								<input type="hidden" name="checksheet_data_number" value="<?= $data->number; ?>">
+								<input type="hidden" name="checksheet_data_number" value="<?= $data->checksheet_data_number; ?>">
 								<label for=""><?= $data->checksheet_name; ?></label>
 							</div>
 						</div>

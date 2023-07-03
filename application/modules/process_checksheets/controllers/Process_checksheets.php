@@ -317,8 +317,9 @@ class Process_checksheets extends Admin_Controller
 		// 	$this->db->update('checksheet_process_data', $data, ['id' => $data['id']]);
 		// } else {
 		// }
+
 		$dataDir = $this->db->get_where('checksheet_process_dir', ['id' => $data['dir']])->row();
-		$data['number'] = $this->getNumber();
+		$data['number'] = (isset($data['number']) && $data['number']) ? $data['number'] : $this->getNumber();
 		$data['sub_id'] = $dataDir->sub_id;
 		$data['process_id'] = $dataDir->process_id;
 		$data['dir_id'] = $dataDir->id;
@@ -326,6 +327,7 @@ class Process_checksheets extends Admin_Controller
 		$data['created_at'] = date('Y-m-d H:i:s');
 		$data['created_by'] = $this->auth->user_id();
 		unset($data['dir']);
+
 		if (isset($data['id'])) {
 			$this->db->update('checksheet_process_data', $data, ['id' => $data['id']]);
 		} else {
