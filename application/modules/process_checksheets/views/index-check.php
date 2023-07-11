@@ -19,7 +19,7 @@
 						<div class="searching">
 							<div class="input-group">
 								<div class="input-group-text input-group-prepend rounded-right-0"><i class="fa fa-search"></i></div>
-								<input data type="text" name="search" id="search" class="form-control w-200px d-inline-block" placeholder="Search">
+								<input data type="text" name="search" id="searchText" class="form-control w-200px d-inline-block" placeholder="Search">
 							</div>
 						</div>
 
@@ -45,7 +45,7 @@
 						<tbody>
 							<?php $n = 0;
 							if ($data) foreach ($data as $dt) : $n++; ?>
-								<tr>
+								<tr class="<?= (date('d', strtotime($dt->updated_at)) == date('d') ? 'table-warning' : ''); ?>">
 									<td class="py-2">
 										<h4 class="mb-0 d-flex align-items-end">
 											<i class="fa fa-file-alt mr-2 text-success" style="font-size: 28px;"></i><?= $dt->checksheet_name; ?>
@@ -62,7 +62,7 @@
 									</td>
 									<td class="py-2">
 										<div class="d-flex justify-content-between">
-											<span><?= $dt->created_at; ?></span>
+											<span><?= ($dt->updated_at) ?: $dt->created_at; ?></span>
 										</div>
 									</td>
 									<td class="py-2 text-center">
@@ -113,29 +113,32 @@
 
 <script>
 	$(document).ready(function() {
-		oTable = $('.datatable').DataTable({
-			dom: 'Pfrtip',
-			searchPanes: {
-				cascadePanes: true
-			},
-			language: {
-				searchPanes: {
-					i18n: {
-						emptyMessage: "<i></b>No results returned</b></i>"
-					}
-				},
-				infoEmpty: "No results returned",
-				zeroRecords: "No results returned",
-				emptyTable: "No results returned",
-			},
-			lengthChange: true,
-			// paging: true,
-			info: false,
+		var oTable = $('.datatable').DataTable({
+			// dom: 'Pfrtip',
+			// searchPanes: {
+			// 	cascadePanes: true
+			// },
+			// language: {
+			// 	searchPanes: {
+			// 		i18n: {
+			// 			emptyMessage: "<i></b>No results returned</b></i>"
+			// 		}
+			// 	},
+			// 	infoEmpty: "No results returned",
+			// 	zeroRecords: "No results returned",
+			// 	emptyTable: "No results returned",
+			// },
+			lengthChange: false,
+			stateSave: true,
+			info: true,
 			pageLength: 20,
-			responsive: true
+			responsive: true,
+			stateLoadParams: function(settings, data) {
+				$('#searchText').val(data.search.search)
+			}
 		})
 
-		$(document).on('input paste', '#search', function() {
+		$(document).on('input paste', '#searchText', function() {
 			oTable.search($(this).val()).draw();
 		})
 

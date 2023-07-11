@@ -1012,7 +1012,7 @@ class Process_checksheets extends Admin_Controller
 
 		$this->db->trans_begin();
 		if ($post['id']) {
-			foreach ($post['detail'] as $dt) {
+			if (isset($post['detail'])) foreach ($post['detail'] as $dt) {
 				$field 			= $dt['field'];
 				$fieldNote 		= "note" . $field;
 				$fieldDate 		= "date" . $field;
@@ -1069,6 +1069,10 @@ class Process_checksheets extends Admin_Controller
 					$this->db->update('checksheet_execution', $dataChecker, ['data_id' => $post['id'], 'item_id' => $dt['id']]);
 				}
 			}
+			$this->db->update('checksheet_process_data', [
+				'updated_at' => date('Y-m-d H:i:s'),
+				'update_by' => $this->auth->user_id(),
+			], ['id' => $post['id']]);
 		}
 
 		if ($this->db->trans_status() === FALSE) {

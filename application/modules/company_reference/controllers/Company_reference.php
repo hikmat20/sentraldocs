@@ -165,8 +165,12 @@ class Company_reference extends Admin_Controller
 		echo json_encode($Return);
 	}
 
-	public function delete($id = null)
+	public function delete()
 	{
+		$id = $this->input->post('id');
+		echo '<pre>';
+		print_r($id);
+		echo '</pre>';
 		if (($id)) {
 			$this->db->trans_begin();
 			$this->db->delete('references', ['id' => $id]);
