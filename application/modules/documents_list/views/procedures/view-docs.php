@@ -220,7 +220,7 @@
 						<?php $relDocs = json_decode($dtl->relate_doc); ?>
 						<?php if (is_array($relDocs)) : ?>
 							<?php foreach ($relDocs as $relDoc) { ?>
-								<span class="badge btn <?= ($ArrForms[$ik]->status == 'DEL') ? 'btn-light' : 'bg-success btn-success'; ?>  view-form-2 mb-1" data-id="<?= $relDoc; ?>"><?= $ArrForms[$relDoc]->name; ?> <?= ($ArrForms[$ik]->status == 'DEL') ? '<i class="fa fa-exclamation-circle text-danger" title="File has been deleted!"></i>' : ''; ?></span>
+								<span class="badge btn <?= ($ArrForms[$relDoc]->status == 'DEL') ? 'btn-light' : 'bg-success btn-success'; ?>  view-form-2 mb-1" data-id="<?= $relDoc; ?>"><?= $ArrForms[$relDoc]->name; ?> <?= ($ArrForms[$relDoc]->status == 'DEL') ? '<i class="fa fa-exclamation-circle text-danger" title="File has been deleted!"></i>' : ''; ?></span>
 							<?php } ?>
 						<?php endif; ?>
 
