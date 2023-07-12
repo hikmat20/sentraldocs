@@ -135,8 +135,8 @@ class Documents_list extends Admin_Controller
 	{
 		$docs 			= $this->db->get_where('view_procedures', ['id' => $id])->row();
 		$detail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id, 'status' => '1'])->result();
-		$forms 			= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'active' => 'Y'])->result();
-		$guides 		= $this->db->get_where('dir_guides', ['procedure_id' => $id, 'active' => 'Y'])->result();
+		$forms 			= $this->db->get_where('dir_forms', ['procedure_id' => $id])->result();
+		$guides 		= $this->db->get_where('dir_guides', ['procedure_id' => $id])->result();
 		$users 			= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
 		$jabatan 		= $this->db->get('positions')->result();
 		$ArrUsr 		= $ArrJab = $ArrForms = $ArrGuides = [];

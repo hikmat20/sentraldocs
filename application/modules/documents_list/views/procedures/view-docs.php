@@ -220,14 +220,14 @@
 						<?php $relDocs = json_decode($dtl->relate_doc); ?>
 						<?php if (is_array($relDocs)) : ?>
 							<?php foreach ($relDocs as $relDoc) { ?>
-								<span class="badge bg-success btn btn-success view-form-2 mb-1" data-id="<?= $relDoc; ?>"><?= $ArrForms[$relDoc]->name; ?></span>
+								<span class="badge btn <?= ($ArrForms[$ik]->status == 'DEL') ? 'btn-light' : 'bg-success btn-success'; ?>  view-form-2 mb-1" data-id="<?= $relDoc; ?>"><?= $ArrForms[$relDoc]->name; ?> <?= ($ArrForms[$ik]->status == 'DEL') ? '<i class="fa fa-exclamation-circle text-danger" title="File has been deleted!"></i>' : ''; ?></span>
 							<?php } ?>
 						<?php endif; ?>
 
 						<?php $relIK = json_decode($dtl->relate_ik_doc); ?>
 						<?php if (is_array($relIK)) : ?>
 							<?php foreach ($relIK as $ik) { ?>
-								<span class="badge bg-danger btn btn-danger view-form-2 mb-1" data-id="<?= $ik; ?>"><?= $ArrGuides[$ik]->name; ?></span>
+								<span class="badge btn <?= ($ArrGuides[$ik]->status == 'DEL') ? 'btn-light' : 'bg-danger btn-danger'; ?> view-guide-2 mb-1" data-id="<?= $ik; ?>"><?= $ArrGuides[$ik]->name; ?> <?= ($ArrGuides[$ik]->status == 'DEL') ? '<i class="fa fa-exclamation-circle text-danger"  title="File has been deleted!"></i>' : ''; ?></span>
 							<?php } ?>
 						<?php endif; ?>
 					</td>
