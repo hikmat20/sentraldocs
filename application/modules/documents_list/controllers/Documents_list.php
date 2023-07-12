@@ -99,8 +99,8 @@ class Documents_list extends Admin_Controller
 	{
 		if (isset($id)) {
 			$procedure 		= $this->db->get_where('view_procedures', ['id' => $id])->result();
-			$forms 			= $this->db->order_by('name', 'ASC')->get_where('dir_forms', ['procedure_id' => $id, 'active' => 'Y'])->result();
-			$guides 		= $this->db->order_by('name', 'ASC')->get_where('dir_guides', ['procedure_id' => $id, 'active' => 'Y'])->result();
+			$forms 			= $this->db->order_by('name', 'ASC')->get_where('dir_forms', ['procedure_id' => $id, 'active' => 'Y', 'status !=' => 'DEL'])->result();
+			$guides 		= $this->db->order_by('name', 'ASC')->get_where('dir_guides', ['procedure_id' => $id, 'active' => 'Y', 'status !=' => 'DEL'])->result();
 			$records 		= $this->db->order_by('name', 'ASC')->get_where('dir_records', ['procedure_id' => $id, 'status' => 'PUB', 'flag_type' => 'FOLDER', 'company_id' => $this->company, 'parent_id' => null])->result();
 			$countRecords 	= $this->db->get_where('dir_records', ['procedure_id' => $id, 'status' => 'PUB', 'flag_type' => 'FILE', 'company_id' => $this->company])->num_rows();
 
