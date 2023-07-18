@@ -10,6 +10,9 @@
                         <div class="row mb-3">
                             <label class="col-2">Group Name</label>
                             <div class="col-auto">:
+
+                                <input type="hidden" name="group_id" value="<?= $group->id_group; ?>">
+                                <input type="hidden" name="company_id" value="<?= $group->company_id; ?>">
                                 <span class="font-weight-bolder"><?= $group->nm_group; ?></span>
                             </div>
                         </div>

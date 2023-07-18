@@ -135,8 +135,12 @@ class Setting extends Admin_Controller
     }
     public function create()
     {
+        $levels = [];
         $companies = $this->db->get_where('companies')->result();
-        $levels = $this->db->get_where('groups', ['active' => 'Y', 'company_id' => null, 'id_group !=' => '1'])->result();
+        if ($this->auth->user_id() == '1') {
+            $levels = $this->db->get_where('groups', ['active' => 'Y', 'company_id' => null])->result();
+        }
+
         $levelsComp = $this->db->get_where('groups', ['active' => 'Y', 'company_id' => $this->company])->result();
         // $cabang = $this->Cabang_model->find_all();
 
@@ -154,15 +158,17 @@ class Setting extends Admin_Controller
     public function edit($id = 0)
     {
         $data           = $this->db->get_where('view_users', ['id_user' => $id])->row();
-        $levels         = $this->db->get_where('groups', ['active' => 'Y', 'id_group !=' => '1'])->result();
         $user_group     = $this->db->get_where('user_groups', ['user_id' => $id])->row();
         $companies      = $this->db->get_where('companies')->result();
-        $levelsComp     = $this->db->get_where('groups', ['active' => 'Y', 'company_id' => $this->company])->result();
-
+        $levels = [];
+        if ($this->auth->user_id() == '1') {
+            $levels = $this->db->get_where('groups', ['active' => 'Y', 'company_id' => null])->result();
+        } else {
+            $levels = $this->db->get_where('groups', ['active' => 'Y', 'company_id' => null, 'id_group !=' => '1'])->result();
+        }
+        $levelsComp = $this->db->get_where('groups', ['active' => 'Y', 'company_id' => $this->company])->result();
         $this->template->set('levels', array_merge($levels, $levelsComp));
         $this->template->set('companies', $companies);
-
-        $this->template->set('levels', $levels);
         $this->template->set('data', $data);
         $this->template->set('user_group', $user_group);
         $this->template->title(lang('users_edit_title'));
@@ -404,7 +410,6 @@ class Setting extends Admin_Controller
             $data['created_by'] = $this->auth->user_id();
             $data['status']     = ($data['status']) ?: 'NAC';
             $this->db->insert('users', $data);
-            $this->assign_company($data['username'], $group_id, $company_id);
         }
 
         $error = $this->db->error()['message'];
@@ -415,6 +420,7 @@ class Setting extends Admin_Controller
                 'msg' => 'User data saved successfully',
                 'status' => 1
             ];
+            $this->assign_company($data['username'], $group_id, $company_id);
         } else {
             $this->db->trans_rollback();
             $return = [
@@ -445,12 +451,27 @@ class Setting extends Admin_Controller
     public function assign_company($username, $group_id, $company_id)
     {
         $user =  $this->db->get_where('users', ['username' => $username])->row();
-        $this->db->insert('user_groups', [
-            'user_id' => $user->id_user,
-            'company_id' => $company_id,
-            'id_group' => $group_id,
-            'active' => 'Y',
-            'default' => 'Y',
-        ]);
+        $check = $this->db->get_where('user_groups', ['user_id' => $user->id_user, 'company_id' => $company_id])->num_rows();
+        if ($check > 0) {
+            $this->db->update(
+                'user_groups',
+                [
+                    'company_id' => $company_id,
+                    'id_group' => $group_id,
+                ],
+                [
+                    'user_id' => $user->id_user,
+                    'company_id' => $company_id,
+                ]
+            );
+        } else {
+            $this->db->insert('user_groups', [
+                'user_id' => $user->id_user,
+                'company_id' => $company_id,
+                'id_group' => $group_id,
+                'active' => 'Y',
+                'default' => 'Y',
+            ]);
+        }
     }
 }

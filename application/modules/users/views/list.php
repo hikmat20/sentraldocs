@@ -54,8 +54,10 @@
 										<td><?= $record->phone ?></td>
 										<td><?= ($record->status == 'ACT') ? "<label class='label label-inline label-primary'>Active</label>" : "<label class='label label-danger label-inline'>Non Active</label>" ?></td>
 										<td class="text-center">
-											<a class="btn btn-xs btn-icon btn-warning" href="<?= site_url('users/setting/edit/' . $record->id_user); ?>" data-toggle="tooltip" data-placement="left" title="Edit User"><i class="fa fa-pen"></i></a>
-											<a class="btn btn-xs btn-icon btn-danger" data-toggle="tooltip" data-placement="right" title="Delete User"><i class="fa fa-trash"></i></a>
+											<?php if ($record->id_user != '1') : ?>
+												<a class="btn btn-xs btn-icon btn-warning" href="<?= site_url('users/setting/edit/' . $record->id_user); ?>" data-toggle="tooltip" data-placement="left" title="Edit User"><i class="fa fa-pen"></i></a>
+												<a class="btn btn-xs btn-icon btn-danger" data-toggle="tooltip" data-placement="right" title="Delete User"><i class="fa fa-trash"></i></a>
+											<?php endif; ?>
 										</td>
 									</tr>
 								<?php endforeach; ?>

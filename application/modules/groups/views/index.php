@@ -27,15 +27,16 @@
 										<td><?= $record->nm_group ?></td>
 										<td><?= $record->ket ?></td>
 										<td class="text-center">
-											<a class="btn btn-xs btn-icon btn-primary" id="view" data-id="<?= $record->id_group; ?>" title="Access Group"><i class="fa fa-search"></i>
-											</a>
-											<a class="btn btn-xs btn-icon btn-primary" id="access" href="<?= base_url($this->uri->segment(1) . '/permissions/' . $record->id_group); ?>" data-id="<?= $record->id_group; ?>" title="Access Group"><i class="fa fa-key"></i>
-											</a>
-											<?php if ($record->company_id) : ?>
-												<a class="btn btn-xs btn-icon btn-warning" id="edit" href="javascript:void(0)" data-id="<?= $record->id_group; ?>" title="Edit"><i class="fa fa-pen"></i>
-												</a>
-												<a class="btn btn-icon btn-danger btn-xs" href="javascript:void(0)" data-id="<?= $record->id_group; ?>" title="Delete"><i class="fa fa-trash"></i>
-												</a>
+
+											<?php if ($record->id_group == '1') : ?>
+												<a class="btn btn-xs btn-icon btn-primary" id="view" data-id="<?= $record->id_group; ?>" title="Access Group"><i class="fa fa-search"></i></a>
+											<?php else : ?>
+												<a class="btn btn-xs btn-icon btn-primary" id="view" data-id="<?= $record->id_group; ?>" title="Access Group"><i class="fa fa-search"></i></a>
+												<?php if ($this->auth->user_id() == '1' || $record->company_id != '') : ?>
+													<a class="btn btn-xs btn-icon btn-info" id="access" href="<?= base_url($this->uri->segment(1) . '/permissions/' . $record->id_group); ?>" data-id="<?= $record->id_group; ?>" title="Access Group"><i class="fa fa-key"></i></a>
+													<a class="btn btn-xs btn-icon btn-warning" id="edit" href="javascript:void(0)" data-id="<?= $record->id_group; ?>" title="Edit"><i class="fa fa-pen"></i></a>
+													<button type="button" class="btn btn-icon btn-danger btn-xs delete" data-id="<?= $record->id_group; ?>" title="Delete"><i class="fa fa-trash"></i></button>
+												<?php endif; ?>
 											<?php endif; ?>
 										</td>
 									</tr>
@@ -179,66 +180,60 @@
 		}
 	})
 
-	//Delete
-	function delete_data(id) {
-		//alert(id);
-		swal({
-				title: "Anda Yakin?",
-				text: "Data Akan Terhapus secara Permanen!",
-				type: "warning",
-				showCancelButton: true,
-				confirmButtonColor: "#DD6B55",
-				confirmButtonText: "Ya, delete!",
-				cancelButtonText: "Tidak!",
-				closeOnConfirm: false,
-				closeOnCancel: true
-			},
-			function(isConfirm) {
-				if (isConfirm) {
-					$.ajax({
-						url: siteurl + 'cabang/hapus_cabang/' + id,
-						dataType: "json",
-						type: 'POST',
-						success: function(msg) {
-							if (msg['delete'] == '1') {
-								swal({
-									title: "Terhapus!",
-									text: "Data berhasil dihapus",
-									type: "success",
-									timer: 1500,
-									showConfirmButton: false
+	$(document).on('click', '.delete', function() {
+		let id = $(this).data('id')
+		Swal.fire({
+			title: "Are you sure?",
+			text: "You want to delete this data?",
+			icon: "question",
+			showCancelButton: true,
+			confirmButtonText: "Yes, Delete!",
+			cancelButtonText: "No",
+		}).then((value) => {
+			if (value.isConfirmed) {
+				var baseurl = siteurl + active_controller + 'delete';
+				$.ajax({
+					url: baseurl,
+					type: "POST",
+					data: {
+						id
+					},
+					dataType: 'json',
+					success: function(data) {
+						if (data.status == 1) {
+							Swal.fire({
+								title: "Success!",
+								text: data.msg,
+								icon: "success",
+								timer: 3000,
+								showCancelButton: false,
+								showConfirmButton: false,
+								allowOutsideClick: false
+							}).then(() => {
+								location.reload()
+							})
+
+						} else {
+							if (data.status == 0) {
+								Swal.fire({
+									title: "Failed!",
+									html: data.msg,
+									icon: "warning",
+									timer: 3000,
 								});
-								window.location.reload();
-							} else {
-								swal({
-									title: "Gagal!",
-									text: "Data gagal dihapus",
-									type: "error",
-									timer: 1500,
-									showConfirmButton: false
-								});
-							};
-						},
-						error: function() {
-							swal({
-								title: "Gagal!",
-								text: "Gagal Eksekusi Ajax",
-								type: "error",
-								timer: 1500,
-								showConfirmButton: false
-							});
+							}
 						}
-					});
-				} else {
-					//cancel();
-				}
-			});
-	}
-
-	function PreviewPdf(id) {
-		param = id;
-		tujuan = 'customer/print_request/' + param;
-
-		$(".modal-body").html('<iframe src="' + tujuan + '" frameborder="no" width="570" height="400"></iframe>');
-	}
+					},
+					error: function() {
+						Swal.fire({
+							title: "Error Message !",
+							text: 'An Error Occured During Process. Please try again..',
+							icon: "warning",
+							timer: 3000,
+						});
+					}
+				});
+			}
+		});
+	})
 </script>

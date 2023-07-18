@@ -22,8 +22,15 @@ class Groups extends Admin_Controller
 
     public function index()
     {
-        $data = $this->db->get_where('groups', ['active' => 'Y', 'id_group !=' => '1'])->result();
-        $this->template->set('results', $data);
+        $list1 = [];
+        if ($this->auth->user_id() == '1') {
+            $list1 = $this->db->get_where('groups', ['active' => 'Y', 'company_id' => null])->result();
+        } else {
+            $list1 = $this->db->get_where('groups', ['active' => 'Y', 'company_id' => null, 'id_group !=' => '1'])->result();
+        }
+
+        $data = $this->db->get_where('groups', ['active' => 'Y', 'company_id' => $this->company])->result();
+        $this->template->set('results', array_merge($list1, $data));
         $this->template->render('index');
     }
 
@@ -77,33 +84,47 @@ class Groups extends Admin_Controller
 
         $this->db->trans_begin();
         if (isset($data['menus'])) {
+            $company_id = ($data['company_id']) ?: $this->company;
+            $group_id = $data['group_id'];
 
             foreach ($data['menus'] as $menus) {
-                $check = $this->db->get_where('group_menus', ['id' => $menus['id']])->num_rows();
-                $menus['read'] = isset($menus['read']) ? '1' : '0';
-                $menus['create'] = isset($menus['create']) ? '1' : '0';
-                $menus['update'] = isset($menus['update']) ? '1' : '0';
-                $menus['delete'] = isset($menus['delete']) ? '1' : '0';
+                $menu_id =  $menus['id'];
+                unset($menus['id']);
+                $check = $this->db->get_where('group_menus', ['menu_id' =>  $menu_id, 'company_id' => $company_id, 'group_id' => $group_id])->num_rows();
+                $menus['menu_id']       = $menu_id;
+                $menus['read']          = isset($menus['read']) ? '1' : '0';
+                $menus['create']        = isset($menus['create']) ? '1' : '0';
+                $menus['update']        = isset($menus['update']) ? '1' : '0';
+                $menus['delete']        = isset($menus['delete']) ? '1' : '0';
 
                 if ($check > 0) {
-                    $this->db->update('group_menus', $menus, ['id' => $menus['id']]);
+                    $this->db->update('group_menus', $menus, ['menu_id' =>  $menu_id, 'company_id' => $company_id, 'group_id' => $group_id]);
                 } else {
+                    $menus['company_id']    = $company_id;
+                    $menus['group_id']      = $group_id;
                     $this->db->insert('group_menus', $menus);
                 }
             }
+
             foreach ($data['submenus'] as $submenus) {
-                $check = $this->db->get_where('group_menus', ['id' => $submenus['id']])->num_rows();
+                $submenus_id = $submenus['id'];
+                unset($submenus['id']);
+                $check = $this->db->get_where('group_menus', ['menu_id' => $submenus_id, 'company_id' => $company_id, 'group_id' => $group_id])->num_rows();
+
+                $submenus['menu_id'] = $submenus_id;
                 $submenus['read'] = isset($submenus['read']) ? '1' : '0';
                 $submenus['create'] = isset($submenus['create']) ? '1' : '0';
                 $submenus['update'] = isset($submenus['update']) ? '1' : '0';
                 $submenus['delete'] = isset($submenus['delete']) ? '1' : '0';
-
                 if ($check > 0) {
-                    $this->db->update('group_menus', $submenus, ['id' => $submenus['id']]);
+                    $this->db->update('group_menus', $submenus, ['menu_id' => $submenus_id, 'company_id' => $company_id, 'group_id' => $group_id]);
                 } else {
+                    $submenus['company_id']    = $company_id;
+                    $submenus['group_id']      = $group_id;
                     $this->db->insert('group_menus', $submenus);
                 }
             }
+
             if ($this->db->trans_status() === FALSE) {
                 // if ($this->db->affected_rows() <= 0) {
                 $this->db->trans_rollback();
@@ -175,16 +196,7 @@ class Groups extends Admin_Controller
     {
 
         $group   = $this->db->get_where('groups', ['id_group' => $id])->row();
-        // $menus = $this->db->order_by('menu_id', 'ASC')->get_where('view_group_menus', ['parent_id' => '0'])->result();
-        // $submenus = $this->db->order_by('parent_id', 'ASC')->get_where('view_group_menus', ['parent_id !=' => '0'])->result();
-        // $ArrSubmenu = [];
-        // foreach ($submenus as $key => $sub) {
-        //     $ArrSubmenu[$sub->parent_id][$key] = $sub;
-        // }
-
         $this->template->set('group', $group);
-        // $this->template->set('menus', $menus);
-        // $this->template->set('submenus', $ArrSubmenu);
         $this->template->render('permission');
     }
 
@@ -204,41 +216,28 @@ class Groups extends Admin_Controller
         $this->template->render('view');
     }
 
-
-    public function datamenu()
+    function delete()
     {
-        $Data    = $this->show_menus();
-        echo '<pre>';
-        print_r($Data);
-        echo '<pre>';
-        exit;
-
-        $Data         = $this->db->get_where('menus', ['status' => '1'])->result();
-        $ArrMenu    = [];
-        foreach ($Data as $mnu) {
-            $ArrMenu[$mnu->parent_id][] = $mnu;
+        $id = $this->input->post('id');
+        if ($id) {
+            $this->db->trans_begin();
+            $this->db->update("groups", ['active' => 'N'], ['id_group' => $id]);
+            $this->db->delete("user_groups", ['id_group' => $id]);
         }
-    }
-
-    function menus($ArrFolder, $parent = '0')
-    {
-
-
-        // $result = ("SELECT a.id, a.label, a.link, Deriv1.Count FROM `menu` a  LEFT OUTER JOIN (SELECT parent, COUNT(*) AS Count FROM `menu` GROUP BY parent) Deriv1 ON a.id = Deriv1.parent WHERE a.parent=" . $parent);
-        $cek_company = '';
-        $html = "<ul class='h6 text-dark'>";
-        foreach ($ArrFolder[$parent] as $val) {
-            if (isset($ArrFolder[$val->id])) {
-
-                $html .= "<li class='h6 py-1 " . $cek_company . "'><a href='" . $val->link . "' data-id='" . $val->id . "' data-parent_id='" . $val->parent_id . "' class='tree-folder'>" . $val->name . "</a>";
-                $html .= $this->menus($ArrFolder, $val->id);
-                $html .= "</li>";
-            } else {
-                $html .= "<li class='h6 py-1 " . $cek_company . "'><a href='" . $val->link . "' data-id='" . $val->id . "' data-parent_id='" . $val->parent_id . "' class='tree-folder'>" . $val->name . "</a></li>";
-            }
+        if ($this->db->trans_status() === FALSE) {
+            $error = $this->db->error()['message'];
+            $this->db->trans_rollback();
+            $Arr_Return     = array(
+                'status'    => 0,
+                'msg'       => $error
+            );
+        } else {
+            $this->db->trans_commit();
+            $Arr_Return        = array(
+                'status'       => 1,
+                'msg'        => 'Deleting Successfull... '
+            );
         }
-
-        $html .= "</ul>";
-        return $html;
+        echo json_encode($Arr_Return);
     }
 }
