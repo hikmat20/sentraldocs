@@ -1453,7 +1453,7 @@ class Procedures extends Admin_Controller
 	{
 		$mpdf 				= new Mpdf();
 		$procedure 			= $this->db->get_where('procedures', ['id' => $id])->row();
-		$flowDetail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id])->result();
+		$flowDetail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id, 'status' => '1'])->result();
 		$getForms			= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
 		$getGuides			= $this->db->get_where('dir_guides', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
 		$users 				= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
