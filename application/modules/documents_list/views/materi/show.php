@@ -32,14 +32,14 @@
     </div>
     <div class="tab-pane p-0 border border-top-0 rounded-bottom" id="from-external-url" role="tabpanel" aria-labelledby="from-external-url-tab">
         <?php if ($file->url_link) : ?>
-            <div class="position-absolute d-flex justify-content-center zindex-5 w-100">
-                <a href="<?= $file->url_link; ?>" target="_blank" class="btn-xs btn shadow-sm">Original File <i class="fa fa-link" aria-hidden="true"></i></a>
-            </div>
             <div style="width:98%;background-color: aquamarine; position: absolute;opacity: 0;height:103%"></div>
             <iframe style="pointer-events:visibleStroke;" onclick="cek(e)" oncontextmenu="cek(r)" src="<?= $file->url_link ?>" frameborder="0" width="100%" height="550"></iframe>
         <?php else : ?>
             <h5 class="text-center mt-5">~ Not available data ~</h5>
         <?php endif; ?>
+        <div class=" d-flex justify-content-center py-5 zindex-5 w-100">
+            <a href="<?= $file->url_link; ?>" target="_blank" class="btn-xs btn btn-success shadow-sm">Go to Quizizz <i class="fa fa-link" aria-hidden="true"></i></a>
+        </div>
     </div>
     <div class="tab-pane p-0 border border-top-0 rounded-bottom" id="from-url" role="tabpanel" aria-labelledby="from-url-tab">
         <?php if ($file->video_link) : ?>

@@ -51,7 +51,7 @@
                                         </thead>
                                         <tbody>
                                             <?php $n = 0;
-                                            foreach ($reference as $ref) :  $n++; ?>
+                                            if ($reference) foreach ($reference as $ref) :  $n++; ?>
                                                 <tr class="cursor-pointer list-document">
                                                     <td class="h6 text-dark"><?= $n; ?></td>
                                                     <td class="h5 text-dark d-flex align-items-center my-0 py-2">
