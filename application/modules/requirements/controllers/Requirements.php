@@ -45,7 +45,7 @@ class Requirements extends Admin_Controller
 	{
 		$Data 		= $this->db->get_where('requirements', ['id' => $id, 'status !=' => '0'])->row();
 		if ($Data) {
-			$Data_list 	= $this->db->order_by('chapter', 'ASC')->get_where('requirement_details', ['requirement_id' => $id])->result();
+			$Data_list 	= $this->db->get_where('requirement_details', ['requirement_id' => $id])->result();
 
 			$this->template->set([
 				'Data' => $Data,
