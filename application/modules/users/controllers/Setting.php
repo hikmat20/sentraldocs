@@ -125,8 +125,8 @@ class Setting extends Admin_Controller
 
     public function index()
     {
-        $userActive = $this->db->get_where('users', ['status' => 'ACT'])->result();
-        $userNonActive = $this->db->get_where('users', ['status' => 'NAC'])->result();
+        $userActive = $this->db->get_where('view_users', ['status' => 'ACT', 'company_id' => $this->company])->result();
+        $userNonActive = $this->db->get_where('view_users', ['status' => 'NAC', 'company_id' => $this->company])->result();
         $this->template->set([
             'userActive' => $userActive,
             'userNonActive' => $userNonActive,
