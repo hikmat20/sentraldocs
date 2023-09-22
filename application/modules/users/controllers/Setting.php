@@ -136,7 +136,6 @@ class Setting extends Admin_Controller
     public function create()
     {
         $levels = [];
-        $companies = $this->db->get_where('companies')->result();
         if ($this->auth->user_id() == '1') {
             $levels = $this->db->get_where('groups', ['active' => 'Y', 'company_id' => null])->result();
         }
@@ -145,6 +144,12 @@ class Setting extends Admin_Controller
         // $cabang = $this->Cabang_model->find_all();
 
         $this->template->set('levels', array_merge($levels, $levelsComp));
+        if ($this->company == '1') {
+            $companies = $this->db->get_where('companies')->result();
+        } else {
+            $companies = $this->db->get_where('companies', ['id_perusahaan' => $this->company])->result();
+        }
+
         $this->template->set('companies', $companies);
         $this->template->title(lang('users_new_title'));
         $this->template->render('users_form');
