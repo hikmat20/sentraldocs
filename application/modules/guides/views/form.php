@@ -13,7 +13,7 @@
 								<div class="row mb-3">
 									<label class="col-4 col-form-label">Nomor <span>*</span></label>
 									<div class="col-8">
-										<input type="text" name="number" id="number" readonly placeholder="Automate" class="form-control form-control-solid">
+										<input type="text" name="number" id="number" placeholder="Nomor" class="form-control">
 									</div>
 								</div>
 								<div class="row mb-3">
@@ -77,6 +77,7 @@
 									<table id="list-range" class="table table-bordered table-sm table-condensed">
 										<thead class="table-light">
 											<tr>
+												<th class="text-center py-1">Sub Alat <span class="text-danger">*</span></th>
 												<th class="text-center py-1">Rentang Ukur <span class="text-danger">*</span></th>
 												<th class="text-center py-1">Ketidakpastian</th>
 												<th class="text-center py-1">Opsi</th>
@@ -84,6 +85,7 @@
 										</thead>
 										<tbody>
 											<tr>
+												<td><input type="text" name="sub_tools[]" placeholder="Name" class="form-control border-0 mb-0 p-1"></td>
 												<td><input type="text" name="range_measure[]" placeholder="0mm - 0mm" class="form-control border-0 mb-0 p-1"></td>
 												<td><input type="text" name="uncertainty[]" placeholder="0mm" class="form-control border-0 mb-0 p-1"></td>
 												<td></td>
@@ -384,7 +386,7 @@
 											<i class="fa fa-upload"></i>
 											<p>Choose an PDF file or drag it here.</p>
 										</div>
-										<input type="file" id="temp-file" name="temp_file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" data-doc="temp" class="dropzone dropzone-1 drop-file" />
+										<input type="file" id="temp-file" name="temp_file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel.sheet.macroEnabled.12" data-doc="temp" class="dropzone dropzone-1 drop-file" />
 										<div class="for-delete-temp d-none">
 											<div class="middle d-flex justify-content-center align-items-center">
 												<button type="button" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle" data-doc="temp"><i class="fa fa-edit"></i></button>
@@ -592,19 +594,22 @@
 		const element = `
 		<tr>
 			<td>
+				<input type="text" name="sub_tools[]" placeholder="Name" class="form-control border-0 mb-0 p-1">
+			</td>
+			<td>
 				<input type="text" name="range_measure[]" placeholder="0mm - 0mm" class="form-control border-0 mb-0 p-1">
 			</td>
 			<td>
 				<input type="text" name="uncertainty[]" placeholder="0mm" class="form-control border-0 mb-0 p-1">
 			</td>
-			<td class="text-center"><button type="button" class="btn btn-sm btn-light-danger btn-icon remove-range-list"><i class="fa fa-times fa-sm"></i></button></td>
+			<td class="text-center"><button type="button" class="btn btn-xs btn-light-danger btn-icon remove-range-list"><i class="fa fa-times fa-sm"></i></button></td>
 		</tr>
 		`;
 		$('table#list-range tbody').append(element);
 	})
 
 	$(document).on('click', '.remove-range-list', function() {
-		$(this).parents('div.input-group').remove();
+		$(this).parents('tr').remove();
 	})
 
 
@@ -815,7 +820,7 @@
 		var doc = $(this).data('doc')
 		// allowed MIME types
 
-		var mime_types = ['application/pdf', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+		var mime_types = ['application/pdf', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel.sheet.macroEnabled.12'];
 		// Validate whether PDF
 		if (mime_types.indexOf(file.type) == -1) {
 			alert('Error : Incorrect file type');

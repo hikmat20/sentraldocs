@@ -207,6 +207,7 @@
 											<tr>
 												<th class="py-2" width="100">Kelompok</th>
 												<th class="py-2">Jenis Alat</th>
+												<th class="py-2">Sub Alat</th>
 												<th class="py-2">Rentang Ukur</th>
 												<th class="py-2">Ketidakpastian</th>
 												<th class="py-2" width="150">Dokumen Standar</th>
@@ -219,14 +220,23 @@
 														<td style="vertical-align: top;"><?= $dtDtl->group_name; ?></td>
 														<td style="vertical-align: top;"><?= $dtDtl->guide_detail_data_name; ?></td>
 														<td style="vertical-align: top;">
-															<ul style="list-style-type:disc ;" class="px-0">
+															<?php if ($dtDtl->sub_tools) : ?>
+																<ul style="list-style-type: none ;" class="px-0">
+																	<?php foreach (json_decode($dtDtl->sub_tools) as $st) : ?>
+																		<li class="px-0"><?= ($st) ?: '&nbsp;'; ?></li>
+																	<?php endforeach; ?>
+																</ul>
+															<?php endif; ?>
+														</td>
+														<td style="vertical-align: top;">
+															<ul style="list-style-type:none  ;" class="px-0">
 																<?php foreach (json_decode($dtDtl->range_measure) as $range) : ?>
 																	<li class="px-0"><?= $range; ?></li>
 																<?php endforeach; ?>
 															</ul>
 														</td>
 														<td style="vertical-align: top;">
-															<ul style="list-style-type:disc ;" class="px-0">
+															<ul style="list-style-type:none ;" class="px-0">
 																<?php if (isset($dtDtl->uncertainty)) foreach (json_decode($dtDtl->uncertainty) as $uc) : ?>
 																	<li class="px-0"><?= $uc; ?></li>
 																<?php endforeach; ?>
