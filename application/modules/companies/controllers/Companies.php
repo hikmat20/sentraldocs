@@ -23,7 +23,13 @@ class Companies extends Admin_Controller
 
     public function index()
     {
-        $data = $this->db->get_where('companies')->result();
+        $data = [];
+        if ($this->company == '1') {
+            $data = $this->db->get_where('companies')->result();
+        } else {
+            $data = $this->db->get_where('companies', ['id_perusahaan' => $this->company])->result();
+        }
+
         $this->template->set('data', $data);
         $this->template->render('index');
     }

@@ -5,9 +5,12 @@
 				<div class="card-header">
 					<h2 class="mt-5"><i class="<?= $icon; ?> mr-2"></i><?= $title; ?></h2>
 					<div class="mt-4 float-right ">
-						<button type="button" class="btn btn-primary" id="addCompany" title="Add New Company">
-							<i class="fa fa-plus mr-1"></i>Add New Commpany
-						</button>
+						<?php if ($this->session->company->id_perusahaan == '1') : ?>
+							<button type="button" class="btn btn-primary" id="addCompany" title="Add New Company">
+								<i class="fa fa-plus mr-1"></i>Add New Commpany
+							</button>
+						<?php endif; ?>
+
 					</div>
 				</div>
 				<div class="card-body">
@@ -48,7 +51,9 @@
 												<td>
 													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-info view" data-id="<?= $dt->id_perusahaan; ?>" title="View Data"><i class="fa fa-search"></i></button>
 													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-warning edit" data-id="<?= $dt->id_perusahaan; ?>" title="Edit Data"><i class="fa fa-edit"></i></button>
-													<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id_perusahaan; ?>" title="View Data"><i class="fa fa-trash"></i></button>
+													<?php if ($this->session->company->id_perusahaan == '1') : ?>
+														<button type="button" class="btn btn-sm btn-icon rounded-circle btn-danger delete" data-id="<?= $dt->id_perusahaan; ?>" title="View Data"><i class="fa fa-trash"></i></button>
+													<?php endif; ?>
 												</td>
 											</tr>
 									<?php endforeach;
