@@ -61,14 +61,16 @@
 		<table class="table table-sm">
 			<thead class="table-light">
 				<tr>
-					<th class="p-0 text-center">Rentang Ukur</th>
-					<th class="p-0 text-center">Ketidakpastian</th>
+					<th class="text-center py-1">Sub Alat <span class="text-danger">*</span></th>
+					<th class="text-center py-1">Rentang Ukur <span class="text-danger">*</span></th>
+					<th class="text-center py-1">Ketidakpastian</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php if ($ArrCombine) : ?>
 					<?php foreach ($ArrCombine as $k => $rm) : reset($ArrCombine) ?>
 						<tr>
+							<td class="text-center"><?= (isset($ArrSubTools[$k]) && $ArrSubTools[$k] ? $ArrSubTools[$k] : ''); ?></td>
 							<td class="text-center"><?= $k; ?></td>
 							<td class="text-center"><?= $rm; ?></td>
 						</tr>
@@ -79,7 +81,280 @@
 	</div>
 </div>
 <hr>
-<div class="row">
+
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+	<h5>Documents</h5>
+</div>
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs nav-fill nav-success nav-pills mb-3 border-0" id="myTab" role="tablist">
+	<li class="nav-item" role="presentation">
+		<button class="nav-link font-weight-bolder active w-100" id="IK-tab" data-toggle="tab" data-target="#IK" type="button" role="tab" aria-controls="IK" aria-selected="true">IK</button>
+	</li>
+	<li class="nav-item" role="presentation">
+		<button class="nav-link font-weight-bolder w-100" id="CMC-tab" data-toggle="tab" data-target="#CMC" type="button" role="tab" aria-controls="CMC" aria-selected="false">CMC</button>
+	</li>
+	<li class="nav-item" role="presentation">
+		<button class="nav-link font-weight-bolder w-100" id="Template-tab" data-toggle="tab" data-target="#Template" type="button" role="tab" aria-controls="Template" aria-selected="false">Template</button>
+	</li>
+	<li class="nav-item" role="presentation">
+		<button class="nav-link font-weight-bolder w-100" id="UBLK-tab" data-toggle="tab" data-target="#UBLK" type="button" role="tab" aria-controls="UBLK" aria-selected="false">UBLK</button>
+	</li>
+	<li class="nav-item" role="presentation">
+		<button class="nav-link font-weight-bolder w-100" id="Sertifikat-tab" data-toggle="tab" data-target="#Sertifikat" type="button" role="tab" aria-controls="Sertifikat" aria-selected="false">Format Sertifikat</button>
+	</li>
+	<li class="nav-item" role="presentation">
+		<button class="nav-link font-weight-bolder w-100" id="Analisa-tab" data-toggle="tab" data-target="#Analisa" type="button" role="tab" aria-controls="Analisa" aria-selected="false">Analisa Drift</button>
+	</li>
+	<li class="nav-item" role="presentation">
+		<button class="nav-link font-weight-bolder w-100" id="SertCalibrator-tab" data-toggle="tab" data-target="#SertCalibrator" type="button" role="tab" aria-controls="SertCalibrator" aria-selected="false">Sertifikat Calibrator</button>
+	</li>
+	<li class="nav-item" role="presentation">
+		<button class="nav-link font-weight-bolder w-100" id="CekAntara-tab" data-toggle="tab" data-target="#CekAntara" type="button" role="tab" aria-controls="CekAntara" aria-selected="false">Cek Antara</button>
+	</li>
+	<li class="nav-item" role="presentation">
+		<button class="nav-link font-weight-bolder w-100" id="Video-tab" data-toggle="tab" data-target="#Video" type="button" role="tab" aria-controls="Video" aria-selected="false">Video</button>
+	</li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content ">
+	<div class="tab-pane active" id="IK" role="tabpanel" aria-labelledby="IK-tab">
+		<table class="table table-bordered table-striped table-hover table-sm">
+			<thead>
+				<tr class="bg-success text-white">
+					<th width="50" class="text-center p-2">No</th>
+					<th class="p-2">Name File</th>
+					<th width="150" class="text-center p-2">Last Update</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php if ($DocIK) $n = 0;
+				foreach ($DocIK as $ik) : $n++; ?>
+					<tr>
+						<td class="text-center"><?= $n; ?></td>
+						<td>
+							<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/IK/' . $ik->file); ?>#toolbar=0&navpanes=0"><?= $ik->name; ?></a>
+						</td>
+						<td class="text-center"><?= $ik->created_at; ?></td>
+						
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="tab-pane" id="CMC" role="tabpanel" aria-labelledby="CMC-tab">
+		<table class="table table-bordered table-striped table-hover table-sm">
+			<thead>
+				<tr class="bg-success text-white">
+					<th width="50" class="text-center p-2">No</th>
+					<th class="p-2">Name File</th>
+					<th width="150" class="text-center p-2">Last Update</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php if ($DocCMC) $n = 0;
+				foreach ($DocCMC as $cmc) : $n++; ?>
+					<tr>
+						<td class="text-center"><?= $n; ?></td>
+						<td>
+							<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/CMC/' . $cmc->file); ?>#toolbar=0&navpanes=0"><?= $cmc->name; ?></a>
+						</td>
+						<td class="text-center"><?= $cmc->created_at; ?></td>
+						
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="tab-pane" id="Template" role="tabpanel" aria-labelledby="Template-tab">
+		<table class="table table-bordered table-striped table-hover table-sm">
+			<thead>
+				<tr class="bg-success text-white">
+					<th width="50" class="text-center p-2">No</th>
+					<th class="p-2">Name File</th>
+					<th width="150" class="text-center p-2">Last Update</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php if ($DocTEMP) $n = 0;
+				foreach ($DocTEMP as $temp) : $n++; ?>
+					<tr>
+						<td class="text-center"><?= $n; ?></td>
+						<td>
+							<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/TEMPLATE/' . $temp->file); ?>#toolbar=0&navpanes=0"><?= $temp->name; ?></a>
+						</td>
+						<td class="text-center"><?= $temp->created_at; ?></td>
+						
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="tab-pane" id="UBLK" role="tabpanel" aria-labelledby="UBLK-tab">
+		<table class="table table-bordered table-striped table-hover table-sm">
+			<thead>
+				<tr class="bg-success text-white">
+					<th width="50" class="text-center p-2">No</th>
+					<th class="p-2">Name File</th>
+					<th width="150" class="text-center p-2">Last Update</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php if ($DocUBLK) $n = 0;
+				foreach ($DocUBLK as $ublk) : $n++; ?>
+					<tr>
+						<td class="text-center"><?= $n; ?></td>
+						<td>
+							<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/UBLK/' . $ublk->file); ?>#toolbar=0&navpanes=0"><?= $ublk->name; ?></a>
+						</td>
+						<td class="text-center"><?= $ublk->created_at; ?></td>
+						
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="tab-pane" id="Sertifikat" role="tabpanel" aria-labelledby="Sertifikat-tab">
+		<table class="table table-bordered table-striped table-hover table-sm">
+			<thead>
+				<tr class="bg-success text-white">
+					<th width="50" class="text-center p-2">No</th>
+					<th class="p-2">Name File</th>
+					<th width="150" class="text-center p-2">Last Update</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php if ($DocSERT) $n = 0;
+				foreach ($DocSERT as $sert) : $n++; ?>
+					<tr>
+						<td class="text-center"><?= $n; ?></td>
+						<td>
+							<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/FORMAT_SERTIFIKAT/' . $sert->file); ?>#toolbar=0&navpanes=0"><?= $sert->name; ?></a>
+						</td>
+						<td class="text-center"><?= $sert->created_at; ?></td>
+						
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="tab-pane" id="Analisa" role="tabpanel" aria-labelledby="Analisa-tab">
+		<table class="table table-bordered table-striped table-hover table-sm">
+			<thead>
+				<tr class="bg-success text-white">
+					<th width="50" class="text-center p-2">No</th>
+					<th class="p-2">Name File</th>
+					<th width="150" class="text-center p-2">Last Update</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php if ($DocDRIFT) $n = 0;
+				foreach ($DocDRIFT as $drift) : $n++; ?>
+					<tr>
+						<td class="text-center"><?= $n; ?></td>
+						<td>
+							<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/ANALISA_DRIFT/' . $drift->file); ?>#toolbar=0&navpanes=0"><?= $drift->name; ?></a>
+						</td>
+						<td class="text-center"><?= $drift->created_at; ?></td>
+						
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="tab-pane" id="SertCalibrator" role="tabpanel" aria-labelledby="SertCalibrator-tab">
+		<table class="table table-bordered table-striped table-hover table-sm">
+			<thead>
+				<tr class="bg-success text-white">
+					<th width="50" class="text-center p-2">No</th>
+					<th class="p-2">Name File</th>
+					<th width="150" class="text-center p-2">Last Update</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php if ($DocSERTCAL) $n = 0;
+				foreach ($DocSERTCAL as $sertcal) : $n++; ?>
+					<tr>
+						<td class="text-center"><?= $n; ?></td>
+						<td>
+							<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/SERTIFIKAT_KALIBRATOR/' . $sertcal->file); ?>#toolbar=0&navpanes=0"><?= $sertcal->name; ?></a>
+						</td>
+						<td class="text-center"><?= $sertcal->created_at; ?></td>
+						
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="tab-pane" id="CekAntara" role="tabpanel" aria-labelledby="CekAntara-tab">
+		<table class="table table-bordered table-striped table-hover table-sm">
+			<thead>
+				<tr class="bg-success text-white">
+					<th width="50" class="text-center p-2">No</th>
+					<th class="p-2">Name File</th>
+					<th width="150" class="text-center p-2">Last Update</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php if ($DocCEK) $n = 0;
+				foreach ($DocCEK as $cek) : $n++; ?>
+					<tr>
+						<td class="text-center"><?= $n; ?></td>
+						<td>
+							<a target="_blank" href="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/CEK_ANTARA/' . $cek->file); ?>#toolbar=0&navpanes=0"><?= $cek->name; ?></a>
+						</td>
+						<td class="text-center"><?= $cek->created_at; ?></td>
+						
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="tab-pane" id="Video" role="tabpanel" aria-labelledby="Video-tab">
+		<table class="table table-striped table-hover table-sm">
+			<thead>
+				<tr class="bg-success text-white">
+					<th width="50" class="text-center p-2">No</th>
+					<th width="180" class="p-2 text-center">Video</th>
+					<th class="p-2">Name File</th>
+					<th width="150" class="text-center p-2">Last Update</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php if ($DocVID) $n = 0;
+				foreach ($DocVID as $vid) : $n++; ?>
+					<tr>
+						<td class="text-center"><?= $n; ?></td>
+						<td class="text-center cursor-pointer view_video" data-id="<?= $vid->id; ?>">
+							<video controlsList="nodownload" oncontextmenu="return false" height="80">
+								<source src="<?= base_url('/directory/MASTER_GUIDES/' . $data->company_id . '/VIDEO/' . $vid->file); ?>#t=5" type="video/mp4" />
+							</video>
+						</td>
+						<td><a href="javascript:void(0)" data-id="<?= $vid->id; ?>" class="text-dark view_video">
+								<h4><?= $vid->name; ?></h4>
+							</a>
+						</td>
+						<td class="text-center"><?= $vid->created_at; ?></td>
+						
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+<!-- <div class="row">
 	<div class="col-lg-3">
 		<label class="control-label">Document</label>
 		<div class="">
@@ -110,7 +385,7 @@
 		</div>
 
 	</div>
-</div>
+</div> -->
 
 
 

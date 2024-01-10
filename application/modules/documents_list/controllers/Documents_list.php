@@ -276,6 +276,7 @@ class Documents_list extends Admin_Controller
 		$reference = $this->db->get_where('view_references')->result();
 		$ArrUsers = [];
 		$users       = $this->db->get_where('view_users', ['company_id' => $this->company, 'status' => 'ACT'])->result();
+
 		foreach ($users as $usr) {
 			$ArrUsers[$usr->id_user] = $usr->full_name;
 		}

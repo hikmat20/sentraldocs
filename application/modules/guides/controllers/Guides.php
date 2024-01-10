@@ -344,17 +344,19 @@ class Guides extends Admin_Controller
 				$data['revision_date'] = (isset($data['revision_date']) && $data['revision_date']) ? date_format(date_create(str_replace("/", "-", $data['revision_date'])), 'Y-m-d') : null;
 
 				$id = isset($data['id']) ? $data['id'] : '';
-				if (!$data['number']) {
-					$data['number'] = $this->getNumber($data['group_id']);
-				}
-
+				// if (!$data['number']) {
+				// 	$data['number'] = $this->getNumber($data['group_id']);
+				// }
+				
 				$this->db->trans_begin();
 				$check = $this->db->get_where('guide_detail_data', ['id' => $id])->num_rows();
-
+				
+				$data['sub_tools']		= json_encode($data['sub_tools']);
 				$data['range_measure']	= json_encode($data['range_measure']);
 				$data['uncertainty']	= json_encode($data['uncertainty']);
 				$data['methode']		= json_encode($data['methode']);
 				$data['reference']		= json_encode($data['reference']);
+
 				unset($data['documents']);
 				if (intval($check) == '0') {
 					$data['created_by']		= $this->auth->user_id();
@@ -375,7 +377,7 @@ class Guides extends Admin_Controller
 						'msg'	 => 'Failed upload document file. Please try again later.!'
 					];
 				} else {
-					$this->_uploadFiles($newid);
+					$upload = $this->_uploadFiles($newid);
 					$this->db->trans_commit();
 					$Return = [
 						'status' => 1,
@@ -406,10 +408,10 @@ class Guides extends Admin_Controller
 	private function _getIDDoc($company, $doc)
 	{
 		$company 	= sprintf('%02d', $company);
-		$count 	= 1;
-		$y 		= date('y');
-		$m 		= date('m');
-		$max 	= $this->db->select('MAX(RIGHT(id,4)) as id')->get_where('guide_documents', ['SUBSTR(id,4,2)' => $company, 'SUBSTR(id,7,1)' => $doc, 'SUBSTR(id,8,2)' => $y, 'SUBSTR(id,10,2)' => $m])->row();
+		$count 		= 1;
+		$y 			= date('y');
+		$m 			= date('m');
+		$max 		= $this->db->select('MAX(RIGHT(id,4)) as id')->get_where('guide_documents', ['SUBSTR(id,4,2)' => $company, 'SUBSTR(id,7,1)' => $doc, 'SUBSTR(id,8,2)' => $y, 'SUBSTR(id,10,2)' => $m])->row();
 
 		if ($max->id > 0) {
 			$count = $max->id + 1;
@@ -434,16 +436,17 @@ class Guides extends Admin_Controller
 	private function _DocsUploads($FILE, $NAME, $DIR, $CODE, $id)
 	{
 		$post 	= $this->input->post();
-		if (isset($FILE)) {
-			if ($_FILES[$FILE]['name']) {
-				$data['id']			= $this->_getIDDoc($this->company, $CODE); // DOC01-12305-0001;
+			if (isset($_FILES[$FILE]['name']) && $_FILES[$FILE]['name']) {
+				$data['id']				= $this->_getIDDoc($this->company, $CODE); // DOC01-12305-0001;
 				$data['guide_detail_data_id'] = $id;
-				$data['name'] 		= $post['documents'][$NAME];
-				$data['ext'] 		= end((explode(".", $_FILES[$FILE]['name'])));
-				$data['file_type'] 	= $CODE;
-				$data['created_by'] = $this->auth->user_id();
-				$data['created_at'] = date('Y-m-d H:i:s');
-				$DIR_COMP = $this->company;
+				$data['name'] 			= $post['documents'][$NAME];
+				// $data['ext'] 			= end((explode(".", $_FILES[$FILE]['name'])));
+				$data['ext'] 			= pathinfo($_FILES[$FILE]['name'], PATHINFO_EXTENSION);
+				$data['file_type'] 		= $CODE;
+				$data['created_by'] 	= $this->auth->user_id();
+				$data['created_at'] 	= date('Y-m-d H:i:s');
+				$DIR_COMP 				= $this->company;
+
 				if (!is_dir("./directory/MASTER_GUIDES/$DIR_COMP/$DIR")) {
 					mkdir("./directory/MASTER_GUIDES/$DIR_COMP/$DIR", 0755, TRUE);
 					chmod("./directory/MASTER_GUIDES/$DIR_COMP/$DIR", 0755);  // octal; correct value of mode
@@ -451,15 +454,15 @@ class Guides extends Admin_Controller
 				}
 
 				$config['upload_path'] 		= "./directory/MASTER_GUIDES/$DIR_COMP/$DIR"; //path folder
-				$config['allowed_types'] 	= 'pdf|xlsx|xls|mp4'; //type yang dapat diakses bisa anda sesuaikan
+				$config['allowed_types'] 	= 'pdf|xlsx|mp4|xlsm'; //type yang dapat diakses bisa anda sesuaikan
 				$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
 				$this->upload->initialize($config);
 				$this->upload->do_upload($FILE);
-				$file 			= $this->upload->data();
-				$data['file']	= $file['file_name'];
+				$file 						= $this->upload->data();
+				$data['file']				= $file['file_name'];
 
 				if ($this->upload->display_errors()) {
-					$error_msg = $this->upload->display_errors();
+					$error_msg = $this->upload->display_errors() . $NAME;
 					$this->db->trans_rollback();
 					$Return = [
 						'status' => 0,
@@ -485,7 +488,6 @@ class Guides extends Admin_Controller
 					}
 				}
 			}
-		}
 	}
 
 	public function edit_file($id)
@@ -506,15 +508,14 @@ class Guides extends Admin_Controller
 			$DocSERTCAL 	= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '7', 'status' => '1'])->result();
 			$DocCEK 		= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '8', 'status' => '1'])->result();
 			$DocVID 		= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '9', 'status' => '1'])->result();
+			$ArrRange = [];
+			$ArrUncert = [];
+			$ArrUncert = [];
 
+			$ArrSubTools = (json_decode($data->sub_tools));
 			$ArrRange = (json_decode($data->range_measure));
 			$ArrUncert = (json_decode($data->uncertainty));
 
-			// echo '<pre>';
-			// print_r(array_combine($ArrRange, $ArrUncert));
-			// echo '</pre>';
-			// exit;
-			$ArrCombine = array_combine($ArrRange, $ArrUncert);
 			$this->template->set([
 				'data' 				=> $data,
 				'group_tools' 		=> $group_tools,
@@ -529,7 +530,9 @@ class Guides extends Admin_Controller
 				'DocSERTCAL' 		=> $DocSERTCAL,
 				'DocCEK' 			=> $DocCEK,
 				'DocVID' 			=> $DocVID,
-				'ArrCombine' 			=> $ArrCombine,
+				'ArrRange' 			=> $ArrRange,
+				'ArrUncert' 		=> $ArrUncert,
+				'ArrSubTools' 		=> $ArrSubTools,
 			]);
 
 			$this->template->render('edit');
@@ -571,14 +574,36 @@ class Guides extends Admin_Controller
 		$ArrRange = (json_decode($data->range_measure));
 		$ArrUncert = (json_decode($data->uncertainty));
 		$ArrCombine = array_combine($ArrRange, $ArrUncert);
+		$ArrSubTools = (json_decode($data->sub_tools));
+
+		$DocIK 			= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '1', 'status' => '1'])->result();
+			$DocCMC 		= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '2', 'status' => '1'])->result();
+			$DocTEMP 		= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '3', 'status' => '1'])->result();
+			$DocUBLK 		= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '4', 'status' => '1'])->result();
+			$DocSERT 		= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '5', 'status' => '1'])->result();
+			$DocDRIFT 		= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '6', 'status' => '1'])->result();
+			$DocSERTCAL 	= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '7', 'status' => '1'])->result();
+			$DocCEK 		= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '8', 'status' => '1'])->result();
+			$DocVID 		= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id, 'file_type' => '9', 'status' => '1'])->result();
+			
 
 		// $file 			= $this->db->get_where('guide_detail_data', ['id' => $id])->row();
 		$this->template->set([
-			'data' 		=> $data,
-			'file'		=> $file,
-			'ArrStd'	=> $ArrStd,
-			'methode'	=> $methode,
-			'ArrCombine' => $ArrCombine,
+			'data' 				=> $data,
+			'file'				=> $file,
+			'ArrStd'			=> $ArrStd,
+			'methode'			=> $methode,
+			'ArrCombine' 		=> $ArrCombine,
+			'ArrSubTools' 		=> $ArrSubTools,
+			'DocIK' 			=> $DocIK,
+			'DocCMC' 			=> $DocCMC,
+			'DocTEMP' 			=> $DocTEMP,
+			'DocUBLK' 			=> $DocUBLK,
+			'DocSERT' 			=> $DocSERT,
+			'DocDRIFT' 			=> $DocDRIFT,
+			'DocSERTCAL' 		=> $DocSERTCAL,
+			'DocCEK' 			=> $DocCEK,
+			'DocVID' 			=> $DocVID,
 		]);
 
 		$this->template->render('view-file');
@@ -621,6 +646,41 @@ class Guides extends Admin_Controller
 				$Return		= array(
 					'status'		=> 0,
 					'msg'			=> "Can't Deleted this directory. Data not valid"
+				);
+			}
+			echo json_encode($Return);
+		} else {
+			$Return		= array(
+				'status'		=> 0,
+				'msg'			=> "Data not valid"
+			);
+			echo json_encode($Return);
+		}
+	}
+
+	public function delete_sub_document()
+	{
+		$id 		 = $this->input->post('id');
+		if ($id) {
+			$this->db->trans_begin();
+			$this->db->update('guide_documents', ['status' => '0'], ['id' => $id]);
+			if ($this->db->trans_status() === FALSE) {
+				$this->db->trans_rollback();
+				$Return		= array(
+					'status'		=> 0,
+					'msg'			=> 'Delete document failed. Error!'
+				);
+			} else if ($this->db->affected_rows() > 0) {
+				$this->db->trans_commit();
+				$Return		= array(
+					'status'		=> 1,
+					'msg'			=> 'Delete document successfull'
+				);
+			} else {
+				$this->db->trans_rollback();
+				$Return		= array(
+					'status'		=> 0,
+					'msg'			=> "Can't Delete this document. Data not valid"
 				);
 			}
 			echo json_encode($Return);

@@ -29,7 +29,7 @@
 								<div class="row mb-3">
 									<label class="col-4 col-form-label">Nomor <span class="text-danger">*</span></label>
 									<div class="col-8">
-										<input type="text" name="number" id="number" readonly value="<?= $data->number; ?>" placeholder="Automate" class="form-control form-control-solid">
+										<input type="text" name="number" id="number" value="<?= $data->number; ?>" placeholder="Nomor" class="form-control">
 									</div>
 								</div>
 								<div class="row mb-3">
@@ -93,27 +93,21 @@
 									<table id="list-range" class="table table-bordered table-sm table-condensed">
 										<thead class="table-light">
 											<tr>
+												<th class="text-center py-1">Sub Alat <span class="text-danger">*</span></th>
 												<th class="text-center py-1">Rentang Ukur <span class="text-danger">*</span></th>
 												<th class="text-center py-1">Ketidakpastian</th>
 												<th class="text-center py-1">Opsi</th>
 											</tr>
 										</thead>
 										<tbody>
-											<?php if ($ArrCombine) : ?>
-												<?php foreach ($ArrCombine as $k => $rm) : reset($ArrCombine) ?>
-													<?php if (array_values(array_slice($ArrCombine, 0, 1))[0] == $rm) : ?>
-														<tr>
-															<td><input type="text" name="range_measure[]" value="<?= $k; ?>" placeholder="0mm - 0mm" class="form-control border-0 mb-0 p-1"></td>
-															<td><input type="text" name="uncertainty[]" value="<?= $rm; ?>" placeholder="0mm" class="form-control border-0 mb-0 p-1"></td>
-															<td></td>
-														</tr>
-													<?php else : ?>
-														<tr>
-															<td><input type="text" name="range_measure[]" value="<?= $k; ?>" placeholder="0mm - 0mm" class="form-control border-0 mb-0 p-1"></td>
-															<td><input type="text" name="uncertainty[]" value="<?= $rm; ?>" placeholder="0mm" class="form-control border-0 mb-0 p-1"></td>
-															<td class="text-center"><button type="button" class="btn btn-icon btn-sm btn-light-danger remove-range-list"><i class="fa fa-times fa-sm"></i></button></td>
-														</tr>
-													<?php endif; ?>
+											<?php if (count($ArrRange) > 0) : ?>
+												<?php foreach ($ArrRange as $k => $rm) : ?>
+													<tr>
+														<td><input type="text" name="sub_tools[]" value="<?= (isset($ArrSubTools[$k]) && $ArrSubTools[$k] ? $ArrSubTools[$k] : ''); ?>" class="form-control border-0 mb-0 p-1"></td>
+														<td><input type="text" name="range_measure[]" value="<?= $rm; ?>" placeholder="0mm - 0mm" class="form-control border-0 mb-0 p-1"></td>
+														<td><input type="text" name="uncertainty[]" value="<?= ($ArrUncert[$k]); ?>" placeholder="0mm" class="form-control border-0 mb-0 p-1"></td>
+														<td class="text-center"><button type="button" class="btn btn-icon btn-xs btn-light-danger remove-range-list"><i class="fa fa-times fa-sm"></i></button></td>
+													</tr>
 											<?php endforeach;
 											endif; ?>
 										</tbody>
@@ -181,8 +175,8 @@
 												</td>
 												<td class="text-center"><?= $ik->created_at; ?></td>
 												<td class="text-center">
-													<button type="button" class="btn btn-xs btn-warning edit-ik btn-icon" data-id="<?= $ik->file; ?>"><i class="fa fa-edit"></i></button>
-													<button type="button" class="btn btn-xs btn-danger delete-ik btn-icon" data-id="<?= $ik->file; ?>"><i class="fa fa-trash"></i></button>
+													<!-- <button type="button" class="btn btn-xs btn-warning edit-ik btn-icon" data-id="<?= $ik->file; ?>"><i class="fa fa-edit"></i></button> -->
+													<button type="button" class="btn btn-xs btn-danger delete-ik btn-icon" data-id="<?= $ik->id; ?>" data-file="<?= $ik->file; ?>"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 										<?php endforeach; ?>
@@ -553,7 +547,7 @@
 											<i class="fa fa-upload"></i>
 											<p>Choose an PDF file or drag it here.</p>
 										</div>
-										<input type="file" id="temp-file" name="temp_file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" data-doc="temp" class="dropzone dropzone-1 drop-file" />
+										<input type="file" id="temp-file" name="temp_file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel.sheet.macroEnabled.12" data-doc="temp" class="dropzone dropzone-1 drop-file" />
 										<div class="for-delete-temp d-none">
 											<div class="middle d-flex justify-content-center align-items-center">
 												<button type="button" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle" data-doc="temp"><i class="fa fa-edit"></i></button>
@@ -774,12 +768,15 @@
 		const element = `
 		<tr>
 			<td>
+				<input type="text" name="sub_tools[]" placeholder="Name" class="form-control border-0 mb-0 p-1">
+			</td>
+			<td>
 				<input type="text" name="range_measure[]" placeholder="0mm - 0mm" class="form-control border-0 mb-0 p-1">
 			</td>
 			<td>
 				<input type="text" name="uncertainty[]" placeholder="0mm" class="form-control border-0 mb-0 p-1">
 			</td>
-			<td class="text-center"><button type="button" class="btn btn-sm btn-light-danger btn-icon remove-range-list"><i class="fa fa-times fa-sm"></i></button></td>
+			<td class="text-center"><button type="button" class="btn btn-xs btn-light-danger btn-icon remove-range-list"><i class="fa fa-times fa-sm"></i></button></td>
 		</tr>
 		`;
 		$('table#list-range tbody').append(element);
@@ -1118,6 +1115,47 @@
 			alert(error.message);
 		});;
 	}
+
+
+	/* DELETE FILE */
+
+	// IK
+	$(document).on('click', '.delete-ik', function() {
+		let id = $(this).data('id');
+		if (id) {
+			Swal.fire({
+				title: 'Confirm!',
+				text: 'Are you sure you want to delete this document?',
+				icon: 'question',
+				showCancelButton: true,
+			}).then((value) => {
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'delete_sub_document',
+						dataType: 'JSON',
+						type: 'POST',
+						data: {
+							id
+						},
+						success: function(result) {
+							if (result.status == 1) {
+								Swal.fire("Success!", result.msg, "success", 3000).then(function() {
+									location.reload()
+								})
+							} else {
+								Swal.fire("Warning!", result.msg, "warning", 3000)
+							}
+						},
+						error: function(result) {
+							Swal.fire("Error!", "Server time out.", "error", 3000)
+
+						}
+					})
+				}
+			})
+		}
+	})
+
 
 	function showPage(page_no, doc) {
 		var _CANVAS = document.querySelector('#' + doc + '-preview')

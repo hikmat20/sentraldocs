@@ -393,7 +393,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="modalId" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-scrollable" role="document">
+	<div class="modal-dialog modal-dialog-scrollable" style="max-width: 100%;" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title"></h5>
@@ -403,7 +403,7 @@
 			</div>
 			<div class="modal-body"></div>
 			<div class="modal-footer py-2">
-				<!-- <button type="button" class="btn btn-primary save"><i class="fa fa-save"></i>Save</button> -->
+				<button type="button" class="btn btn-primary save"><i class="fa fa-save"></i>Save</button>
 				<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>Close</button>
 			</div>
 		</div>
