@@ -993,7 +993,7 @@
 		var doc = $(this).data('doc')
 		// allowed MIME types
 
-		var mime_types = ['application/pdf', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+		var mime_types = ['application/pdf', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel.sheet.macroEnabled.12'];
 		// Validate whether PDF
 		if (mime_types.indexOf(file.type) == -1) {
 			alert('Error : Incorrect file type');

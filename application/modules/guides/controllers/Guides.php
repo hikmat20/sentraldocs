@@ -454,15 +454,16 @@ class Guides extends Admin_Controller
 				}
 
 				$config['upload_path'] 		= "./directory/MASTER_GUIDES/$DIR_COMP/$DIR"; //path folder
-				$config['allowed_types'] 	= 'pdf|xlsx|mp4|xlsm'; //type yang dapat diakses bisa anda sesuaikan
+				$config['allowed_types'] 	= '*'; //type yang dapat diakses bisa anda sesuaikan
 				$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
 				$this->upload->initialize($config);
 				$this->upload->do_upload($FILE);
+				
 				$file 						= $this->upload->data();
 				$data['file']				= $file['file_name'];
 
 				if ($this->upload->display_errors()) {
-					$error_msg = $this->upload->display_errors() . $NAME;
+					$error_msg = $this->upload->display_errors();
 					$this->db->trans_rollback();
 					$Return = [
 						'status' => 0,
