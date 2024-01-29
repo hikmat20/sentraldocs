@@ -204,8 +204,7 @@
 												</td>
 												<td class="text-center"><?= $cmc->created_at; ?></td>
 												<td class="text-center">
-													<button type="button" class="btn btn-xs btn-warning edit-cmc btn-icon" data-id="<?= $cmc->file; ?>"><i class="fa fa-edit"></i></button>
-													<button type="button" class="btn btn-xs btn-danger delete-cmc btn-icon" data-id="<?= $cmc->file; ?>"><i class="fa fa-trash"></i></button>
+													<button type="button" class="btn btn-xs btn-danger delete-cmc btn-icon" data-id="<?= $cmc->id; ?>" data-file="<?= $cmc->file; ?>"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 										<?php endforeach; ?>
@@ -233,8 +232,7 @@
 												</td>
 												<td class="text-center"><?= $temp->created_at; ?></td>
 												<td class="text-center">
-													<button type="button" class="btn btn-xs btn-warning edit-temp btn-icon" data-id="<?= $temp->file; ?>"><i class="fa fa-edit"></i></button>
-													<button type="button" class="btn btn-xs btn-danger delete-temp btn-icon" data-id="<?= $temp->file; ?>"><i class="fa fa-trash"></i></button>
+													<button type="button" class="btn btn-xs btn-danger delete-temp btn-icon" data-id="<?= $temp->id; ?>" data-file="<?= $temp->file; ?>"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 										<?php endforeach; ?>
@@ -262,8 +260,7 @@
 												</td>
 												<td class="text-center"><?= $ublk->created_at; ?></td>
 												<td class="text-center">
-													<button type="button" class="btn btn-xs btn-warning edit-ublk btn-icon" data-id="<?= $ublk->file; ?>"><i class="fa fa-edit"></i></button>
-													<button type="button" class="btn btn-xs btn-danger delete-ublk btn-icon" data-id="<?= $ublk->file; ?>"><i class="fa fa-trash"></i></button>
+													<button type="button" class="btn btn-xs btn-danger delete-ublk btn-icon" data-id="<?= $ublk->id; ?>" data-file="<?= $ublk->file; ?>"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 										<?php endforeach; ?>
@@ -291,8 +288,7 @@
 												</td>
 												<td class="text-center"><?= $sert->created_at; ?></td>
 												<td class="text-center">
-													<button type="button" class="btn btn-xs btn-warning edit-sert btn-icon" data-id="<?= $sert->file; ?>"><i class="fa fa-edit"></i></button>
-													<button type="button" class="btn btn-xs btn-danger delete-sert btn-icon" data-id="<?= $sert->file; ?>"><i class="fa fa-trash"></i></button>
+													<button type="button" class="btn btn-xs btn-danger delete-sert btn-icon" data-id="<?= $sert->id; ?>" data-file="<?= $sert->file; ?>"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 										<?php endforeach; ?>
@@ -320,8 +316,7 @@
 												</td>
 												<td class="text-center"><?= $drift->created_at; ?></td>
 												<td class="text-center">
-													<button type="button" class="btn btn-xs btn-warning edit-drift btn-icon" data-id="<?= $drift->file; ?>"><i class="fa fa-edit"></i></button>
-													<button type="button" class="btn btn-xs btn-danger delete-drift btn-icon" data-id="<?= $drift->file; ?>"><i class="fa fa-trash"></i></button>
+													<button type="button" class="btn btn-xs btn-danger delete-drift btn-icon" data-id="<?= $drift->id; ?>" data-file="<?= $drift->file; ?>"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 										<?php endforeach; ?>
@@ -349,8 +344,7 @@
 												</td>
 												<td class="text-center"><?= $sertcal->created_at; ?></td>
 												<td class="text-center">
-													<button type="button" class="btn btn-xs btn-warning edit-sertcal btn-icon" data-id="<?= $sertcal->file; ?>"><i class="fa fa-edit"></i></button>
-													<button type="button" class="btn btn-xs btn-danger delete-sertcal btn-icon" data-id="<?= $sertcal->file; ?>"><i class="fa fa-trash"></i></button>
+													<button type="button" class="btn btn-xs btn-danger delete-sertcal btn-icon" data-id="<?= $sertcal->id; ?>" data-file="<?= $sertcal->file; ?>"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 										<?php endforeach; ?>
@@ -378,8 +372,7 @@
 												</td>
 												<td class="text-center"><?= $cek->created_at; ?></td>
 												<td class="text-center">
-													<button type="button" class="btn btn-xs btn-warning edit-cek btn-icon" data-id="<?= $cek->file; ?>"><i class="fa fa-edit"></i></button>
-													<button type="button" class="btn btn-xs btn-danger delete-cek btn-icon" data-id="<?= $cek->file; ?>"><i class="fa fa-trash"></i></button>
+													<button type="button" class="btn btn-xs btn-danger delete-cek btn-icon" data-id="<?= $cek->id; ?>" data-file="<?= $cek->file; ?>"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 										<?php endforeach; ?>
@@ -414,8 +407,7 @@
 												</td>
 												<td class="text-center"><?= $vid->created_at; ?></td>
 												<td class="text-center">
-													<button type="button" class="btn btn-xs btn-warning edit-vid btn-icon" data-id="<?= $vid->file; ?>"><i class="fa fa-edit"></i></button>
-													<button type="button" class="btn btn-xs btn-danger delete-vid btn-icon" data-id="<?= $vid->file; ?>"><i class="fa fa-trash"></i></button>
+													<button type="button" class="btn btn-xs btn-danger delete-vid btn-icon" data-id="<?= $vid->id; ?>" data-file="<?= $vid->file; ?>"><i class="fa fa-trash"></i></button>
 												</td>
 											</tr>
 										<?php endforeach; ?>
@@ -1156,6 +1148,293 @@
 		}
 	})
 
+	$(document).on('click', '.delete-cmc', function() {
+		let id = $(this).data('id');
+		if (id) {
+			Swal.fire({
+				title: 'Confirm!',
+				text: 'Are you sure you want to delete this document?',
+				icon: 'question',
+				showCancelButton: true,
+			}).then((value) => {
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'delete_sub_document',
+						dataType: 'JSON',
+						type: 'POST',
+						data: {
+							id
+						},
+						success: function(result) {
+							if (result.status == 1) {
+								Swal.fire("Success!", result.msg, "success", 3000).then(function() {
+									location.reload()
+								})
+							} else {
+								Swal.fire("Warning!", result.msg, "warning", 3000)
+							}
+						},
+						error: function(result) {
+							Swal.fire("Error!", "Server time out.", "error", 3000)
+
+						}
+					})
+				}
+			})
+		}
+	})
+
+	$(document).on('click', '.delete-temp', function() {
+		let id = $(this).data('id');
+		if (id) {
+			Swal.fire({
+				title: 'Confirm!',
+				text: 'Are you sure you want to delete this document?',
+				icon: 'question',
+				showCancelButton: true,
+			}).then((value) => {
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'delete_sub_document',
+						dataType: 'JSON',
+						type: 'POST',
+						data: {
+							id
+						},
+						success: function(result) {
+							if (result.status == 1) {
+								Swal.fire("Success!", result.msg, "success", 3000).then(function() {
+									location.reload()
+								})
+							} else {
+								Swal.fire("Warning!", result.msg, "warning", 3000)
+							}
+						},
+						error: function(result) {
+							Swal.fire("Error!", "Server time out.", "error", 3000)
+
+						}
+					})
+				}
+			})
+		}
+	})
+
+	$(document).on('click', '.delete-ublk', function() {
+		let id = $(this).data('id');
+		if (id) {
+			Swal.fire({
+				title: 'Confirm!',
+				text: 'Are you sure you want to delete this document?',
+				icon: 'question',
+				showCancelButton: true,
+			}).then((value) => {
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'delete_sub_document',
+						dataType: 'JSON',
+						type: 'POST',
+						data: {
+							id
+						},
+						success: function(result) {
+							if (result.status == 1) {
+								Swal.fire("Success!", result.msg, "success", 3000).then(function() {
+									location.reload()
+								})
+							} else {
+								Swal.fire("Warning!", result.msg, "warning", 3000)
+							}
+						},
+						error: function(result) {
+							Swal.fire("Error!", "Server time out.", "error", 3000)
+
+						}
+					})
+				}
+			})
+		}
+	})
+
+	$(document).on('click', '.delete-sert', function() {
+		let id = $(this).data('id');
+		if (id) {
+			Swal.fire({
+				title: 'Confirm!',
+				text: 'Are you sure you want to delete this document?',
+				icon: 'question',
+				showCancelButton: true,
+			}).then((value) => {
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'delete_sub_document',
+						dataType: 'JSON',
+						type: 'POST',
+						data: {
+							id
+						},
+						success: function(result) {
+							if (result.status == 1) {
+								Swal.fire("Success!", result.msg, "success", 3000).then(function() {
+									location.reload()
+								})
+							} else {
+								Swal.fire("Warning!", result.msg, "warning", 3000)
+							}
+						},
+						error: function(result) {
+							Swal.fire("Error!", "Server time out.", "error", 3000)
+
+						}
+					})
+				}
+			})
+		}
+	})
+
+	$(document).on('click', '.delete-drift', function() {
+		let id = $(this).data('id');
+		if (id) {
+			Swal.fire({
+				title: 'Confirm!',
+				text: 'Are you sure you want to delete this document?',
+				icon: 'question',
+				showCancelButton: true,
+			}).then((value) => {
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'delete_sub_document',
+						dataType: 'JSON',
+						type: 'POST',
+						data: {
+							id
+						},
+						success: function(result) {
+							if (result.status == 1) {
+								Swal.fire("Success!", result.msg, "success", 3000).then(function() {
+									location.reload()
+								})
+							} else {
+								Swal.fire("Warning!", result.msg, "warning", 3000)
+							}
+						},
+						error: function(result) {
+							Swal.fire("Error!", "Server time out.", "error", 3000)
+
+						}
+					})
+				}
+			})
+		}
+	})
+
+	$(document).on('click', '.delete-sertcal', function() {
+		let id = $(this).data('id');
+		if (id) {
+			Swal.fire({
+				title: 'Confirm!',
+				text: 'Are you sure you want to delete this document?',
+				icon: 'question',
+				showCancelButton: true,
+			}).then((value) => {
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'delete_sub_document',
+						dataType: 'JSON',
+						type: 'POST',
+						data: {
+							id
+						},
+						success: function(result) {
+							if (result.status == 1) {
+								Swal.fire("Success!", result.msg, "success", 3000).then(function() {
+									location.reload()
+								})
+							} else {
+								Swal.fire("Warning!", result.msg, "warning", 3000)
+							}
+						},
+						error: function(result) {
+							Swal.fire("Error!", "Server time out.", "error", 3000)
+
+						}
+					})
+				}
+			})
+		}
+	})
+
+	$(document).on('click', '.delete-cek', function() {
+		let id = $(this).data('id');
+		if (id) {
+			Swal.fire({
+				title: 'Confirm!',
+				text: 'Are you sure you want to delete this document?',
+				icon: 'question',
+				showCancelButton: true,
+			}).then((value) => {
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'delete_sub_document',
+						dataType: 'JSON',
+						type: 'POST',
+						data: {
+							id
+						},
+						success: function(result) {
+							if (result.status == 1) {
+								Swal.fire("Success!", result.msg, "success", 3000).then(function() {
+									location.reload()
+								})
+							} else {
+								Swal.fire("Warning!", result.msg, "warning", 3000)
+							}
+						},
+						error: function(result) {
+							Swal.fire("Error!", "Server time out.", "error", 3000)
+
+						}
+					})
+				}
+			})
+		}
+	})
+
+	$(document).on('click', '.delete-vid', function() {
+		let id = $(this).data('id');
+		if (id) {
+			Swal.fire({
+				title: 'Confirm!',
+				text: 'Are you sure you want to delete this document?',
+				icon: 'question',
+				showCancelButton: true,
+			}).then((value) => {
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'delete_sub_document',
+						dataType: 'JSON',
+						type: 'POST',
+						data: {
+							id
+						},
+						success: function(result) {
+							if (result.status == 1) {
+								Swal.fire("Success!", result.msg, "success", 3000).then(function() {
+									location.reload()
+								})
+							} else {
+								Swal.fire("Warning!", result.msg, "warning", 3000)
+							}
+						},
+						error: function(result) {
+							Swal.fire("Error!", "Server time out.", "error", 3000)
+
+						}
+					})
+				}
+			})
+		}
+	})
 
 	function showPage(page_no, doc) {
 		var _CANVAS = document.querySelector('#' + doc + '-preview')
