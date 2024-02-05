@@ -156,5 +156,55 @@
 			}
 		})
 
+		$(document).on('click', '.delete', function() {
+			let id = $(this).data('id')
+			if (id) {
+				Swal.fire({
+					title: 'Confirm!',
+					text: 'Are you sure you want to delete this data??',
+					icon: 'question',
+					showCancelButton: true
+				}).then((value) => {
+					if (value.isConfirmed) {
+						$.ajax({
+							url: base_url + active_controller + 'delete/' + id,
+							type: 'POST',
+							dataType: 'JSON',
+							data: {
+								id
+							},
+							success: function(res) {
+								if (res.status == 1) {
+									Swal.fire({
+										title: 'Success!',
+										icon: 'success',
+										text: res.msg,
+										timer: 3000
+									}).then(() => {
+										location.reload();
+									})
+								} else {
+									Swal.fire({
+										title: 'Warinng!',
+										icon: 'warning',
+										text: res.msg,
+										timer: 3000
+									})
+								}
+							},
+							error: function(res) {
+								Swal.fire({
+									title: 'Error!',
+									icon: 'error',
+									text: 'Server timeout, error..',
+									timer: 3000
+								})
+							}
+						})
+					}
+				})
+			}
+		})
+
 	})
 </script>
