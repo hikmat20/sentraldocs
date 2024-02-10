@@ -18,5 +18,10 @@
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
 	},
 	
-"platform-check": false
+"platform-check": false,
+	"config": {
+		"platform": {
+			"php": "5.6.4"
+		}
+	}
 }
