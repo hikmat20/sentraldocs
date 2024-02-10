@@ -22,7 +22,6 @@
 					</div>
 
 					<div class="card-body">
-
 						<!-- Nav tabs -->
 						<ul class="nav nav-tabs nav-pills border-0 mb-5" id="myTab" role="tablist">
 							<li class="nav-item" role="presentation">
@@ -64,7 +63,7 @@
 																		<option value="<?= $pro->id; ?>" <?= ($pro->id == $data->group_procedure) ? 'selected' : ''; ?>><?= $pro->name; ?></option>
 																	<?php endforeach; ?>
 																</select>
-																<small class="text-danger invalid-feedback">Nama Proses</small>
+																<small class="text-danger invalid-feedback">Kelompok Proses</small>
 															</div>
 														</div>
 													</div>
@@ -86,7 +85,7 @@
 															<label class="font-size-h5"><strong><span class="text-danger">*</span> Nama Proses</strong></label>
 															<div class="">
 																<input type="hidden" name="id" id="procedure_id" value="<?= $data->id; ?>">
-																<textarea name="name" id="name" rows="5" required class="form-control" placeholder="Nama Proses" aria-describedby="helpId"><?= $data->name; ?></textarea>
+																<input name="name" id="name" required class="form-control" placeholder="Nama Proses" aria-describedby="helpId" value="<?= $data->name; ?>">
 																<small class="text-danger invalid-feedback">Nama Proses</small>
 															</div>
 														</div>
@@ -100,10 +99,10 @@
 													</div>
 													<div class="col-md-6">
 														<div class="form-group">
-															<label class="font-size-h5"><strong><span class="text-danger">*</span> Performa Indikator</strong></label>
+															<label class="font-size-h5"><strong><span class="text-danger">*</span> Nomor</strong></label>
 															<div class="">
-																<textarea name="performance" rows="5" id="performance" class="form-control" placeholder="Performa Indikator" aria-describedby="helpId"><?= $data->performance; ?></textarea>
-																<small class="text-danger invalid-feedback">Performa Indikator</small>
+																<input name="nomor" id="nomor" required class="form-control" placeholder="Nomor" aria-describedby="helpId" value="<?= $data->nomor; ?>">
+																<small class="text-danger invalid-feedback">Nomor</small>
 															</div>
 														</div>
 														<div class="form-group">
@@ -115,6 +114,13 @@
 														</div>
 													</div>
 													<div class="col-md-12">
+														<div class="form-group">
+															<label class="font-size-h5"><strong><span class="text-danger">*</span> Performa Indikator</strong></label>
+															<div class="">
+																<textarea name="performance" rows="5" id="performance" class="form-control" placeholder="Performa Indikator" aria-describedby="helpId"><?= $data->performance; ?></textarea>
+																<small class="text-danger invalid-feedback">Performa Indikator</small>
+															</div>
+														</div>
 														<div class="form-group">
 															<label class="font-size-h5"><strong>Definisi</strong></label>
 															<div class="">

@@ -7,6 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Procedure</title>
   <style>
+    *,body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
     table.table-data {
       width: 100%;
     }
@@ -78,9 +81,35 @@
 </head>
 
 <body>
+
+  <table border="1" width="100%">
+    <tr>
+      <td rowspan="3" width="50%" class="text-center">
+        <h2><?= $company_name; ?></h2>
+      </td>
+      <td width="120px">Nomor Dokumen</td>
+      <td><?= $procedure->nomor; ?></td>
+    </tr>
+    <tr>
+      <td>Revisi</td>
+      <td><?= ($procedure->revision)?:'~'; ?></td>
+    </tr>
+    <tr>
+      <td>Tgl. Revisi</td>
+      <td><?= ($procedure->revision_date)?date_format(date_create($procedure->revision_date), 'd F Y'):'~'; ?></td>
+    </tr>
+    <tr>
+      <td class="text-center" style="background-color: #000;color:#fff">
+        <h4><?= strtoupper($procedure->name); ?></h4>
+      </td>
+      <td>Halaman</td>
+      <td>{PAGENO} of {nbpg}</td>
+    </tr>
+  </table>
+
   <div class="">
     <!-- HEADER -->
-    <h1 class="text-center"><?= $procedure->name; ?></h1>
+
     <h3><strong>TUJUAN</strong></h3>
     <table>
       <tr>

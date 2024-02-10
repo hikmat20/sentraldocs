@@ -63,6 +63,7 @@ class Admin_Controller extends Base_Controller
         $this->template->set('userData', $this->user_data);
         $this->template->set('idt', $idt);
         $this->template->set('companies', $companies);
+        $this->template->set('company_name', 'PT. SENTRAL TEHNOLOGI MANAGEMEN');
 
         // $this->template->set_theme('admin');
         $this->template->set_theme('dashboard');

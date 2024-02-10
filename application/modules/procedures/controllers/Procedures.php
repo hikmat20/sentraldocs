@@ -1,5 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+use Mpdf\Mpdf;
+
 class Procedures extends Admin_Controller
 {
 	protected $status;
@@ -593,6 +595,13 @@ class Procedures extends Admin_Controller
 			$data['modified_by'] = $this->auth->user_id();
 			$data['modified_at'] = date('Y-m-d H:i:s');
 			$data['status'] = 'REV';
+
+			if($thisData->status == 'RVI'){
+				$data['revision'] = $thisData->revision +1;
+				$data['revision_date'] = date('Y-m-d H:i:s');
+			}
+
+
 			$this->db->update('procedures', $data, ['company_id' => $this->company, 'id' => $id]);
 			$dataLog = [
 				'directory_id' 			=> $id,
@@ -1499,14 +1508,14 @@ class Procedures extends Admin_Controller
 			'ArrJab' 	=> $ArrJab,
 			'ArrForms' 	=> $ArrForms,
 			'ArrGuides' 	=> $ArrGuides,
-
 			'Data' 			=> $Data,
 			'ArrData' 		=> $ArrData,
 			'ArrStd' 		=> $ArrStd,
 			'allProcedure' 	=> $allProcedure,
 		];
 
-		$data = $this->load->view('printout', $Data, TRUE);
+		$this->template->set($Data);
+		$data = $this->template->load_view('printout');
 		$mpdf->WriteHTML($data);
 		$mpdf->Output();
 	}

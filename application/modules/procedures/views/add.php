@@ -67,24 +67,27 @@
 													</div>
 												</div>
 
-												<hr>
 												<div class="row">
 													<div class="col-md-6">
 														<div class="form-group">
 															<label class="font-size-h5"><strong><span class="text-danger">*</span> Nama Proses</strong></label>
 															<div class="">
-																<textarea rows="5" name="name" id="name" class="form-control" rows="5" placeholder="Nama Proses" aria-describedby="helpId"></textarea>
+																<input name="name" id="name" class="form-control" placeholder="Nama Proses" aria-describedby="helpId"></input>
 																<small class="text-danger invalid-feedback">Nama Proses</small>
 															</div>
 														</div>
+													</div>
+													<div class="col-md-6">
 														<div class="form-group">
-															<label class="font-size-h5"><strong><span class="text-danger">*</span> Ruang Lingkup</strong></label>
+															<label class="font-size-h5"><strong><span class="text-danger">*</span> Nomor</strong></label>
 															<div class="">
-																<textarea rows="5" name="scope" id="scope" class="form-control" rows="5" placeholder="Ruang Lingkup" aria-describedby="helpId"></textarea>
-																<small class="text-danger invalid-feedback">Ruang Lingkup</small>
+																<input name="nomor" id="nomor" class="form-control" placeholder="Nomor" aria-describedby="helpId"></input>
+																<small class="text-danger invalid-feedback">Nomor</small>
 															</div>
 														</div>
 													</div>
+												</div>
+												<div class="row">
 													<div class="col-md-6">
 														<div class="form-group">
 															<label class="font-size-h5"><strong><span class="text-danger">*</span> Objektif Proses</strong></label>
@@ -93,6 +96,19 @@
 																<small class="text-danger invalid-feedback">Objektif Proses</small>
 															</div>
 														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="font-size-h5"><strong><span class="text-danger">*</span> Ruang Lingkup</strong></label>
+															<div class="">
+																<textarea rows="5" name="scope" id="scope" class="form-control" rows="5" placeholder="Ruang Lingkup" aria-describedby="helpId"></textarea>
+																<small class="text-danger invalid-feedback">Ruang Lingkup</small>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-12">
 														<div class="form-group">
 															<label class="font-size-h5"><strong><span class="text-danger">*</span> Performa Indikator</strong></label>
 															<div class="">
@@ -100,9 +116,6 @@
 																<small class="text-danger invalid-feedback">Performa Indikator</small>
 															</div>
 														</div>
-
-													</div>
-													<div class="col-md-12">
 														<div class="form-group">
 															<label class="font-size-h5"><strong>Definisi</strong></label>
 															<div class="">
