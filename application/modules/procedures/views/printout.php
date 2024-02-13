@@ -188,62 +188,24 @@
     <br>
 
     <h3>FLOW PROCEDURE</h3>
-    <table>
-      <tbody>
-        <?php if ($procedure->image_flow_1 || $procedure->image_flow_2 || $procedure->image_flow_3) : ?>
-          <tr>
-            <td>
-              <?php if ($procedure->image_flow_1) : ?>
-                <img height="600px" src="<?= base_url("directory/FLOW_IMG/$procedure->company_id/$procedure->image_flow_1"); ?>" alt="image_flow_1" class="img-fluid">
-              <?php endif; ?>
-              <?php if ($procedure->image_flow_2) : ?>
-                <img height="600px" src="<?= base_url("directory/FLOW_IMG/$procedure->company_id/$procedure->image_flow_2"); ?>" alt="image_flow_2" class="img-fluid">
-              <?php endif; ?>
-              <?php if ($procedure->image_flow_3) : ?>
-                <img height="600px" src="<?= base_url("directory/FLOW_IMG/$procedure->company_id/$procedure->image_flow_3"); ?>" alt="image_flow_3" class="img-fluid">
-              <?php endif; ?>
-            </td>
-          </tr>
-        <?php else : ?>
-          <tr>
-            <td class="text-center">~ Not available data ~</td>
-          </tr>
-        <?php endif; ?>
-        <tr>
-          <td>
-          </td>
-        </tr>
-        <tr>
-          <td>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <?php if ($procedure->image_flow_1 || $procedure->image_flow_2 || $procedure->image_flow_3) : ?>
+      <?php if ($procedure->image_flow_1) : ?>
+        <img height="600px" src="<?= base_url("directory/FLOW_IMG/$procedure->company_id/$procedure->image_flow_1"); ?>" alt="image_flow_1" class="img-fluid">
+      <?php endif; ?>
+      <?php if ($procedure->image_flow_2) : ?>
+        <img height="600px" src="<?= base_url("directory/FLOW_IMG/$procedure->company_id/$procedure->image_flow_2"); ?>" alt="image_flow_2" class="img-fluid">
+      <?php endif; ?>
+      <?php if ($procedure->image_flow_3) : ?>
+        <img height="600px" src="<?= base_url("directory/FLOW_IMG/$procedure->company_id/$procedure->image_flow_3"); ?>" alt="image_flow_3" class="img-fluid">
+      <?php endif; ?>
+    <?php else : ?>
+      <p>~ Not available data ~</p>
+    <?php endif; ?>
 
-    <!-- <br>
-    <h3>VIDEO</h3>
-    <table class="table-data">
-      <thead>
-        <tr class="table-secondary">
-          <th class="text-left">
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php if ($procedure->link_video) : ?>
-          <tr>
-            <td class="text-center">
-              <?= ($procedure->link_video); ?>
-            </td>
-          </tr>
-        <?php else : ?>
-          <tr>
-            <td class="text-center">~ Not available data ~</td>
-          </tr>
-        <?php endif; ?>
-      </tbody>
-    </table> -->
-
+    <?php if ($procedure->link_video) : ?>
+      <h3>VIDEO</h3>
+      <a href="<?= ($procedure->link_video); ?>">Link Video</a>
+    <?php endif; ?>
     <br>
     <h3>FLOW DETAIL</h3>
     <table class="table-data" style="font-size: 11px;">
@@ -325,4 +287,5 @@
     </table>
   </div>
 </body>
+
 </html>
