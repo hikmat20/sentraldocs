@@ -1462,6 +1462,7 @@ class Procedures extends Admin_Controller
 	{
 		$mpdf 				= new Mpdf();
 		$mpdf->showImageErrors = true;
+		$mpdf->curlAllowUnsafeSslRequests = true;
 		$procedure 			= $this->db->get_where('procedures', ['id' => $id])->row();
 		$flowDetail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id, 'status' => '1'])->result();
 		$getForms			= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
