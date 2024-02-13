@@ -325,9 +325,4 @@
     </table>
   </div>
 </body>
-<?php 
-echo '<pre>';
-print_r($procedure);
-echo '</pre>';
-exit;?>
 </html>
