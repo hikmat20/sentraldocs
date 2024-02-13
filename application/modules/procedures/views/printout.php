@@ -7,9 +7,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Procedure</title>
   <style>
-    *,body {
+    *,
+    body {
       font-family: Arial, Helvetica, sans-serif;
     }
+
     table.table-data {
       width: 100%;
     }
@@ -92,11 +94,11 @@
     </tr>
     <tr>
       <td>Revisi</td>
-      <td><?= ($procedure->revision)?:'~'; ?></td>
+      <td><?= ($procedure->revision) ?: '~'; ?></td>
     </tr>
     <tr>
       <td>Tgl. Revisi</td>
-      <td><?= ($procedure->revision_date)?date_format(date_create($procedure->revision_date), 'd F Y'):'~'; ?></td>
+      <td><?= ($procedure->revision_date) ? date_format(date_create($procedure->revision_date), 'd F Y') : '~'; ?></td>
     </tr>
     <tr>
       <td class="text-center" style="background-color: #000;color:#fff">
@@ -189,32 +191,32 @@
     <table>
       <tbody>
         <?php if ($procedure->image_flow_1 || $procedure->image_flow_2 || $procedure->image_flow_3) : ?>
-          <?php if ($procedure->image_flow_1) : ?>
-            <tr>
-              <td>
+          <tr>
+            <td>
+              <?php if ($procedure->image_flow_1) : ?>
                 <img height="600px" src="<?= base_url("directory/FLOW_IMG/$procedure->company_id/$procedure->image_flow_1"); ?>" alt="image_flow_1" class="img-fluid">
-              </td>
-            </tr>
-          <?php endif; ?>
-          <?php if ($procedure->image_flow_2) : ?>
-            <tr>
-              <td>
+              <?php endif; ?>
+              <?php if ($procedure->image_flow_2) : ?>
                 <img height="600px" src="<?= base_url("directory/FLOW_IMG/$procedure->company_id/$procedure->image_flow_2"); ?>" alt="image_flow_2" class="img-fluid">
-              </td>
-            </tr>
-          <?php endif; ?>
-          <?php if ($procedure->image_flow_3) : ?>
-            <tr>
-              <td>
+              <?php endif; ?>
+              <?php if ($procedure->image_flow_3) : ?>
                 <img height="600px" src="<?= base_url("directory/FLOW_IMG/$procedure->company_id/$procedure->image_flow_3"); ?>" alt="image_flow_3" class="img-fluid">
-              </td>
-            </tr>
-          <?php endif; ?>
+              <?php endif; ?>
+            </td>
+          </tr>
         <?php else : ?>
           <tr>
             <td class="text-center">~ Not available data ~</td>
           </tr>
         <?php endif; ?>
+        <tr>
+          <td>
+          </td>
+        </tr>
+        <tr>
+          <td>
+          </td>
+        </tr>
       </tbody>
     </table>
 
@@ -323,5 +325,9 @@
     </table>
   </div>
 </body>
-
+<?php 
+echo '<pre>';
+print_r($procedure);
+echo '</pre>';
+exit;?>
 </html>
