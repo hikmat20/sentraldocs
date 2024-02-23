@@ -86,9 +86,9 @@ $route['list/cross'] = 'documents_list/cross';
 $route['list/cross/(:any)'] = 'documents_list/$1';
 
 /* List Documents */
-$route['list/(:any)/(:any)'] = 'documents_list/$1/$2';
-$route['list/(:any)'] = 'documents_list/find/$1';
-$route['list'] = 'dashboard';
+$route['list/(:any)/(:any)']    = 'documents_list/$1/$2';
+$route['list/(:any)']           = 'documents_list/find/$1';
+$route['list']                  = 'dashboard';
 
 
 /* Manage Documents */
