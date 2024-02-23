@@ -253,7 +253,7 @@ class Documents_list extends Admin_Controller
 				$EOF = true;
 			}
 		} elseif ($methode == 'find') {
-			$records = $this->db->get_where('dir_records', ['company_id' => $this->company, 'procedure_id' => $procedure_id, 'parent_id' => $id, 'status' => 'PUB'])->result();
+			$records = $this->db->get_where('dir_records', ['company_id' => $this->company, 'procedure_id' => $procedure_id, 'parent_id' => $id])->result();
 			$EOF = false;
 		}
 
