@@ -266,6 +266,44 @@ class Procedures extends Admin_Controller
 		echo json_encode($Return);
 	}
 
+	public function saveFlowDetail()
+	{
+		$Data 			= $this->input->post('flow');
+		$pro_id 		= $this->input->post('procedure_id');
+		if ($Data) {
+			$Data['procedure_id'] = $pro_id;
+			if (isset($Data['id']) && $Data['id']) {
+				$Data['relate_doc'] 		= isset($Data['relate_doc']) ? json_encode($Data['relate_doc']) : '-';
+				$Data['relate_ik_doc'] 		= isset($Data['relate_ik_doc']) ? json_encode($Data['relate_ik_doc']) : '-';
+				$Data['modified_by'] 		= $this->auth->user_id();
+				$Data['modified_at'] 		= date('Y-m-d H:i:s');
+				$this->db->update('procedure_details', $Data, ['id' => $Data['id']]);
+			} else {
+				$Data['relate_doc'] 		= isset($Data['relate_doc']) ? json_encode($Data['relate_doc']) : '-';
+				$Data['relate_ik_doc'] 		= isset($Data['relate_ik_doc']) ? json_encode($Data['relate_ik_doc']) : '-';
+				$Data['created_by'] 		= $this->auth->user_id();
+				$Data['created_at'] 		= date('Y-m-d H:i:s');
+				$this->db->insert('procedure_details', $Data);
+			}
+		}
+
+		if ($this->db->trans_status() === FALSE) {
+			$this->db->trans_rollback();
+			$Return		= array(
+				'status' => 0,
+				'msg'	 => 'Data Flow Detail failed to save. Please try again.',
+			);
+		} else {
+			$this->db->trans_commit();
+			$Return		= array(
+				'status' => 1,
+				'msg'	 => 'Data Flow Detail successfully saved..',
+				'id'	 => $pro_id,
+			);
+		}
+		echo json_encode($Return);
+	}
+
 	private function _save_upload()
 	{
 		$data = $this->input->post('forms');
@@ -390,10 +428,12 @@ class Procedures extends Admin_Controller
 		$guides 	= $this->db->get_where('dir_guides', ['procedure_id' => $id, 'company_id' => $this->company, 'active' => 'Y', 'status !=' => 'DEL'])->result();
 
 		$this->template->set([
-			'flow' 	=> $flow,
-			'forms' => $forms,
-			'guides' => $guides,
+			'procedure_id' 	=>$id,
+			'flow' 			=> $flow,
+			'forms' 		=> $forms,
+			'guides' 		=> $guides,
 		]);
+
 		$this->template->render('form-flow');
 	}
 
@@ -406,6 +446,7 @@ class Procedures extends Admin_Controller
 		}
 
 		$this->template->set([
+			'procedure_id' => $proc_id,
 			'flow' 		=> $flow,
 			'forms' 	=> $forms,
 			'guides' 	=> $guides
@@ -417,17 +458,23 @@ class Procedures extends Admin_Controller
 	{
 		$Data_detail = '';
 		if ($id) {
-			$Data_detail 	= $this->db->get_where('procedure_details', ['procedure_id' => $id, 'status' => '1'])->result();
+			$Data_detail 	= $this->db->order_by('number asc')->get_where('procedure_details', ['procedure_id' => $id, 'status' => '1'])->result();
 			$getForms	= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
+			$getguides	= $this->db->get_where('dir_guides', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
 			$ArrForms = [];
 			foreach ($getForms as $frm) {
 				$ArrForms[$frm->id] = $frm;
 			}
+			$ArrGuides = [];
+			foreach ($getguides as $gid) {
+				$ArrGuides[$gid->id] = $gid;
+			}
 		}
 
 		$this->template->set([
-			'detail' 	=> $Data_detail,
-			'ArrForms' 	=> $ArrForms
+			'detail' 		=> $Data_detail,
+			'ArrForms' 		=> $ArrForms,
+			'ArrGuides' 	=> $ArrGuides,
 		]);
 		$this->template->render('data-flow');
 	}
@@ -592,6 +639,15 @@ class Procedures extends Admin_Controller
 		$this->db->trans_begin();
 		if (($id)) {
 			$thisData = $this->db->get_where('procedures', ['id' => $id])->row();
+			if($thisData->reviewer_id == '' || $thisData->reviewer_id == null ||$thisData->approval_id == '' || $thisData->approval_id == null){
+				$Return		= array(
+					'status'		=> 0,
+					'msg'			=> 'Please select Reviewer User And Approval User first to go to the next process.',
+				);
+				echo json_encode($Return);
+				return false;
+			}
+
 			$data['modified_by'] = $this->auth->user_id();
 			$data['modified_at'] = date('Y-m-d H:i:s');
 			$data['status'] = 'REV';
@@ -601,10 +657,9 @@ class Procedures extends Admin_Controller
 				$data['revision_date'] = date('Y-m-d H:i:s');
 			}
 
-
 			$this->db->update('procedures', $data, ['company_id' => $this->company, 'id' => $id]);
 			$dataLog = [
-				'directory_id' 			=> $id,
+				'directory_id' 	=> $id,
 				'old_status'	=> $thisData->status,
 				'new_status' 	=> $data['status'],
 				'note' 			=> 'Update data procedure',

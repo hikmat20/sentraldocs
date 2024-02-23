@@ -238,7 +238,7 @@
 																	<?php if ($data->image_flow_1) : ?>
 																		<div class="middle d-flex justify-content-center align-items-center">
 																			<button type="button" onclick="$(this).parent().parent().find('.dropzone').click()" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle"><i class="fa fa-edit"></i></button>
-																			<button type="button" onclick="remove_image(this)" data-id="<?= $data->id; ?>" data-img="image_flow_1" class="btn btn-sm mr-1 btn-icon btn-danger remove-image rounded-circle"><i class="fa fa-trash"></i></button>
+																			<button type="button" onclick="remove_image(this)" data-id="<?= $data->id; ?>" data-img="image_flow_1" class="btn btn-sm mr-1 btn-icon btn-danger remove-image rounded-circle"><i class="fa fa-trash text-white"></i></button>
 																		</div>
 																	<?php endif; ?>
 																	<div class="for-delete"></div>
@@ -258,7 +258,7 @@
 																	<?php if ($data->image_flow_2) : ?>
 																		<div class="middle d-flex justify-content-center align-items-center">
 																			<button type="button" onclick="$(this).parent().parent().find('.dropzone').click()" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle"><i class="fa fa-edit"></i></button>
-																			<button type="button" onclick="remove_image(this)" data-id="<?= $data->id; ?>" data-img="image_flow_2" class="btn btn-sm mr-1 btn-icon btn-danger remove-image rounded-circle"><i class="fa fa-trash"></i></button>
+																			<button type="button" onclick="remove_image(this)" data-id="<?= $data->id; ?>" data-img="image_flow_2" class="btn btn-sm mr-1 btn-icon btn-danger remove-image rounded-circle"><i class="fa fa-trash text-white"></i></button>
 																		</div>
 																	<?php endif; ?>
 																	<div class="for-delete"></div>
@@ -418,7 +418,7 @@
 												<div class="row">
 													<div class="col-6">
 														<div class="form-group row">
-															<label class="col-12 col-form-label"><span class="text-danger">*</span> Prepared By :</label>
+															<label class="col-12 col-form-label">Prepared By :</label>
 															<div class="col-12">
 																<select name="prepared_by" id="prepared_by" class="form-control select2">;
 																	<option value=""></option>
@@ -431,11 +431,11 @@
 														</div>
 
 														<div class="form-group">
-															<h5 class="col-12 px-0"><span class="text-danger">*</span> This document requires approval :</h5>
+															<h5 class="col-12 px-0">This document requires approval :</h5>
 														</div>
 
 														<div class="form-group row">
-															<label class="col-lg-3"><span class="text-danger">*</span> Review By</label>
+															<label class="col-lg-3">Review By</label>
 															<div class="col-lg-9">
 																<select name="reviewer_id" id="reviewer_id" class="form-control select2">;
 																	<option value=""></option>
@@ -443,12 +443,12 @@
 																		<option value="<?= $jbt->id; ?>" <?= (isset($data) && $data->reviewer_id == $jbt->id) ? 'selected' : ''; ?>><?= $jbt->name; ?></option>
 																	<?php endforeach; ?>
 																</select>
-																<span class="form-text text-danger invalid-feedback"><span class="text-danger">*</span> Review By harus di isi</span>
+																<span class="form-text text-danger invalid-feedback">Review By harus di isi</span>
 															</div>
 														</div>
 
 														<div class="form-group row">
-															<label class="col-lg-3"><span class="text-danger">*</span> Approval By</label>
+															<label class="col-lg-3">Approval By</label>
 															<div class="col-lg-9">
 																<select name="approval_id" id="approval_id" class="form-control select2">;
 																	<option value=""></option>
@@ -672,23 +672,25 @@
 							</div>
 						</div>
 					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
 
-					<!-- Modal -->
-					<div class="modal fade" id="modelId" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-						<div class="modal-dialog modal-dialog-centered" style="max-width:90%" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title">Modal title</h5>
-									<button type="button" class="close" onclick="$('#content_modal').html('')" data-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
-								<div id="content_modal">
-								</div>
-							</div>
-						</div>
-					</div>
-
+<!-- Modal -->
+<div class="modal fade" id="modelId" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Modal title</h5>
+				<button type="button" class="close" onclick="$('#content_modal').html('')" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form id="form-flow-detail">
+				<div id="content_modal">
+				</div>
 			</form>
 		</div>
 	</div>
@@ -798,47 +800,6 @@
 
 		$(document).on('click', '.edit_flow', function() {
 			let id = $(this).data('id')
-			// let number = $(this).parents('tr').find('td:eq(0)').text();
-			// let pic = $(this).parents('tr').find('td:eq(1)').text();
-			// let desc = $(this).parents('tr').find('td:eq(2)').text();
-			// let reldoc = $(this).parents('tr').find('td:eq(3)').text();
-
-			// let html = `<div class="modal-body">
-			// 		<div class="form-group">
-			// 			<label class="">Nomor</label>
-			// 			<div class="">
-			// 				<input type="hidden" name="flow[id]" class="form-control" value="` + id + `" >
-			// 				<input type="text" name="flow[number]" id="number" class="form-control" required placeholder="Nomor" value="` + number + `">
-			// 				<small class="text-danger invalid-feedback">Nomor</small>
-			// 			</div>
-			// 		</div>
-			// 		<div class="form-group">
-			// 			<label class="">PIC</label>
-			// 			<div class="">
-			// 				<input type="text" name="flow[pic]" id="pic" class="form-control" required placeholder="PIC" value="` + pic + `">
-			// 				<small class="text-danger invalid-feedback">PIC</small>
-			// 			</div>
-			// 		</div>
-			// 		<div class="form-group">
-			// 			<label for="description" class="">Deskripsi</label>
-			// 			<div class="">
-			// 				<textarea rows="5" name="flow[description]" id="description" class="form-control" placeholder="Deskripsi" aria-describedby="helpId">` + desc + `</textarea>
-			// 				<small class="text-danger invalid-feedback">Deskripsi</small>
-			// 			</div>
-			// 		</div>
-			// 		<div class="form-group">
-			// 			<label class="">Dok. Terkait</label>
-			// 			<div class="">
-			// 				<textarea rows="5" name="flow[relate_doc]" id="relate_doc" class="form-control" required placeholder="Dokumen terkait" aria-describedby="helpId">` + reldoc + `</textarea>
-			// 				<small class="text-danger invalid-feedback">Dokumen terkait</small>
-			// 			</div>
-			// 		</div> 
-			// 	</div> 
-			// 	<div class="modal-footer justify-content-between align-items-center mb-3">
-			// 		<button type="submit" class="btn btn-sm btn-primary w-100px save"><i class="fas fa-save"></i>Save</button>
-			// 		<button type="button" class="btn btn-sm btn-danger w-100px" onclick="setTimeout(function(){$('#content_modal').html('')},1500)" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
-			// 	</div> 
-			// `;
 			const proc_id = $(this).data('proc_id')
 			const url = siteurl + active_controller + 'edit_flow/' + proc_id + "/" + id
 			$('#content_modal').load(url)
@@ -852,8 +813,8 @@
 				title: 'Are you sure to delete this data?',
 				icon: 'question',
 				showCancelButton: true,
-				confirmButtonColor: '#DD6B55',
-				confirmButtonText: 'Yes, Delete <i class="fa fa-trash"></i>',
+				confirmButtonColor: '#ee2d41',
+				confirmButtonText: 'Yes, Delete <i class="fa fa-trash text-white"></i>',
 			}).then((value) => {
 				if (value.isConfirmed) {
 					$.ajax({
@@ -918,27 +879,27 @@
 				return false;
 			}
 
-			if ((reviewer_id == '' && reviewer_id != undefined) || (reviewer_id == null && reviewer_id != undefined)) {
-				Swal.fire({
-					title: "Error Message!",
-					text: 'Empty reviewer, please input reviewer first.....',
-					icon: "warning"
-				});
-				$('#reviewer_id').addClass('is-invalid')
-				$('#approvalDocs').addClass('show');
-				return false;
-			}
+			// if ((reviewer_id == '' && reviewer_id != undefined) || (reviewer_id == null && reviewer_id != undefined)) {
+			// 	Swal.fire({
+			// 		title: "Error Message!",
+			// 		text: 'Empty reviewer, please input reviewer first.....',
+			// 		icon: "warning"
+			// 	});
+			// 	$('#reviewer_id').addClass('is-invalid')
+			// 	$('#approvalDocs').addClass('show');
+			// 	return false;
+			// }
 
-			if ((approval_id == '' && approval_id != undefined) || (approval_id == null && approval_id != undefined)) {
-				Swal.fire({
-					title: "Error Message!",
-					text: 'Empty approval, please input approval first!',
-					icon: "warning"
-				});
-				$('#approval_id').addClass('is-invalid')
-				$('#approvalDocs').addClass('show');
-				return false;
-			}
+			// if ((approval_id == '' && approval_id != undefined) || (approval_id == null && approval_id != undefined)) {
+			// 	Swal.fire({
+			// 		title: "Error Message!",
+			// 		text: 'Empty approval, please input approval first!',
+			// 		icon: "warning"
+			// 	});
+			// 	$('#approval_id').addClass('is-invalid')
+			// 	$('#approvalDocs').addClass('show');
+			// 	return false;
+			// }
 
 
 			var validate = true
@@ -967,7 +928,7 @@
 				cache: false,
 				beforeSend: function() {
 					btn.attr('disabled', true)
-					btn.html('<i class="spinner spinner-border-sm"></i>Loading...')
+					btn.html('<i class="spinner spinner-border-sm mr-3"></i> Loading...')
 				},
 				complete: function() {
 					btn.attr('disabled', false)
@@ -983,6 +944,62 @@
 							timer: 2000
 						}).then(() => {
 							location.reload()
+							$('#modelId').modal('hide')
+							$('#flowDetail table tbody').load(siteurl + active_controller + 'loadFlow/' + result.id)
+						})
+
+					} else {
+						Swal.fire({
+							title: 'Warning!',
+							icon: 'warning',
+							text: result.msg,
+							timer: 2000
+						})
+					}
+				},
+				error: function(result) {
+					Swal.fire({
+						title: 'Error!',
+						icon: 'error',
+						text: 'Server timeout, becuase error!',
+						timer: 4000
+					})
+				}
+			})
+		})
+
+		/* FLOW DETAIL */
+		$(document).on('submit', '#form-flow-detail', function(e) {
+			e.preventDefault();
+			let formdata = new FormData($(this)[0])
+			let btn = $('.save')
+
+			$.ajax({
+				url: siteurl + active_controller + 'saveFlowDetail',
+				data: formdata,
+				type: 'POST',
+				dataType: 'JSON',
+				processData: false,
+				contentType: false,
+				cache: false,
+				beforeSend: function() {
+					btn.attr('disabled', true)
+					btn.html('<i class="spinner spinner-border-sm mr-3"></i> Loading...')
+				},
+				complete: function() {
+					btn.attr('disabled', false)
+					btn.html('<i class="fa fa-save"></i>Save')
+				},
+
+				success: function(result) {
+					if (result.status == 1) {
+						Swal.fire({
+							title: 'Success!',
+							icon: 'success',
+							text: result.msg,
+							timer: 2000
+						}).then(() => {
+							// location.reload()
 							$('#modelId').modal('hide')
 							$('#flowDetail table tbody').load(siteurl + active_controller + 'loadFlow/' + result.id)
 						})
@@ -1104,7 +1121,7 @@
 				title: 'Are you sure to delete this data?',
 				icon: 'question',
 				showCancelButton: true,
-				confirmButtonColor: '#DD6B55',
+				confirmButtonColor: '#ee2d41',
 				confirmButtonText: 'Yes, Delete <i class="fa fa-trash text-white"></i>',
 			}).then((value) => {
 				if (value.isConfirmed) {
@@ -1316,7 +1333,7 @@
 				cache: false,
 				beforeSend: function() {
 					btn.attr('disabled', true)
-					btn.html('<i class="spinner spinner-border-sm"></i>Loading...')
+					btn.html('<i class="spinner spinner-border-sm mr-3"></i> Loading...')
 				},
 				complete: function() {
 					btn.attr('disabled', false)
@@ -1392,7 +1409,7 @@
 				title: 'Are you sure to delete this data?',
 				icon: 'question',
 				showCancelButton: true,
-				confirmButtonColor: '#DD6B55',
+				confirmButtonColor: '#ee2d41',
 				confirmButtonText: 'Yes, Delete <i class="fa fa-trash text-white"></i>',
 			}).then((value) => {
 				if (value.isConfirmed) {
@@ -1565,7 +1582,7 @@
 				cache: false,
 				beforeSend: function() {
 					btn.attr('disabled', true)
-					btn.html('<i class="spinner spinner-border-sm"></i>Loading...')
+					btn.html('<i class="spinner spinner-border-sm mr-3"></i> Loading...')
 				},
 				complete: function() {
 					btn.attr('disabled', false)
@@ -1665,7 +1682,7 @@
 				cache: false,
 				beforeSend: function() {
 					btn.attr('disabled', true)
-					btn.html('<i class="spinner spinner-border-sm"></i>Loading...')
+					btn.html('<i class="spinner spinner-border-sm mr-3"></i> Loading...')
 				},
 				complete: function() {
 					btn.attr('disabled', false)
@@ -1708,7 +1725,7 @@
 				title: 'Are you sure to delete this data?',
 				icon: 'question',
 				showCancelButton: true,
-				confirmButtonColor: '#DD6B55',
+				confirmButtonColor: '#ee2d41',
 				confirmButtonText: 'Yes, Delete <i class="fa fa-trash text-white"></i>',
 			}).then((value) => {
 				if (value.isConfirmed) {
@@ -1817,7 +1834,7 @@
 				dataType: 'JSON',
 				beforeSend: function() {
 					btn.attr('disabled', true)
-					btn.html('<i class="spinner spinner-border-sm"></i>Loading...')
+					btn.html('<i class="spinner spinner-border-sm mr-3"></i> Loading...')
 				},
 				complete: function() {
 					btn.attr('disabled', false)
@@ -1903,7 +1920,7 @@
 
 				var overlay = `<div class="middle d-flex justify-content-center align-items-center">
 					<button type="button" onclick="$(this).parent().parent().find('.dropzone').click()" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle"><i class="fa fa-edit"></i></button>
-					<button type="button" onclick="remove_image(this)" class="btn btn-sm mr-1 btn-icon btn-danger remove-image rounded-circle"><i class="fa fa-trash"></i></button>
+					<button type="button" onclick="remove_image(this)" class="btn btn-sm mr-1 btn-icon btn-danger remove-image rounded-circle"><i class="fa fa-trash text-white"></i></button>
 					</div>`;
 				var wrapperZone = $(input).parent();
 				var previewZone = $(input).parent().parent().find('.preview-zone');
@@ -1933,7 +1950,7 @@
 			title: 'Are you sure to delete this data?',
 			icon: 'question',
 			showCancelButton: true,
-			confirmButtonColor: '#DD6B55',
+			confirmButtonColor: '#ee2d41',
 			confirmButtonText: 'Yes, Delete <i class="fa fa-trash text-white"></i>',
 		}).then((value) => {
 			if (value.isConfirmed) {

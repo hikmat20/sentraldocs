@@ -8,12 +8,17 @@
 			<td><?= $dtl->description; ?></td>
 			<td style="vertical-align: middle;">
 				<?php $relDocs = json_decode($dtl->relate_doc); ?>
+				<?php $relIK = json_decode($dtl->relate_ik_doc); ?>
 				<?php if (is_array($relDocs)) : ?>
 					<?php foreach ($relDocs as $relDoc) { ?>
-						<span class="badge bg-success btn btn-success view-form mb-1" data-id="<?= $relDoc; ?>"><?= $ArrForms[$relDoc]->name; ?></span>
+						<span class="badge btn btn-success view-form mb-1" data-id="<?= $relDoc; ?>"><?= $ArrForms[$relDoc]->name; ?></span>
 					<?php } ?>
-				<?php else : ?>
-					<?= $dtl->relate_doc; ?>
+				<?php endif; ?>
+
+				<?php if (is_array($relIK)) : ?>
+					<?php foreach ($relIK as $ik) { ?>
+						<span class="badge btn btn-danger view-form mb-1" data-id="<?= $ik; ?>"><?= $ArrGuides[$ik]->name; ?></span>
+					<?php } ?>
 				<?php endif; ?>
 			</td>
 			<td class="text-center" style="vertical-align: middle;">

@@ -1,6 +1,7 @@
+<input type="hidden" name="procedure_id" value="<?= $procedure_id; ?>">
 <div class="modal-body">
 	<div class="form-group">
-		<label class="">Nomor</label>
+		<label class="">Nomor <span class="text-danger">*</span></label>
 		<div class="">
 			<input type="hidden" name="flow[id]" class="form-control" value="<?= ($flow) ? $flow->id : ''; ?>">
 			<input type="text" name="flow[number]" id="number" class="form-control" value="<?= ($flow) ? $flow->number : ''; ?>" required placeholder="Nomor" aria-describedby="helpId">
@@ -8,14 +9,14 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<label class="">PIC</label>
+		<label class="">PIC <span class="text-danger">*</span></label>
 		<div class="">
 			<input type="text" name="flow[pic]" id="pic" class="form-control" value="<?= ($flow) ? $flow->pic : ''; ?>" required placeholder="PIC" aria-describedby="helpId">
 			<small class="text-danger invalid-feedback">PIC</small>
 		</div>
 	</div>
 	<div class="form-group">
-		<label for="description" class="">Deskripsi</label>
+		<label for="description" class="">Deskripsi <span class="text-danger">*</span></label>
 		<div class="">
 			<textarea rows="5" name="flow[description]" id="description" class="form-control" placeholder="Deskripsi" aria-describedby="helpId"><?= ($flow) ? $flow->description : ''; ?></textarea>
 			<small class="text-danger invalid-feedback">Deskripsi</small>
@@ -52,10 +53,10 @@
 		</div>
 
 	</div>
-	<div class="modal-footer justify-content-between align-items-center mb-3">
-		<button type="submit" class="btn btn-sm btn-primary w-100px save"><i class="fas fa-save"></i>Save</button>
-		<button type="button" class="btn btn-sm btn-danger w-100px" onclick="setTimeout(function(){$('#content_modal').html('')},500)" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
-	</div>
+</div>
+<div class="modal-footer justify-content-between align-items-center mb-3">
+	<button type="submit" class="btn btn-sm btn-primary min-w-100px save"><i class="fas fa-save"></i>Save</button>
+	<button type="button" class="btn btn-sm btn-danger w-100px" onclick="setTimeout(function(){$('#content_modal').html('')},500)" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
 </div>
 
 <script>
