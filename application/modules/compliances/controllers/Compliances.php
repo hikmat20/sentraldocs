@@ -365,6 +365,135 @@ class Compliances extends Admin_Controller
         echo json_encode($return);
     }
 
+    public function saveFile()
+    {
+        $data = $this->input->post();
+
+        $data['company_id']        = $this->company;
+        $DIR_COMP = $this->company;
+
+        // echo '<pre>';
+        // print_r($data);
+        // print_r($_FILES);
+        // echo '</pre>';
+        // exit;
+        $current_data = $this->db->get_where('compliance_details', ['id' => $data['id']])->row();
+
+        if (($_FILES) && $_FILES['file']['name']) {
+            if (!is_dir('./directory/COMPLIANCE/' . $DIR_COMP)) {
+                mkdir('./directory/COMPLIANCE/' . $DIR_COMP, 0755, TRUE);
+                chmod("./directory/COMPLIANCE/" . $DIR_COMP, 0755);  // octal; correct value of mode
+                chown("./directory/COMPLIANCE/" . $DIR_COMP, 'www-data');
+            }
+            // $new_name 					= $this->fixForUri($data['description']);
+            $config['upload_path']          = "./directory/COMPLIANCE/$DIR_COMP"; //path folder
+            $config['allowed_types']        = 'pdf|xlsx|docx'; //type yang dapat diakses bisa anda sesuaikan
+            $config['encrypt_name']         = true; //Enkripsi nama yang terupload
+            // $config['file_name'] 		= $new_name;
+
+            $this->upload->initialize($config);
+            if ($this->upload->do_upload('file')) {
+                $file = $this->upload->data();
+                $data['file']        = $file['file_name'];
+                $this->db->trans_begin();
+                $this->db->update('compliance_details', $data, ['id' => $data['id']]);
+
+                if ($this->db->trans_status() === FALSE) {
+                    $this->db->trans_rollback();
+                    $Return = [
+                        'status' => 0,
+                        'msg'     => "FAILED!! Can't save file. Please try again."
+                    ];
+                    echo json_encode($Return);
+                } else {
+                    $this->db->trans_commit();
+                    if ($current_data->file) {
+                        if (file_exists("./directory/COMPLIANCE/$DIR_COMP/$current_data->file")) {
+                            unlink("./directory/COMPLIANCE/$DIR_COMP/$current_data->file");
+                        }
+                    }
+
+                    $Return = [
+                        'status' => 1,
+                        'msg'     => "Save file succesfull."
+                    ];
+                    echo json_encode($Return);
+                }
+            } else {
+                $error_msg = $this->upload->display_errors();
+                $Return = [
+                    'status' => 0,
+                    'msg'     => $error_msg
+                ];
+                echo json_encode($Return);
+                return false;
+            };
+        }
+    }
+
+    function file($file)
+    {
+        $id = $this->input->get('_init');
+        if (isset($id) && $id) {
+            $checkData = $this->db->get_where('compliance_details', ['id' => $id, 'file' => $file])->row();
+            if ($checkData) {
+                $this->load->view('file', ['id' => $id, 'file' => $file, 'comp' => $this->company]);
+            } else {
+                $this->error_page($id);
+            }
+        } else {
+            $this->error_page($id);
+        }
+    }
+
+    public function removeFile()
+    {
+        $id = $this->input->post('id');
+        if (isset($id) && $id) {
+            $data = $this->db->get_where('compliance_details', ['id' => $id])->row();
+            if ($data) {
+                $this->db->trans_begin();
+                $this->db->update('compliance_details', ['file' => null], ['id' => $id]);
+
+                if (file_exists("./directory/COMPLIANCE/$this->company/$data->file")) {
+                    unlink("./directory/COMPLIANCE/$this->company/$data->file");
+                }
+
+                if ($this->db->trans_status() === FALSE) {
+                    $this->db->trans_rollback();
+                    $Return = [
+                        'status' => 0,
+                        'msg'     => "FAILED!! Can't remove file. Please try again."
+                    ];
+                    echo json_encode($Return);
+                } else {
+                    $this->db->trans_commit();
+                    $Return = [
+                        'status' => 1,
+                        'msg'     => "Remove file succesfull."
+                    ];
+                    echo json_encode($Return);
+                }
+            } else {
+                $Return = [
+                    'status' => 0,
+                    'msg'     => "FAILED!! File not found."
+                ];
+            }
+        } else {
+            $Return = [
+                'status' => 0,
+                'msg'     => "FAILED!! File not found."
+            ];
+        }
+    }
+
+    private function error_page($data)
+    {
+        $this->load->view('errors/html/error_404_custome');
+        return error_log('sdaa', 0, 'file compliance', $data);
+    }
+
     public function view_compliance($id = null)
     {
         if ($id) {
@@ -537,7 +666,6 @@ class Compliances extends Admin_Controller
             $this->template->render('show-compilation');
         }
     }
-
 
     public function compilation($id = null)
     {

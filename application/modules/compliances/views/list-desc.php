@@ -48,6 +48,7 @@
 										<th style="vertical-align: middle;" width="300">Compliance Description</th>
 										<th style="vertical-align: middle;" width="150">Status</th>
 										<th style="vertical-align: middle;" width="10">Opport/ Risks</th>
+										<th style="vertical-align: middle;" width="100">Doc.</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -58,7 +59,7 @@
 											<tr class="">
 												<td>
 													<?= $n; ?>
-													<input type="hidden" name="detail[<?= $n; ?>][id]" value="<?= isset($ArrCompl[$l->id]->id) ? $ArrCompl[$l->id]->id : ''; ?>">
+													<input type="hidden" name="detail[<?= $n; ?>][id]" id="id_<?= isset($ArrCompl[$l->id]->id) ? $ArrCompl[$l->id]->id : ''; ?>" value="<?= isset($ArrCompl[$l->id]->id) ? $ArrCompl[$l->id]->id : ''; ?>">
 													<input type="hidden" name="detail[<?= $n; ?>][prgh_id]" value="<?= $l->id; ?>">
 													<input type="hidden" name="detail[<?= $n; ?>][pasal_id]" value="<?= $l->pasal_id; ?>">
 												</td>
@@ -163,6 +164,24 @@
 															</div>
 														</div>
 													</div>
+												</td>
+												<td class="align-middle text-center">
+													<?php if(isset($ArrCompl[$l->id])): ?>
+													<div class="d-none">
+														<input type="file" accept="application/pdf" class="upload_file" data-id="<?= $ArrCompl[$l->id]->id; ?>" id="upload_<?= $ArrCompl[$l->id]->id; ?>" name="detail[<?= $n; ?>][status]">
+													</div>
+													<?php if ($ArrCompl[$l->id]->file) : ?>
+														<button type="button" title="Change File" onclick="$('#upload_<?= $ArrCompl[$l->id]->id; ?>').click()" class="btn btn-xs btn-icon btn-warning" id="btn-upload-<?= $ArrCompl[$l->id]->id; ?>"><i class="fa fa-upload"></i></button>
+														<a target="_blank" title="View File" href="<?= base_url($this->uri->segment(1) . '/file/' . $ArrCompl[$l->id]->file); ?>?_init=<?= $ArrCompl[$l->id]->id; ?>" class="btn btn-xs btn-icon btn-primary">
+															<div class="fa fa-file"></div>
+														</a>
+														<button type="button" data-id="<?= $ArrCompl[$l->id]->id; ?>" class="btn btn-xs btn-icon btn-danger remove-file">
+															<div class="fa fa-times" title="Remove File"></div>
+														</button>
+													<?php else : ?>
+														<button type="button" title="Upload File" onclick="$('#upload_<?= $ArrCompl[$l->id]->id; ?>').click()" class="btn btn-xs btn-icon btn-warning" id="btn-upload-<?= $ArrCompl[$l->id]->id; ?>"><i class="fa fa-upload"></i></button>
+													<?php endif; ?>
+													<?php endif; ?>
 												</td>
 											</tr>
 									<?php endforeach;
@@ -299,6 +318,94 @@
 		})
 	})
 
+	$(document).on('change', '.upload_file', function() {
+		let id = $(this).data('id')
+		let btn = $('#btn-upload-' + id)
+		let myFile = $('#upload_' + id)[0]
+		let fd = new FormData()
+		fd.append('file', myFile.files[0])
+		fd.append('id', id)
+		$.ajax({
+			url: siteurl + active_controller + 'saveFile',
+			data: fd,
+			dataType: 'JSON',
+			type: 'POST',
+			processData: false,
+			contentType: false,
+			// cache: false,
+			beforeSend: function() {
+				btn.html('<i class="fa fa-spinner spinner spinner-white spinner-sm spinner-center" aria-hidden="true"></i>')
+			},
+			complete: function() {
+				btn.html('<i class="fa fa-s" aria-hidden="true"></i>')
+			},
+			success: function(result) {
+				if (result.status == 1) {
+					Swal.fire({
+						title: 'Success!',
+						text: result.msg,
+						icon: 'success',
+					}).then(() => {
+						location.reload();
+					})
+				} else {
+					Swal.fire({
+						title: 'Warning!',
+						text: result.msg,
+						icon: 'warning',
+					})
+				}
+			},
+			error: function() {
+				Swal.fire('Error!!', 'Server timeout', 'error', 3000)
+			}
+		})
+	})
+
+	$(document).on('click', '.remove-file', function() {
+		const id = $(this).data('id')
+		if (id) {
+			Swal.fire({
+				title: 'Confirm!',
+				text: 'Are you sure you want to remove this file?',
+				icon: 'question',
+				showCancelButton: true
+			}).then((value) => {
+				console.log(value);
+				let formdata = new FormData($('#form')[0]);
+				if (value.isConfirmed) {
+					$.ajax({
+						url: siteurl + active_controller + 'removeFile',
+						data: {
+							id
+						},
+						dataType: 'JSON',
+						type: 'POST',
+						success: function(result) {
+							if (result.status == 1) {
+								Swal.fire({
+									title: 'Success!',
+									text: result.msg,
+									icon: 'success',
+								}).then(() => {
+									location.reload();
+								})
+							} else {
+								Swal.fire({
+									title: 'Warning!',
+									text: result.msg,
+									icon: 'warning',
+								})
+							}
+						},
+						error: function() {
+							Swal.fire('Error!!', 'Server timeout', 'error', 3000)
+						}
+					})
+				}
+			})
+		}
+	})
 
 	function validation(form) {
 
