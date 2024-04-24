@@ -5,8 +5,8 @@
 				<label class="col-12 col-form-label"><span class="text-danger">*</span> Document Name :</label>
 				<div class="col-12">
 					<input type="hidden" id="id" name="forms[id]" class="form-control" value="<?= isset($data) ? $data->id : ''; ?>" />
-					<input type="hidden" name="forms[procedure_id]" class="form-control" value="<?= $data->procedure_id; ?>" />
-					<input type="hidden" name="forms[parent_id]" class="form-control" value="<?= $data->parent_id; ?>" />
+					<input type="hidden" name="forms[procedure_id]" class="form-control" value="<?= isset($data) ? $data->procedure_id : $procedure_id; ?>" />
+					<input type="hidden" name="forms[parent_id]" class="form-control" value="<?= isset($data) ? $data->parent_id :$parent_id; ?>" />
 					<input type="text" class="form-control" id="description" placeholder="Document Name" name="forms[description]" value="<?= isset($data) ? $data->name : ''; ?>" autocomplete="off" />
 					<span class="form-text text-danger invalid-feedback">Deskripsi harus di isi</span>
 				</div>
@@ -19,7 +19,7 @@
 			<div class="form-group row mb-0">
 				<label class="col-12 col-form-label"><span class="text-danger">*</span> Upload Document :</label>
 				<div class="col-12">
-					<input type="file" name="forms_image" id="image" class="form-control" placeholder="Upload File">
+					<input type="file" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" name="forms_image" id="image" class="form-control" placeholder="Upload File">
 					<span class="form-text text-muted">File type : PDF</span>
 					<span class="form-text text-danger invalid-feedback">Upload Document By harus di isi</span>
 				</div>

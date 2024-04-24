@@ -546,7 +546,8 @@ class Procedures extends Admin_Controller
 				$note = isset($data['note']) ? $data['note'] : null;
 				$data['status']			= isset($data['status']) ? $data['status'] : 'OPN';
 				unset($data['note']);
-				if (intval($check) == '0') {
+
+				if (intval($check) == 0) {
 					$data['created_by']		= $this->auth->user_id();
 					$data['created_at']		= date('Y-m-d H:i:s');
 					$data['note']			= 'First Upload File';
@@ -576,6 +577,8 @@ class Procedures extends Admin_Controller
 				echo json_encode($Return);
 				return false;
 			endif;
+
+
 			if ($this->db->trans_status() === 'FALSE') {
 				$this->db->trans_rollback();
 				$Return = [
