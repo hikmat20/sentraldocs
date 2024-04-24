@@ -57,7 +57,7 @@
 								<tfoot>
 									<tr>
 										<th>% Compliance</th>
-										<th class="text-center"><?= ($summary) ? round(($summary->total_compliance / ($summary->total_compliance + $summary->total_not_compliance)) * 100) : '0'; ?>%</th>
+										<th class="text-center"><?= ($summary && $summary->total_compliance) ? round(($summary->total_compliance / ($summary->total_compliance + $summary->total_not_compliance)) * 100) : '0'; ?>%</th>
 									</tr>
 								</tfoot>
 							</table>
