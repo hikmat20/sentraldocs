@@ -136,7 +136,7 @@
 															<td class="text-center"><?= $review->total_compliance; ?></td>
 															<td class="text-center"><?= $review->total_not_compliance; ?></td>
 															<td class="text-center"><?= $review->total_not_applicable; ?></td>
-															<td class="text-center"><?= round(($review->total_compliance / ($review->total_compliance + $review->total_not_compliance)) * 100); ?>%</td>
+															<td class="text-center"><?= isset($review->total_compliance)?round(($review->total_compliance / ($review->total_compliance + $review->total_not_compliance)) * 100):'0'; ?>%</td>
 															<td class="text-center">
 																<a target="_blank" href="<?= base_url("directory/COMPILATIONS/" . $review->document); ?>" title="Download Compilation Review">
 																	<div class="fa fa-file-pdf font-size-h3 text-danger"></div>
