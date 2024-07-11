@@ -456,6 +456,7 @@ class Guides extends Admin_Controller
 				$config['upload_path'] 		= "./directory/MASTER_GUIDES/$DIR_COMP/$DIR"; //path folder
 				$config['allowed_types'] 	= '*'; //type yang dapat diakses bisa anda sesuaikan
 				$config['encrypt_name'] 	= true; //Enkripsi nama yang terupload
+				$config['max_size'] 		= 504990; //Enkripsi nama yang terupload
 				$this->upload->initialize($config);
 				$this->upload->do_upload($FILE);
 				
