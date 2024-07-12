@@ -151,11 +151,11 @@
 			</div>
 			<div class="mb-5">
 				<label for="chapter" class="font-weight-bold">Description in Indonesian</label>
-				<textarea name="list[desc_indo]" class="form-control textarea" id="desc_indo" rows="10" placeholder="Description"></textarea>
+				<textarea name="list[desc_indo]" class="form-control summernote" id="desc_indo" rows="10" placeholder="Description"></textarea>
 			</div>
 			<div class="mb-5">
 				<label for="chapter" class="font-weight-bold">Description in English</label>
-				<textarea name="list[desc_eng]" class="form-control textarea" id="desc_eng" rows="10" placeholder="Description"></textarea>
+				<textarea name="list[desc_eng]" class="form-control summernote" id="desc_eng" rows="10" placeholder="Description"></textarea>
 			</div>`;
 		$('#modal_content').html(html)
 		$('.modal-title').html('Add Detail')
@@ -176,19 +176,22 @@
 			return Promise.all(handlePromise(promiseList))
 		}
 
-		tinymce.init({
-			selector: 'textarea.textarea',
-			height: 500,
-			resize: true,
-			plugins: 'preview importcss searchreplace autolink autosave save ' +
-				'directionality visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
-			toolbar: 'undo redo | blocks | ' +
-				'bold italic backcolor forecolor | alignleft aligncenter ' +
-				'alignright alignjustify | template codesample bullist numlist outdent indent | link image ' +
-				'removeformat | help',
-			content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
-			// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-		});
+		$('textarea.summernote').summernote({
+			height: 300
+		})
+		// tinymce.init({
+		// 	selector: 'textarea.textarea',
+		// 	height: 500,
+		// 	resize: true,
+		// 	plugins: 'preview importcss searchreplace autolink autosave save ' +
+		// 		'directionality visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
+		// 	toolbar: 'undo redo | blocks | ' +
+		// 		'bold italic backcolor forecolor | alignleft aligncenter ' +
+		// 		'alignright alignjustify | template codesample bullist numlist outdent indent | link image ' +
+		// 		'removeformat | help',
+		// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+		// 	// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+		// });
 
 	})
 
@@ -216,11 +219,11 @@
 						</div>
 						<div class="mb-5">
 							<label for="chapter" class="font-weight-bold">Description in Indonesian</label>
-							<textarea name="list[desc_indo]" class="form-control textarea" id="desc_indo" rows="10" placeholder="Description">` + result.desc_indo + `</textarea>
+							<textarea name="list[desc_indo]" class="form-control summernote" id="desc_indo" rows="10" placeholder="Description">` + result.desc_indo + `</textarea>
 						</div>
 						<div class="mb-5">
 							<label for="chapter" class="font-weight-bold">Description in English</label>
-							<textarea name="list[desc_eng]" class="form-control textarea" id="desc_eng" rows="10" placeholder="Description">` + result.desc_eng + `</textarea>
+							<textarea name="list[desc_eng]" class="form-control summernote" id="desc_eng" rows="10" placeholder="Description">` + result.desc_eng + `</textarea>
 						</div>
 						`;
 					$('#modal_content').html(html)
@@ -241,19 +244,23 @@
 						return Promise.all(handlePromise(promiseList))
 					}
 
-					tinymce.init({
-						selector: 'textarea.textarea',
-						height: 500,
-						resize: true,
-						plugins: 'preview importcss  searchreplace autolink autosave save ' +
-							'directionality visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
-						toolbar: 'undo redo | blocks | ' +
-							'bold italic backcolor forecolor | alignleft aligncenter ' +
-							'alignright alignjustify | template codesample bullist numlist outdent indent | link image ' +
-							'removeformat | help',
-						content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
-						// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-					});
+					$('textarea.summernote').summernote({
+						height: 300
+					})
+
+					// tinymce.init({
+					// 	selector: 'textarea.textarea',
+					// 	height: 500,
+					// 	resize: true,
+					// 	plugins: 'preview importcss  searchreplace autolink autosave save ' +
+					// 		'directionality visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
+					// 	toolbar: 'undo redo | blocks | ' +
+					// 		'bold italic backcolor forecolor | alignleft aligncenter ' +
+					// 		'alignright alignjustify | template codesample bullist numlist outdent indent | link image ' +
+					// 		'removeformat | help',
+					// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+					// 	// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+					// });
 
 				},
 				error: function(result) {

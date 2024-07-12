@@ -92,7 +92,7 @@
 														<div class="form-group">
 															<label class="font-size-h5"><strong><span class="text-danger">*</span> Objektif Proses</strong></label>
 															<div class="">
-																<textarea name="object" id="object" rows="5" required class="form-control" placeholder="Objektif Proses" aria-describedby="helpId"><?= $data->object; ?></textarea>
+																<textarea name="object" id="object" rows="5" required class="form-control summernote" placeholder="Objektif Proses" aria-describedby="helpId"><?= $data->object; ?></textarea>
 																<small class="text-danger invalid-feedback">Objektif Proses</small>
 															</div>
 														</div>
@@ -108,7 +108,7 @@
 														<div class="form-group">
 															<label class="font-size-h5"><strong>Ruang Lingkup</strong></label>
 															<div class="">
-																<textarea name="scope" id="scope" rows="5" class="form-control" placeholder="Ruang Lingkup" aria-describedby="helpId"><?= $data->scope; ?></textarea>
+																<textarea name="scope" id="scope" rows="5" class="form-control summernote" placeholder="Ruang Lingkup" aria-describedby="helpId"><?= $data->scope; ?></textarea>
 																<small class="text-danger invalid-feedback">Ruang Lingkup</small>
 															</div>
 														</div>
@@ -117,14 +117,14 @@
 														<div class="form-group">
 															<label class="font-size-h5"><strong><span class="text-danger">*</span> Performa Indikator</strong></label>
 															<div class="">
-																<textarea name="performance" rows="5" id="performance" class="form-control" placeholder="Performa Indikator" aria-describedby="helpId"><?= $data->performance; ?></textarea>
+																<textarea name="performance" rows="5" id="performance" class="form-control summernote" placeholder="Performa Indikator" aria-describedby="helpId"><?= $data->performance; ?></textarea>
 																<small class="text-danger invalid-feedback">Performa Indikator</small>
 															</div>
 														</div>
 														<div class="form-group">
 															<label class="font-size-h5"><strong>Definisi</strong></label>
 															<div class="">
-																<textarea name="define" id="define" class="form-control textarea" placeholder="Definisi" aria-describedby="helpId"><?= $data->define; ?></textarea>
+																<textarea name="define" id="define" class="form-control summernote" placeholder="Definisi" aria-describedby="helpId"><?= $data->define; ?></textarea>
 																<small class="text-danger invalid-feedback">Definisi Proses</small>
 															</div>
 														</div>
@@ -150,28 +150,28 @@
 														<div class="form-group">
 															<label for="Supplier" class="font-weight-bold font-size-"><strong>1. Supplier</strong></label>
 															<div class="">
-																<textarea rows="5" name="supplier" id="supplier" class="form-control" placeholder="Supplier" aria-describedby="helpId"><?= $data->supplier; ?></textarea>
+																<textarea rows="5" name="supplier" id="supplier" class="form-control summernote" placeholder="Supplier" aria-describedby="helpId"><?= $data->supplier; ?></textarea>
 																<small class="text-danger invalid-feedback">Supplier</small>
 															</div>
 														</div>
 														<div class="form-group">
 															<label for="Proses" class="font-weight-bold font-size-"><strong>3. Proses</strong></label>
 															<div class="">
-																<textarea rows="5" name="process" id="process" class="form-control" placeholder="Proses" aria-describedby="helpId"><?= $data->process; ?></textarea>
+																<textarea rows="5" name="process" id="process" class="form-control summernote" placeholder="Proses" aria-describedby="helpId"><?= $data->process; ?></textarea>
 																<small class="text-danger invalid-feedback">Proses</small>
 															</div>
 														</div>
 														<div class="form-group">
 															<label for="Customer" class="font-weight-bold font-size-"><strong>5. Customer</strong></label>
 															<div class="">
-																<textarea rows="5" name="customer" id="customer" class="form-control" placeholder="Customer" aria-describedby="helpId"><?= $data->customer; ?></textarea>
+																<textarea rows="5" name="customer" id="customer" class="form-control summernote" placeholder="Customer" aria-describedby="helpId"><?= $data->customer; ?></textarea>
 																<small class="text-danger invalid-feedback">Customer</small>
 															</div>
 														</div>
 														<div class="form-group">
 															<label for="Risk" class="font-weight-bold font-size-"><strong>7. Risk</strong></label>
 															<div class="">
-																<textarea rows="5" name="risk" id="risk" class="form-control" placeholder="Risk" aria-describedby="helpId"><?= $data->risk; ?></textarea>
+																<textarea rows="5" name="risk" id="risk" class="form-control summernote" placeholder="Risk" aria-describedby="helpId"><?= $data->risk; ?></textarea>
 																<small class="text-danger invalid-feedback">Risk</small>
 															</div>
 														</div>
@@ -180,28 +180,28 @@
 														<div class="form-group">
 															<label for="Input" class="font-weight-bold font-size-"><strong>2. Input</strong></label>
 															<div class="">
-																<textarea rows="5" name="input" id="input" class="form-control" placeholder="Input" aria-describedby="helpId"><?= $data->input; ?></textarea>
+																<textarea rows="5" name="input" id="input" class="form-control summernote" placeholder="Input" aria-describedby="helpId"><?= $data->input; ?></textarea>
 																<small class="text-danger invalid-feedback">Input</small>
 															</div>
 														</div>
 														<div class="form-group">
 															<label for="Output" class="font-weight-bold font-size-"><strong>4. Output</strong></label>
 															<div class="">
-																<textarea rows="5" name="output" id="output" class="form-control" placeholder="Output" aria-describedby="helpId"><?= $data->output; ?></textarea>
+																<textarea rows="5" name="output" id="output" class="form-control summernote" placeholder="Output" aria-describedby="helpId"><?= $data->output; ?></textarea>
 																<small class="text-danger invalid-feedback">Output</small>
 															</div>
 														</div>
 														<div class="form-group">
 															<label for="Objective" class="font-weight-bold font-size-"><strong>6. Objective</strong></label>
 															<div class="">
-																<textarea rows="5" name="objective" id="objective" class="form-control" placeholder="Objective" aria-describedby="helpId"><?= $data->objective; ?></textarea>
+																<textarea rows="5" name="objective" id="objective" class="form-control summernote" placeholder="Objective" aria-describedby="helpId"><?= $data->objective; ?></textarea>
 																<small class="text-danger invalid-feedback">Order</small>
 															</div>
 														</div>
 														<div class="form-group">
 															<label for="mitigation" class="font-weight-bold font-size-"><strong>8. Mitigation</strong></label>
 															<div class="">
-																<textarea rows="5" name="mitigation" id="mitigation" class="form-control" placeholder="Mitigation" aria-describedby="helpId"><?= $data->mitigation; ?></textarea>
+																<textarea rows="5" name="mitigation" id="mitigation" class="form-control summernote" placeholder="Mitigation" aria-describedby="helpId"><?= $data->mitigation; ?></textarea>
 																<small class="text-danger invalid-feedback">Mitigation</small>
 															</div>
 														</div>
@@ -716,6 +716,7 @@
 
 <script>
 	$(document).ready(function() {
+
 		let id = '<?= $data->id; ?>'
 		$.getJSON(siteurl + active_controller + 'load_file_flow/' + id, function(result) {
 			var data = result.data
@@ -773,23 +774,24 @@
 			return Promise.all(handlePromise(promiseList))
 		}
 
-		tinymce.init({
-			selector: 'textarea',
-			height: 100,
-			resize: true,
-			fontsize_formats: "6pt 8pt 10pt 12pt 14pt 16pt 18pt 20pt 22pt 24pt 28pt 30pt 32pt 34pt 36pt 38pt 40pt",
-			plugins: 'autoresize autosave emoticons preview importcss searchreplace autolink autosave save ' +
-				'directionality  visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
-			toolbar: 'restoredraft preview searchreplace | undo redo | blocks ' +
-				'fontsizeselect bold italic backcolor forecolor | alignleft aligncenter ' +
-				'alignright alignjustify | template codesample bullist numlist outdent indent | link image ' +
-				'table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol' +
-				'removeformat emoticons | help',
-			content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
-			autoresize_bottom_margin: 50,
-			link_default_protocol: 'https'
-			// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-		});
+
+		// tinymce.init({
+		// 	selector: 'textarea',
+		// 	height: 100,
+		// 	resize: true,
+		// 	fontsize_formats: "6pt 8pt 10pt 12pt 14pt 16pt 18pt 20pt 22pt 24pt 28pt 30pt 32pt 34pt 36pt 38pt 40pt",
+		// 	plugins: 'autoresize autosave emoticons preview importcss searchreplace autolink autosave save ' +
+		// 		'directionality  visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
+		// 	toolbar: 'restoredraft preview searchreplace | undo redo | blocks ' +
+		// 		'fontsizeselect bold italic backcolor forecolor | alignleft aligncenter ' +
+		// 		'alignright alignjustify | template codesample bullist numlist outdent indent | link image ' +
+		// 		'table tabledelete | tableprops tablerowprops tablecellprops | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol' +
+		// 		'removeformat emoticons | help',
+		// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }',
+		// 	autoresize_bottom_margin: 50,
+		// 	link_default_protocol: 'https'
+		// 	// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+		// });
 
 		$(document).on('click', '#add_flow', function() {
 			const proc_id = $(this).data('id')

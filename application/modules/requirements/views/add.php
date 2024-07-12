@@ -74,7 +74,7 @@
 						<div class="modal-content">
 							<div class="modal-header">
 								<h5 class="modal-title">Modal title</h5>
-								<button type="button" class="close" onclick="tinymce.remove()" data-dismiss="modal" aria-label="Close">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
 							</div>
@@ -87,19 +87,19 @@
 
 									<div class="mb-5">
 										<label for="chapter" class="font-weight-bold">Description in Indonesian</label>
-										<textarea name="list[desc_indo]" class="form-control textarea" id="desc_indo" rows="10" placeholder="Description"></textarea>
+										<textarea name="list[desc_indo]" class="form-control summernote" id="desc_indo" rows="10" placeholder="Description"></textarea>
 									</div>
 
 									<div class="mb-5">
 										<label for="chapter" class="font-weight-bold">Description in English</label>
-										<textarea name="list[desc_eng]" class="form-control textarea" id="desc_eng" rows="10" placeholder="Description"></textarea>
+										<textarea name="list[desc_eng]" class="form-control summernote" id="desc_eng" rows="10" placeholder="Description"></textarea>
 									</div>
 
 								</div>
 							</div>
 							<div class="modal-footer justify-content-between align-items-center">
 								<button type="submit" class="btn btn-primary w- save" id="save_chapter"><i class="fa fa-save"></i>Save</button>
-								<button type="button" class="btn btn-danger" onclick="tinymce.remove()" data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
+								<button type="button" class="btn btn-danger"  data-dismiss="modal"><i class="fa fa-times"></i>Cancel</button>
 							</div>
 						</div>
 					</div>
@@ -133,19 +133,22 @@
 			return Promise.all(handlePromise(promiseList))
 		}
 
-		tinymce.init({
-			selector: 'textarea.textarea',
-			height: 500,
-			resize: true,
-			plugins: 'preview importcss  searchreplace autolink autosave save ' +
-				'directionality visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
-			toolbar: 'undo redo | blocks | ' +
-				'bold italic backcolor forecolor | alignleft aligncenter ' +
-				'alignright alignjustify | template codesample bullist numlist outdent indent | link image ' +
-				'removeformat | help',
-			content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
-			// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-		});
+		$('textarea.summernote').summernote({
+			height:150
+		})
+		// tinymce.init({
+		// 	selector: 'textarea.textarea',
+		// 	height: 500,
+		// 	resize: true,
+		// 	plugins: 'preview importcss  searchreplace autolink autosave save ' +
+		// 		'directionality visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
+		// 	toolbar: 'undo redo | blocks | ' +
+		// 		'bold italic backcolor forecolor | alignleft aligncenter ' +
+		// 		'alignright alignjustify | template codesample bullist numlist outdent indent | link image ' +
+		// 		'removeformat | help',
+		// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+		// 	// 	content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+		// });
 
 		$(document).on('click', '#add_pasal', function() {
 			$('#modelId').modal('show')
