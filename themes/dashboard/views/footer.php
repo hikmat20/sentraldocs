@@ -243,6 +243,7 @@
              height: 150, // set editor height
              minHeight: null, // set minimum height of editor
              maxHeight: null,
+             inheritPlaceholder: true
          });
          //  loading_spinner()
      })
@@ -287,7 +288,6 @@
                              c++;
                          }
                      });
-                     console.log(c);
 
                      if (c == 0) {
                          var name = $(this).attr('name');
@@ -297,24 +297,22 @@
                          //  $(this).parents('div.form-group').addClass('validated')
                          $(this).addClass('is-invalid').focus()
                          count = count + 1;
-                         console.log(name);
                      }
                  }
 
                  if ((node == 'INPUT' && type == 'text') || (node == 'INPUT' && type == 'password') || (node == 'SELECT') || (node == 'TEXTAREA') || (node == 'INPUT' && type == 'date') || (node == 'INPUT' && type == 'file')) {
-                     console.log(($(this).val() == null || $(this).val() == '') && ($(this).is(':disabled') == true));
                      if (($(this).val() == null || $(this).val() == '')) {
                          const id = $(this).prop('id')
                          $(this).addClass('is-invalid').focus()
                          $('span[aria-labelledby=select2-' + id + '-container].select2-selection').css('border-color', 'red');
+                         $('span.select2-selection.select2-selection--multiple').css('border-color', 'red');
                          count = count + 1;
-                         console.log($(this));
                          //  console.log(name);
                      }
                  }
              }
          });
-
+         console.log(count);
          if (count == 0) {
              return success;
          } else {

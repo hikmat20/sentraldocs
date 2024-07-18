@@ -143,10 +143,7 @@
       left: -300px;
       width: 300px;
     }
-  </style>
-
-
-  <style>
+ 
     .loaders {
       display: -webkit-box;
       display: -ms-flexbox;
