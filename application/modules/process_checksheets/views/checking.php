@@ -59,9 +59,14 @@
 										<th colspan="<?= $count; ?>" class="p-2 text-center" width="<?= $col_width; ?>">Result</th>
 									</tr>
 									<tr>
-										<?php for ($i = 1; $i <= $count; $i++) : ?>
-											<th class="text-center <?= $i < (date('d')) ? 'ds-none' : ''; ?>  <?= ($weekOfMonth) && ($weekOfMonth == $i) ? 'bg-light-warning' : (($exec == 3 && $i == date('d')) ? 'bg-light-warning' : (($exec == 5 && $i == date('m')) ? 'bg-light-warning' : '')); ?>"><?= ($exec != 5) ? $name_col . " " . $i : $name_col[$i]; ?></th>
-										<?php endfor; ?>
+										<?php for ($i = 1; $i <= $count; $i++) {
+											$weekend="";
+											$tanggalkolom=date("Y-m",strtotime($data->periode))."-".$i;
+											if(date('w', strtotime($tanggalkolom)) % 6 == 0) $weekend="table-danger";
+											if($data->frequency_checking!=1) $weekend="";
+											?>
+											<th class="text-center <?=$weekend?> <?= $i < (date('d')) ? 'ds-none' : ''; ?>  <?= ($weekOfMonth) && ($weekOfMonth == $i) ? 'bg-light-warning' : (($exec == 3 && $i == date('d')) ? 'bg-light-warning' : (($exec == 5 && $i == date('m')) ? 'bg-light-warning' : '')); ?>"><?= ($exec != 5) ? $name_col . " " . $i : $name_col[$i]; ?></th>
+										<?php } ?>
 									</tr>
 								</thead>
 								<tbody>
@@ -74,11 +79,16 @@
 											</td>
 											<td><?= $it->item_name; ?></td>
 											<td><?= $it->standard_check; ?></td>
-											<?php for ($i = 1; $i <= $count; $i++) : ?>
+											<?php for ($i = 1; $i <= $count; $i++) : 
+											$weekend="";
+											$tanggalkolom=date("Y-m",strtotime($data->periode))."-".$i;
+											if(date('w', strtotime($tanggalkolom)) % 6 == 0) $weekend="table-danger";
+											if($data->frequency_checking!=1) $weekend="";											
+											?>
 												<?php $nn = "n" . $i; ?>
 												<?php $Nn = "note" . $i; ?>
 												<input type="hidden" name="detail[<?= $n; ?>][field]" value="<?= $i; ?>" <?= ($weekOfMonth) ? (($weekOfMonth != $i) ? 'disabled' : '') : ($exec == 3 && $i != (date('d')) ? 'disabled' : (($exec == 5) && ($i != (date('m'))) ? 'disabled' : '')); ?>>
-												<td class="<?= ($weekOfMonth) && ($weekOfMonth == $i) ? 'bg-light-warning' : (($exec == 3 && $i == date('d')) ? 'bg-light-warning' : (($exec == 5 && $i == date('m')) ? 'bg-light-warning' : '')); ?>">
+												<td class="<?=$weekend?> <?= ($weekOfMonth) && ($weekOfMonth == $i) ? 'bg-light-warning' : (($exec == 3 && $i == date('d')) ? 'bg-light-warning' : (($exec == 5 && $i == date('m')) ? 'bg-light-warning' : '')); ?>">
 													<?php if ($it->check_type == 'boolean') : ?>
 														<div class="" id="r_<?= $n . '_c_' . $i; ?>">
 															<div class="d-flex justify-content-start align-items-center gap-4">
