@@ -13,7 +13,7 @@ class Audit_temuan extends Admin_Controller
     {
         parent::__construct();
         $this->template->set([
-            'title' => 'Audit',
+            'title' => 'Temuan Audit',
             'icon' => 'fa fa-clipboard-check'
         ]);
 
