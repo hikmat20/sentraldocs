@@ -183,6 +183,8 @@ class Process_checksheets extends Admin_Controller
 			$dataDir 	= $this->db->get_where('view_checksheet_process_dir', ['id' => $sheet->dir_id])->row();
 			// $items 		= $this->db->get_where('checksheet_process_details', ['checksheet_process_data_number' => $sheet->number])->result();
 			$items 		= $this->db->get_where('checksheet_data_items', ['checksheet_data_number' => $sheet->checksheet_data_number])->result();
+			// $items 		= $this->db->get_where('checksheet_process_details', ['checksheet_process_data_number' => $sheet->number])->result();
+			$items 		= $this->db->get_where('checksheet_data_items', ['checksheet_data_number' => $sheet->checksheet_data_number])->result();
 
 			$fExecution 	= [
 				'1' => 'Once Time',
@@ -990,6 +992,8 @@ class Process_checksheets extends Admin_Controller
 		$notes			= $this->db->get_where('checksheet_notes', ['data_id' => $sheet->id])->result();
 		$execution		= $this->db->get_where('checksheet_execution', ['item_id' => $sheet->id])->row();
 		$execution_date	= $this->db->get_where('checksheet_execution_date', ['item_id' => $sheet->id])->row();
+
+		$ArrNote = [];
 
 		$ArrNote = [];
 		foreach ($notes as $note) {

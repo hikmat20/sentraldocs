@@ -65,7 +65,7 @@
 											$date = $periode . $i;
 											$nmday = date('l', $time = strtotime($date));
 											$wd = date('D', $time = strtotime($date));
-											?>
+										?>
 											<th class="text-center <?= $i < (date('d')) ? 'ds-none' : ''; ?>  <?= ($weekOfMonth) && ($weekOfMonth == $i) ? 'bg-light-warning' : (($exec == 3 && $i == date('d')) ? 'bg-light-warning' : (($exec == 5 && $i == date('m')) ? 'bg-light-warning' : '')); ?> <?= ($wd == 'Sat' || $wd == 'Sun') ? 'bg-light-danger' : ''; ?>"><?= ($exec != 5) ? $nmday . " " . $i : $name_col[$i]; ?></th>
 										<?php endfor; ?>
 									</tr>
@@ -84,7 +84,7 @@
 											<?php for ($i = 1; $i <= $count; $i++) :
 												$date = $periode . $i;
 												$wd = date('D', $time = strtotime($date));
-												
+
 												$nn = "n" . $i;
 												$Nn = "note" . $i; ?>
 												<input type="hidden" name="detail[<?= $n; ?>][field]" value="<?= $i; ?>" <?= ($weekOfMonth) ? (($weekOfMonth != $i) ? 'disabled' : '') : ($exec == 3 && $i != (date('d')) ? 'disabled' : (($exec == 5) && ($i != (date('m'))) ? 'disabled' : '')); ?>>
@@ -103,7 +103,7 @@
 																</div>
 																<div class="form-check form-check-custom form-check-danger form-check-solid mr-10">
 																	<label class="form-check-label font-weight-bolder text">
-																		<input class="form-check-input no required" type="radio" value="no" <?= ($weekOfMonth) ? (($weekOfMonth != $i) ? 'disabled' : '') : ($exec == 3 && $i != (date('d')) ? 'disabled' : (($exec == 5) && ($i != (date('m'))) ? 'disabled' : '')); ?> name="detail[<?= $n; ?>][n<?= $i; ?>]" data-row="<?= $n . $i; ?>" id="boolean_<?= $i . $n; ?>" <?= ($it->$nn == 'no') ? 'checked' : ''; ?>>
+																		<input class="form-check-input no required" type="radio" value="no" <?= ($weekOfMonth) ? (($weekOfMonth != $i) ? 'disabled' : '') : ($exec == 3 && $i != (date('d')) ? 'disabled' : (($exec == 5) && ($i != (date('m'))) ? 'disabled' : '')); ?> name="detail[<?= $n; ?>][n<?= $i; ?>]" data-row="<?= $n . $i; ?>" id="boolean_<?= $i . $n; ?>" <?= (isset($ArrProcess[$it->id]->$nn) && $ArrProcess[$it->id]->$nn == 'no') ? 'checked' : ''; ?>>
 																		No
 																		<span class="invalid-feedback font-weight-normal">
 																			<i class="text-danger fa fa-exclamation-circle fa-md"></i>
