@@ -181,7 +181,8 @@ class Process_checksheets extends Admin_Controller
 		if ($id) {
 			$sheet 		= $this->db->get_where('checksheet_process_data', ['id' => $id])->row();
 			$dataDir 	= $this->db->get_where('view_checksheet_process_dir', ['id' => $sheet->dir_id])->row();
-			$items 		= $this->db->get_where('checksheet_process_details', ['checksheet_process_data_number' => $sheet->number])->result();
+			// $items 		= $this->db->get_where('checksheet_process_details', ['checksheet_process_data_number' => $sheet->number])->result();
+			$items 		= $this->db->get_where('checksheet_data_items', ['checksheet_data_number' => $sheet->checksheet_data_number])->result();
 
 			$fExecution 	= [
 				'1' => 'Once Time',
@@ -932,10 +933,16 @@ class Process_checksheets extends Admin_Controller
 			'3' => 'Monthly',
 		];
 		$sheet  	= $this->db->get_where('checksheet_process_data', ['id' => $_GET['sheet']])->row();
+		// $details	= $this->db->get_where('checksheet_data_items', ['checksheet_data_number' => $sheet->checksheet_data_number])->result();
 		$details	= $this->db->get_where('checksheet_process_details', ['checksheet_process_data_number' => $sheet->number])->result();
-
+		
+		// $ArrProcess = [];
+		// if ($detailsProcess) {
+		// 	foreach ($detailsProcess as $dtl) {
+		// 		$ArrProcess[$dtl->checksheet_item_id] = $dtl;
+		// 	}
+		// }
 		$weekOfMonth = '';
-
 		$width = $count = $name_col = '';
 		if ($sheet->frequency_execution == 1) {
 			$width 		= '100%';
@@ -983,11 +990,11 @@ class Process_checksheets extends Admin_Controller
 		$notes			= $this->db->get_where('checksheet_notes', ['data_id' => $sheet->id])->result();
 		$execution		= $this->db->get_where('checksheet_execution', ['item_id' => $sheet->id])->row();
 		$execution_date	= $this->db->get_where('checksheet_execution_date', ['item_id' => $sheet->id])->row();
-		$ArrNote = '';
+
+		$ArrNote = [];
 		foreach ($notes as $note) {
 			$ArrNote[$note->item_id] = $note;
 		}
-
 		$this->template->set([
 			'data' 			=> $sheet,
 			'width' 		=> $width,
@@ -998,6 +1005,7 @@ class Process_checksheets extends Admin_Controller
 			'fChecking' 	=> $fChecking,
 			'details' 		=> $details,
 			'ArrNote' 		=> $ArrNote,
+			// 'ArrProcess' 	=> $ArrProcess,
 			'execution' 	=> ($execution) ?: [],
 			'checking_date' => ($execution_date) ?: [],
 			'weekOfMonth' 	=> $weekOfMonth,
