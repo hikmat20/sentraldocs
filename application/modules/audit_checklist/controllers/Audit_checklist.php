@@ -264,13 +264,15 @@ class Audit_checklist extends Admin_Controller
             $checklist = $this->db->get_where('audit_checklist_details', ['checklist_id' => $id, 'status' => '1'])->result();
 
             /* Data Audit */
-            $audit = $this->db->get_where('audit_checklist_audit', ['checklist_id' => $id])->row();
-            $details = $this->db->get_where('audit_checklist_audit_details', ['audit_id' => $audit->id])->result();
 
-            $ArrDtl = [];
-            if ($details) foreach ($details as $d) {
-                $ArrDtl[$d->checklist_detail_id] = $d;
-            }
+            // $audit = $this->db->get_where('audit_checklist_audit', ['checklist_id' => $id])->row();
+            // if ($audit) {
+            //     $details = $this->db->get_where('audit_checklist_audit_details', ['audit_id' => $audit->id])->result();
+            //     $ArrDtl = [];
+            //     if ($details) foreach ($details as $d) {
+            //         $ArrDtl[$d->checklist_detail_id] = $d;
+            //     }
+            // }
 
             /* Satndard */
             $query = $this->db->select('*')->from('view_cross_reference_details')
@@ -545,7 +547,7 @@ class Audit_checklist extends Admin_Controller
                 '2' => '<label class="label label-inline labbel-danger">Major</label>',
                 '3' => '<label class="label label-inline label-info">OFI</label>',
             ];
-            
+
             $this->template->set([
                 'cklst'         => $cklst,
                 'users'         => $users,

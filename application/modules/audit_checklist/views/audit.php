@@ -35,7 +35,7 @@
                     <select name="auditor[]" class="form-control select2" data-placeholder="Select Auditor" data-allow-clear="true" data-width="100%" multiple id="auditor">
                       <option value=""></option>
                       <?php if ($users) foreach ($users as $a) : ?>
-                        <option value="<?= $a->id_user; ?>" <?= ($audit && $audit->auditor) ? (in_array($a->id_user, json_decode($audit->auditor)) ? 'selected' : '') : ''; ?>><?= $a->full_name; ?></option>
+                        <option value="<?= $a->id_user; ?>"><?= $a->full_name; ?></option>
                       <?php endforeach; ?>
                     </select>
                   </div>
@@ -45,7 +45,7 @@
                   <div for="" class="col h6">
                     <select name="auditee[]" class="form-control select2" data-placeholder="Select Auditee" data-allow-clear="true" data-width="100%" multiple id="auditee">
                       <?php if ($users) foreach ($users as $a) : ?>
-                        <option value="<?= $a->id_user; ?>" <?= ($audit && $audit->auditee) ? (in_array($a->id_user, json_decode($audit->auditee)) ? 'selected' : '') : ''; ?>><?= $a->full_name; ?></option>
+                        <option value="<?= $a->id_user; ?>"><?= $a->full_name; ?></option>
                       <?php endforeach; ?>
                     </select>
                   </div>
