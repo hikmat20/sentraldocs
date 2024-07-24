@@ -133,11 +133,11 @@
                       <?= $v->description; ?>
                     </td>
                     <td>
-                      <textarea name="detail[<?= $n; ?>][description]" id="description_<?= $n; ?>" placeholder="Description" class="form-control summernote required description"><?= isset($ArrDtl)?$ArrDtl[$v->id]->description:''; ?></textarea>
+                      <textarea name="detail[<?= $n; ?>][description]" id="description_<?= $n; ?>" placeholder="Description" class="form-control summernote description"><?= isset($ArrDtl)?$ArrDtl[$v->id]->description:''; ?></textarea>
                       <label class="invalid-feedback">This value not be empty</label>
                     </td>
                     <td>
-                      <select name="detail[<?= $n; ?>][category]" data-row="<?= $n; ?>" id="category_<?= $n; ?>" class="form-control required select2" data-minimum-results-for-search="Infinity" data-placeholder="Kategori" data-allow-clear="true" data-width="100%">
+                      <select name="detail[<?= $n; ?>][category]" data-row="<?= $n; ?>" id="category_<?= $n; ?>" class="form-control select2" data-minimum-results-for-search="Infinity" data-placeholder="Kategori" data-allow-clear="true" data-width="100%">
                         <option value=""></option>
                         <option value="0" <?= (isset($ArrDtl) && ($ArrDtl[$v->id]->category == '0')) ? 'selected' : ''; ?>>OK</option>
                         <option value="1" <?= (isset($ArrDtl) && ($ArrDtl[$v->id]->category == '1')) ? 'selected' : ''; ?>>Minor</option>
@@ -146,7 +146,7 @@
                       </select>
                     </td>
                     <td>
-                      <select name="detail[<?= $n; ?>][standard]" data-row="<?= $n; ?>" id="standard_<?= $n; ?>" data-minimum-results-for-search="Infinity" class="form-control select2 required standard" data-placeholder="Standard" data-allow-clear="true" data-width="100%">
+                      <select name="detail[<?= $n; ?>][standard]" data-row="<?= $n; ?>" id="standard_<?= $n; ?>" data-minimum-results-for-search="Infinity" class="form-control select2 standard" data-placeholder="Standard" data-allow-clear="true" data-width="100%">
                         <option value=""></option>
                         <?php if ($ArrStd) foreach ($ArrStd as $k => $s) : ?>
                           <option value="<?= $s->requirement_id; ?>" <?= (isset($ArrDtl) && ($ArrDtl[$v->id]->standard == $s->requirement_id)) ? "selected" : ''; ?>><?= $s->name; ?></option>
@@ -154,8 +154,7 @@
                       </select>
                     </td>
                     <td>
-
-                      <select name="detail[<?= $n; ?>][pasal]" data-row="<?= $n; ?>" id="pasal_<?= $n; ?>" class="form-control required select2" data-placeholder="Pasal" data-allow-clear="true" data-width="100%">
+                      <select name="detail[<?= $n; ?>][pasal]" data-row="<?= $n; ?>" id="pasal_<?= $n; ?>" class="form-control select2" data-placeholder="Pasal" data-allow-clear="true" data-width="100%">
                         <option></option>
                         <?php if (isset($ArrDtl)) :
                           if (isset($ArrDtlStd[$ArrDtl[$v->id]->standard])) foreach ($ArrDtlStd[$ArrDtl[$v->id]->standard] as $k => $s) : ?>
@@ -258,7 +257,7 @@
                     text: result.msg,
                     timer: 3000
                   }).then(function() {
-                    location.reload();
+                    location.href = siteurl +active_controller;
                   })
                 } else {
                   Swal.fire({
