@@ -13,7 +13,7 @@
             <div class="row mb-3">
               <label for="exampleInputEmail1" class="col-2 col-form-label">Select Procedures</label>
               <div class="col-3">
-                <select name="procedure" id="procedure" class="form-control form-control-solid required select2" data-dropdown-parent=".card-body">
+                <select name="procedure_id" id="procedure_id" class="form-control form-control-solid required select2" data-dropdown-parent=".card-body">
                   <option value=""></option>
                   <?php foreach ($data as $dt) : ?>
                     <option value="<?= $dt->id; ?>"><?= $dt->name; ?></option>
@@ -75,7 +75,7 @@
       allowClear: true
     });
 
-    $(document).on('change', '#procedure', function() {
+    $(document).on('change', '#procedure_id', function() {
       let id = $(this).val();
       $('.load_data').html('')
       if (id) {
@@ -212,7 +212,7 @@
                     text: result.msg,
                     timer: 3000
                   }).then(function() {
-                    location.reload();
+                    location.href = siteurl + active_controller;
                   })
                 } else {
                   Swal.fire({
