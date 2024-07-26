@@ -234,7 +234,7 @@
                             <i class="fa fa-upload"></i>
                             <!-- <p>Choose an PDF file or drag it here.</p> -->
                           </div>
-                          <input type="file" id="document_<?= $n; ?>" data-id="<?= $ArrDtl[$v->id]->id; ?>" name="document" accept="image/*,application/pdf" data-row="<?= $n; ?>" class="dropzone min-h-100px dropzone-1 drop-file" />
+                          <input type="file" id="document_<?= $n; ?>" data-id="<?= isset($ArrDtl) ? $ArrDtl[$v->id]->id : ''; ?>" name="document" accept="image/*,application/pdf" data-row="<?= $n; ?>" class="dropzone min-h-100px dropzone-1 drop-file" />
                           <div class="for-delete-<?= $n; ?> d-none">
                             <div class="middle d-flex justify-content-center align-items-center">
                               <button type="button" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle" data-row="<?= $n; ?>"><i class="fa fa-edit"></i></button>
