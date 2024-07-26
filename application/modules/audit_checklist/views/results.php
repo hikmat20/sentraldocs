@@ -58,7 +58,7 @@
 									<td class="text-center">
 										<?php if ($diff <= 7) : ?>
 											<span class="label label-inline <?= $lblColor; ?> rounded-pill font-weight-bolder">
-												<i class="far fa-clock <?= $colorText; ?> font-weight-bold mr-1"></i><?= date('d M; 23:59', strtotime($v->date . ' + 7 days')); ?>
+												<i class="far fa-clock <?= $colorText; ?> font-weight-bold mr-1"></i><?= date('d M; 23:59', strtotime($v->created_at . ' + 7 days')); ?>
 											<?php endif; ?>
 											</span>
 									</td>

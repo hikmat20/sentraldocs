@@ -35,7 +35,7 @@
                     <select name="auditor[]" class="form-control select2" data-placeholder="Select Auditor" data-allow-clear="true" data-width="100%" multiple id="auditor">
                       <option value=""></option>
                       <?php if ($users) foreach ($users as $a) : ?>
-                        <option value="<?= $a->id_user; ?>"><?= $a->full_name; ?></option>
+                        <option value="<?= $a->id_user; ?>" <?= isset($audit) ? (in_array($a->id_user, json_decode($audit->auditor)) ? 'selected' : '') : ''; ?>><?= $a->full_name; ?></option>
                       <?php endforeach; ?>
                     </select>
                   </div>
@@ -45,7 +45,7 @@
                   <div for="" class="col h6">
                     <select name="auditee[]" class="form-control select2" data-placeholder="Select Auditee" data-allow-clear="true" data-width="100%" multiple id="auditee">
                       <?php if ($users) foreach ($users as $a) : ?>
-                        <option value="<?= $a->id_user; ?>"><?= $a->full_name; ?></option>
+                        <option value="<?= $a->id_user; ?>" <?= isset($audit) ? (in_array($a->id_user, json_decode($audit->auditee)) ? 'selected' : '') : ''; ?>><?= $a->full_name; ?></option>
                       <?php endforeach; ?>
                     </select>
                   </div>
@@ -108,7 +108,66 @@
             </div>
 
             <!-- CHECKLIT TEMUAN -->
-            <h4 class="card-title mb-3"><i class="fa fa-check-circle text-primary" aria-hidden="true"></i> Checklist</h4>
+            <h4 class="card-title mb-3"><i class="far fa-check-circle text-primary" aria-hidden="true"></i> Audit Non Checklist</h4>
+            <div class="mb-15">
+              <table id="tblTemuan" class="table datatable table-bordered table-sm table-condensed mb-5">
+                <thead class="text-center table-light">
+                  <tr>
+                    <th width="10">No</th>
+                    <th width="">Temuan <span class="text-danger">*</span></th>
+                    <th width="150">Kategori</th>
+                    <th width="150">ISO</th>
+                    <th width="250">Pasal</th>
+                    <th width="80">Action</th>
+                  </tr>
+                </thead>
+                <tbody class="">
+                  <?php if (isset($AdtAudit)) foreach ($AdtAudit as $k => $a) : $k++; ?>
+                    <tr>
+                      <td class="text-center">
+                        <?= $k; ?>
+                        <input type="hidden" name="temuan[<?= $k; ?>][id]" value="<?= $a->id; ?>">
+                      </td>
+                      <td>
+                        <textarea name="temuan[<?= $k; ?>][description]" class="form-control summernote description" placeholder="Description"><?= $a->description; ?></textarea>
+                      </td>
+                      <td>
+                        <select name="temuan[<?= $k; ?>][category]" class="form-control select2 category" data-minimum-results-for-search="Infinity" data-placeholder="Kategori">
+                          <option value=""></option>
+                          <option value="0" <?= ($a->category == '0') ? 'selected' : ''; ?>>OK</option>
+                          <option value="1" <?= ($a->category == '1') ? 'selected' : ''; ?>>Minor</option>
+                          <option value="2" <?= ($a->category == '2') ? 'selected' : ''; ?>>Major</option>
+                          <option value="3" <?= ($a->category == '3') ? 'selected' : ''; ?>>OFI</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select name="temuan[<?= $k; ?>][standard]" data-row="<?= $k; ?>" class="form-control select2 temuan-standard" data-minimum-results-for-search="Infinity" data-placeholder="Standard">
+                          <option value=""></option>
+                          <?php if ($ArrStd) foreach ($ArrStd as $s) : ?>
+                            <option value="<?= $s->requirement_id; ?>" <?= ($s->requirement_id == $a->standard) ? 'selected' : ''; ?>><?= $s->name; ?></option>
+                          <?php endforeach; ?>
+                        </select>
+                      </td>
+                      <td>
+                        <select name="temuan[<?= $k; ?>][pasal]" id="temuan_pasal_<?= $k; ?>" class="form-control select2 pasal" data-placeholder="Pasal">
+                          <option></option>
+                          <?php
+                          if (isset($ArrDtlStd[$a->standard])) foreach ($ArrDtlStd[$a->standard] as $k => $p) : ?>
+                            <option value="<?= $p->id; ?>" <?= ($a->pasal == $p->id) ? "selected" : ''; ?>><?= $p->chapter; ?></option>
+                          <?php endforeach; ?>
+                        </select>
+                      </td>
+                      <td class="text-center">
+                        <button type="button" class="btn btn-sm btn-icon btn-danger del-temuan" data-id="<?= $a->id; ?>"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
+                </tbody>
+              </table>
+              <button type="button" class="btn btn-sm btn-primary" id="add-item-audit"><i class="fa fa-plus" aria-hidden="true"></i>Add Temuan</button>
+            </div>
+            <hr class="mb-10">
+            <h4 class="card-title mb-3"><i class="fa fa-check-circle text-primary" aria-hidden="true"></i> Audit Checklist</h4>
             <table id="tblChecklist" class="table table-sm table-bordered table-condensed table-hover">
               <thead class="table-light">
                 <tr class="text-center">
@@ -118,6 +177,7 @@
                   <th width="150">Kategori</th>
                   <th width="150">ISO</th>
                   <th width="250">Pasal</th>
+                  <th width="30">File</th>
                 </tr>
               </thead>
               <tbody>
@@ -133,7 +193,7 @@
                       <?= $v->description; ?>
                     </td>
                     <td>
-                      <textarea name="detail[<?= $n; ?>][description]" id="description_<?= $n; ?>" placeholder="Description" class="form-control summernote description"><?= isset($ArrDtl)?$ArrDtl[$v->id]->description:''; ?></textarea>
+                      <textarea name="detail[<?= $n; ?>][description]" id="description_<?= $n; ?>" placeholder="Description" class="form-control summernote description"><?= isset($ArrDtl) ? $ArrDtl[$v->id]->description : ''; ?></textarea>
                       <label class="invalid-feedback">This value not be empty</label>
                     </td>
                     <td>
@@ -154,7 +214,7 @@
                       </select>
                     </td>
                     <td>
-                      <select name="detail[<?= $n; ?>][pasal]" data-row="<?= $n; ?>" id="pasal_<?= $n; ?>" class="form-control select2" data-placeholder="Pasal" data-allow-clear="true" data-width="100%">
+                      <select name="detail[<?= $n; ?>][pasal]" data-row="<?= $n; ?>" id="pasal_<?= $n; ?>" class="form-control select2" data-placeholder="Pasal" data-allow-clear="true">
                         <option></option>
                         <?php if (isset($ArrDtl)) :
                           if (isset($ArrDtlStd[$ArrDtl[$v->id]->standard])) foreach ($ArrDtlStd[$ArrDtl[$v->id]->standard] as $k => $s) : ?>
@@ -162,6 +222,30 @@
                           <?php endforeach; ?>
                         <?php endif; ?>
                       </select>
+                    </td>
+                    <td class="text-center">
+                      <!-- <button type="button" onclick="$('#document_'+<?= $n; ?>).click()" class="btn btn-sm btn-icon btn-success upload" id="btn_upload_<?= $n; ?>"><i class="fa fa-upload" aria-hidden="true"></i></button>
+                      <input type="file" class="d-none doc" accept="image/*,.pdf" name="document" id="document_<?= $n; ?>">
+                      <img src="/assets/images/" class="img-fluid img-bordered" width="80" alt=""> -->
+
+                      <div class="w-100px">
+                        <div class="dropzone-wrapper h-100px d-flex justify-content-center align-items-center">
+                          <div class="dropzone-desc dropzone-desc-<?= $n; ?>">
+                            <i class="fa fa-upload"></i>
+                            <!-- <p>Choose an PDF file or drag it here.</p> -->
+                          </div>
+                          <input type="file" id="document_<?= $n; ?>" data-id="<?= $ArrDtl[$v->id]->id; ?>" name="document" accept="image/*,application/pdf" data-row="<?= $n; ?>" class="dropzone min-h-100px dropzone-1 drop-file" />
+                          <div class="for-delete-<?= $n; ?> d-none">
+                            <div class="middle d-flex justify-content-center align-items-center">
+                              <button type="button" class="btn btn-sm mr-1 btn-icon btn-warning change-image rounded-circle" data-row="<?= $n; ?>"><i class="fa fa-edit"></i></button>
+                              <button type="button" class="btn btn-sm mr-1 btn-icon btn-danger remove-file rounded-circle" data-row="<?= $n; ?>"><i class="fa fa-trash"></i></button>
+                            </div>
+                          </div>
+                          <canvas id="preview_<?= $n; ?>" class="d-none" width="80"></canvas>
+                          <img id="img_preview_<?= $n; ?>" class="d-none" width="80">
+                        </div>
+                      </div>
+
                     </td>
                   </tr>
                 <?php endforeach; ?>
@@ -199,26 +283,16 @@
 
 <script>
   $(document).ready(function() {
-    $(document).on('change', '.standard', function() {
-      const r = $(this).data('row')
-      const std = $(this).val()
-      const pro = $('#procedure_id').text()
-      $('#pasal_' + r).html('')
-      if (std && pro) {
-        $.ajax({
-          url: siteurl + active_controller + "listPasal/" + pro + "/" + std,
-          type: 'GET',
-          success: (res) => {
-            $('#pasal_' + r).html(res)
-            console.log(r);
-          },
-          error: () => {
-            alert('Data not valid!')
-          }
-        })
-      }
+
+    $(document).on('change', '.temuan-standard', function() {
+      const e = $(this)
+      changeStd(e, '#temuan_pasal_')
     })
 
+    $(document).on('change', '.standard', function() {
+      const e = $(this)
+      changeStd(e, '#pasal_')
+    })
 
     $(document).on('submit', '#form-audit', function(e) {
       e.preventDefault();
@@ -257,7 +331,7 @@
                     text: result.msg,
                     timer: 3000
                   }).then(function() {
-                    location.href = siteurl +active_controller;
+                    location.href = siteurl + active_controller + "results";
                   })
                 } else {
                   Swal.fire({
@@ -281,5 +355,301 @@
         })
       }
     })
+
+    /* AUDIT NON CHECKLIST */
+    $(document).on('click', '#add-item-audit', function() {
+      let n = $('#tblTemuan tbody tr').length + 1;
+      let html = '';
+      html = `
+      <tr>
+        <td class="text-center">${n}</td>
+        <td><textarea name="temuan[${n}][description]" class="form-control required summernote text-left description" placeholder="Description"></textarea>
+          <label class="invalid-feedback">This value not be empty</label>
+        </td>
+        <td>
+          <select name="temuan[${n}][category]" class="form-control select2 category" data-minimum-results-for-search="Infinity" data-placeholder="Kategori">
+            <option value=""></option>
+            <option value="0">OK</option>
+            <option value="1">Minor</option>
+            <option value="2">Major</option>
+            <option value="3">OFI</option>
+          </select>
+        </td>
+        <td>
+          <select name="temuan[${n}][standard]" data-row="${n}" class="form-control select2 temuan-standard" data-minimum-results-for-search="Infinity" data-placeholder="Standard">
+          <option value=""></option>
+          <?php if ($ArrStd) foreach ($ArrStd as $k => $s) : ?>
+            <option value="<?= $s->requirement_id; ?>"><?= $s->name; ?></option>
+          <?php endforeach; ?>
+          </select>
+        </td>
+        <td>
+          <select name="temuan[${n}][pasal]" id="temuan_pasal_${n}" class="form-control select2 pasal" data-placeholder="Pasal">
+           <option></option>
+          </select>
+        </td>
+        <td class="text-center">
+          <button type="button" class="btn btn-sm btn-icon btn-danger del-temuan"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        </td>
+      </tr>`;
+      $('#tblTemuan tbody').append(html)
+
+      $('.select2').select2({
+        allowClear: true,
+        // width: "100%"
+      })
+
+      $('textarea.summernote').summernote({
+        height: 150, // set editor height
+        minHeight: null, // set minimum height of editor
+        maxHeight: null,
+        inheritPlaceholder: true
+      });
+    })
+
+    $(document).on('click', '.del-temuan', function() {
+      const id = $(this).data('id')
+      const btn = $(this)
+      if (id) {
+        Swal.fire({
+          title: 'Confirmation!',
+          icon: 'question',
+          text: 'Are you sure to Delete this data?',
+          showCancelButton: true,
+        }).then((value) => {
+          if (value.isConfirmed) {
+            $.ajax({
+              url: siteurl + active_controller + 'deleteNonChacklistAudit',
+              data: {
+                id
+              },
+              type: 'POST',
+              dataType: 'JSON',
+              success: function(result) {
+                if (result.status == 1) {
+                  Swal.fire({
+                    title: 'Success!',
+                    icon: 'success',
+                    text: result.msg,
+                    timer: 3000
+                  }).then(function() {
+                    // location.reload();
+                    btn.parents('tr').remove()
+                  })
+                } else {
+                  Swal.fire({
+                    title: 'Warning!',
+                    icon: 'warning',
+                    text: result.msg,
+                    timer: 3000
+                  })
+                }
+              },
+              error: function(result) {
+                Swal.fire({
+                  title: 'Error!',
+                  icon: 'error',
+                  text: 'Server timeout, becuase error!',
+                  timer: 3000
+                })
+              }
+            })
+          }
+        })
+      } else {
+        $(this).parents('tr').remove()
+      }
+      renumberList()
+    })
+
+
+    /* DROPZONE */
+    /* Selected File has changed */
+    $(document).on('change', ".drop-file", function() {
+
+      // user selected file
+      var file = $(this)[0].files[0];
+      var r = $(this).data('row')
+      const upload = uploadFile(file, r)
+      if (upload) {
+        // allowed MIME types
+        var mime_types = ['image/jpg', 'image/jpeg', 'image/png', 'image/bmp', 'image/webp', 'application/pdf', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel.sheet.macroEnabled.12'];
+        // Validate whether PDF
+        if (mime_types.indexOf(file.type) == -1) {
+          alert('Error : Incorrect file type');
+          return;
+        }
+
+        // validate file size
+        if (file.size > 50 * 1024 * 1024) {
+          alert('Error : Exceeded size 50MB');
+          return;
+        }
+
+        // object url of PDF 
+        _OBJECT_URL = URL.createObjectURL(file)
+
+        // send the object url of the pdf to the PDF preview function
+        if (file.type == 'application/pdf') {
+          showPDF(_OBJECT_URL, r);
+        } else {
+          drawImage(r);
+        }
+      }
+    });
+
+    $(document).on('click', '.change-image', function() {
+      let r = $(this).data('row')
+      $('#document_' + r).click()
+    })
+
+    /* Reset file input */
+    $(document).on('click', "#cancel-pdf,.remove-file", function() {
+      let row = $(this).data('row')
+      // $("#remove-document").val('x');
+      $("#img_preview_" + row).addClass('d-none');
+      $("#preview_" + row).addClass('d-none');
+      $(".for-delete-" + row).addClass('d-none');
+      $('.dropzone-desc-' + row).removeClass('d-none')
+
+      // reset to no selection
+      $(this).val('');
+    });
   })
+
+  var _PDF_DOC,
+    _OBJECT_URL;
+
+  function changeStd(e, pasal) {
+    const r = e.data('row')
+    const std = e.val()
+    const pro = $('#procedure_id').text()
+    $(pasal + r).html('')
+    if (std && pro) {
+      $.ajax({
+        url: siteurl + active_controller + "listPasal/" + pro + "/" + std,
+        type: 'GET',
+        success: (res) => {
+          $(pasal + r).html(res)
+        },
+        error: () => {
+          alert('Data not valid!')
+        }
+      })
+    }
+  }
+
+  function renumberList() {
+    let n = 0
+    $('#tblTemuan tbody tr').each(function() {
+      n++;
+      $(this).find('td:first').text(n)
+      $(this).find('textarea[name^="temuan"].description').attr('name', "temuan[" + n + "][description]")
+      $(this).find('select[name^="temuan"].category').attr('name', "temuan[" + n + "][category]")
+      $(this).find('select[name^="temuan"].standard').attr('name', "temuan[" + n + "][standard]")
+      $(this).find('select[name^="temuan"].pasal').attr('name', "temuan[" + n + "][pasal]")
+    })
+  }
+
+  function showPDF(pdf_url, r) {
+    PDFJS.getDocument({
+      url: pdf_url
+    }).then(function(pdf_doc) {
+      _PDF_DOC = pdf_doc;
+
+      // Show the first page
+      showPage(1, r);
+
+      // destroy previous object url
+      URL.revokeObjectURL(_OBJECT_URL);
+    }).catch(function(error) {
+      // trigger Cancel on error
+      // $("#cancel-pdf").click();
+
+      // error reason
+      alert(error.message);
+    });;
+  }
+
+  function showPage(page_no, r) {
+    var _CANVAS = document.querySelector('#preview_' + r)
+    // fetch the page
+    // console.log(page_no);
+    // console.log(_PDF_DOC.getPage(page_no));
+    _PDF_DOC.getPage(page_no).then(function(page) {
+      // set the scale of viewport
+      var scale_required = _CANVAS.width / page.getViewport(1).width;
+
+      // get viewport of the page at required scale
+      var viewport = page.getViewport(scale_required);
+
+      // set canvas height
+      _CANVAS.height = viewport.height;
+
+      var renderContext = {
+        canvasContext: _CANVAS.getContext('2d'),
+        viewport: viewport
+      };
+
+      // render the page contents in the canvas
+      page.render(renderContext).then(function() {
+        $('#preview_' + r).removeClass('d-none');
+        $('#img_preview_' + r).addClass('d-none');
+        $('.for-delete-' + r).removeClass('d-none');
+        $('.dropzone-desc-' + r).addClass('d-none')
+      });
+    });
+  }
+
+  function showImage(file, r) {
+    var _CANVAS = document.querySelector('#preview_' + r)
+
+    var scale_required = _CANVAS.width / file.getViewport(1).width;
+
+    // get viewport of the page at required scale
+    var viewport = file.getViewport(scale_required);
+
+    // set canvas height
+    _CANVAS.height = viewport.height;
+
+    var renderContext = {
+      canvasContext: _CANVAS.getContext('2d'),
+      viewport: viewport
+    };
+
+    // render the page contents in the canvas
+    file.render(renderContext).then(function() {
+      $('#preview_' + r).removeClass('d-none');
+      $('.for-delete-' + r).removeClass('d-none');
+      $('.dropzone-desc-' + r).addClass('d-none')
+    });
+  }
+
+  function drawImage(r) {
+    let pict = $('#document_' + r)[0].files[0];
+    if (pict) {
+      $('#img_preview_' + r).attr('src', URL.createObjectURL(pict)).removeClass('d-none')
+      $('#preview_' + r).addClass('d-none');
+      $('.for-delete-' + r).removeClass('d-none');
+      $('.dropzone-desc-' + r).addClass('d-none')
+    }
+
+    // img.src = siteurl + "assets/images/excel.png";
+    // console.log(pict);
+  }
+
+  function uploadFile(file, row) {
+    let res
+    let formData = new FormData();
+    formData.append('document', file);
+    formData.append('id', $('#document_' + row).data('id'));
+    return $.ajax({
+      url: siteurl + active_controller + 'uploadFile',
+      dataType: 'JSON',
+      type: 'POST',
+      data: formData,
+      contentType: false,
+      processData: false,
+    });
+  }
 </script>
