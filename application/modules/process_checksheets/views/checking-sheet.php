@@ -129,7 +129,7 @@
 										<div class="d-flex justify-content-start align-items-center gap-4">
 											<div class="form-check form-check-custom form-check-solid mr-10">
 												<label class="form-check-label font-weight-bolder text-dark">
-													<input class="form-check-input yes required" type="radio" value="yes" <?= ($weekOfMonth) ? (($weekOfMonth != $i) ? 'disabled' : '') : ($i != (date('d')) ? 'disabled' : ''); ?> name="detail[<?= $n; ?>][n<?= $i; ?>]" data-row="<?= $n . $i; ?>" id="boolean_<?= $i . $n; ?>" <?= ($it->$nn == 'yes') ? 'checked' : ''; ?>>
+													<input class="form-check-input yes required" type="radio" value="yes" <?= ($weekOfMonth) ? (($weekOfMonth != $i) ? 'sdisabled' : '') : ($i != (date('d')) ? 'sdisabled' : ''); ?> name="detail[<?= $n; ?>][n<?= $i; ?>]" data-row="<?= $n . $i; ?>" id="boolean_<?= $i . $n; ?>" <?= ($it->$nn == 'yes') ? 'checked' : ''; ?>>
 													Yes
 													<span class="invalid-feedback font-weight-normal">
 														<i class="text-danger fa fa-exclamation-circle"></i>
@@ -138,7 +138,7 @@
 											</div>
 											<div class="form-check form-check-custom form-check-danger form-check-solid mr-10">
 												<label class="form-check-label font-weight-bolder text-dark">
-													<input class="form-check-input no required" type="radio" value="no" <?= ($weekOfMonth) ? (($weekOfMonth != $i) ? 'disabled' : '') : ($i != (date('d')) ? 'disabled' : ''); ?> name="detail[<?= $n; ?>][n<?= $i; ?>]" data-row="<?= $n . $i; ?>" id="boolean_<?= $i . $n; ?>" <?= ($it->$nn == 'no') ? 'checked' : ''; ?>>
+													<input class="form-check-input no required" type="radio" value="no" <?= ($weekOfMonth) ? (($weekOfMonth != $i) ? 'sdisabled' : '') : ($i != (date('d')) ? 'sdisabled' : ''); ?> name="detail[<?= $n; ?>][n<?= $i; ?>]" data-row="<?= $n . $i; ?>" id="boolean_<?= $i . $n; ?>" <?= ($it->$nn == 'no') ? 'checked' : ''; ?>>
 													No
 													<span class="invalid-feedback font-weight-normal">
 														<i class="text-danger fa fa-exclamation-circle fa-md"></i>
@@ -213,7 +213,7 @@
 							if ($weekOfMonth == $i) :
 								if (!isset($ArrCheck[$data->id]->$dayCheck)) : ?>
 									<div class="" id="r_<?= $n . '_c_' . $i; ?>">
-										<textarea type="text" name="detail[<?= $n; ?>][note<?= $i; ?>]" id="note<?= $n . $i; ?>" <?= ($weekOfMonth) ? (($weekOfMonth != $i) ? 'disabled' : ((!$it->$nn || $it->$nn == 'yes') ? 'disabled' : '')) : ($i != (date('d')) ? 'disabled' : ((!$it->$nn || $it->$nn == 'yes') ? 'disabled' : '')); ?> class="form-control <?= $i == (date('d')) ? 'required' : ''; ?>" placeholder="Reason"><?= isset($ArrNote[$it->id]) ? $ArrNote[$it->id]->$Nn : ''; ?></textarea>
+										<textarea type="text" name="detail[<?= $n; ?>][note<?= $i; ?>]" id="note<?= $n . $i; ?>" <?= ($weekOfMonth) ? (($weekOfMonth != $i) ? 'sdisabled' : ((!$it->$nn || $it->$nn == 'yes') ? 'sdisabled' : '')) : ($i != (date('d')) ? 'sdisabled' : ((!$it->$nn || $it->$nn == 'yes') ? 'sdisabled' : '')); ?> class="form-control <?= $i == (date('d')) ? 'required' : ''; ?>" placeholder="Reason"><?= isset($ArrNote[$it->id]) ? $ArrNote[$it->id]->$Nn : ''; ?></textarea>
 										<span class="invalid-feedback">Can not be empty</span>
 									</div>
 								<?php else : ?>

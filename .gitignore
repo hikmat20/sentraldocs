@@ -10,5 +10,5 @@ application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
 #/vendor/
-/directory/
+directory/*
 */config/database.php

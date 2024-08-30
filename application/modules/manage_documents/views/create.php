@@ -28,7 +28,7 @@
 						<div class="px-1">
 							<ul class="nav nav-light-success nav-pills" id="myTab" role="tablist">
 								<li class="nav-item text-primary" data-id="0">
-									<a class="nav-link px-2 disabled" id="back" data-id="0" href="javascript:void(0)">
+									<a class="nav-link px-2 disabled" id="back" data-folder="" data-id="0" href="javascript:void(0)">
 										<span class="nav-icon">
 											<i class="fa fa-arrow-left mr-2 nav-icons"></i>
 										</span>
@@ -190,6 +190,8 @@
 
 		$('.tree-folder').removeClass('table-active')
 		$(this).addClass('table-active')
+		$('a#back').data('folder', folder);
+		console.log(folder)
 		if (id) {
 			if (custome == 'Y') {} else {
 				$('#data-file').load(siteurl + active_controller + 'load_file/' + id + "/" + folder)
@@ -378,7 +380,8 @@
 
 	$(document).on("click", "#back", function() {
 		let id = $(this).data('id');
-
+		let folder = $(this).data('folder')
+		console.log(folder)
 		if (id != '0') {
 			$.ajax({
 				url: siteurl + active_controller + 'previous',
@@ -390,7 +393,7 @@
 				success: function(data) {
 					console.log(data);
 					if (data.parent_id != '0') {
-						$('#data-file').load(siteurl + active_controller + 'load_file/' + data.parent_id)
+						$('#data-file').load(siteurl + active_controller + 'load_file/' + data.parent_id+'/'+folder)
 						$('#back').data('id', data.parent_id);
 						$('a#add-folder').data('id', data.parent_id);
 						$('a#add-file').data('id', data.parent_id);

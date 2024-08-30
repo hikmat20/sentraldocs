@@ -41,9 +41,13 @@
 				<th colspan="<?= $count; ?>" class="p-2 text-center" width="<?= $col_width; ?>">Result</th>
 			</tr>
 			<tr>
-				<?php for ($i = 1; $i <= $count; $i++) : ?>
-					<th class="text-center"><?= $name_col . " " . $i; ?></th>
-				<?php endfor; ?>
+				<?php for ($i = 1; $i <= $count; $i++) {
+					$weekend="";
+					$tanggalkolom=date("Y-m",strtotime($data->periode))."-".$i;
+					if(date('w', strtotime($tanggalkolom)) % 6 == 0) $weekend="table-danger";
+					if($data->frequency_checking!=1) $weekend="";?>
+					<th class="text-center <?=$weekend?>"><?= $name_col . " " . $i; ?></th>
+				<?php } ?>
 			</tr>
 		</thead>
 		<tbody>
@@ -55,10 +59,21 @@
 					</td>
 					<td><?= $it->item_name; ?></td>
 					<td><?= $it->standard_check; ?></td>
-					<?php for ($i = 1; $i <= $count; $i++) : ?>
+					<?php for ($i = 1; $i <= $count; $i++) { 
+						$weekend="";
+						$tanggalkolom=date("Y-m",strtotime($data->periode))."-".$i;
+						if(date('w', strtotime($tanggalkolom)) % 6 == 0) $weekend="table-danger";
+						if($data->frequency_checking!=1) $weekend="";?>
 						<?php $nn = "n" . $i; ?>
 						<?php $Nn = "note" . $i; ?>
-						<td class="<?= ($it->$nn == '') ? 'bg-light' : ''; ?>">
+						<td class=" 
+							<?php if($weekend==""){ ?>
+								<?= ($it->$nn == '') ? 'bg-light' : ''; ?>
+							<?php
+							}else{
+								echo $weekend;
+							}								
+							?>">
 							<?php if ($it->check_type == 'boolean') : ?>
 								<?php if ($it->$nn == 'no') : ?>
 									<label for="" class="label-danger label"><?= ucfirst($it->$nn); ?></label>
@@ -74,7 +89,7 @@
 								<?= ($it->$nn) ?: ''; ?>
 							<?php endif; ?>
 						</td>
-					<?php endfor; ?>
+					<?php } ?>
 				</tr>
 			<?php endforeach; ?>
 		</tbody>
