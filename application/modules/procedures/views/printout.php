@@ -207,7 +207,7 @@
       <a href="<?= ($procedure->link_video); ?>">Link Video</a>
     <?php endif; ?>
     <br>
-    <h3>FLOW DETAIL</h3>
+    <h3>PROSES TERKAIT</h3>
     <table class="table-data" style="font-size: 11px;">
       <thead>
         <tr class="table-secondary">

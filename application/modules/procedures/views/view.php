@@ -223,7 +223,7 @@
         <thead>
           <tr class="table-secondary">
             <th>
-              <h3>FLOW DETAIL</h3>
+              <h3>PROSES TERKAIT</h3>
             </th>
           </tr>
         </thead>
