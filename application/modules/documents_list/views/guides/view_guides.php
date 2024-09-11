@@ -43,7 +43,7 @@
 
                         <div id="accIK<?= $n ?>" class="collapse in" role="tabpanel" aria-labelledby="secIK<?= $n ?>">
                             <div style="width:92%;;background-color: red;position: absolute;opacity: 0;"></div>
-                            <iframe style="pointer-events:visibleStroke;" onclick="false" oncontextmenu="false" src="<?= base_url() . $file . "IK/" . $d1->file; ?> #toolbar=0&navpanes=0" frameborder="1" width="100%" height="500"></iframe>
+                            <iframe style="pointer-events:visibleStroke;" onclick="false" oncontextmenu="false" src="<?= base_url() . $file . "IK/" . $d1->file; ?>#toolbar=0&navpanes=0" frameborder="1" width="100%" height="500"></iframe>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -65,7 +65,7 @@
 
                         <div id="accCMC<?= $n ?>" class="collapse in" role="tabpanel" aria-labelledby="secCMC<?= $n ?>">
                             <div style="width:92%;;background-color: red;position: absolute;opacity: 0;"></div>
-                            <iframe style="pointer-events:visibleStroke;" onclick="false" oncontextmenu="false" src="<?= base_url() . $file . "CMC/" . $d1->file; ?> #toolbar=0&navpanes=0" frameborder="1" width="100%" height="500"></iframe>
+                            <iframe style="pointer-events:visibleStroke;" onclick="false" oncontextmenu="false" src="<?= base_url() . $file . "CMC/" . $d1->file; ?>#toolbar=0&navpanes=0" frameborder="1" width="100%" height="500"></iframe>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -87,7 +87,7 @@
 
                         <div id="accTEMP<?= $n ?>" class="collapse in" role="tabpanel" aria-labelledby="secTEMP<?= $n ?>">
                             <div style="width:92%;;background-color: red;position: absolute;opacity: 0;"></div>
-                            <iframe style="pointer-events:visibleStroke;" onclick="false" oncontextmenu="false" src="<?= base_url() . $file . "TEMPLATE/" . $d1->file; ?> #toolbar=0&navpanes=0" frameborder="1" width="100%" height="500"></iframe>
+                            <iframe style="pointer-events:visibleStroke;" onclick="false" oncontextmenu="false" src="<?= base_url() . $file . "TEMPLATE/" . $d1->file; ?>#toolbar=0&navpanes=0" frameborder="1" width="100%" height="500"></iframe>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -109,7 +109,7 @@
 
                         <div id="accUBLK<?= $n ?>" class="collapse in" role="tabpanel" aria-labelledby="secUBLK<?= $n ?>">
                             <div style="width:92%;;background-color: red;position: absolute;opacity: 0;"></div>
-                            <iframe style="pointer-events:visibleStroke;" onclick="false" oncontextmenu="false" src="<?= base_url() . $file . "UBLK/" . $d1->file; ?> #toolbar=0&navpanes=0" frameborder="1" width="100%" height="500"></iframe>
+                            <iframe style="pointer-events:visibleStroke;" onclick="false" oncontextmenu="false" src="<?= base_url() . $file . "UBLK/" . $d1->file; ?>#toolbar=0&navpanes=0" frameborder="1" width="100%" height="500"></iframe>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -131,7 +131,7 @@
 
                         <div id="accSERT<?= $n ?>" class="collapse in" role="tabpanel" aria-labelledby="secSERT<?= $n ?>">
                             <div style="width:92%;;background-color: red;position: absolute;opacity: 0;"></div>
-                            <iframe style="pointer-events:visibleStroke;" onclick="false" oncontextmenu="false" src="<?= base_url() . $file . "FORMAT_SERTIFIKAT/" . $d1->file; ?> #toolbar=0&navpanes=0" frameborder="1" width="100%" height="500"></iframe>
+                            <iframe style="pointer-events:visibleStroke;" onclick="false" oncontextmenu="false" src="<?= base_url() . $file . "FORMAT_SERTIFIKAT/" . $d1->file; ?>#toolbar=0&navpanes=0" frameborder="1" width="100%" height="500"></iframe>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -153,7 +153,7 @@
 
                         <div id="accANALISA<?= $n ?>" class="collapse in" role="tabpanel" aria-labelledby="secANALISA<?= $n ?>">
                             <div style="width:92%;;background-color: red;position: absolute;opacity: 0;"></div>
-                            <iframe style="pointer-events:visibleStroke;" onclick="false" oncontextmenu="false" src="<?= base_url() . $file . "ANALISA_DRIFT/" . $d1->file; ?> #toolbar=0&navpanes=0" frameborder="1" width="100%" height="500"></iframe>
+                            <iframe style="pointer-events:visibleStroke;" onclick="false" oncontextmenu="false" src="<?= base_url() . $file . "ANALISA_DRIFT/" . $d1->file; ?>#toolbar=0&navpanes=0" frameborder="1" width="100%" height="500"></iframe>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -175,7 +175,7 @@
 
                         <div id="accCALIBRATOR<?= $n ?>" class="collapse in" role="tabpanel" aria-labelledby="secCALIBRATOR<?= $n ?>">
                             <div style="width:92%;;background-color: red;position: absolute;opacity: 0;"></div>
-                            <iframe style="pointer-events:visibleStroke;" onclick="false" oncontextmenu="false" src="<?= base_url() . $file . "SERTIFIKAT_KALIBRATOR/" . $d1->file; ?> #toolbar=0&navpanes=0" frameborder="1" width="100%" height="500"></iframe>
+                            <iframe style="pointer-events:visibleStroke;" onclick="false" oncontextmenu="false" src="<?= base_url() . $file . "SERTIFIKAT_KALIBRATOR/" . $d1->file; ?>#toolbar=0&navpanes=0" frameborder="1" width="100%" height="500"></iframe>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -197,7 +197,7 @@
 
                         <div id="accCEK_ANTARA<?= $n ?>" class="collapse in" role="tabpanel" aria-labelledby="secCEK_ANTARA<?= $n ?>">
                             <div style="width:92%;;background-color: red;position: absolute;opacity: 0;"></div>
-                            <iframe style="pointer-events:visibleStroke;" onclick="false" oncontextmenu="false" src="<?= base_url() . $file . "CEK_ANTARA/" . $d1->file; ?> #toolbar=0&navpanes=0" frameborder="1" width="100%" height="500"></iframe>
+                            <iframe style="pointer-events:visibleStroke;" onclick="false" oncontextmenu="false" src="<?= base_url() . $file . "CEK_ANTARA/" . $d1->file; ?>#toolbar=0&navpanes=0" frameborder="1" width="100%" height="500"></iframe>
                         </div>
                     <?php endforeach; ?>
                 </div>
