@@ -1021,7 +1021,6 @@ class Process_checksheets extends Admin_Controller
 	public function save_process_checksheet()
 	{
 		$post 	= $this->input->post();
-
 		$this->db->trans_begin();
 		if ($post['id']) {
 			if (isset($post['detail'])) foreach ($post['detail'] as $dt) {
@@ -1042,7 +1041,7 @@ class Process_checksheets extends Admin_Controller
 						$dataNote 	= [
 							'data_id'	=> $post['id'],
 							'item_id'	=> $dt['id'],
-							$fieldNote 	=> $dt[$fieldNote]
+							$fieldNote 	=> (isset($dt[$fieldNote])?$dt[$fieldNote]:null)
 						];
 
 						if (!$checkNote) {
