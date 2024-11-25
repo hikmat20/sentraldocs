@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
+use Mpdf\Mpdf;
+
 class Process_checksheets extends Admin_Controller
 {
 	/*
@@ -937,7 +939,7 @@ class Process_checksheets extends Admin_Controller
 		$sheet  	= $this->db->get_where('checksheet_process_data', ['id' => $_GET['sheet']])->row();
 		// $details	= $this->db->get_where('checksheet_data_items', ['checksheet_data_number' => $sheet->checksheet_data_number])->result();
 		$details	= $this->db->get_where('checksheet_process_details', ['checksheet_process_data_number' => $sheet->number])->result();
-		
+
 		// $ArrProcess = [];
 		// if ($detailsProcess) {
 		// 	foreach ($detailsProcess as $dtl) {
@@ -1041,7 +1043,7 @@ class Process_checksheets extends Admin_Controller
 						$dataNote 	= [
 							'data_id'	=> $post['id'],
 							'item_id'	=> $dt['id'],
-							$fieldNote 	=> (isset($dt[$fieldNote])?$dt[$fieldNote]:null)
+							$fieldNote 	=> (isset($dt[$fieldNote]) ? $dt[$fieldNote] : null)
 						];
 
 						if (!$checkNote) {
@@ -1304,7 +1306,7 @@ class Process_checksheets extends Admin_Controller
 		$folder = $_GET['p'];
 		$file = $_GET['f'];
 
-		$mpdf = new mPDF('', '', '', '', '', '', '', '', '', '');
+		$mpdf = new Mpdf();
 		$mpdf->SetImportUse();
 		$pagecount = $mpdf->SetSourceFile('directory/' . $folder . '/' . $file);
 		$tplId = $mpdf->ImportPage($pagecount);
