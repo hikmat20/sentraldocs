@@ -5,12 +5,12 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?= $procedure->name ; ?></title>
+  <title>Procedure</title>
   <style>
-    /* *,
+    *,
     body {
-      font-family: Tahoma, Helvetica, sans-serif !important;
-    } */
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
     table.table-data {
       width: 100%;
@@ -83,9 +83,35 @@
 </head>
 
 <body>
+
+  <table border="1" width="100%">
+    <tr>
+      <td rowspan="3" width="50%" class="text-center">
+        <h2><?= $company_name; ?></h2>
+      </td>
+      <td width="120px">Nomor Dokumen</td>
+      <td><?= $procedure->nomor; ?></td>
+    </tr>
+    <tr>
+      <td>Revisi</td>
+      <td><?= ($procedure->revision) ?: '~'; ?></td>
+    </tr>
+    <tr>
+      <td>Tgl. Revisi</td>
+      <td><?= ($procedure->revision_date) ? date_format(date_create($procedure->revision_date), 'd F Y') : '~'; ?></td>
+    </tr>
+    <tr>
+      <td class="text-center" style="background-color: #000;color:#fff">
+        <h4><?= strtoupper($procedure->name); ?></h4>
+      </td>
+      <td>Halaman</td>
+      <td>{PAGENO} of {nbpg}</td>
+    </tr>
+  </table>
+
   <div class="">
     <!-- HEADER -->
-    <h1 class="text-center"><?= $procedure->name; ?></h1>
+
     <h3><strong>TUJUAN</strong></h3>
     <table>
       <tr>
@@ -162,64 +188,26 @@
     <br>
 
     <h3>FLOW PROCEDURE</h3>
-    <table>
-      <tbody>
-        <?php if ($procedure->image_flow_1 || $procedure->image_flow_2 || $procedure->image_flow_3) : ?>
-          <?php if ($procedure->image_flow_1) : ?>
-            <tr>
-              <td>
-                <img height="600px" src="<?= base_url("directory/FLOW_IMG/$procedure->company_id/$procedure->image_flow_1"); ?>" alt="image_flow_1" class="img-fluid">
-              </td>
-            </tr>
-          <?php endif; ?>
-          <?php if ($procedure->image_flow_2) : ?>
-            <tr>
-              <td>
-                <img height="600px" src="<?= base_url("directory/FLOW_IMG/$procedure->company_id/$procedure->image_flow_2"); ?>" alt="image_flow_2" class="img-fluid">
-              </td>
-            </tr>
-          <?php endif; ?>
-          <?php if ($procedure->image_flow_3) : ?>
-            <tr>
-              <td>
-                <img height="600px" src="<?= base_url("directory/FLOW_IMG/$procedure->company_id/$procedure->image_flow_3"); ?>" alt="image_flow_3" class="img-fluid">
-              </td>
-            </tr>
-          <?php endif; ?>
-        <?php else : ?>
-          <tr>
-            <td class="text-center">~ Not available data ~</td>
-          </tr>
-        <?php endif; ?>
-      </tbody>
-    </table>
+    <?php if ($procedure->image_flow_1 || $procedure->image_flow_2 || $procedure->image_flow_3) : ?>
+      <?php if ($procedure->image_flow_1) : ?>
+        <img height="600px" src="<?= base_url("directory/FLOW_IMG/$procedure->company_id/$procedure->image_flow_1"); ?>" alt="image_flow_1" class="img-fluid">
+      <?php endif; ?>
+      <?php if ($procedure->image_flow_2) : ?>
+        <img height="600px" src="<?= base_url("directory/FLOW_IMG/$procedure->company_id/$procedure->image_flow_2"); ?>" alt="image_flow_2" class="img-fluid">
+      <?php endif; ?>
+      <?php if ($procedure->image_flow_3) : ?>
+        <img height="600px" src="<?= base_url("directory/FLOW_IMG/$procedure->company_id/$procedure->image_flow_3"); ?>" alt="image_flow_3" class="img-fluid">
+      <?php endif; ?>
+    <?php else : ?>
+      <p>~ Not available data ~</p>
+    <?php endif; ?>
 
-    <!-- <br>
-    <h3>VIDEO</h3>
-    <table class="table-data">
-      <thead>
-        <tr class="table-secondary">
-          <th class="text-left">
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php if ($procedure->link_video) : ?>
-          <tr>
-            <td class="text-center">
-              <?= ($procedure->link_video); ?>
-            </td>
-          </tr>
-        <?php else : ?>
-          <tr>
-            <td class="text-center">~ Not available data ~</td>
-          </tr>
-        <?php endif; ?>
-      </tbody>
-    </table> -->
-
+    <?php if ($procedure->link_video) : ?>
+      <h3>VIDEO</h3>
+      <a href="<?= ($procedure->link_video); ?>">Link Video</a>
+    <?php endif; ?>
     <br>
-    <h3>FLOW DETAIL</h3>
+    <h3>PROSES TERKAIT</h3>
     <table class="table-data" style="font-size: 11px;">
       <thead>
         <tr class="table-secondary">

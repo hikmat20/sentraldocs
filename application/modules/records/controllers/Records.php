@@ -2,7 +2,7 @@
 
 use Mpdf\Mpdf;
 
-class Procedures extends Admin_Controller
+class Records extends Admin_Controller
 {
 	protected $status;
 	protected $sts;
@@ -15,7 +15,7 @@ class Procedures extends Admin_Controller
 			'Aktifitas/aktifitas_model'
 		));
 
-		$this->template->set('title', 'List Procedures');
+		$this->template->set('title', 'List Records');
 		$this->template->set('icon', 'fa fa-cog');
 
 		date_default_timezone_set("Asia/Bangkok");
@@ -38,32 +38,9 @@ class Procedures extends Admin_Controller
 
 	public function index()
 	{
-		// $data			= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null, 'status' => '1'])->result();
-		$dataDraft		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null, 'status' => 'DFT'])->result();
-		$dataRev		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null, 'status' => 'REV'])->result();
-		$dataCor		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null, 'status' => 'COR'])->result();
-		$dataApv		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null, 'status' => 'APV'])->result();
-		$dataPub		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null, 'status' => 'PUB'])->result();
-		$dataDel		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null, 'status' => 'HLD', 'deletion_status' => 'APV'])->result();
-		$dataRvi		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null, 'status' => 'RVI'])->result();
-		$noteRevision	= $this->db->order_by('id', 'DESC')->select('*')->get_where('directory_log', ['doc_type' => 'Procedure', 'new_status' => 'RVI'])->result();
-		
-		$ArrReason = [];
-		foreach (array_reverse($noteRevision) as $rvi) {
-			$ArrReason[$rvi->directory_id] = $rvi;
-		};
-		
-
-		$this->template->set('title', 'List of Procedures');
+		$dataProcedure		= $this->db->get_where('procedures', ['company_id' => $this->company, 'deleted_at' => null, 'status !=' => 'DEL'])->result();
 		$this->template->set([
-			'dataDraft' => $dataDraft,
-			'dataRev' 	=> $dataRev,
-			'dataCor' 	=> $dataCor,
-			'dataApv' 	=> $dataApv,
-			'dataPub' 	=> $dataPub,
-			'dataRvi' 	=> $dataRvi,
-			'dataDel' 	=> $dataDel,
-			'ArrReason' => $ArrReason,
+			'dataProcedure' => $dataProcedure,
 		]);
 		$this->template->set('status', $this->sts);
 		$this->template->render('index');
@@ -88,13 +65,13 @@ class Procedures extends Admin_Controller
 	public function edit($id = '')
 	{
 		$Data 			= $this->db->get_where('procedures', ['company_id' => $this->company, 'id' => $id])->row();
+		$getRecords	= $this->db->get_where('dir_records', ['procedure_id' => $id, 'status !=' => 'DEL', 'flag_type' => 'FOLDER', 'parent_id' => null])->result();
 
 		if ($Data) {
 			$Data_detail 	= $this->db->get_where('procedure_details', ['procedure_id' => $id, 'status' => '1'])->result();
 			$grProcess	= $this->db->get_where('group_procedure', ['status' => 'ACT'])->result();
 			$getForms	= $this->db->get_where('dir_forms', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
 			$getGuides	= $this->db->get_where('dir_guides', ['procedure_id' => $id, 'status !=' => 'DEL'])->result();
-			$getRecords	= $this->db->get_where('dir_records', ['procedure_id' => $id, 'status !=' => 'DEL', 'flag_type' => 'FOLDER', 'parent_id' => null])->result();
 			$users 		= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1', 'company_id' => $this->company])->result();
 			$jabatan 	= $this->db->get_where('positions', ['company_id' => $this->company])->result();
 
@@ -108,7 +85,7 @@ class Procedures extends Admin_Controller
 			}
 
 			$this->template->set([
-				'title' 		=> 'Edit Procedures',
+				'title' 		=> 'Edit Records',
 				'data' 			=> $Data,
 				'users' 		=> $users,
 				'detail' 		=> $Data_detail,
@@ -121,7 +98,6 @@ class Procedures extends Admin_Controller
 				'sts' 			=> $this->sts,
 			]);
 
-			$this->template->set('grProcess', $grProcess);
 			$this->template->render('edit');
 		} else {
 			$data = [
@@ -132,9 +108,9 @@ class Procedures extends Admin_Controller
 		}
 	}
 
-	public function view($id = '', $status = '')
+	public function view($id = '', $status = 'PUB')
 	{
-		$Data 				= $this->db->get_where('procedures', ['id' => $id, 'company_id' => $this->company])->row();
+		$Data 				= $this->db->get_where('procedures', ['id' => $id, 'company_id' => $this->company,  'status' => $status])->row();
 		$users 				= $this->db->get_where('view_users', ['status' => 'ACT', 'id_user !=' => '1'])->result();
 		$getForms			= $this->db->get_where('dir_forms', ['procedure_id' => $id])->result();
 		$getGuides			= $this->db->get_where('dir_guides', ['procedure_id' => $id])->result();
@@ -1521,7 +1497,7 @@ class Procedures extends Admin_Controller
 	public function printOut($id = null)
 	{
 		$mpdf 				= new Mpdf();
-		// $mpdf->showImageErrors = true;
+		$mpdf->showImageErrors = true;
 		$mpdf->curlAllowUnsafeSslRequests = true;
 		$procedure 			= $this->db->get_where('procedures', ['id' => $id])->row();
 		$flowDetail 		= $this->db->get_where('procedure_details', ['procedure_id' => $id, 'status' => '1'])->result();

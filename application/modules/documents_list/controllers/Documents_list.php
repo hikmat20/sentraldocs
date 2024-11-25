@@ -416,15 +416,12 @@ class Documents_list extends Admin_Controller
 	public function view_guides($id = null)
 	{
 		$data 			= $this->db->get_where('guide_documents', ['guide_detail_data_id' => $id,'status'=>'1'])->result();
-		
 		$ArrDoc = [];
 		foreach ($data as $d) {
 			$ArrDoc[$d->file_type][] = $d;
 		}
-	
 		$file 			= './directory/MASTER_GUIDES/' . $this->company . '/';
 		$methode 		= ['INS' => 'Insitu', 'LAB' => 'Inlab'];
-
 		$this->template->set([
 			'data' 		=> $data,
 			'ArrDoc'	=> $ArrDoc,
