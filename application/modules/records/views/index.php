@@ -4,291 +4,36 @@
 			<div class="card card-stretch shadow card-custom">
 				<div class="card-header">
 					<h2 class="mt-5"><i class="<?= $icon; ?> mr-2"></i><?= $title; ?></h2>
-					<div class="mt-4 float-right ">
-						<a href="<?= base_url($this->uri->segment(1) . '/add'); ?>" class="btn btn-primary" data-toggle="tooltip" title="Add New Procedure">
-							<i class="fa fa-plus mr-1"></i>Add New Procedure
-						</a>
-					</div>
+					<div class="mt-4 float-right "></div>
 				</div>
 				<div class="card-body">
-
-					<!-- Nav tabs -->
-					<ul class="nav nav-tabs nav-fill font-weight-bold nav-success nav-sm nav-pills pb-3 mb-3" id="myTab" role="tablist">
-						<li class="nav-item" role="presentation">
-							<a class="nav-link active p-2" id="draft-tab" data-toggle="tab" data-target="#draft" type="button" role="tab" aria-controls="draft" aria-selected="false">Draft <span class="badge bg-white badge-circle text-secondary ml-2"><?= count($dataDraft); ?></span></a>
-						</li>
-						<li class="nav-item" role="presentation">
-							<a class="nav-link p-2" id="review-tab" data-toggle="tab" data-target="#review" type="button" role="tab" aria-controls="review" aria-selected="true">Review <span class="badge badge-circle bg-white text-warning ml-2"><?= count($dataRev); ?></span></a>
-						</li>
-						<li class="nav-item" role="presentation">
-							<a class="nav-link p-2" id="Correction-tab" data-toggle="tab" data-target="#Correction" type="button" role="tab" aria-controls="Correction" aria-selected="true">Correction <span class="badge badge-circle bg-white text-danger ml-2"><?= count($dataCor); ?></span></a>
-						</li>
-						<li class="nav-item" role="presentation">
-							<a class="nav-link p-2" id="Approval-tab" data-toggle="tab" data-target="#Approval" type="button" role="tab" aria-controls="Approval" aria-selected="true">Approval <span class="badge badge-circle bg-white text-info ml-2"><?= count($dataApv); ?></span></a>
-						</li>
-						<li class="nav-item" role="presentation">
-							<a class="nav-link p-2" id="Revision-tab" data-toggle="tab" data-target="#Revision" type="button" role="tab" aria-controls="Revision" aria-selected="true">Revision <span class="badge badge-circle bg-white text-success ml-2"><?= count($dataRvi); ?></span></a>
-						</li>
-						<li class="nav-item" role="presentation">
-							<a class="nav-link p-2" id="published-tab" data-toggle="tab" data-target="#published" type="button" role="tab" aria-controls="published" aria-selected="true">Published <span class="badge badge-circle bg-white text-primary ml-2"><?= count($dataPub); ?></span></a>
-						</li>
-						<li class="nav-item" role="presentation">
-							<a class="nav-link p-2" id="deletion-tab" data-toggle="tab" data-target="#deletion" type="button" role="tab" aria-controls="deletion" aria-selected="true">Deletion <span class="badge badge-circle bg-white text-danger ml-2"><?= count($dataDel); ?></span></a>
-						</li>
-					</ul>
-
-					<!-- Tab panes -->
-					<div class="tab-content ">
-
-						<!-- Draft -->
-						<div class="tab-pane fade active show" id="draft" role="tabpanel" aria-labelledby="draft-tab">
-							<table id="example2" class="table datatable table-bordered table-sm table-hover datatable">
-								<thead class="text-center table-light">
+					<table id="example2" class="table datatable table-bordered table-sm table-hover datatable">
+						<thead class="text-center table-light">
+							<tr class="text-center">
+								<th class="p-2" width="40">No.</th>
+								<th class="p-2 text-left">Nama</th>
+								<th class="p-2" width="130">Status</th>
+								<th class="p-2" width="60">Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php if (isset($dataProcedure) && $dataProcedure) :
+								$n = 0;
+								foreach ($dataProcedure as $dt) : $n++; ?>
 									<tr class="text-center">
-										<th class="p-2" width="40">No.</th>
-										<th class="p-2 text-left">Nama</th>
-										<th class="p-2" width="130">Status</th>
-										<th class="p-2" width="70">Action</th>
+										<td class="p-2"><?= $n; ?></td>
+										<td class="p-2 text-left">
+											<h6 class="my-0"><?= $dt->name; ?></h6>
+										</td>
+										<td class="p-2"><?= $status[$dt->status]; ?></td>
+										<td class="p-2">
+											<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-warning btn-icon btn-xs" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Edit Records"><i class="fa fa-edit"></i></a>
+										</td>
 									</tr>
-								</thead>
-								<tbody>
-									<?php if (isset($dataDraft) && $dataDraft) :
-										$n = 0;
-										foreach ($dataDraft as $draft) : $n++; ?>
-											<tr class="text-center">
-												<td class="p-2"><?= $n; ?></td>
-												<td class="p-2 text-left">
-													<h6 class="my-0"><?= $draft->name; ?></h6>
-												</td>
-												<td class="p-2"><?= $status[$draft->status]; ?></td>
-												<td class="p-2">
-													<a href="<?= base_url($this->uri->segment(1) . '/printout/' . $draft->id); ?>" target="_blank" class="btn btn-xs btn-icon btn-light print" data-status="<?= $draft->status; ?>" data-id="<?= $draft->id; ?>" data-toggle="tooltip" title="Print Data"><i class="fa fa-print"></i></a>
-													<div class="dropdown open d-inline">
-														<button class="btn btn-success btn-xs btn-icon" type="button" id="triggerId" data-toggle="dropdown" title="Opsi" aria-haspopup="true" aria-expanded="false">
-															<i class="fa fa-cog"></i>
-														</button>
-														<div class="dropdown-menu" aria-labelledby="triggerId">
-															<button type="button" class="dropdown-item view text-info" data-status="<?= $draft->status; ?>" data-id="<?= $draft->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search mr-2 text-info"></i>View</button>
-															<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $draft->id); ?>" class="dropdown-item text-warning" data-id="<?= $draft->id; ?>" data-toggle="tooltip" title="Edit Data"><i class="fa fa-edit mr-2 text-warning"></i>Edit</a>
-															<div class="dropdown-divider my-0"></div>
-															<button type="button" class="dropdown-item text-primary review" data-id="<?= $draft->id; ?>" data-toggle="tooltip" title="Process to Review"><i class="fa fa-sync mr-2 text-primary"></i>Process to Review</button>
-															<div class="dropdown-divider my-0"></div>
-															<button type="button" class="dropdown-item delete text-danger" data-id="<?= $draft->id; ?>" data-toggle="tooltip" title="Delete Data"><i class="fa fa-trash mr-2 text-danger"></i>Delete</button>
-														</div>
-													</div>
-
-												</td>
-											</tr>
-									<?php endforeach;
-									endif; ?>
-								</tbody>
-							</table>
-						</div>
-
-						<!-- Review -->
-						<div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
-							<table id="tblReview" class="table datatable table-bordered table-sm table-condensed table-hover datatable">
-								<thead class="text-center table-light">
-									<tr class="text-center">
-										<th class="p-2" width="40">No.</th>
-										<th class="p-2 text-left">Nama</th>
-										<th class="p-2" width="130">Status</th>
-										<th class="p-2" width="70">Action</th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php if (isset($dataRev) && $dataRev) :
-										$n = 0;
-										foreach ($dataRev as $dt) : $n++; ?>
-											<tr class="text-center">
-												<td class="p-2"><?= $n; ?></td>
-												<td class="p-2 text-left">
-													<h6 class="my-0"><?= $dt->name; ?></h6>
-												</td>
-												<td class="p-2"><?= $status[$dt->status]; ?></td>
-												<td class="p-2">
-													<button type="button" class="btn btn-xs btn-icon btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
-													<button type="button" class="btn btn-xs btn-icon btn-light-danger cancle-review" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Cancel Review"><i class="fa fa-undo"></i></button>
-												</td>
-											</tr>
-									<?php endforeach;
-									endif; ?>
-								</tbody>
-							</table>
-						</div>
-
-						<!-- Correction -->
-						<div class="tab-pane fade" id="Correction" role="tabpanel" aria-labelledby="Correction-tab">
-							<table id="tblCorrection" class="table datatable table-bordered table-sm table-condensed table-hover datatable">
-								<thead class="text-center table-light">
-									<tr class="text-center">
-										<th class="p-2" width="40">No.</th>
-										<th class="p-2 text-left">Nama</th>
-										<th class="p-2" width="130">Status</th>
-										<th class="p-2" width="70">Action</th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php if (isset($dataCor) && $dataCor) :
-										$n = 0;
-										foreach ($dataCor as $dt) : $n++; ?>
-											<tr class="text-center">
-												<td class="p-2"><?= $n; ?></td>
-												<td class="p-2 text-left">
-													<h6 class="my-0"><?= $dt->name; ?></h6>
-												</td>
-												<td class="p-2"><?= $status[$dt->status]; ?></td>
-												<td class="p-2">
-													<button type="button" class="btn btn-xs btn-icon btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
-													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-xs btn-icon btn-warning" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Edit Data"><i class="fa fa-edit"></i></a>
-													<!-- <button type="button" class="btn btn-xs btn-icon btn-danger delete" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Delete Data"><i class="fa fa-trash"></i></button> -->
-													<button type="button" class="btn btn-icon btn-primary review btn-xs" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Process to Review"><i class="fa fa-sync"></i></button>
-												</td>
-											</tr>
-									<?php endforeach;
-									endif; ?>
-								</tbody>
-							</table>
-						</div>
-
-						<!-- Approval -->
-						<div class="tab-pane fade" id="Approval" role="tabpanel" aria-labelledby="Approval-tab">
-							<table id="tblApproval" class="table datatable table-bordered table-sm table-condensed table-hover datatable">
-								<thead class="text-center table-light">
-									<tr class="text-center">
-										<th class="p-2" width="40">No.</th>
-										<th class="p-2 text-left">Nama</th>
-										<th class="p-2" width="130">Status</th>
-										<th class="p-2" width="70">Action</th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php if (isset($dataApv) && $dataApv) :
-										$n = 0;
-										foreach ($dataApv as $dt) : $n++; ?>
-											<tr class="text-center">
-												<td class="p-2"><?= $n; ?></td>
-												<td class="p-2 text-left">
-													<h6 class="my-0"><?= $dt->name; ?></h6>
-												</td>
-												<td class="p-2"><?= $status[$dt->status]; ?></td>
-												<td class="p-2">
-													<button type="button" class="btn btn-xs btn-icon btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" title="View Data"><i class="fa fa-search"></i></button>
-													<?php if ($dt->approval_id == $this->auth->user_id()) : ?>
-														<!-- <a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-xs btn-icon btn-warning" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Edit Data"><i class="fa fa-edit"></i></a> -->
-													<?php endif; ?>
-													<!-- <button type="button" class="btn btn-xs btn-icon btn-danger delete" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Delete Data"><i class="fa fa-trash"></i></button> -->
-												</td>
-											</tr>
-									<?php endforeach;
-									endif; ?>
-								</tbody>
-							</table>
-						</div>
-
-						<!-- Revision -->
-						<div class="tab-pane fade" id="Revision" role="tabpanel" aria-labelledby="Revision-tab">
-							<table id="tblRevision" class="table datatable table-bordered table-sm table-condensed table-hover datatable">
-								<thead class="text-center table-light">
-									<tr class="text-center">
-										<th class="p-2" width="40">No.</th>
-										<th class="p-2 text-left">Nama</th>
-										<th class="p-2 text-left">Reason</th>
-										<th class="p-2" width="130">Status</th>
-										<th class="p-2" width="70">Action</th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php if (isset($dataRvi) && $dataRvi) :
-										$n = 0;
-										foreach ($dataRvi as $dt) : $n++; ?>
-											<tr class="text-center">
-												<td class="p-2"><?= $n; ?></td>
-												<td class="p-2 text-left">
-													<h6 class="my-0"><?= $dt->name; ?></h6>
-												</td>
-												<td class="p-2 text-left">
-													<?= $ArrReason[$dt->id]->note; ?>
-												</td>
-												<td class="p-2"><?= $status[$dt->status]; ?></td>
-												<td class="p-2">
-													<button type="button" class="btn btn-xs btn-icon btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
-													<a href="<?= base_url($this->uri->segment(1) . '/edit/' . $dt->id); ?>" class="btn btn-xs btn-icon btn-warning" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Edit Data"><i class="fa fa-edit"></i></a>
-													<button type="button" class="btn btn-xs btn-icon btn-success review" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Process to Review"><i class="fa fa-sync-alt"></i></button>
-												</td>
-											</tr>
-									<?php endforeach;
-									endif; ?>
-								</tbody>
-							</table>
-						</div>
-
-						<!-- Published -->
-						<div class="tab-pane fade" id="published" role="tabpanel" aria-labelledby="published-tab">
-							<table id="example1" class="table datatable table-bordered table-sm table-condensed table-hover datatable">
-								<thead class="text-center table-light">
-									<tr class="text-center">
-										<th class="p-2" width="40">No.</th>
-										<th class="p-2 text-left">Nama</th>
-										<th class="p-2" width="130">Status</th>
-										<th class="p-2" width="70">Action</th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php if (isset($dataPub) && $dataPub) :
-										$n = 0;
-										foreach ($dataPub as $dt) : $n++; ?>
-											<tr class="text-center">
-												<td class="p-2"><?= $n; ?></td>
-												<td class="p-2 text-left">
-													<h6 class="my-0"><?= $dt->name; ?></h6>
-												</td>
-												<td class="p-2"><?= $status[$dt->status]; ?></td>
-												<td class="p-2">
-													<a href="<?= base_url($this->uri->segment(1) . '/printout/' . $dt->id); ?>" target="_blank" class="btn btn-xs btn-icon btn-light print" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Print Data"><i class="fa fa-print"></i></a>
-													<button type="button" class="btn btn-xs btn-icon btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
-												</td>
-											</tr>
-									<?php endforeach;
-									endif; ?>
-								</tbody>
-							</table>
-						</div>
-
-						<!-- Deletion -->
-						<div class="tab-pane fade" id="deletion" role="tabpanel" aria-labelledby="deletion-tab">
-							<table class="table datatable table-bordered table-sm table-condensed table-hover datatable">
-								<thead class="text-center table-light">
-									<tr class="text-center">
-										<th class="p-2" width="40">No.</th>
-										<th class="p-2 text-left">Nama</th>
-										<th class="p-2" width="130">Status</th>
-										<th class="p-2" width="70">Action</th>
-									</tr>
-								</thead>
-								<tbody>
-									<?php if (isset($dataDel) && $dataDel) :
-										$n = 0;
-										foreach ($dataDel as $dt) : $n++; ?>
-											<tr class="text-center">
-												<td class="p-2"><?= $n; ?></td>
-												<td class="p-2 text-left">
-													<h6 class="my-0"><?= $dt->name; ?></h6>
-												</td>
-												<td class="p-2"><?= $status[$dt->status]; ?></td>
-												<td class="p-2">
-													<!-- <a href="<?= base_url($this->uri->segment(1) . '/printout/' . $dt->id); ?>" target="_blank" class="btn btn-xs btn-icon btn-light print" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Print Data"><i class="fa fa-print"></i></a> -->
-													<button type="button" class="btn btn-xs btn-icon btn-info view" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="View Data"><i class="fa fa-search"></i></button>
-													<button type="button" class="btn btn-xs btn-icon btn-danger delete" data-status="<?= $dt->status; ?>" data-id="<?= $dt->id; ?>" data-toggle="tooltip" title="Delete Data"><i class="fa fa-trash"></i></button>
-												</td>
-											</tr>
-									<?php endforeach;
-									endif; ?>
-								</tbody>
-							</table>
-						</div>
-
-					</div>
+							<?php endforeach;
+							endif; ?>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
