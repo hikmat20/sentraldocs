@@ -22,9 +22,9 @@
 								<li class="nav-item" role="presentation">
 									<button class="nav-link" disabled id="guides-tab" data-toggle="tab" data-target="#guides" type="button" role="tab" aria-controls="guides" aria-selected="false">IK</button>
 								</li>
-								<li class="nav-item" role="presentation">
+								<!-- <li class="nav-item" role="presentation">
 									<button class="nav-link" disabled id="records-tab" data-toggle="tab" data-target="#records" type="button" role="tab" aria-controls="records" aria-selected="false">RECORD</button>
-								</li>
+								</li> -->
 							</ul>
 
 							<!-- Tab panes -->
