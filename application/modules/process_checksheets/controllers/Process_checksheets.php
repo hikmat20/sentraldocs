@@ -18,12 +18,12 @@ class Process_checksheets extends Admin_Controller
 	}
 	private function getNumber()
 	{
-		$last_number 	= $this->db->select('MAX(RIGHT(number,3)) as number')->from('checksheet_process_data')->get()->row();
+		$last_number 	= $this->db->select('MAX(CAST(SUBSTR(number,6,4) AS SIGNED)) as number')->from('checksheet_process_data')->get()->row();
 		$counter 		= 1;
 		if ($last_number->number) {
 			$counter = $last_number->number + 1;
 		}
-		$new_number = "CK" . date('y') . "-" . sprintf("%03d", $counter);
+		$new_number = "CK" . date('y') . "-" . sprintf("%05d", $counter);
 		return $new_number;
 	}
 
