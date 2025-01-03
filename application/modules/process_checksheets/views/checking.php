@@ -96,6 +96,8 @@
 												<input type="hidden" name="detail[<?= $n . "_" . $i; ?>][id]" value="<?= $it->id; ?>" <?= ($weekOfMonth) ? (($weekOfMonth != $i) ? 'disabled' : '') : ($exec == 3 && ($i != date('d')) ? 'disabled' : (($exec == 5) && ($i != (date('m'))) ? 'disabled' : '')); ?>>
 												<input type="hidden" name="detail[<?= $n . "_" . $i; ?>][field]" value="<?= $i; ?>" <?= ($weekOfMonth) ? (($weekOfMonth != $i) ? 'disabled' : '') : ($exec == 3 && ($i != date('d')) ? 'disabled' : (($exec == 5) && ($i != (date('m'))) ? 'disabled' : '')); ?>>
 												<td class="<?= $weekend ?> <?= ($weekOfMonth) && ($weekOfMonth == $i) ? 'bg-light-warning' : (($exec == 3 && $i == date('d')) ? 'bg-light-warning' : (($exec == 5 && $i == date('m')) ? 'bg-light-warning' : '')); ?>">
+													<?= $i.' - '.date('d') ?>
+													<br>
 													<?php if ($it->check_type == 'boolean') : ?>
 														<div class="" id="r_<?= $n . '_c_' . $i; ?>">
 															<div class="d-flex justify-content-start align-items-center gap-4">

@@ -15,6 +15,8 @@ class Process_checksheets extends Admin_Controller
 		parent::__construct();
 		$this->load->library('upload');
 		$this->template->set('title', 'MASTER CHECKSHEET');
+
+		date_default_timezone_set('Asia/Jakarta');
 	}
 	private function getNumber()
 	{
