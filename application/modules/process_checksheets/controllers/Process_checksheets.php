@@ -18,12 +18,13 @@ class Process_checksheets extends Admin_Controller
 	}
 	private function getNumber()
 	{
-		$last_number 	= $this->db->select('MAX(CAST(SUBSTR(number,6,4) AS SIGNED)) as number')->from('checksheet_process_data')->get()->row();
-		$counter 		= 1;
-		if ($last_number->number) {
-			$counter = $last_number->number + 1;
-		}
-		$new_number = "CK" . date('y') . "-" . sprintf("%05d", $counter);
+		// $last_number 	= $this->db->select('MAX(number) as number_max')->from('checksheet_process_data')->like('number', 'CK'.date('y').'-', 'both	')->get()->row();
+		$last_number = $this->db->query('SELECT MAX(number) AS number_max FROM checksheet_process_data WHERE `number` LIKE "%CK' . date('y') . '-%"')->row();
+
+		$angkaUrut2		= $last_number->number_max;
+		$urutan2		= (int)substr($angkaUrut2, 5, 5);
+		$urutan2++;
+		$new_number = "CK" . date('y') . "-" . sprintf("%05d", $urutan2);
 		return $new_number;
 	}
 
