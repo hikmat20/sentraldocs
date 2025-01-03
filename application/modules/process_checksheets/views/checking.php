@@ -86,15 +86,15 @@
 											?>
 												<?php $nn = "n" . $i; ?>
 												<?php $Nn = "note" . $i; ?>
-												<input type="hidden" name="detail[<?= $n."_". $i; ?>][id]" value="<?= $it->id; ?>" <?= ($weekOfMonth) ? (($weekOfMonth != $i) ? 'disabled' : '') : ($exec == 3 && ($i != date('d')) ? 'disabled' : (($exec == 5) && ($i != (date('m'))) ? 'disabled' : '')); ?>>
-												<input type="hidden" name="detail[<?= $n."_". $i; ?>][field]" value="<?= $i; ?>" <?= ($weekOfMonth) ? (($weekOfMonth != $i) ? 'disabled' : '') : ($exec == 3 && ($i != date('d')) ? 'disabled' : (($exec == 5) && ($i != (date('m'))) ? 'disabled' : '')); ?>>
+												<input type="hidden" name="detail[<?= $n."_". $i; ?>][id]" value="<?= $it->id; ?>" >
+												<input type="hidden" name="detail[<?= $n."_". $i; ?>][field]" value="<?= $i; ?>" >
 												<td class="<?=$weekend?> <?= ($weekOfMonth) && ($weekOfMonth == $i) ? 'bg-light-warning' : (($exec == 3 && $i == date('d')) ? 'bg-light-warning' : (($exec == 5 && $i == date('m')) ? 'bg-light-warning' : '')); ?>">
 													<?php if ($it->check_type == 'boolean') : ?>
 														<div class="" id="r_<?= $n . '_c_' . $i; ?>">
 															<div class="d-flex justify-content-start align-items-center gap-4">
 																<div class="form-check form-check-custom form-check-solid mr-10">
 																	<label class="form-check-label font-weight-bolder text-dark">
-																		<input class="form-check-input yes required" type="radio" value="yes" <?= ($weekOfMonth) ? (($weekOfMonth != $i) ? 'disabled' : '') : ($exec == 3 && ($i != date('d')) ? 'disabled' : (($exec == 5) && ($i != (date('m'))) ? 'disabled' : '')); ?> name="detail[<?= $n."_". $i; ?>][n<?= $i; ?>]" data-row="<?= $n . $i; ?>" id="boolean_<?= $i . $n; ?>" <?= ($it->$nn == 'yes') ? 'checked' : ''; ?>>
+																		<input class="form-check-input yes required" type="radio" value="yes"  name="detail[<?= $n."_". $i; ?>][n<?= $i; ?>]" data-row="<?= $n . $i; ?>" id="boolean_<?= $i . $n; ?>" <?= ($it->$nn == 'yes') ? 'checked' : ''; ?>>
 																		Yes
 																		<span class="invalid-feedback font-weight-normal">
 																			<i class="text-danger fa fa-exclamation-circle"></i>
@@ -103,7 +103,7 @@
 																</div>
 																<div class="form-check form-check-custom form-check-danger form-check-solid mr-10">
 																	<label class="form-check-label font-weight-bolder text">
-																		<input class="form-check-input no required" type="radio" value="no" <?= ($weekOfMonth) ? (($weekOfMonth != $i) ? 'disabled' : '') : ($exec == 3 && ($i != date('d')) ? 'disabled' : (($exec == 5) && ($i != (date('m'))) ? 'disabled' : '')); ?> name="detail[<?= $n."_". $i; ?>][n<?= $i; ?>]" data-row="<?= $n . $i; ?>" id="boolean_<?= $i . $n; ?>" <?= ($it->$nn == 'no') ? 'checked' : ''; ?>>
+																		<input class="form-check-input no required" type="radio" value="no"  name="detail[<?= $n."_". $i; ?>][n<?= $i; ?>]" data-row="<?= $n . $i; ?>" id="boolean_<?= $i . $n; ?>" <?= ($it->$nn == 'no') ? 'checked' : ''; ?>>
 																		No
 																		<span class="invalid-feedback font-weight-normal">
 																			<i class="text-danger fa fa-exclamation-circle fa-md"></i>
