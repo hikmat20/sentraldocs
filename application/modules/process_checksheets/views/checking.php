@@ -60,7 +60,11 @@
 									</tr>
 									<tr>
 										<?php for ($i = 1; $i <= $count; $i++) {
-											if($i == date('d')) {
+											if(
+												($fChecking[$data->frequency_checking] == 'Daily' && $i == date('d')) || 
+												($fChecking[$data->frequency_checking] == 'Weekly' && $i == $weekOfMonth) ||
+												($fChecking[$data->frequency_checking] == 'Monthly' && $i == date('m'))
+											) {
 
 											
 											$weekend = "";
@@ -83,7 +87,11 @@
 											<td><?= $it->item_name; ?></td>
 											<td><?= $it->standard_check; ?></td>
 											<?php for ($i = 1; $i <= $count; $i++) :
-												if($i == date('d')) {
+												if(
+													($fChecking[$data->frequency_checking] == 'Daily' && $i == date('d')) || 
+													($fChecking[$data->frequency_checking] == 'Weekly' && $i == $weekOfMonth) ||
+													($fChecking[$data->frequency_checking] == 'Monthly' && $i == date('m'))
+												) {
 													
 												$weekend = "";
 												$tanggalkolom = date("Y-m", strtotime($data->periode)) . "-" . $i;
@@ -96,7 +104,6 @@
 												<input type="hidden" name="detail[<?= $n . "_" . $i; ?>][id]" value="<?= $it->id; ?>" <?= ($weekOfMonth) ? (($weekOfMonth != $i) ? 'disabled' : '') : ($exec == 3 && ($i != date('d')) ? 'disabled' : (($exec == 5) && ($i != (date('m'))) ? 'disabled' : '')); ?>>
 												<input type="hidden" name="detail[<?= $n . "_" . $i; ?>][field]" value="<?= $i; ?>" <?= ($weekOfMonth) ? (($weekOfMonth != $i) ? 'disabled' : '') : ($exec == 3 && ($i != date('d')) ? 'disabled' : (($exec == 5) && ($i != (date('m'))) ? 'disabled' : '')); ?>>
 												<td class="<?= $weekend ?> <?= ($weekOfMonth) && ($weekOfMonth == $i) ? 'bg-light-warning' : (($exec == 3 && $i == date('d')) ? 'bg-light-warning' : (($exec == 5 && $i == date('m')) ? 'bg-light-warning' : '')); ?>">
-													<?= $i.' - '.date('d') ?>
 													<br>
 													<?php if ($it->check_type == 'boolean') : ?>
 														<div class="" id="r_<?= $n . '_c_' . $i; ?>">
@@ -125,10 +132,12 @@
 															<span style="font-weight: bold;">Bukti</span>
 															<input type="file" name="bukti<?= $n.$i ?>" class="form-control">
 															<?php 
+															if(isset($ArrNote[$it->id]->$NBukti)){
 																if($ArrNote[$it->id]->$NBukti !== '' && file_exists($ArrNote[$it->id]->$NBukti)) {
 																	echo '<br>';
 																	echo '<a href="'.base_url($ArrNote[$it->id]->$NBukti).'" class="btn btn-sm btn-primary" target="_blank"><i class="fa fa-file"></i> Document</a>';
 																}
+															}
 															?>
 															<span class="invalid-feedback">Can not be empty</span>
 														</div>
