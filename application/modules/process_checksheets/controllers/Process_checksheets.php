@@ -1056,6 +1056,7 @@ class Process_checksheets extends Admin_Controller
 						if ($dt["n" . $field] == 'no') {
 							$checkNote 	= $this->db->get_where('checksheet_notes', ['data_id' => $post['id'], 'item_id' => $dt['id']])->row();
 
+							$upload_bukti = '';
 							if (!empty($checkNote)) {
 								$upload_bukti = $checkNote['bukti_' . $field];
 
