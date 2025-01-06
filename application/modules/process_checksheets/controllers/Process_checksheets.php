@@ -999,8 +999,6 @@ class Process_checksheets extends Admin_Controller
 		$execution_date	= $this->db->get_where('checksheet_execution_date', ['item_id' => $sheet->id])->row();
 
 		$ArrNote = [];
-
-		$ArrNote = [];
 		foreach ($notes as $note) {
 			$ArrNote[$note->item_id] = $note;
 		}
@@ -1044,7 +1042,7 @@ class Process_checksheets extends Admin_Controller
 					$fieldNote 		= "note" . $field;
 					$fieldDate 		= "date" . $field;
 					$fieldChecker 	= "day" . $field;
-					$fieldBukti 	= "bukti" . $field;
+					$fieldBukti 	= "bukti_" . $field;
 
 					/* UPDATE DETAIL */
 					if (isset($dt["n" . $field])) {
@@ -1058,8 +1056,6 @@ class Process_checksheets extends Admin_Controller
 
 							$upload_bukti = '';
 							if (!empty($checkNote)) {
-								$upload_bukti = $checkNote['bukti_' . $field];
-
 								if ($_FILES['bukti' . $nn . $field]['name'] !== '') {
 									$files = $_FILES['bukti' . $nn . $field];
 									$file_count = count($files['name']);
@@ -1104,19 +1100,6 @@ class Process_checksheets extends Admin_Controller
 							$checkNote 	= $this->db->get_where('checksheet_notes', ['data_id' => $post['id'], 'item_id' => $dt['id']])->row_array();
 
 							$upload_bukti = '';
-							// if(isset($dt[$fieldBukti])) {
-							// if (!$this->upload->do_upload($dt[$fieldBukti])) {
-							// 	// If upload fails, display error
-							// 	$error = array('error' => $this->upload->display_errors());
-							// 	// print_r($error);
-							// } else {
-							// 	$data_upload_po = $this->upload->data();
-							// 	$upload_bukti = 'assets/images/directory/checksheet/' . $data_upload_po['file_name'];
-							// }
-							// }
-
-							// if () {
-							// 	// Success
 
 							if (!empty($checkNote)) {
 								$upload_bukti = $checkNote['bukti_' . $field];
