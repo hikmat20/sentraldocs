@@ -11,4 +11,5 @@ application/logs/*
 !application/logs/.htaccess
 #/vendor/
 directory/*
+assets/images/directory/checksheet/*
 */config/database.php
